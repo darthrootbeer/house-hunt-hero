@@ -1,0 +1,26 @@
+source_id: "portland_press_herald"
+label: "Portland Press Herald"
+enabled: true
+method: "playwright"
+base_url: "https://www.pressherald.com"
+search_url: "https://www.pressherald.com/classifieds/real-estate"
+
+scraping:
+  listing_container_selector: ".listing, .ad, .item, [class*='listing'], [class*='ad'], [class*='item'], .classified-item, article, .classified, .ad-listing"
+  listing_url_selector: "a[href*='/real-estate'], a[href*='/classifieds'], a[href*='/ads']"
+  listing_title_selector: "h2, h3, h4, .title, [class*='title'], .headline"
+  listing_price_selector: ".price, [class*='price'], .cost"
+  listing_location_selector: ".location, [class*='location'], .city, .address"
+  listing_date_selector: ".date, [class*='date'], .posted"
+  wait_for_selector: "body"
+  wait_timeout_ms: 15000
+  headers:
+    User-Agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
+
+rate_limit_seconds: 30
+
+notes: |
+  - Major daily newspaper in Maine
+  - Acquired by National Trust for Local News in 2023
+  - URL pattern may need adjustment if actual site structure differs
+  - Generic selectors may need refinement based on actual page structure

@@ -1,0 +1,32 @@
+source_id: "facebook_marketplace"
+label: "Facebook Marketplace"
+enabled: true
+method: "playwright"
+base_url: "https://www.facebook.com"
+search_url: "https://www.facebook.com/marketplace/maine/search/?query=house&exact=false"
+
+scraping:
+  listing_container_selector: "[data-testid='marketplace-product-item'], [role='article'], a[href*='/marketplace/item/']"
+  listing_url_selector: "a[href*='/marketplace/item/']"
+  listing_title_selector: "span, div, [class*='title'], [class*='name']"
+  listing_price_selector: "[class*='price'], [class*='cost']"
+  listing_location_selector: "[class*='location'], [class*='city']"
+  wait_for_selector: "body"
+  wait_timeout_ms: 15000
+  headers:
+    User-Agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
+  
+  anti_bot:
+    use_stealth: false  # Facebook has sophisticated detection
+    random_delays: true
+    delay_min_seconds: 2
+    delay_max_seconds: 5
+
+rate_limit_seconds: 60
+
+notes: |
+  - Facebook aggressively blocks scrapers and requires authentication
+  - May return empty results without login or Graph API access
+  - Marketplace URLs and selectors may change frequently
+  - Consider using Facebook Graph API if available
+  - Rate limiting is critical to avoid bans

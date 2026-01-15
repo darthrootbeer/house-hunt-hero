@@ -10,7 +10,9 @@ Commercial real estate sites may have multi-family properties. 5 platforms: The 
 ::done-when
 - All 5 commercial platforms have adapters
 - Source configs created
-- Registered and tested
+- Registered in registry.py
+- Each adapter tested with actual search data and verified to retrieve listings successfully
+- Test results documented (listings found, data quality, selector accuracy, multi-family filtering)
 
 ::steps
 1. Research each platform: check for API, search functionality
@@ -20,7 +22,18 @@ Commercial real estate sites may have multi-family properties. 5 platforms: The 
 5. Create source configs with: search_urls, listing_selectors, property_type_filters (multi-family focus)
 6. Implement fetch() methods
 7. Register in registry
-8. Test with multi-family and residential filters
+8. Test each adapter immediately after implementation:
+   a. Run adapter.fetch() with actual Maine searches, focusing on multi-family properties
+   b. Verify listings are retrieved (check count > 0 if listings exist)
+   c. Inspect RawListing objects: verify source_id, listing_url, title, raw_payload populated
+   d. Verify listing_urls are absolute and valid
+   e. Check that selectors correctly extract property details, price, location, property type
+   f. Verify multi-family filter works correctly (excludes pure commercial)
+   g. Test with different Maine locations
+   h. Verify property type filtering excludes non-residential commercial
+   i. Document any selector issues or data quality problems
+   j. Refine selectors/config if listings are not retrieved correctly
+9. Run end-to-end test: verify all adapters work in full pipeline
 
 ::avoid
 - Commercial-only properties (unless multi-family)

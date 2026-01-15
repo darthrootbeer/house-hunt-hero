@@ -1,0 +1,14 @@
+source_id: "kennebec_savings"
+label: "Kennebec Savings Bank"
+enabled: false
+method: "contact_required"
+base_url: "https://www.kennebecsavings.com"
+contact_method: "REO Department"
+
+rate_limit_seconds: 0
+contact_required: true
+
+notes: |
+  - No public REO listings page found
+  - Requires direct contact with REO department
+  - Check BankOwnedProperties.org for aggregated listings

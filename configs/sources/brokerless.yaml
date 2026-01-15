@@ -1,0 +1,24 @@
+source_id: "brokerless"
+label: "Brokerless"
+enabled: true
+method: "playwright"
+base_url: "https://www.brokerless.com"
+search_url: "https://www.brokerless.com/search?state=ME"
+
+scraping:
+  listing_container_selector: ".listing, .property, .result, [class*='listing'], [class*='property']"
+  listing_url_selector: "a[href*='/property'], a[href*='/listing'], a[href*='/home']"
+  listing_title_selector: "h2, h3, .title, [class*='title']"
+  listing_price_selector: ".price, [class*='price']"
+  listing_location_selector: ".location, [class*='location'], .address"
+  wait_for_selector: "body"
+  wait_timeout_ms: 15000
+  headers:
+    User-Agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
+
+rate_limit_seconds: 30
+
+notes: |
+  - Flat fee MLS service since 2006
+  - Listings syndicate to Realtor.com and Zillow
+  - May require selector refinement based on actual page structure

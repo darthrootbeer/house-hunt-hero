@@ -1,0 +1,46 @@
+source_id: "nextdoor"
+label: "Nextdoor"
+enabled: true
+method: "playwright"
+base_url: "https://nextdoor.com"
+search_url: "https://nextdoor.com/search/?query=house%20for%20sale&location=Maine"
+
+# Maine neighborhoods active on Nextdoor
+neighborhoods:
+  - name: "Gorham"
+    search_url: "https://nextdoor.com/search/?query=house%20for%20sale&location=Gorham%20ME"
+  - name: "Brunswick"
+    search_url: "https://nextdoor.com/search/?query=house%20for%20sale&location=Brunswick%20ME"
+  - name: "Portland"
+    search_url: "https://nextdoor.com/search/?query=house%20for%20sale&location=Portland%20ME"
+  - name: "Bangor"
+    search_url: "https://nextdoor.com/search/?query=house%20for%20sale&location=Bangor%20ME"
+
+scraping:
+  listing_container_selector: "[data-testid*='post'], [data-testid*='listing'], [role='article'], .post, [class*='post'], [class*='listing']"
+  listing_url_selector: "a[href*='/post/'], a[href*='/p/'], a[href]"
+  listing_title_selector: "h2, h3, [class*='title'], [class*='headline'], [data-testid*='title']"
+  listing_price_selector: "text"  # Price extracted from post text via regex
+  listing_location_selector: "[class*='location'], [class*='neighborhood'], [class*='city']"
+  wait_for_selector: "body"
+  wait_timeout_ms: 15000
+  headers:
+    User-Agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
+  
+  anti_bot:
+    use_stealth: false
+    random_delays: true
+    delay_min_seconds: 2
+    delay_max_seconds: 5
+
+rate_limit_seconds: 90
+
+auth_required: true
+
+notes: |
+  - Nextdoor requires neighborhood verification and authentication
+  - Will likely return empty results without login
+  - Neighborhoods like Gorham, Brunswick are active in Maine
+  - May need to check multiple neighborhoods
+  - Consider using Nextdoor API if available
+  - Rate limiting is critical to avoid bans

@@ -1,0 +1,20 @@
+source_id: "hoang_realty_fsbo"
+label: "Hoang Realty FSBO Program"
+enabled: true
+method: "contact_required"
+base_url: "https://hoangrealty.com"
+search_url: "https://hoangrealty.com/for-sale-by-owner"
+
+contact_required:
+  department: "FSBO Program"
+  phone: "(207) 623-0623"
+  email: "info@hoangrealty.com"
+  notes: "Listings are not publicly searchable on website. Must contact directly for FSBO listings. Augusta, ME based."
+
+rate_limit_seconds: 0
+
+notes: |
+  - Augusta, Maine based realty
+  - FSBO listings require direct contact
+  - Listings may be on MLS but not publicly searchable on their website
+  - Adapter currently returns empty list as placeholder

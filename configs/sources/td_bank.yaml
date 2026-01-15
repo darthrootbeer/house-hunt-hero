@@ -1,0 +1,15 @@
+source_id: "td_bank"
+label: "TD Bank"
+enabled: false
+method: "contact_required"
+base_url: "https://www.td.com"
+contact_method: "REO Department"
+
+rate_limit_seconds: 0
+contact_required: true
+
+notes: |
+  - Large national bank with Maine presence
+  - No public REO listings page found
+  - Requires direct contact with REO department
+  - Check BankOwnedProperties.org for aggregated listings
