@@ -5,3 +5,6 @@ state/
 *.db
 .DS_Store
 .cursor/
+
+# Ralph config (may contain API key)
+.cursor/ralph-config.json
