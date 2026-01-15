@@ -5,6 +5,7 @@ from typing import Dict, List
 
 from ..alerting.dispatch import dispatch_alert
 from ..classify.scoring import score_listing
+from ..dedupe.fuzzy import dedupe_batch
 from ..dedupe.zillow_redfin import check_listing_status
 from ..ingestion.registry import get_adapters
 from ..normalization.mapper import normalize_many
@@ -38,6 +39,10 @@ def run_once(
         raw_listings.extend(adapter.fetch())
 
     listings = normalize_many(raw_listings)
+
+    # Remove fuzzy duplicates within the batch
+    listings, dupes_removed = dedupe_batch(listings)
+
     now = datetime.now(timezone.utc).isoformat()
 
     for listing in listings:
