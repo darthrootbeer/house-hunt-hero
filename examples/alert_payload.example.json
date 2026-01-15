@@ -1,0 +1,25 @@
+{
+  "listing_id": "craigslist_owner:1234567890",
+  "status": "pre_zillow",
+  "confidence": 0.81,
+  "reason": [
+    "Matches region: North Bay",
+    "Price under max",
+    "Keywords suggest estate sale"
+  ],
+  "source": {
+    "id": "craigslist_owner",
+    "label": "Craigslist - owner listings",
+    "first_seen": "2026-01-15T10:12:03Z"
+  },
+  "listing": {
+    "address_raw": "123 Oak St, Novato, CA",
+    "price": 825000,
+    "url": "https://example.com/listing/123",
+    "description_snippet": "Bright 3/2 on quiet street near town...",
+    "image_urls": [
+      "https://example.com/img/1.jpg",
+      "https://example.com/img/2.jpg"
+    ]
+  }
+}

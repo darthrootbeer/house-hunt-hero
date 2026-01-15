@@ -1,0 +1,1 @@
+from .craigslist_owner import CraigslistOwnerAdapter
