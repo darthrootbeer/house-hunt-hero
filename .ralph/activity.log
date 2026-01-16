@@ -522,3 +522,317 @@ with sync_playwright() as p:
     
     browser.close()
 " 2>&1 → exit 0
+[07:50:01] 🟢 SHELL cd /Users/bengoddard/projects/house-hunt-hero && git add -A && git commit -m "$(cat <<'EOF'
+ralph: fix Maine Listings adapter with stealth browser settings
+
+- Added stealth browser settings to bypass Cloudflare protection
+- Updated URL parsing for Maine Listings format (/listings/ME/CITY/ZIP/ID/ADDRESS/MLSID)
+- Added deduplication for listing URLs
+- Now successfully fetches 23+ listings from official MLS
+- Created shared browser_utils module for stealth browser setup
+EOF
+)" → exit 0
+[07:50:07] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/src/ingestion/adapters/swan_agency.py (89 lines, ~8.6KB)
+[07:50:09] 🟢 TOKENS: 23063 / 80000 (28%) [read:84KB write:0KB assist:2KB shell:0KB]
+[07:50:25] 🟢 SHELL agent-browser close && sleep 2 && agent-browser open "https://swanagency.com/properties/search/?type=res" && agent-browser wait 5000 && agent-browser snapshot -i 2>&1 | head -60 → exit 0
+[07:50:31] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/src/ingestion/adapters/realty_of_maine.py (89 lines, ~8.6KB)
+[07:50:35] 🟢 SHELL cd /Users/bengoddard/projects/house-hunt-hero && ls src/ingestion/adapters/*.py | head -30 → exit 0
+[07:50:39] 🟢 TOKENS: 25329 / 80000 (31%) [read:93KB write:0KB assist:2KB shell:0KB]
+[07:51:10] 🟢 TOKENS: 25367 / 80000 (31%) [read:93KB write:0KB assist:2KB shell:0KB]
+[07:51:30] 🟢 SHELL cd /Users/bengoddard/projects/house-hunt-hero && /usr/local/bin/python3.11 -c "
+from playwright.sync_api import sync_playwright
+
+with sync_playwright() as p:
+    browser = p.chromium.launch(
+        headless=True,
+        args=['--disable-blink-features=AutomationControlled']
+    )
+    context = browser.new_context(
+        user_agent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
+        viewport={'width': 1920, 'height': 1080},
+        locale='en-US',
+    )
+    context.add_init_script('''
+        Object.defineProperty(navigator, \"webdriver\", {
+            get: () => undefined
+        });
+    ''')
+    page = context.new_page()
+    
+    page.goto('https://swanagency.com/properties/search/?type=res', timeout=60000)
+    page.wait_for_timeout(5000)
+    
+    # Get property links
+    links = page.query_selector_all('a')
+    for link in links:
+        href = link.get_attribute('href') or ''
+        if '/property/' in href or '/listing/' in href or '/properties/detail' in href:
+            text = link.inner_text()[:50]
+            print(f'{href[:70]} | {text}')
+    
+    browser.close()
+" 2>&1 | head -20 → exit 0
+[07:51:48] 🟢 SHELL cd /Users/bengoddard/projects/house-hunt-hero && /usr/local/bin/python3.11 -c "
+from playwright.sync_api import sync_playwright
+
+with sync_playwright() as p:
+    browser = p.chromium.launch(
+        headless=True,
+        args=['--disable-blink-features=AutomationControlled']
+    )
+    context = browser.new_context(
+        user_agent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
+        viewport={'width': 1920, 'height': 1080},
+        locale='en-US',
+    )
+    context.add_init_script('''
+        Object.defineProperty(navigator, \"webdriver\", {
+            get: () => undefined
+        });
+    ''')
+    page = context.new_page()
+    
+    page.goto('https://swanagency.com/properties/search/?type=res', timeout=60000)
+    page.wait_for_timeout(5000)
+    
+    # Print a sample of all links to understand the URL structure
+    links = page.query_selector_all('a')
+    print(f'Total links: {len(links)}')
+    seen = set()
+    for link in links:
+        href = link.get_attribute('href') or ''
+        if href and 'swan' in href.lower() and href not in seen:
+            seen.add(href)
+            if len(seen) <= 20:
+                print(f'  {href}')
+    
+    browser.close()
+" 2>&1 → exit 0
+[07:51:48] 🟢 TOKENS: 25367 / 80000 (31%) [read:93KB write:0KB assist:2KB shell:0KB]
+[07:52:08] 🟢 SHELL cd /Users/bengoddard/projects/house-hunt-hero && /usr/local/bin/python3.11 -c "
+from playwright.sync_api import sync_playwright
+
+with sync_playwright() as p:
+    browser = p.chromium.launch(
+        headless=True,
+        args=['--disable-blink-features=AutomationControlled']
+    )
+    context = browser.new_context(
+        user_agent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
+        viewport={'width': 1920, 'height': 1080},
+        locale='en-US',
+    )
+    context.add_init_script('''
+        Object.defineProperty(navigator, \"webdriver\", {
+            get: () => undefined
+        });
+    ''')
+    page = context.new_page()
+    
+    page.goto('https://swanagency.com/properties/search/?type=res', timeout=60000)
+    page.wait_for_timeout(8000)  # Longer wait
+    
+    content = page.content()
+    
+    # Check for price patterns (common in listings)
+    import re
+    prices = re.findall(r'\\\$[\d,]+', content)
+    print(f'Found {len(prices)} price patterns')
+    if prices:
+        print(f'Sample prices: {prices[:5]}')
+    
+    # Check for address patterns
+    addresses = re.findall(r'\d+\s+\w+\s+(Street|Road|Lane|Drive|Ave|Avenue|Way|Court)\b', content, re.IGNORECASE)
+    print(f'Found {len(addresses)} address patterns')
+    
+    browser.close()
+" 2>&1 → exit 0
+[07:52:22] 🟢 TOKENS: 25409 / 80000 (31%) [read:93KB write:0KB assist:3KB shell:0KB]
+[07:53:09] 🟢 SHELL cd /Users/bengoddard/projects/house-hunt-hero && /usr/local/bin/python3.11 -c "
+import sys
+sys.path.insert(0, '.')
+from datetime import datetime
+
+# Test just the updated adapters
+from src.ingestion.adapters.maine_listings import MaineListingsAdapter
+from src.ingestion.adapters.landing_real_estate import LandingRealEstateAdapter
+from src.ingestion.adapters.realty_of_maine import RealtyOfMaineAdapter
+
+adapters = [
+    ('Maine Listings (MLS)', MaineListingsAdapter()),
+    ('Landing Real Estate', LandingRealEstateAdapter()),
+    ('Realty of Maine', RealtyOfMaineAdapter()),
+]
+
+print('=' * 60)
+print('TESTING UPDATED ADAPTERS')
+print('=' * 60)
+
+results = []
+for name, adapter in adapters:
+    print(f'\nTesting: {name}')
+    start = datetime.now()
+    try:
+        listings = adapter.fetch()
+        elapsed = (datetime.now() - start).total_seconds()
+        print(f'  ✓ Found {len(listings)} listings in {elapsed:.1f}s')
+        if listings:
+            print(f'  Sample: {listings[0].title[:50]}...')
+        results.append((name, len(listings), None))
+    except Exception as e:
+        elapsed = (datetime.now() - start).total_seconds()
+        print(f'  ✗ Error: {e}')
+        results.append((name, 0, str(e)))
+
+print('\n' + '=' * 60)
+print('SUMMARY')
+print('=' * 60)
+total = sum(r[1] for r in results)
+print(f'Total listings found: {total}')
+for name, count, err in results:
+    status = '✓' if count > 0 else ('✗' if err else '-')
+    print(f'  {status} {name}: {count} listings')
+" 2>&1 → exit 0
+[07:53:09] 🟢 TOKENS: 25409 / 80000 (31%) [read:93KB write:0KB assist:3KB shell:0KB]
+[07:53:30] 🟢 SHELL cd /Users/bengoddard/projects/house-hunt-hero && /usr/local/bin/python3.11 -c "
+from playwright.sync_api import sync_playwright
+
+with sync_playwright() as p:
+    browser = p.chromium.launch(
+        headless=True,
+        args=['--disable-blink-features=AutomationControlled']
+    )
+    context = browser.new_context(
+        user_agent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
+        viewport={'width': 1920, 'height': 1080},
+        locale='en-US',
+    )
+    context.add_init_script('''
+        Object.defineProperty(navigator, \"webdriver\", {
+            get: () => undefined
+        });
+    ''')
+    page = context.new_page()
+    
+    page.goto('https://www.realtyofmaine.com/searchmaine', timeout=60000)
+    page.wait_for_timeout(8000)
+    
+    # Look for all links and check patterns
+    links = page.query_selector_all('a')
+    print(f'Total links: {len(links)}')
+    
+    # Print links that might be property listings
+    for link in links:
+        href = link.get_attribute('href') or ''
+        text = link.inner_text()[:60] if link.inner_text() else ''
+        if href and ('mls' in href.lower() or 'idx' in href.lower() or 'property' in href.lower() or 'listing' in href.lower() or 'detail' in href.lower()):
+            print(f'{href[:60]} | {text}')
+    
+    browser.close()
+" 2>&1 | head -30 → exit 0
+[07:53:39] 🟢 TOKENS: 25436 / 80000 (31%) [read:93KB write:0KB assist:3KB shell:0KB]
+[07:53:54] 🟢 SHELL cd /Users/bengoddard/projects/house-hunt-hero && /usr/local/bin/python3.11 -c "
+from playwright.sync_api import sync_playwright
+
+with sync_playwright() as p:
+    browser = p.chromium.launch(
+        headless=True,
+        args=['--disable-blink-features=AutomationControlled']
+    )
+    context = browser.new_context(
+        user_agent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
+        viewport={'width': 1920, 'height': 1080},
+        locale='en-US',
+    )
+    context.add_init_script('''
+        Object.defineProperty(navigator, \"webdriver\", {
+            get: () => undefined
+        });
+    ''')
+    page = context.new_page()
+    
+    # Try the listings page directly
+    page.goto('https://www.realtyofmaine.com/listings/', timeout=60000)
+    page.wait_for_timeout(10000)
+    
+    print(f'Title: {page.title()}')
+    content = page.content()
+    
+    # Check for price patterns
+    import re
+    prices = re.findall(r'\\\$[\d,]+', content)
+    print(f'Prices found: {len(prices)}')
+    
+    # Look for listing cards or property elements
+    cards = page.query_selector_all('[class*=\"listing\"], [class*=\"property\"], [class*=\"card\"]')
+    print(f'Card elements: {len(cards)}')
+    
+    # Check for iframe (IDX feeds often use iframes)
+    iframes = page.query_selector_all('iframe')
+    print(f'Iframes: {len(iframes)}')
+    
+    browser.close()
+" 2>&1 → exit 0
+[07:54:18] 🟢 SHELL cd /Users/bengoddard/projects/house-hunt-hero && /usr/local/bin/python3.11 -c "
+from playwright.sync_api import sync_playwright
+
+with sync_playwright() as p:
+    browser = p.chromium.launch(
+        headless=True,
+        args=['--disable-blink-features=AutomationControlled']
+    )
+    context = browser.new_context(
+        user_agent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
+        viewport={'width': 1920, 'height': 1080},
+        locale='en-US',
+    )
+    context.add_init_script('''
+        Object.defineProperty(navigator, \"webdriver\", {
+            get: () => undefined
+        });
+    ''')
+    page = context.new_page()
+    
+    page.goto('https://www.realtyofmaine.com/listings/', timeout=60000)
+    page.wait_for_timeout(10000)
+    
+    # Find listing links
+    links = page.query_selector_all('a')
+    
+    # Print sample of links that have pricing or addresses
+    import re
+    for link in links[:100]:
+        href = link.get_attribute('href') or ''
+        text = link.inner_text().strip()
+        if text and re.search(r'\\\$[\d,]+', text):
+            print(f'URL: {href[:60]}')
+            print(f'Text: {text[:100]}')
+            print()
+            break
+    
+    # Also check for specific listing class patterns
+    cards = page.query_selector_all('[class*=\"listing-card\"], [class*=\"property-card\"], .card')
+    print(f'Found {len(cards)} card elements')
+    if cards:
+        first = cards[0]
+        inner_html = first.inner_html()[:300]
+        print(f'First card HTML: {inner_html}')
+    
+    browser.close()
+" 2>&1 → exit 0
+[07:54:18] 🟢 TOKENS: 25436 / 80000 (31%) [read:93KB write:0KB assist:3KB shell:0KB]
+[07:54:49] 🟢 TOKENS: 25436 / 80000 (31%) [read:93KB write:0KB assist:3KB shell:0KB]
+[07:55:04] 🟢 SHELL cd /Users/bengoddard/projects/house-hunt-hero && /usr/local/bin/python3.11 -c "
+import sys
+sys.path.insert(0, '.')
+from src.ingestion.adapters.realty_of_maine import RealtyOfMaineAdapter
+
+adapter = RealtyOfMaineAdapter()
+print(f'Testing {adapter.source_id}...')
+listings = adapter.fetch()
+print(f'Found {len(listings)} listings')
+if listings:
+    for i, l in enumerate(listings[:5]):
+        print(f'  {i+1}. {l.title}')
+        print(f'     Price: {l.raw_payload.get(\"price\")}, Beds: {l.raw_payload.get(\"beds\")}, Baths: {l.raw_payload.get(\"baths\")}')
+" 2>&1 → exit 0

@@ -2,26 +2,71 @@
 
 from __future__ import annotations
 
-from playwright.sync_api import sync_playwright, Browser, BrowserContext, Page
+from contextlib import contextmanager
+from playwright.sync_api import sync_playwright
 
 
-def create_stealth_browser():
-    """Create a Playwright browser with stealth settings to avoid bot detection.
+STEALTH_SCRIPT = '''
+    Object.defineProperty(navigator, "webdriver", {
+        get: () => undefined
+    });
+'''
+
+
+@contextmanager
+def stealth_browser(timeout: int = 60000):
+    """Context manager for stealth browser sessions.
     
-    Returns:
-        tuple: (playwright_instance, browser, context, page)
-        
     Usage:
-        pw, browser, context, page = create_stealth_browser()
-        try:
+        with stealth_browser() as page:
             page.goto(url)
             # ... do stuff
-        finally:
-            browser.close()
-            pw.stop()
+    
+    Args:
+        timeout: Default timeout in milliseconds for page operations
+    
+    Yields:
+        Page: A Playwright page configured with stealth settings
     """
     pw = sync_playwright().start()
-    browser = pw.chromium.launch(
+    try:
+        browser = pw.chromium.launch(
+            headless=True,
+            args=['--disable-blink-features=AutomationControlled']
+        )
+        context = browser.new_context(
+            user_agent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
+            viewport={'width': 1920, 'height': 1080},
+            locale='en-US',
+        )
+        context.add_init_script(STEALTH_SCRIPT)
+        context.set_default_timeout(timeout)
+        page = context.new_page()
+        
+        yield page
+        
+    finally:
+        if 'browser' in locals():
+            browser.close()
+        pw.stop()
+
+
+def create_stealth_context(playwright):
+    """Create a stealth browser context from an existing playwright instance.
+    
+    Usage:
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True, args=['--disable-blink-features=AutomationControlled'])
+            context = create_stealth_context(p)
+            page = context.new_page()
+    
+    Args:
+        playwright: A Playwright instance
+    
+    Returns:
+        BrowserContext: A context configured with stealth settings
+    """
+    browser = playwright.chromium.launch(
         headless=True,
         args=['--disable-blink-features=AutomationControlled']
     )
@@ -30,33 +75,5 @@ def create_stealth_browser():
         viewport={'width': 1920, 'height': 1080},
         locale='en-US',
     )
-    # Mask automation detection
-    context.add_init_script('''
-        Object.defineProperty(navigator, "webdriver", {
-            get: () => undefined
-        });
-    ''')
-    page = context.new_page()
-    
-    return pw, browser, context, page
-
-
-class StealthBrowser:
-    """Context manager for stealth browser sessions."""
-    
-    def __init__(self):
-        self.pw = None
-        self.browser = None
-        self.context = None
-        self.page = None
-    
-    def __enter__(self):
-        self.pw, self.browser, self.context, self.page = create_stealth_browser()
-        return self.page
-    
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        if self.browser:
-            self.browser.close()
-        if self.pw:
-            self.pw.stop()
-        return False
+    context.add_init_script(STEALTH_SCRIPT)
+    return browser, context
