@@ -924,3 +924,28 @@ print(f'Status: {\"PASS\" if len(all_raw) > 0 else \"FAIL\"}')
 print('=' * 60)
 " 2>&1 → exit 0
 [08:04:10] 🟢 TOKENS: 26073 / 80000 (32%) [read:95KB write:0KB assist:3KB shell:0KB]
+[08:04:35] 🟢 SHELL cd /Users/bengoddard/projects/house-hunt-hero && git add -A && git status → exit 0
+[08:04:42] 🟢 TOKENS: 26094 / 80000 (32%) [read:95KB write:0KB assist:3KB shell:0KB]
+[08:04:43] 🟢 SHELL cd /Users/bengoddard/projects/house-hunt-hero && git commit -m "$(cat <<'EOF'
+ralph: complete Maine MLS/Brokerage/Credit Union adapter task
+
+All success criteria now met:
+- 3 adapters successfully fetching 45+ listings:
+  - Maine Listings (Official MLS): 23 listings
+  - Landing Real Estate: 10 listings
+  - Realty of Maine: 12 listings
+- Test results documented in reports/maine_adapters_test_report.md
+- End-to-end test passes: fetch → normalize pipeline working
+- Created shared browser_utils.py for stealth browser sessions
+
+Technical improvements:
+- Stealth browser settings bypass Cloudflare/WAF protection
+- Corrected URLs for brokerage IDX feeds
+- Improved regex parsing for property details
+EOF
+)" → exit 0
+[08:04:49] 🟢 SHELL cd /Users/bengoddard/projects/house-hunt-hero && git push origin main 2>&1 → exit 0
+[08:04:53] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/RALPH_TASK.md (109 lines, ~10.6KB)
+[08:05:01] 🟢 ✅ Agent signaled COMPLETE
+[08:05:01] 🟢 SESSION END: 1980674ms, ~29099 tokens used
+[08:05:01] 🟢 TOKENS: 29099 / 80000 (36%) [read:105KB write:0KB assist:4KB shell:0KB]

@@ -1,72 +1,121 @@
 ---
-task: Implement Maine MLS services, brokerages, and credit unions for early-market property listings
+task: Complete remaining property source implementations, alerting, and testing
 test_command: "python scripts/run.py"
+hex_id: FC7E1E
 ---
 
-# Task: Implement Maine MLS Services, Brokerages, and Credit Unions
+# Task: Complete Remaining Property Source Implementations
 
-Implement adapters for Maine MLS services, Maine brokerages, and credit unions to find property listings before they appear on Zillow/Redfin. These sources may have early-market listings that give buyers a competitive advantage.
-
-## Requirements
-
-### 1. Maine MLS Services (2 platforms)
-- **Maine Listings** (mainelistings.com) - Official MLS
-- **Maine State MLS** (mainestatemls.com)
-
-### 2. Maine Brokerages (12 brokerages)
-- Listings Direct
-- Meservier & Associates
-- Locations Real Estate Group
-- Swan Agency
-- The Maine Agents
-- Sargent Real Estate
-- Allied Realty
-- Landing Real Estate
-- La Count Real Estate
-- Realty of Maine
-- Maine Real Estate Co.
-- Fontaine Family
-
-### 3. Credit Unions (3 sources)
-- Maine Highlands Federal Credit Union (mhfcu.com - has properties page)
-- Maine State Credit Union (loans, not listings - document if no listings)
-- Maine Credit Unions directory (check for property listings)
+This task encompasses the remaining work to expand property search coverage, implement alerting, and create comprehensive testing.
 
 ## Success Criteria
 
-1. [x] Both MLS platforms have adapters implemented
-2. [x] All 12 brokerages have adapters implemented (or grouped adapter if similar structure)
-3. [x] Credit unions with property listings have adapters implemented
-4. [x] All adapters have source configs created in `configs/sources/` with appropriate configuration
-5. [x] All adapters registered in `src/ingestion/registry.py`
-6. [x] Each adapter tested with actual Maine property searches and verified to retrieve listings successfully
-7. [x] Test results documented (listings found, data quality, selector/API accuracy)
-8. [x] End-to-end test: `python scripts/run.py` successfully fetches listings from all implemented sources
+### Medium Priority Sources
+
+1. [ ] [FC7E1E](TODO/FC7E1E.md) - Implement commercial real estate sites (5 platforms, focus on multi-family)
+   - All 5 commercial platforms have adapters implemented
+   - Source configs created with property_type_filters (multi-family focus)
+   - Registered in `src/ingestion/registry.py`
+   - Each adapter tested with actual Maine searches, focusing on multi-family properties
+   - Test results documented (listings found, data quality, selector accuracy, multi-family filtering)
+
+### Lower Priority Sources
+
+2. [ ] [9F80BF](TODO/9F80BF.md) - Implement national aggregators (Zillow, Realtor.com, Redfin, Trulia, Homes.com)
+   - All 5 national aggregators have adapters implemented
+   - Source configs created with rate_limits and anti-bot measures
+   - Registered in `src/ingestion/registry.py`
+   - Each adapter tested with actual Maine location searches and verified to retrieve listings successfully
+   - Test results documented (listings found, data quality, selector/API accuracy, rate limit compliance)
+
+3. [ ] [FC180C](TODO/FC180C.md) - Implement land-specific sites (5 platforms: LandSearch, KW Land, etc.)
+   - All 5 land platforms have adapters implemented
+   - Source configs created with filters (structures, houses, not raw land)
+   - Registered in `src/ingestion/registry.py`
+   - Each adapter tested with actual Maine searches, filtering for properties with structures
+   - Test results documented (listings found, data quality, selector accuracy, structure filtering)
+
+### Alerting
+
+4. [ ] [B7C8D9](TODO/B7C8D9.md) - Implement email alerting - Send real alerts via SMTP
+   - SMTP email sending works with config in `configs/alerts.example.yaml`
+   - Handles auth and TLS correctly
+   - Sends formatted alert payloads as email body
+   - Tested with real SMTP server
+
+5. [ ] [E1F2A3](TODO/E1F2A3.md) - Implement Pushover alerting - Mobile push notifications
+   - Pushover API integration works with config in `configs/alerts.example.yaml`
+   - Sends formatted alerts to mobile devices
+   - Handles API errors gracefully
+   - Tested with real Pushover account
+
+### Testing & Quality
+
+6. [ ] [E8F9A0](TODO/E8F9A0.md) - Test all 49 active platforms and generate readable report
+   - Test script created that tests all 49 platforms from registry
+   - Each platform search executes and collects results
+   - Report generated in plain language (no technical jargon) showing:
+     - Executive summary with counts
+     - Results organized by category
+     - Platform details (status, properties found, sample listings)
+     - Issues and recommendations
+   - Report saved to `reports/platform_test_report.md`
+
+### Final Verification
+
+7. [ ] End-to-end test: `python scripts/run.py` successfully fetches listings from all implemented sources
+8. [ ] All adapters registered in `src/ingestion/registry.py`
+9. [ ] All source configs created in `configs/sources/` with appropriate configuration
 
 ## Implementation Approach
 
-### For MLS Services:
-1. Research MLS API access (RETS, IDX, or public portals)
-2. Check GitHub for MLS/RETS scrapers
-3. Test public search portals if available
-4. Research RETS protocol if needed
-5. Create adapters for each MLS
-6. Create source configs with: api_endpoints, rets_config (if applicable), search_params, auth_method
+### For Commercial Real Estate (FC7E1E):
+- Research each platform: check for API, search functionality
+- Check GitHub for commercial real estate scrapers
+- Create adapters with multi-family property filtering
+- Create source configs with: search_urls, listing_selectors, property_type_filters (multi-family focus)
+- Test each adapter immediately after implementation with Maine searches focusing on multi-family properties
 
-### For Brokerages:
-1. Research each brokerage website for listing search functionality
-2. Check GitHub for real estate brokerage scrapers
-3. Group brokerages by similar website structure if applicable
-4. Create adapters (individual or grouped)
-5. Create source configs with: search_urls, listing_selectors, id_system
+### For National Aggregators (9F80BF):
+- Research each platform: check for API access, public search URLs
+- Check GitHub for existing scrapers (many exist for Zillow/Realtor.com/Redfin)
+- Research rate limits and anti-bot measures
+- Create adapters with rate limiting and stealth browser settings
+- Create source configs with: search_urls, listing_selectors, api_endpoints (if available), rate_limits
+- Test each adapter with Maine location searches, respecting rate limits
 
-### For Credit Unions:
-1. Research each credit union website for property listing pages
-2. Check Maine Highlands FCU properties page structure
-3. Create adapters for credit unions with public listings
-4. Create source configs with: properties_url, listing_selectors, form_submission (if required)
+### For Land Sites (FC180C):
+- Research each platform: check for API, search functionality
+- Check GitHub for land listing scrapers
+- Create adapters with structure filtering (exclude raw land)
+- Create source configs with: search_urls, listing_selectors, filters (structures, houses, not raw land)
+- Test each adapter with Maine searches, filtering for properties with structures
 
-### Testing Protocol:
+### For Email Alerting (B7C8D9):
+- Add SMTP config to `configs/alerts.example.yaml`
+- Implement `send_email()` with smtplib in `src/alerting/dispatch.py`
+- Format alert payload as email body
+- Handle auth and TLS correctly
+- Test with real SMTP server
+
+### For Pushover Alerting (E1F2A3):
+- Add Pushover config to `configs/alerts.example.yaml`
+- Implement `send_pushover()` with requests in `src/alerting/dispatch.py`
+- Format alert payload for Pushover API
+- Handle API errors gracefully
+- Test with real Pushover account
+
+### For Platform Testing (E8F9A0):
+- Create test script that imports all adapters from registry
+- For each adapter: run fetch(), collect listings, record timing
+- Validate listings have required fields (title, url, source)
+- Categorize results: Working/Empty/Problem/NeedsAttention
+- Generate markdown report with plain language (no tech jargon)
+- Follow PLATFORM_TEST_PLAN.md structure
+- Save report to `reports/platform_test_report.md`
+
+## Testing Protocol
+
 For each adapter, immediately after implementation:
 - Run `adapter.fetch()` with actual Maine property searches
 - Verify listings are retrieved (check count > 0 if listings exist)
@@ -85,18 +134,10 @@ For each adapter, immediately after implementation:
 - Use simplest working method (YAGNI principle)
 - For sources without public listings, document `contact_required: true` in config
 - Don't over-engineer per-brokerage if structures are similar (use base adapter with config-driven selectors)
-
-## Example Output
-
-```
-Running ingestion cycle...
-✓ Maine MLS services: 8 listings found
-✓ Maine brokerages: 24 listings found
-✓ Credit unions: 3 listings found
-Total: 35 new listings processed
-```
-
----
+- Respect rate limits for national aggregators
+- Use environment variables for credentials (SMTP, Pushover API keys)
+- Focus on multi-family properties for commercial sites (exclude pure commercial)
+- Filter out raw land without structures for land sites
 
 ## Ralph Instructions
 
