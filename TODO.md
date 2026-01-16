@@ -5,7 +5,6 @@
 ### High Priority Sources (Pre-Zillow Listings)
 
 ### Medium Priority Sources
-- [ ] [FC7E1E](TODO/FC7E1E.md) - Implement commercial real estate sites (5 platforms, focus on multi-family)
 
 ### Lower Priority Sources
 - [ ] [9F80BF](TODO/9F80BF.md) - Implement national aggregators (Zillow, Realtor.com, Redfin, Trulia, Homes.com)
@@ -19,6 +18,7 @@
 - [ ] [E8F9A0](TODO/E8F9A0.md) - Test all 49 active platforms and generate readable report
 
 ## In Progress
+- [ ] [FC7E1E](TODO/FC7E1E.md) - Implement commercial real estate sites (5 platforms, focus on multi-family)
 
 ## Completed
 - [x] [5BEC96](TODO/5BEC96.md) - Implement Maine MLS services (Maine Listings, Maine State MLS)
