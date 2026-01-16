@@ -77,7 +77,7 @@ This task encompasses the remaining work to expand property search coverage, imp
    - Flags selectors that find zero elements
    - Compares working vs non-working adapter selector strategies
 
-9. [ ] [39D5EA](TODO/39D5EA.md) - Create HTML test fixtures in tests/fixtures/html/
+9. [x] [39D5EA](TODO/39D5EA.md) - Create HTML test fixtures in tests/fixtures/html/
    - HTML fixtures created for all platform types
    - Each fixture contains 5-10 mock property listings
    - Properties use realistic Maine addresses

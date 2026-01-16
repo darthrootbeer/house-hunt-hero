@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Maine Listings - Property Search Results</title>
+</head>
+<body>
+    <div id="listings-container">
+        <!-- Standard listing with full details -->
+        <div class="property-card">
+            <a href="/listings/ME/Portland/04101/12345/123-main-street-portland-me-04101/MLS001">
+                <img src="/images/property1.jpg" alt="Property photo">
+                <div class="details">
+                    <div class="price">$425,000</div>
+                    <div class="address">123 Main Street, Portland, ME 04101</div>
+                    <div class="features">4 Beds | 2 Baths | 2,100 SqFt</div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Listing with missing beds/baths -->
+        <div class="property-card">
+            <a href="/listings/ME/Bangor/04401/23456/456-oak-avenue-bangor-me-04401/MLS002">
+                <div class="price">$295,000</div>
+                <div class="address">456 Oak Avenue, Bangor, ME 04401</div>
+                <div class="features">Colonial style home</div>
+            </a>
+        </div>
+
+        <!-- Listing with special characters -->
+        <div class="property-card">
+            <a href="/listings/ME/Brunswick/04011/34567/789-elm-street-brunswick-me-04011/MLS003">
+                <div class="price">$575,000</div>
+                <div class="address">789 Elm Street (Unit A), Brunswick, ME 04011</div>
+                <div class="features">3 Beds | 2.5 Baths | 1,850 SqFt</div>
+            </a>
+        </div>
+
+        <!-- Listing with very long title -->
+        <div class="property-card">
+            <a href="/listings/ME/Augusta/04330/45678/101-maple-drive-augusta-me-04330/MLS004">
+                <div class="price">$385,000</div>
+                <div class="address">101 Maple Drive - Beautiful Historic Victorian Home with Original Hardwood Floors and Modern Updates, Augusta, ME 04330</div>
+                <div class="features">5 Beds | 3 Baths | 3,200 SqFt</div>
+            </a>
+        </div>
+
+        <!-- Listing missing price -->
+        <div class="property-card">
+            <a href="/listings/ME/Lewiston/04240/56789/202-pine-road-lewiston-me-04240/MLS005">
+                <div class="address">202 Pine Road, Lewiston, ME 04240</div>
+                <div class="features">2 Beds | 1 Bath | 1,100 SqFt</div>
+            </a>
+        </div>
+
+        <!-- Land with structure -->
+        <div class="property-card">
+            <a href="/listings/ME/Yarmouth/04096/67890/303-birch-lane-yarmouth-me-04096/MLS006">
+                <div class="price">$650,000</div>
+                <div class="address">303 Birch Lane, Yarmouth, ME 04096</div>
+                <div class="features">Farmhouse on 5 acres | 4 Beds | 2 Baths</div>
+            </a>
+        </div>
+
+        <!-- Waterfront property -->
+        <div class="property-card">
+            <a href="/listings/ME/Camden/04843/78901/404-shore-drive-camden-me-04843/MLS007">
+                <div class="price">$1,250,000</div>
+                <div class="address">404 Shore Drive, Camden, ME 04843</div>
+                <div class="features">Waterfront | 6 Beds | 4 Baths | 4,500 SqFt</div>
+            </a>
+        </div>
+
+        <!-- Condo/Multi-family -->
+        <div class="property-card">
+            <a href="/listings/ME/Portland/04102/89012/505-congress-street-portland-me-04102/MLS008">
+                <div class="price">$350,000</div>
+                <div class="address">505 Congress Street #3B, Portland, ME 04102</div>
+                <div class="features">2 Beds | 2 Baths | 1,400 SqFt | Condo</div>
+            </a>
+        </div>
+
+        <!-- Non-listing link (should be filtered out) -->
+        <a href="/about-us">About Us</a>
+        <a href="/listings">View All Listings</a>
+        <a href="/contact">Contact</a>
+    </div>
+</body>
+</html>
