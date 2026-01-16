@@ -29,6 +29,15 @@ from .adapters import (
     OnPointRealtyAdapter,
     YorkCountyProbateAdapter,
     MunicipalTaxAssessorAdapter,
+    EstateSaleAdapter,
+    GoToAuctionAdapter,
+    HomesAuctionAdapter,
+    QuickFlipConstructionAdapter,
+    MotivateMaineAdapter,
+    ConnectedInvestorsAdapter,
+    DiscountedPropertySolutionsAdapter,
+    HouseCashinAdapter,
+    OfferMarketAdapter,
 )
 from .base import IngestionAdapter
 
@@ -61,4 +70,13 @@ def get_adapters() -> List[IngestionAdapter]:
         OnPointRealtyAdapter(),      # State Tax-Acquired Properties (MRS)
         YorkCountyProbateAdapter(),  # York County Probate Court estate notices
         # MunicipalTaxAssessorAdapter() - Disabled by default, configure per municipality
+        EstateSaleAdapter(),         # EstateSale.com real estate auctions
+        GoToAuctionAdapter(),        # GoToAuction.com real estate auctions
+        HomesAuctionAdapter(),       # Homes.com auction properties
+        QuickFlipConstructionAdapter(), # QuickFlip Construction
+        MotivateMaineAdapter(),     # Motivate Maine Wholesale Network
+        ConnectedInvestorsAdapter(), # Connected Investors
+        DiscountedPropertySolutionsAdapter(), # Discounted Property Solutions
+        HouseCashinAdapter(),       # HouseCashin
+        OfferMarketAdapter(),       # OfferMarket
     ]

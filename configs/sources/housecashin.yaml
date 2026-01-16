@@ -1,0 +1,24 @@
+source_id: "housecashin"
+label: "HouseCashin - Wholesale Real Estate Network"
+enabled: true
+method: "playwright"
+base_url: "https://www.housecashin.com"
+search_url: "https://www.housecashin.com"
+
+scraping:
+  listing_container_selector: ".property, .listing, .deal, .wholesale, [class*='property'], [class*='listing'], [class*='deal'], [class*='wholesale']"
+  listing_url_selector: "a[href*='/property'], a[href*='/listing'], a[href*='/deal']"
+  listing_title_selector: "h2, h3, h4, .title, [class*='title']"
+  listing_price_selector: ".price, [class*='price'], .wholesale-price, [class*='wholesale']"
+  listing_location_selector: ".location, [class*='location'], .address, [class*='address']"
+  wait_for_selector: "body"
+  wait_timeout_ms: 15000
+  headers:
+    User-Agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
+
+rate_limit_seconds: 30
+
+notes: |
+  - Wholesale real estate companies network
+  - May require buyer list signup for full access
+  - May require selector refinement based on actual page structure

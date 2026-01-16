@@ -42,12 +42,42 @@ class CraigslistNHAdapter(IngestionAdapter):
 
                         url = link.get_attribute("href") or ""
 
-                        # Title is in img alt attribute
+                        # Try multiple fallback strategies for title extraction
+                        title = None
+                        
+                        # Strategy 1: Try img alt attribute (primary method)
                         img = item.query_selector("img")
-                        title = img.get_attribute("alt") if img else "No title"
-                        # Remove trailing image number (e.g., " 1" at end)
-                        if title and title[-2:].strip().isdigit():
-                            title = title.rsplit(" ", 1)[0]
+                        if img:
+                            title = img.get_attribute("alt") or None
+                            if title:
+                                # Remove trailing image number (e.g., " 1" at end)
+                                if title and len(title) > 2 and title[-2:].strip().isdigit():
+                                    title = title.rsplit(" ", 1)[0]
+                        
+                        # Strategy 2: Fall back to link text if img alt fails
+                        if not title or title == "No title":
+                            link_text = link.inner_text().strip()
+                            if link_text:
+                                title = link_text
+                        
+                        # Strategy 3: Try finding title in listing text elements
+                        if not title or title == "No title":
+                            title_el = item.query_selector(".title, .postingtitle, [class*='title']")
+                            if title_el:
+                                title = title_el.inner_text().strip()
+                        
+                        # Strategy 4: Try any text content from the main item
+                        if not title or title == "No title":
+                            item_text = item.inner_text().strip()
+                            # Take first line as title if it's reasonable length
+                            if item_text:
+                                first_line = item_text.split("\n")[0].strip()
+                                if first_line and len(first_line) > 3:
+                                    title = first_line[:100]  # Limit length
+                        
+                        # Skip if we still don't have a valid title
+                        if not title or title == "No title" or len(title.strip()) < 3:
+                            continue
 
                         # Get price if available
                         price_el = item.query_selector(".price")

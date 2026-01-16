@@ -1,0 +1,32 @@
+source_id: "homes_auction"
+label: "Homes.com - Auction Properties"
+enabled: true
+method: "playwright"
+base_url: "https://www.homes.com"
+search_url: "https://www.homes.com/maine/auction/"
+
+scraping:
+  listing_container_selector: ".property-card, .listing-item, .property-item, [class*='property-card'], [class*='listing'], [class*='property'], .search-results-item, .auction-property"
+  listing_url_selector: "a[href*='/property'], a[href*='/auction'], a[href*='/listing']"
+  listing_title_selector: "h2, h3, h4, .address, .property-address, .title, [class*='title'], [class*='address']"
+  listing_price_selector: ".price, [class*='price'], .bid, .starting-bid, .auction-price, [class*='bid']"
+  listing_location_selector: ".location, [class*='location'], .address, [class*='address'], .city-state"
+  listing_date_selector: ".date, [class*='date'], .auction-date, [class*='auction-date'], .event-date"
+  listing_details_selector: ".property-details, [class*='details'], .beds-baths, [class*='specs']"
+  wait_for_selector: "body"
+  wait_timeout_ms: 15000
+  headers:
+    User-Agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
+
+filters:
+  location: "Maine"
+  property_types: ["house", "single-family", "condo", "land"]
+
+rate_limit_seconds: 30
+
+notes: |
+  - Auction section of Homes.com
+  - Properties listed for auction (foreclosures, reserve auctions, absolute auctions)
+  - Extracts auction dates, starting bids, property details
+  - May require selector refinement based on actual page structure
+  - Auction listings may have limited showings or access restrictions

@@ -1,0 +1,32 @@
+source_id: "gotoauction"
+label: "GoToAuction.com - Real Estate Auctions"
+enabled: true
+method: "playwright"
+base_url: "https://www.gotoauction.com"
+search_url: "https://www.gotoauction.com/states/view/19/Maine-auctions.html"
+
+scraping:
+  listing_container_selector: ".auction, .sale, .listing, [class*='auction'], [class*='sale'], .property-item, .auction-item, [class*='property'], [class*='listing']"
+  listing_url_selector: "a[href*='/sales/view'], a[href*='/auction'], a[href*='/view/']"
+  listing_title_selector: "h2, h3, h4, .title, [class*='title'], .auction-title"
+  listing_price_selector: ".price, [class*='price'], .bid, .starting-bid"
+  listing_location_selector: ".location, [class*='location'], .address, [class*='address'], .city"
+  listing_date_selector: ".date, [class*='date'], .auction-date, .sale-date, [class*='auction-date']"
+  listing_description_selector: ".description, [class*='description'], .details"
+  wait_for_selector: "body"
+  wait_timeout_ms: 15000
+  headers:
+    User-Agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
+
+filters:
+  location: "Maine"
+  keywords: ["real estate", "property", "house", "home", "land", "foreclosure", "auction", "residential", "commercial", "bedroom", "acre"]
+
+rate_limit_seconds: 30
+
+notes: |
+  - Real estate foreclosure and auction listings
+  - Filters for property-related auctions (excludes personal items)
+  - Extracts auction dates and starting bids
+  - Also supports city-specific searches (Portland, Lewiston, etc.)
+  - May require selector refinement based on actual page structure
