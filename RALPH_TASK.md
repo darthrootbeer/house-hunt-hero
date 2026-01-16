@@ -97,7 +97,7 @@ This task encompasses the remaining work to expand property search coverage, imp
     - Tests CSS selectors interactively (shows matched elements)
     - Exports findings for adapter update
 
-12. [ ] [6EDE07](TODO/6EDE07.md) - Create scripts/run_diagnostics.py for batch diagnostic report generation
+12. [x] [6EDE07](TODO/6EDE07.md) - Create scripts/run_diagnostics.py for batch diagnostic report generation
     - Script accepts platform list or "all-empty" flag
     - Runs enhanced diagnostics on specified platforms
     - Generates diagnostic reports in reports/diagnostics/{adapter_id}/
