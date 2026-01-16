@@ -1,0 +1,27 @@
+source_id: "maine_listings"
+label: "Maine Listings"
+enabled: true
+method: "playwright"
+base_url: "https://mainelistings.com"
+search_url: "https://mainelistings.com/listings?mls_status=Active,Active+Under+Contract,Coming+Soon+/+No+Show&on_market_date_since=7&sort_by=on_market_date&sort_order=desc"
+
+scraping:
+  listing_container_selector: ".listing-card, .property-card, .result-item, [class*='listing-card'], [class*='property-card'], .listing-item, .property-item, article.listing, article.property"
+  listing_url_selector: "a[href*='/listing'], a[href*='/property'], a[href*='/detail']"
+  listing_title_selector: "h2, h3, h4, .title, [class*='title'], .address, [class*='address'], .property-address"
+  listing_price_selector: ".price, [class*='price'], .property-price"
+  listing_location_selector: ".location, [class*='location'], .address, [class*='address'], .property-location"
+  listing_mls_selector: ".mls-number, [class*='mls'], [data-mls]"
+  wait_for_selector: "body"
+  wait_timeout_ms: 20000
+  headers:
+    User-Agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+
+rate_limit_seconds: 30
+
+notes: |
+  - Official statewide Multiple Listing Service (MLS) for Maine
+  - Public search portal available
+  - URL parameters: mls_status, on_market_date_since, sort_by, sort_order
+  - May require selector refinement based on actual page structure
+  - Uses query parameters for filtering (Active, Active Under Contract, Coming Soon)

@@ -50,3 +50,50 @@ EOF
 Ralph Session Started: Fri Jan 16 07:23:44 EST 2026
 ═══════════════════════════════════════════════════════════════
 [07:25:02] 🟢 TOKENS: 750 / 80000 (0%) [read:0KB write:0KB assist:0KB shell:0KB]
+[07:25:04] 🟢 SESSION START: model=Composer 1
+[07:25:07] 🟢 READ .ralph/guardrails.md (28 lines, ~2.7KB)
+[07:25:07] 🟢 READ .ralph/progress.md (43 lines, ~4.1KB)
+[07:25:07] 🟢 READ RALPH_TASK.md (109 lines, ~10.6KB)
+[07:25:07] 🟢 READ .ralph/errors.log (5 lines, ~.4KB)
+[07:25:08] 🟢 READ src/ingestion/base.py (22 lines, ~2.1KB)
+[07:25:08] 🟢 READ src/ingestion/registry.py (83 lines, ~8.1KB)
+[07:25:08] 🟢 READ src/ingestion/adapters/ownerama.py (92 lines, ~8.9KB)
+[07:25:09] 🟢 READ configs/sources/ownerama.yaml (25 lines, ~2.4KB)
+[07:25:09] 🟢 READ configs/sources/.template.yaml (106 lines, ~10.3KB)
+[07:25:13] 🟢 READ Maine_Property_Sources_2026.md (234 lines, ~22.8KB)
+[07:25:26] 🟢 SHELL agent-browser open https://www.mainelistings.com --headed → exit 0
+[07:25:27] 🟢 SHELL agent-browser snapshot -i --json → exit 0
+[07:25:29] 🟢 SHELL agent-browser click @e9 → exit 0
+[07:25:40] 🟢 SHELL agent-browser wait --load networkidle && agent-browser snapshot -i --json | head -100 → exit 0
+[07:25:40] 🟢 TOKENS: 19558 / 80000 (24%) [read:72KB write:0KB assist:0KB shell:0KB]
+[07:25:43] 🟢 SHELL agent-browser wait 3000 && agent-browser get url → exit 0
+[07:25:44] 🟢 SHELL agent-browser snapshot -i --json | python3 -m json.tool | head -150 → exit 0
+[07:25:46] 🟢 SHELL agent-browser screenshot maine_listings.png → exit 0
+[07:25:47] 🟢 SHELL agent-browser close && agent-browser open "https://mainelistings.com/listings?mls_status=Active&on_market_date_since=7&sort_by=on_market_date&sort_order=desc" --headed → exit 0
+[07:25:49] 🟢 READ src/ingestion/adapters/on_point_realty.py (102 lines, ~9.9KB)
+[07:25:50] 🟢 SHELL cd /Users/bengoddard/projects/house-hunt-hero && python3 -c "
+from playwright.sync_api import sync_playwright
+import json
+
+with sync_playwright() as p:
+    browser = p.chromium.launch(headless=True)
+    page = browser.new_page()
+    page.goto('https://mainelistings.com/listings?mls_status=Active&on_market_date_since=7&sort_by=on_market_date&sort_order=desc', timeout=30000)
+    page.wait_for_load_state('networkidle', timeout=15000)
+    
+    # Try to find listing elements
+    listings = page.query_selector_all('a[href*=\"/listing\"], a[href*=\"/property\"], .listing, .property-card, [class*=\"listing\"]')
+    print(f'Found {len(listings)} potential listing elements')
+    
+    if listings:
+        # Get first listing details
+        first = listings[0]
+        print(f'First listing tag: {first.tag_name}')
+        print(f'First listing href: {first.get_attribute(\"href\")}')
+        print(f'First listing text: {first.inner_text()[:200]}')
+    
+    browser.close()
+" → exit 0
+[07:25:56] 🟢 SHELL cd /Users/bengoddard/projects/house-hunt-hero && curl -s -L "https://mainestatemls.com" | head -100 | grep -i "search\|listing\|property" | head -20 → exit 0
+[07:26:08] 🟢 READ src/ingestion/adapters/__init__.py (35 lines, ~3.4KB)
+[07:26:10] 🟢 TOKENS: 23150 / 80000 (28%) [read:86KB write:0KB assist:1KB shell:0KB]

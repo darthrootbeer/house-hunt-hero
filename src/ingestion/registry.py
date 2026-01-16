@@ -38,6 +38,8 @@ from .adapters import (
     DiscountedPropertySolutionsAdapter,
     HouseCashinAdapter,
     OfferMarketAdapter,
+    MaineListingsAdapter,
+    MaineStateMLSAdapter,
 )
 from .base import IngestionAdapter
 
@@ -79,4 +81,6 @@ def get_adapters() -> List[IngestionAdapter]:
         DiscountedPropertySolutionsAdapter(), # Discounted Property Solutions
         HouseCashinAdapter(),       # HouseCashin
         OfferMarketAdapter(),       # OfferMarket
+        MaineListingsAdapter(),     # Maine Listings (Official MLS)
+        MaineStateMLSAdapter(),     # Maine State MLS
     ]

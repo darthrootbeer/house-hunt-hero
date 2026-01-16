@@ -33,3 +33,5 @@ from .municipal_tax_assessor import MunicipalTaxAssessorAdapter
 from .estatesale import EstateSaleAdapter
 from .gotoauction import GoToAuctionAdapter
 from .homes_auction import HomesAuctionAdapter
+from .maine_listings import MaineListingsAdapter
+from .maine_state_mls import MaineStateMLSAdapter
