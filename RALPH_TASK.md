@@ -51,7 +51,7 @@ This task encompasses the remaining work to expand property search coverage, imp
 
 ### Testing & Quality
 
-6. [ ] [E8F9A0](TODO/E8F9A0.md) - Test all 49 active platforms and generate readable report
+6. [x] [E8F9A0](TODO/E8F9A0.md) - Test all 49 active platforms and generate readable report
    - Test script created that tests all 49 platforms from registry
    - Each platform search executes and collects results
    - Report generated in plain language (no technical jargon) showing:
@@ -63,9 +63,9 @@ This task encompasses the remaining work to expand property search coverage, imp
 
 ### Final Verification
 
-7. [ ] End-to-end test: `python scripts/run.py` successfully fetches listings from all implemented sources
-8. [ ] All adapters registered in `src/ingestion/registry.py`
-9. [ ] All source configs created in `configs/sources/` with appropriate configuration
+7. [x] End-to-end test: `python scripts/run.py` successfully fetches listings from all implemented sources
+8. [x] All adapters registered in `src/ingestion/registry.py`
+9. [x] All source configs created in `configs/sources/` with appropriate configuration
 
 ## Implementation Approach
 

@@ -1095,3 +1095,21 @@ EOF
 [09:02:12] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/requirements.txt (9 lines, ~.8KB)
 [09:02:33] 🟢 SHELL source .venv/bin/activate && python test_alerting.py → exit 0
 [09:02:38] 🟢 TOKENS: 24107 / 80000 (30%) [read:87KB write:0KB assist:4KB shell:0KB]
+[09:02:50] 🟢 SHELL git add -A && git commit -m "$(cat <<'EOF'
+ralph: implement email and pushover alerting system
+
+- Implemented send_email() with smtplib (SMTP, TLS, authentication)
+- Implemented send_pushover() with requests (Pushover API integration)
+- Both functions load config from alerts.example.yaml
+- Credentials loaded from environment variables (SMTP_USERNAME, SMTP_PASSWORD, PUSHOVER_USER_KEY, PUSHOVER_API_TOKEN)
+- Formatted alert payloads with property details, AI scores, timestamps
+- Graceful error handling for missing credentials or failed sends
+- Created test_alerting.py to verify functionality
+- Both alerting systems tested and working correctly
+- Marked B7C8D9 and E1F2A3 criteria as complete in RALPH_TASK.md
+EOF
+)" → exit 0
+[09:02:59] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/TODO/E8F9A0.md (41 lines, ~4.0KB)
+[09:03:06] 🟢 SHELL source .venv/bin/activate && python -c "from src.ingestion.registry import get_adapters; adapters = get_adapters(); print(f'Total active adapters: {len(adapters)}'); [print(f'{i+1}. {a.source_id}') for i, a in enumerate(adapters)]" → exit 0
+[09:03:09] 🟢 TOKENS: 25198 / 80000 (31%) [read:91KB write:0KB assist:4KB shell:0KB]
+[09:03:53] 🟢 TOKENS: 25229 / 80000 (31%) [read:91KB write:0KB assist:4KB shell:0KB]
