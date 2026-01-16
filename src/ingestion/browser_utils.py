@@ -77,3 +77,15 @@ def create_stealth_context(playwright):
     )
     context.add_init_script(STEALTH_SCRIPT)
     return browser, context
+
+
+def create_stealth_browser(playwright):
+    """Alias for create_stealth_context for consistency.
+    
+    Args:
+        playwright: A Playwright instance
+    
+    Returns:
+        Tuple[Browser, BrowserContext]: Browser and context with stealth settings
+    """
+    return create_stealth_context(playwright)

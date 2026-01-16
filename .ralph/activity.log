@@ -954,3 +954,82 @@ EOF
 Ralph Session Started: Fri Jan 16 08:11:02 EST 2026
 ═══════════════════════════════════════════════════════════════
 [08:46:57] 🟢 TOKENS: 750 / 80000 (0%) [read:0KB write:0KB assist:0KB shell:0KB]
+[08:46:59] 🟢 SESSION START: model=Claude 4.5 Sonnet (Thinking)
+[08:47:06] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/.ralph/guardrails.md (28 lines, ~2.7KB)
+[08:47:06] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/.ralph/progress.md (91 lines, ~8.8KB)
+[08:47:07] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/.ralph/errors.log (5 lines, ~.4KB)
+[08:47:16] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/RALPH_TASK.md (150 lines, ~14.6KB)
+[08:47:16] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/TODO.md (40 lines, ~3.9KB)
+[08:47:17] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/.ralph/.iteration (2 lines, ~.1KB)
+[08:47:27] 🟢 TOKENS: 8756 / 80000 (10%) [read:30KB write:0KB assist:0KB shell:0KB]
+[08:47:28] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/TODO/FC7E1E.md (45 lines, ~4.3KB)
+[08:47:35] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/src/ingestion/base.py (22 lines, ~2.1KB)
+[08:47:35] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/src/ingestion/adapters/maine_listings.py (114 lines, ~11.1KB)
+[08:47:35] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/configs/sources/maine_listings.yaml (28 lines, ~2.7KB)
+[08:47:47] 🟢 SHELL agent-browser open https://www.boulos.com → exit 0
+[08:47:52] 🟢 SHELL agent-browser snapshot -i → exit 0
+[08:47:57] 🟢 TOKENS: 14085 / 80000 (17%) [read:51KB write:0KB assist:0KB shell:0KB]
+[08:47:59] 🟢 SHELL agent-browser click @e45 → exit 0
+[08:48:03] 🟢 SHELL agent-browser wait --load networkidle → exit 0
+[08:48:07] 🟢 SHELL agent-browser get url → exit 0
+[08:48:09] 🟢 SHELL agent-browser snapshot -i → exit 0
+[08:48:13] 🟢 SHELL agent-browser snapshot → exit 0
+[08:48:19] 🟢 SHELL agent-browser screenshot boulos_listings.png → exit 0
+[08:48:23] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/boulos_listings.png (0 lines, ~0KB)
+[08:48:27] 🟢 TOKENS: 14085 / 80000 (17%) [read:51KB write:0KB assist:0KB shell:0KB]
+[08:48:34] 🟢 SHELL agent-browser scroll down 500 → exit 0
+[08:48:39] 🟢 SHELL agent-browser snapshot -i --json → exit 0
+[08:48:46] 🟢 SHELL agent-browser click @e18 → exit 0
+[08:48:50] 🟢 SHELL agent-browser wait --load networkidle → exit 0
+[08:48:51] 🟢 SHELL agent-browser get url → exit 0
+[08:48:52] 🟢 SHELL agent-browser screenshot boulos_investment.png → exit 0
+[08:48:57] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/boulos_investment.png (0 lines, ~0KB)
+[08:48:57] 🟢 TOKENS: 14126 / 80000 (17%) [read:51KB write:0KB assist:0KB shell:0KB]
+[08:49:10] 🟢 SHELL agent-browser close → exit 0
+[08:49:24] 🟢 SHELL agent-browser open https://www.necpe.com → exit 0
+[08:49:27] 🟢 TOKENS: 14228 / 80000 (17%) [read:51KB write:0KB assist:1KB shell:0KB]
+[08:49:29] 🟢 SHELL agent-browser screenshot necpe_home.png → exit 0
+[08:49:30] 🟢 SHELL agent-browser snapshot -i → exit 0
+[08:49:35] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/necpe_home.png (0 lines, ~0KB)
+[08:49:43] 🟢 SHELL agent-browser fill @e7 "Maine" → exit 0
+[08:49:43] 🟢 SHELL agent-browser click @e8 → exit 0
+[08:49:48] 🟢 SHELL agent-browser wait --load networkidle → exit 0
+[08:49:49] 🟢 SHELL agent-browser get url → exit 0
+[08:49:50] 🟢 SHELL agent-browser screenshot necpe_results.png → exit 0
+[08:49:57] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/necpe_results.png (0 lines, ~0KB)
+[08:49:57] 🟢 TOKENS: 14228 / 80000 (17%) [read:51KB write:0KB assist:1KB shell:0KB]
+[08:50:09] 🟢 SHELL agent-browser close → exit 0
+[08:50:22] 🟢 SHELL agent-browser open https://malonecommercial.com → exit 0
+[08:50:27] 🟢 SHELL agent-browser screenshot malone_home.png → exit 0
+[08:50:27] 🟢 TOKENS: 14275 / 80000 (17%) [read:51KB write:0KB assist:1KB shell:0KB]
+[08:50:27] 🟢 SHELL agent-browser snapshot -i → exit 0
+[08:50:33] 🟢 SHELL agent-browser click @e3 → exit 0
+[08:50:33] 🟢 SHELL agent-browser get url → exit 0
+[08:50:34] 🟢 SHELL agent-browser screenshot malone_listings.png → exit 0
+[08:50:36] 🟢 SHELL agent-browser wait --load networkidle → exit 0
+[08:50:43] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/malone_listings.png (0 lines, ~0KB)
+[08:50:51] 🟢 SHELL agent-browser find text "HERE" click → exit 0
+[08:50:53] 🟢 SHELL agent-browser screenshot malone_all_listings.png → exit 0
+[08:50:55] 🟢 SHELL agent-browser wait 3000 → exit 0
+[08:50:58] 🟢 TOKENS: 14275 / 80000 (17%) [read:51KB write:0KB assist:1KB shell:0KB]
+[08:51:00] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/malone_all_listings.png (0 lines, ~0KB)
+[08:51:05] 🟢 SHELL agent-browser scroll down 800 → exit 0
+[08:51:07] 🟢 SHELL agent-browser screenshot malone_scrolled.png → exit 0
+[08:51:12] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/malone_scrolled.png (0 lines, ~0KB)
+[08:51:28] 🟢 TOKENS: 14327 / 80000 (17%) [read:51KB write:0KB assist:1KB shell:0KB]
+[08:51:28] 🟢 SHELL agent-browser open https://www.fivestarrealtymaine.com → exit 0
+[08:51:28] 🟢 SHELL agent-browser close → exit 0
+[08:51:41] 🟢 SHELL agent-browser open https://www.land.com → exit 0
+[08:51:51] 🟢 SHELL agent-browser screenshot land_access_denied.png → exit 0
+[08:52:03] 🟢 TOKENS: 14354 / 80000 (17%) [read:51KB write:0KB assist:1KB shell:0KB]
+[08:52:03] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/land_access_denied.png (0 lines, ~0KB)
+[08:52:04] 🟢 SHELL agent-browser close → exit 0
+[08:52:35] 🟢 TOKENS: 14415 / 80000 (18%) [read:51KB write:0KB assist:2KB shell:0KB]
+[08:53:11] 🟢 TOKENS: 14415 / 80000 (18%) [read:51KB write:0KB assist:2KB shell:0KB]
+[08:53:18] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/src/ingestion/browser_utils.py (80 lines, ~7.8KB)
+[08:53:47] 🟢 TOKENS: 16489 / 80000 (20%) [read:59KB write:0KB assist:2KB shell:0KB]
+[08:54:29] 🟢 TOKENS: 16542 / 80000 (20%) [read:59KB write:0KB assist:2KB shell:0KB]
+[08:54:59] 🟢 TOKENS: 16542 / 80000 (20%) [read:59KB write:0KB assist:2KB shell:0KB]
+[08:55:02] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/src/ingestion/registry.py (117 lines, ~11.4KB)
+[08:55:22] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/src/ingestion/adapters/__init__.py (52 lines, ~5.0KB)
+[08:55:29] 🟢 TOKENS: 20791 / 80000 (25%) [read:75KB write:0KB assist:2KB shell:0KB]

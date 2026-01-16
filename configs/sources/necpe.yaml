@@ -1,0 +1,33 @@
+source_id: "necpe"
+label: "NECPE - New England Commercial Property Exchange"
+enabled: true
+method: "playwright"
+base_url: "https://www.newenglandcommercialproperty.com"
+search_url: "https://www.newenglandcommercialproperty.com/properties/?keywords=Maine"
+
+scraping:
+  listing_container_selector: ".property-card, .listing-card, [class*='property'], [class*='listing'], [class*='result']"
+  listing_url_selector: "a[href*='/property/']"
+  listing_title_selector: "h2, h3, h4, .title, [class*='title'], .address, [class*='address']"
+  listing_price_selector: ".price, [class*='price']"
+  listing_sqft_selector: ".sqft, [class*='sqft'], [class*='sf']"
+  listing_units_selector: ".units, [class*='units']"
+  wait_for_selector: "body"
+  wait_timeout_ms: 10000
+  headers:
+    User-Agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36"
+
+property_type_filters:
+  - "multi-family"
+  - "multifamily"
+  - "apartment"
+  - "investment"
+  
+rate_limit_seconds: 45
+
+notes: |
+  - Broker-sourced database covering New England (ME, NH, VT, MA)
+  - Public search portal with commercial for-sale and lease properties
+  - Includes multi-family investment properties
+  - Search filtered for Maine properties
+  - Powered by Moody's CRE platform

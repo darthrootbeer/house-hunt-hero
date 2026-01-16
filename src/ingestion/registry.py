@@ -55,6 +55,11 @@ from .adapters import (
     MaineHighlandsFCUAdapter,
     MaineStateCreditUnionAdapter,
     MaineCreditUnionsDirectoryAdapter,
+    BoulosCompanyAdapter,
+    NECPEAdapter,
+    MaloneCommercialAdapter,
+    LoopNetAdapter,
+    NAIDunhamAdapter,
 )
 from .base import IngestionAdapter
 
@@ -113,4 +118,9 @@ def get_adapters() -> List[IngestionAdapter]:
         MaineHighlandsFCUAdapter(), # Maine Highlands Federal Credit Union
         # MaineStateCreditUnionAdapter() - Disabled: loans only, no listings
         # MaineCreditUnionsDirectoryAdapter() - Disabled: directory only, no listings
+        BoulosCompanyAdapter(),     # The Boulos Company - Investment/Multi-Family
+        NECPEAdapter(),             # NECPE - New England Commercial Property Exchange
+        MaloneCommercialAdapter(),  # Malone Commercial Brokers
+        LoopNetAdapter(),           # LoopNet - Multi-Family (Maine)
+        NAIDunhamAdapter(),         # NAI The Dunham Group
     ]

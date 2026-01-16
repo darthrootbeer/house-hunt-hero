@@ -50,3 +50,8 @@ from .fontaine_family import FontaineFamilyAdapter
 from .maine_highlands_fcu import MaineHighlandsFCUAdapter
 from .maine_state_credit_union import MaineStateCreditUnionAdapter
 from .maine_credit_unions_directory import MaineCreditUnionsDirectoryAdapter
+from .boulos_company import BoulosCompanyAdapter
+from .necpe import NECPEAdapter
+from .malone_commercial import MaloneCommercialAdapter
+from .loopnet import LoopNetAdapter
+from .nai_dunham import NAIDunhamAdapter
