@@ -1,0 +1,23 @@
+source_id: "the_maine_agents"
+label: "The Maine Agents"
+enabled: true
+method: "playwright"
+base_url: "https://themaineagents.com"
+search_url: "https://themaineagents.com/listings/"
+
+scraping:
+  listing_container_selector: ".property-card, .listing-card, .result-item, [class*='property-card'], [class*='listing-card']"
+  listing_url_selector: "a[href*='/property'], a[href*='/listing'], a[href*='/detail']"
+  listing_title_selector: "h2, h3, h4, .title, [class*='title'], .address"
+  listing_price_selector: ".price, [class*='price']"
+  listing_location_selector: ".location, [class*='location'], .address"
+  wait_for_selector: "body"
+  wait_timeout_ms: 20000
+  headers:
+    User-Agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+
+rate_limit_seconds: 30
+
+notes: |
+  - Comprehensive buyer/seller services
+  - May require selector refinement based on actual page structure

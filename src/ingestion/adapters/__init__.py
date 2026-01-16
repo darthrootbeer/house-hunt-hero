@@ -35,3 +35,15 @@ from .gotoauction import GoToAuctionAdapter
 from .homes_auction import HomesAuctionAdapter
 from .maine_listings import MaineListingsAdapter
 from .maine_state_mls import MaineStateMLSAdapter
+from .listings_direct import ListingsDirectAdapter
+from .meservier_associates import MeservierAssociatesAdapter
+from .locations_real_estate_group import LocationsRealEstateGroupAdapter
+from .swan_agency import SwanAgencyAdapter
+from .the_maine_agents import TheMaineAgentsAdapter
+from .sargent_real_estate import SargentRealEstateAdapter
+from .allied_realty import AlliedRealtyAdapter
+from .landing_real_estate import LandingRealEstateAdapter
+from .la_count_real_estate import LaCountRealEstateAdapter
+from .realty_of_maine import RealtyOfMaineAdapter
+from .maine_real_estate_co import MaineRealEstateCoAdapter
+from .fontaine_family import FontaineFamilyAdapter

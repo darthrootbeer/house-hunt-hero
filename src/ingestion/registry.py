@@ -40,6 +40,18 @@ from .adapters import (
     OfferMarketAdapter,
     MaineListingsAdapter,
     MaineStateMLSAdapter,
+    ListingsDirectAdapter,
+    MeservierAssociatesAdapter,
+    LocationsRealEstateGroupAdapter,
+    SwanAgencyAdapter,
+    TheMaineAgentsAdapter,
+    SargentRealEstateAdapter,
+    AlliedRealtyAdapter,
+    LandingRealEstateAdapter,
+    LaCountRealEstateAdapter,
+    RealtyOfMaineAdapter,
+    MaineRealEstateCoAdapter,
+    FontaineFamilyAdapter,
 )
 from .base import IngestionAdapter
 
@@ -83,4 +95,16 @@ def get_adapters() -> List[IngestionAdapter]:
         OfferMarketAdapter(),       # OfferMarket
         MaineListingsAdapter(),     # Maine Listings (Official MLS)
         MaineStateMLSAdapter(),     # Maine State MLS
+        ListingsDirectAdapter(),    # Listings Direct
+        MeservierAssociatesAdapter(), # Meservier & Associates
+        LocationsRealEstateGroupAdapter(), # Locations Real Estate Group
+        SwanAgencyAdapter(),        # Swan Agency Real Estate
+        TheMaineAgentsAdapter(),    # The Maine Agents
+        SargentRealEstateAdapter(), # Sargent Real Estate
+        AlliedRealtyAdapter(),      # Allied Realty
+        LandingRealEstateAdapter(), # Landing Real Estate
+        LaCountRealEstateAdapter(), # La Count Real Estate
+        RealtyOfMaineAdapter(),     # Realty of Maine
+        MaineRealEstateCoAdapter(),  # Maine Real Estate Co. (Facebook-based, may need special handling)
+        FontaineFamilyAdapter(),    # Fontaine Family - REO Division
     ]

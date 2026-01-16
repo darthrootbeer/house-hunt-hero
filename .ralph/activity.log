@@ -97,3 +97,48 @@ with sync_playwright() as p:
 [07:25:56] 🟢 SHELL cd /Users/bengoddard/projects/house-hunt-hero && curl -s -L "https://mainestatemls.com" | head -100 | grep -i "search\|listing\|property" | head -20 → exit 0
 [07:26:08] 🟢 READ src/ingestion/adapters/__init__.py (35 lines, ~3.4KB)
 [07:26:10] 🟢 TOKENS: 23150 / 80000 (28%) [read:86KB write:0KB assist:1KB shell:0KB]
+[07:26:14] 🟢 SHELL cd /Users/bengoddard/projects/house-hunt-hero && git add -A && git commit -m "ralph: implement Maine Listings and Maine State MLS adapters with configs and registry" → exit 0
+[07:26:15] 🟢 READ tests/test_fsbo_adapters_simple.py (122 lines, ~11.9KB)
+[07:26:16] 🟢 SHELL cd /Users/bengoddard/projects/house-hunt-hero && python3 -c "
+from src.ingestion.adapters.maine_listings import MaineListingsAdapter
+from src.ingestion.adapters.maine_state_mls import MaineStateMLSAdapter
+
+print('Testing MLS Adapters')
+print('=' * 60)
+
+# Test Maine Listings
+print('\n1. Testing Maine Listings Adapter:')
+adapter1 = MaineListingsAdapter()
+print(f'   source_id: {adapter1.source_id}')
+print(f'   SEARCH_URL: {adapter1.SEARCH_URL}')
+
+# Test Maine State MLS
+print('\n2. Testing Maine State MLS Adapter:')
+adapter2 = MaineStateMLSAdapter()
+print(f'   source_id: {adapter2.source_id}')
+print(f'   BASE_URL: {adapter2.BASE_URL}')
+
+print('\n✓ Both adapters imported and structured correctly')
+" → exit 0
+[07:26:17] 🟢 READ requirements.txt (9 lines, ~.8KB)
+[07:26:17] 🟢 SHELL cd /Users/bengoddard/projects/house-hunt-hero && python3 -m pip list | grep -i playwright → exit 0
+[07:26:21] 🟢 SHELL cd /Users/bengoddard/projects/house-hunt-hero && python3 -c "
+import sys
+sys.path.insert(0, '.')
+# Test registry import
+try:
+    from src.ingestion.registry import get_adapters
+    adapters = get_adapters()
+    mls_adapters = [a for a in adapters if 'maine' in a.source_id.lower() and 'mls' in a.source_id.lower()]
+    print(f'Found {len(mls_adapters)} MLS adapters in registry:')
+    for a in mls_adapters:
+        print(f'  - {a.source_id}')
+    print('✓ Registry updated correctly')
+except Exception as e:
+    print(f'Error: {e}')
+    import traceback
+    traceback.print_exc()
+" → exit 0
+[07:26:22] 🟢 READ RALPH_TASK.md (109 lines, ~10.6KB)
+[07:26:26] 🟢 SHELL cd /Users/bengoddard/projects/house-hunt-hero && for url in "https://listingsdirectme.com" "https://meservier.com" "https://locationsinmaine.com" "https://swanagency.com"; do echo "=== $url ==="; curl -s -L "$url" | grep -i "search\|listing\|property" | head -3; echo; done → exit 0
+[07:26:41] 🟢 TOKENS: 29372 / 80000 (36%) [read:109KB write:0KB assist:2KB shell:0KB]

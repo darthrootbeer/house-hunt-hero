@@ -1,0 +1,17 @@
+source_id: "maine_real_estate_co"
+label: "Maine Real Estate Co."
+enabled: false
+method: "contact_required"
+base_url: "https://facebook.com"
+search_url: "https://facebook.com/groups"
+
+contact_required:
+  notes: "Primarily active on Facebook and local groups. May need integration with Facebook Groups adapter or manual contact."
+
+rate_limit_seconds: 0
+
+notes: |
+  - Primarily active on Facebook and local groups
+  - No public website with listings
+  - May need integration with Facebook Groups adapter
+  - Consider marking as contact_required or integrating with existing Facebook Groups adapter
