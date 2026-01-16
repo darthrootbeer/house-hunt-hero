@@ -61,11 +61,105 @@ This task encompasses the remaining work to expand property search coverage, imp
      - Issues and recommendations
    - Report saved to `reports/platform_test_report.md`
 
+#### Enhanced Test Diagnostics & Tools
+
+7. [ ] [B81B06](TODO/B81B06.md) - Add diagnostic capture to test_all_platforms.py
+   - Test script captures screenshots for zero-property platforms
+   - Saves HTML snapshots to reports/diagnostics/{adapter_id}/page.html
+   - Logs network requests and console errors
+   - Records timing metrics (page load, selector wait times)
+   - Adds --diagnose flag to enable detailed diagnostics
+
+8. [ ] [45DD1A](TODO/45DD1A.md) - Create test_selector_validation.py to test CSS selectors on live pages
+   - Test file navigates to platform URLs
+   - Tests each selector in adapters against live pages
+   - Reports: count of elements found, sample element HTML
+   - Flags selectors that find zero elements
+   - Compares working vs non-working adapter selector strategies
+
+9. [ ] [39D5EA](TODO/39D5EA.md) - Create HTML test fixtures in tests/fixtures/html/
+   - HTML fixtures created for all platform types
+   - Each fixture contains 5-10 mock property listings
+   - Properties use realistic Maine addresses
+   - Includes edge cases: missing fields, special characters, long titles
+
+10. [ ] [13A1CD](TODO/13A1CD.md) - Create test_adapters_with_mock_data.py for unit testing with HTML fixtures
+    - Test file loads HTML fixtures for each adapter
+    - Creates mock Playwright page object with fixture HTML
+    - Runs adapter's fetch() method with mock page
+    - Verifies: properties extracted, correct count, valid URLs/titles
+    - Fast execution (no network requests)
+
+11. [ ] [F0C541](TODO/F0C541.md) - Create scripts/inspect_platform.py interactive tool for page inspection
+    - Script accepts platform adapter name as argument
+    - Navigates to platform URL using Playwright
+    - Displays page screenshot and accessibility tree snapshot
+    - Tests CSS selectors interactively (shows matched elements)
+    - Exports findings for adapter update
+
+12. [ ] [6EDE07](TODO/6EDE07.md) - Create scripts/run_diagnostics.py for batch diagnostic report generation
+    - Script accepts platform list or "all-empty" flag
+    - Runs enhanced diagnostics on specified platforms
+    - Generates diagnostic reports in reports/diagnostics/{adapter_id}/
+    - Creates summary report of findings
+    - Flags common issues: anti-bot protection, selector mismatch, AJAX loading
+
+#### Platform Fixes (Zero Property Platforms)
+
+13. [ ] [1FC3FD](TODO/1FC3FD.md) - Fix FSBO platforms (7 platforms: ownerama, brokerless, flat_fee_group, etc.)
+    - All 7 FSBO platforms finding properties (or documented why not possible)
+    - Correct selectors identified via page inspection
+    - Adapter code updated with specific selectors
+    - Each platform tested independently and verified working
+    - Fixes documented with before/after selector comparison
+
+14. [ ] [164AEC](TODO/164AEC.md) - Fix Maine Brokerage platforms (9 platforms: listings_direct, swan_agency, etc.)
+    - At least 6 of 9 Maine Brokerage platforms finding properties
+    - Correct selectors identified via page inspection
+    - Adapter code updated with specific selectors (similar to realty_of_maine pattern)
+    - Each working platform tested and verified
+    - Fixes documented with selector patterns
+
+15. [ ] [7BD1E6](TODO/7BD1E6.md) - Fix maine_state_mls platform
+    - maine_state_mls platform finding properties (or documented why not possible)
+    - Correct selectors identified via page inspection
+    - Adapter code updated with specific selectors
+    - Tested and verified working
+    - Fix documented with selector comparison to maine_listings
+
+16. [ ] [706A0E](TODO/706A0E.md) - Fix social platforms (facebook_marketplace, facebook_groups, nextdoor)
+    - All 3 social platforms finding properties (or documented authentication/technical blockers)
+    - Correct selectors identified via page inspection
+    - Authentication handled if required (state save/load)
+    - Adapter code updated with specific selectors
+    - Each platform tested and verified working
+
+17. [ ] [A551DB](TODO/A551DB.md) - Fix classifieds platforms (oodle, town_ads, sun_journal, etc.)
+    - At least 4 of 6 classifieds platforms finding properties
+    - Correct selectors identified via page inspection
+    - Adapter code updated with specific selectors
+    - Each working platform tested and verified
+    - Platforms with no listings documented as legitimately empty
+
+#### Documentation & Tracking
+
+18. [ ] [62C966](TODO/62C966.md) - Create reports/platform_status.md to track fixing progress
+    - Status tracker file created at reports/platform_status.md
+    - All 58 platforms listed with status: ✅ Working | 🔧 In Progress | ⚠️ Needs Fix | ❌ Broken | 📋 Not Started
+    - Each platform entry includes: last tested date, issues found, selectors (current vs correct), fix notes
+    - Updated after each platform fix
+
+19. [ ] [74CFE6](TODO/74CFE6.md) - Create docs/PLATFORM_FIX_TEMPLATE.md for fix documentation
+    - Template file created at docs/PLATFORM_FIX_TEMPLATE.md
+    - Template includes: platform name, issue description, diagnostic findings, correct selectors, code changes, test results before/after, notes
+    - Template used when fixing each platform
+    - Documentation stored in docs/fixes/ or reports/fixes/
+
 ### Final Verification
 
-7. [x] End-to-end test: `python scripts/run.py` successfully fetches listings from all implemented sources
-8. [x] All adapters registered in `src/ingestion/registry.py`
-9. [x] All source configs created in `configs/sources/` with appropriate configuration
+20. [x] End-to-end test: `python scripts/run.py` successfully fetches listings from all implemented sources
+21. [x] All adapters registered in `src/ingestion/registry.py`
+22. [x] All source configs created in `configs/sources/` with appropriate configuration
 
 ## Implementation Approach
 
@@ -113,6 +207,28 @@ This task encompasses the remaining work to expand property search coverage, imp
 - Generate markdown report with plain language (no tech jargon)
 - Follow PLATFORM_TEST_PLAN.md structure
 - Save report to `reports/platform_test_report.md`
+
+### For Enhanced Test Diagnostics (B81B06, 45DD1A, 39D5EA, 13A1CD, F0C541, 6EDE07):
+- Add diagnostic capture to test script: screenshots, HTML snapshots, network logs, console errors
+- Create selector validation test to check if CSS selectors match elements on live pages
+- Create HTML test fixtures for platform structure samples (5-10 mock properties each)
+- Create unit tests using HTML fixtures to test adapter parsing logic without network access
+- Create interactive inspection tool for investigating platform pages and finding selectors
+- Create batch diagnostic runner for generating diagnostic reports on multiple platforms
+
+### For Platform Fixes (1FC3FD, 164AEC, 7BD1E6, 706A0E, A551DB):
+- Run diagnostics on each platform returning zero properties
+- Use inspect_platform.py or browser tools to identify correct selectors
+- Update adapter code with site-specific selectors (not generic patterns)
+- Add wait conditions for dynamic content if needed
+- Handle anti-bot protection if detected
+- Test each adapter independently after fix
+- Verify properties found and data quality (titles, URLs, payload)
+- Document fixes with before/after selector comparison
+
+### For Documentation & Tracking (62C966, 74CFE6):
+- Create platform status tracker to track fixing progress (status, last tested, issues, selectors)
+- Create fix documentation template for recording platform fixes consistently
 
 ## Testing Protocol
 

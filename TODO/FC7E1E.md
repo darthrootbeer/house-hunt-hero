@@ -1,6 +1,6 @@
 ---
 id: FC7E1E
-status: pending
+status: done
 deps: []
 files: [src/ingestion/adapters/, configs/sources/, src/ingestion/registry.py]
 ---
