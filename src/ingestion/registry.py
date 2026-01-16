@@ -52,6 +52,9 @@ from .adapters import (
     RealtyOfMaineAdapter,
     MaineRealEstateCoAdapter,
     FontaineFamilyAdapter,
+    MaineHighlandsFCUAdapter,
+    MaineStateCreditUnionAdapter,
+    MaineCreditUnionsDirectoryAdapter,
 )
 from .base import IngestionAdapter
 
@@ -107,4 +110,7 @@ def get_adapters() -> List[IngestionAdapter]:
         RealtyOfMaineAdapter(),     # Realty of Maine
         MaineRealEstateCoAdapter(),  # Maine Real Estate Co. (Facebook-based, may need special handling)
         FontaineFamilyAdapter(),    # Fontaine Family - REO Division
+        MaineHighlandsFCUAdapter(), # Maine Highlands Federal Credit Union
+        # MaineStateCreditUnionAdapter() - Disabled: loans only, no listings
+        # MaineCreditUnionsDirectoryAdapter() - Disabled: directory only, no listings
     ]

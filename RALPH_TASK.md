@@ -35,8 +35,8 @@ Implement adapters for Maine MLS services, Maine brokerages, and credit unions t
 ## Success Criteria
 
 1. [x] Both MLS platforms have adapters implemented
-2. [ ] All 12 brokerages have adapters implemented (or grouped adapter if similar structure)
-3. [ ] Credit unions with property listings have adapters implemented
+2. [x] All 12 brokerages have adapters implemented (or grouped adapter if similar structure)
+3. [x] Credit unions with property listings have adapters implemented
 4. [x] All adapters have source configs created in `configs/sources/` with appropriate configuration (MLS adapters done)
 5. [x] All adapters registered in `src/ingestion/registry.py` (MLS adapters done)
 6. [ ] Each adapter tested with actual Maine property searches and verified to retrieve listings successfully

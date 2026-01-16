@@ -1,0 +1,15 @@
+source_id: "maine_state_credit_union"
+label: "Maine State Credit Union"
+enabled: false
+method: "contact_required"
+base_url: "https://mainestatecu.org"
+
+contact_required:
+  notes: "Provides commercial real estate loans only, not property listings. No public listings available."
+
+rate_limit_seconds: 0
+
+notes: |
+  - Commercial real estate loans only
+  - No property listings available
+  - Marked as contact_required since no public listings exist

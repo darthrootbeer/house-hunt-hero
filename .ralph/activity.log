@@ -142,3 +142,8 @@ except Exception as e:
 [07:26:22] 🟢 READ RALPH_TASK.md (109 lines, ~10.6KB)
 [07:26:26] 🟢 SHELL cd /Users/bengoddard/projects/house-hunt-hero && for url in "https://listingsdirectme.com" "https://meservier.com" "https://locationsinmaine.com" "https://swanagency.com"; do echo "=== $url ==="; curl -s -L "$url" | grep -i "search\|listing\|property" | head -3; echo; done → exit 0
 [07:26:41] 🟢 TOKENS: 29372 / 80000 (36%) [read:109KB write:0KB assist:2KB shell:0KB]
+[07:27:10] 🟢 SHELL cd /Users/bengoddard/projects/house-hunt-hero && git add -A && git commit -m "ralph: implement all 12 Maine brokerage adapters with configs and registry" → exit 0
+[07:27:11] 🟢 TOKENS: 29427 / 80000 (36%) [read:109KB write:0KB assist:2KB shell:0KB]
+[07:27:11] 🟢 READ Maine_Property_Sources_2026.md (234 lines, ~22.8KB)
+[07:27:15] 🟢 SHELL cd /Users/bengoddard/projects/house-hunt-hero && curl -s -L "https://mhfcu.com" | grep -i "propert\|listing\|real.estate" | head -5 → exit 0
+[07:27:19] 🟢 SHELL cd /Users/bengoddard/projects/house-hunt-hero && curl -s -L "https://mhfcu.com/properties" | head -50 | grep -i "propert\|listing\|sale" | head -5 → exit 0

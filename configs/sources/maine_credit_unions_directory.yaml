@@ -1,0 +1,16 @@
+source_id: "maine_credit_unions_directory"
+label: "Maine Credit Unions Directory"
+enabled: false
+method: "contact_required"
+base_url: "https://mainecreditunions.org"
+
+contact_required:
+  notes: "Directory of credit unions only, not a source of property listings. Individual credit unions would need to be checked separately."
+
+rate_limit_seconds: 0
+
+notes: |
+  - Directory of all Maine credit unions
+  - Not a source of property listings
+  - Individual credit unions would need to be checked separately
+  - Marked as contact_required since no listings exist

@@ -47,3 +47,6 @@ from .la_count_real_estate import LaCountRealEstateAdapter
 from .realty_of_maine import RealtyOfMaineAdapter
 from .maine_real_estate_co import MaineRealEstateCoAdapter
 from .fontaine_family import FontaineFamilyAdapter
+from .maine_highlands_fcu import MaineHighlandsFCUAdapter
+from .maine_state_credit_union import MaineStateCreditUnionAdapter
+from .maine_credit_unions_directory import MaineCreditUnionsDirectoryAdapter
