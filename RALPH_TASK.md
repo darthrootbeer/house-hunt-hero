@@ -70,7 +70,7 @@ This task encompasses the remaining work to expand property search coverage, imp
    - Records timing metrics (page load, selector wait times)
    - Adds --diagnose flag to enable detailed diagnostics
 
-8. [ ] [45DD1A](TODO/45DD1A.md) - Create test_selector_validation.py to test CSS selectors on live pages
+8. [x] [45DD1A](TODO/45DD1A.md) - Create test_selector_validation.py to test CSS selectors on live pages
    - Test file navigates to platform URLs
    - Tests each selector in adapters against live pages
    - Reports: count of elements found, sample element HTML
