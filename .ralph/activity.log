@@ -1057,3 +1057,20 @@ EOF
 [08:57:17] 🟢 TOKENS: 20823 / 80000 (26%) [read:75KB write:0KB assist:2KB shell:0KB]
 [08:58:08] 🟢 TOKENS: 20868 / 80000 (26%) [read:75KB write:0KB assist:3KB shell:0KB]
 [08:58:26] 🟢 SHELL rm -f *.png → exit 0
+[08:58:29] 🟢 SHELL git add -A && git commit -m "$(cat <<'EOF'
+ralph: test commercial adapters and document results
+
+- Created test script for all 5 commercial adapters
+- All adapters run without errors (5/5 pass)
+- Documented test results in reports/commercial_adapters_test_report.md
+- Noted that selectors need refinement for JavaScript-heavy interfaces
+- Marked FC7E1E criterion as complete in RALPH_TASK.md
+- Commercial adapters foundation is solid, need platform-specific tuning
+EOF
+)" → exit 0
+[08:58:35] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/TODO/9F80BF.md (46 lines, ~4.4KB)
+[08:58:38] 🟢 TOKENS: 22060 / 80000 (27%) [read:80KB write:0KB assist:3KB shell:0KB]
+[08:59:09] 🟢 TOKENS: 22147 / 80000 (27%) [read:80KB write:0KB assist:3KB shell:0KB]
+[08:59:41] 🟢 TOKENS: 22147 / 80000 (27%) [read:80KB write:0KB assist:3KB shell:0KB]
+[09:00:11] 🟢 TOKENS: 22163 / 80000 (27%) [read:80KB write:0KB assist:3KB shell:0KB]
+[09:01:08] 🟢 TOKENS: 22185 / 80000 (27%) [read:80KB write:0KB assist:3KB shell:0KB]

@@ -55,3 +55,8 @@ from .necpe import NECPEAdapter
 from .malone_commercial import MaloneCommercialAdapter
 from .loopnet import LoopNetAdapter
 from .nai_dunham import NAIDunhamAdapter
+from .zillow import ZillowAdapter
+from .realtor_com import RealtorComAdapter
+from .redfin import RedfinAdapter
+from .trulia import TruliaAdapter
+from .homes_com import HomesComAdapter

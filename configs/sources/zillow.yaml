@@ -1,0 +1,26 @@
+source_id: "zillow"
+label: "Zillow"
+enabled: false  # Disabled by default due to aggressive anti-bot measures
+method: "playwright"
+base_url: "https://www.zillow.com"
+search_url: "https://www.zillow.com/homes/for_sale/Maine/"
+
+scraping:
+  listing_container_selector: "article[data-test='property-card'], li[class*='ListItem']"
+  listing_url_selector: "a[href*='/homedetails/']"
+  listing_title_selector: "[data-test='property-card-addr'], .address"
+  listing_price_selector: "[data-test='property-card-price'], .price"
+  wait_for_selector: "body"
+  wait_timeout_ms: 15000
+  headers:
+    User-Agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36"
+
+rate_limit_seconds: 120  # Aggressive rate limiting to avoid blocks
+
+notes: |
+  - Major national real estate aggregator
+  - VERY aggressive anti-bot measures (Cloudflare, fingerprinting)
+  - May require additional stealth plugins or API access
+  - Disabled by default - enable only with proper anti-bot measures
+  - Consider using Zillow API if available (requires approval)
+  - Rate limit: minimum 2 minutes between requests

@@ -60,6 +60,11 @@ from .adapters import (
     MaloneCommercialAdapter,
     LoopNetAdapter,
     NAIDunhamAdapter,
+    ZillowAdapter,
+    RealtorComAdapter,
+    RedfinAdapter,
+    TruliaAdapter,
+    HomesComAdapter,
 )
 from .base import IngestionAdapter
 
@@ -123,4 +128,10 @@ def get_adapters() -> List[IngestionAdapter]:
         MaloneCommercialAdapter(),  # Malone Commercial Brokers
         LoopNetAdapter(),           # LoopNet - Multi-Family (Maine)
         NAIDunhamAdapter(),         # NAI The Dunham Group
+        # National aggregators (disabled by default due to anti-bot measures)
+        # ZillowAdapter(),          # Zillow (enable with caution)
+        # RealtorComAdapter(),      # Realtor.com (enable with caution)
+        # RedfinAdapter(),          # Redfin (enable with caution)
+        # TruliaAdapter(),          # Trulia (enable with caution)
+        # HomesComAdapter(),        # Homes.com (enable with caution)
     ]

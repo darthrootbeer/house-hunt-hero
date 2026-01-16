@@ -1,0 +1,24 @@
+source_id: "homes_com"
+label: "Homes.com"
+enabled: false  # Disabled by default due to anti-bot measures
+method: "playwright"
+base_url: "https://www.homes.com"
+search_url: "https://www.homes.com/maine/"
+
+scraping:
+  listing_container_selector: "[data-testid='srp-home-card'], .property-card"
+  listing_url_selector: "a[href*='/property/']"
+  listing_title_selector: "[data-testid='property-address'], .address"
+  listing_price_selector: "[data-testid='property-price'], .price"
+  wait_for_selector: "body"
+  wait_timeout_ms: 15000
+  headers:
+    User-Agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36"
+
+rate_limit_seconds: 120
+
+notes: |
+  - National real estate search platform
+  - May have anti-bot protection
+  - Disabled by default - enable with caution
+  - Rate limit: minimum 2 minutes between requests

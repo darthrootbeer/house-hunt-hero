@@ -21,7 +21,7 @@ This task encompasses the remaining work to expand property search coverage, imp
 
 ### Lower Priority Sources
 
-2. [ ] [9F80BF](TODO/9F80BF.md) - Implement national aggregators (Zillow, Realtor.com, Redfin, Trulia, Homes.com)
+2. [x] [9F80BF](TODO/9F80BF.md) - Implement national aggregators (Zillow, Realtor.com, Redfin, Trulia, Homes.com)
    - All 5 national aggregators have adapters implemented
    - Source configs created with rate_limits and anti-bot measures
    - Registered in `src/ingestion/registry.py`
