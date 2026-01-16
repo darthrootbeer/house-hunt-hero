@@ -5,11 +5,187 @@ This script tests all active adapters to verify they can fetch property listings
 and generates a plain-language report suitable for non-technical users.
 """
 
+import argparse
 import time
+import os
+import json
 from datetime import datetime
 from collections import defaultdict
+from pathlib import Path
 
 from src.ingestion.registry import get_adapters
+from playwright.sync_api import sync_playwright
+
+
+def capture_diagnostics(adapter, adapter_id, diagnose_mode=False):
+    """
+    Capture diagnostic information for a platform.
+    
+    Returns dict with:
+    - screenshot_path: Path to screenshot file
+    - html_path: Path to HTML snapshot file
+    - network_requests: List of network requests
+    - console_messages: List of console messages
+    - timing_metrics: Dict of timing information
+    """
+    diagnostics_dir = Path(f"reports/diagnostics/{adapter_id}")
+    diagnostics_dir.mkdir(parents=True, exist_ok=True)
+    
+    diagnostics = {
+        'screenshot_path': None,
+        'html_path': None,
+        'network_requests': [],
+        'console_messages': [],
+        'timing_metrics': {},
+    }
+    
+    try:
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            context = browser.new_context(
+                viewport={'width': 1920, 'height': 1080},
+                user_agent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36'
+            )
+            page = context.new_page()
+            
+            # Capture network requests
+            network_requests = []
+            def handle_request(request):
+                if request.resource_type in ['xhr', 'fetch', 'document']:
+                    network_requests.append({
+                        'url': request.url,
+                        'method': request.method,
+                        'type': request.resource_type,
+                    })
+            page.on('request', handle_request)
+            
+            # Capture console messages
+            console_messages = []
+            def handle_console(msg):
+                if msg.type in ['error', 'warning']:
+                    console_messages.append({
+                        'type': msg.type,
+                        'text': msg.text,
+                    })
+            page.on('console', handle_console)
+            
+            # Get search URL from adapter
+            search_url = getattr(adapter, 'search_url', None)
+            if not search_url:
+                # Try to get from config
+                config_path = Path(f"configs/sources/{adapter_id}.yaml")
+                if config_path.exists():
+                    import yaml
+                    with open(config_path) as f:
+                        config = yaml.safe_load(f)
+                        search_url = config.get('search_url') or config.get('base_url')
+            
+            if not search_url:
+                return diagnostics
+            
+            # Navigate and capture timing
+            start_time = time.time()
+            page.goto(search_url, timeout=30000, wait_until='domcontentloaded')
+            page_load_time = time.time() - start_time
+            
+            # Wait for potential dynamic content
+            wait_start = time.time()
+            try:
+                page.wait_for_load_state('networkidle', timeout=10000)
+            except:
+                pass
+            network_idle_time = time.time() - wait_start
+            
+            # Capture screenshot
+            screenshot_path = diagnostics_dir / 'screenshot.png'
+            page.screenshot(path=str(screenshot_path), full_page=True)
+            diagnostics['screenshot_path'] = str(screenshot_path)
+            
+            # Capture HTML snapshot
+            html_path = diagnostics_dir / 'page.html'
+            html_content = page.content()
+            with open(html_path, 'w', encoding='utf-8') as f:
+                f.write(html_content)
+            diagnostics['html_path'] = str(html_path)
+            
+            # Store captured data
+            diagnostics['network_requests'] = network_requests
+            diagnostics['console_messages'] = console_messages
+            diagnostics['timing_metrics'] = {
+                'page_load_seconds': round(page_load_time, 2),
+                'network_idle_seconds': round(network_idle_time, 2),
+                'total_seconds': round(page_load_time + network_idle_time, 2),
+            }
+            
+            browser.close()
+            
+    except Exception as e:
+        print(f"  [Diagnostic capture failed: {type(e).__name__}]")
+    
+    return diagnostics
+
+
+def save_diagnostic_report(adapter_id, diagnostics):
+    """Save a diagnostic report summary for an adapter."""
+    diagnostics_dir = Path(f"reports/diagnostics/{adapter_id}")
+    report_path = diagnostics_dir / 'diagnostic_report.md'
+    
+    lines = [
+        f"# Diagnostic Report: {adapter_id}",
+        "",
+        f"**Generated:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
+        "",
+        "## Timing Metrics",
+        "",
+    ]
+    
+    if diagnostics['timing_metrics']:
+        for key, value in diagnostics['timing_metrics'].items():
+            lines.append(f"- **{key.replace('_', ' ').title()}:** {value}")
+    else:
+        lines.append("- No timing data captured")
+    
+    lines.extend([
+        "",
+        "## Screenshots & HTML",
+        "",
+    ])
+    
+    if diagnostics['screenshot_path']:
+        lines.append(f"- Screenshot saved to: `{diagnostics['screenshot_path']}`")
+    if diagnostics['html_path']:
+        lines.append(f"- HTML snapshot saved to: `{diagnostics['html_path']}`")
+    
+    lines.extend([
+        "",
+        "## Network Requests",
+        "",
+    ])
+    
+    if diagnostics['network_requests']:
+        lines.append(f"Total requests captured: {len(diagnostics['network_requests'])}")
+        lines.append("")
+        for req in diagnostics['network_requests'][:20]:  # Limit to first 20
+            lines.append(f"- `{req['method']}` {req['type']}: {req['url'][:100]}")
+    else:
+        lines.append("- No network requests captured")
+    
+    lines.extend([
+        "",
+        "## Console Messages",
+        "",
+    ])
+    
+    if diagnostics['console_messages']:
+        lines.append(f"Total messages captured: {len(diagnostics['console_messages'])}")
+        lines.append("")
+        for msg in diagnostics['console_messages'][:20]:  # Limit to first 20
+            lines.append(f"- **{msg['type'].upper()}:** {msg['text'][:200]}")
+    else:
+        lines.append("- No console errors or warnings")
+    
+    with open(report_path, 'w') as f:
+        f.write("\n".join(lines))
 
 
 def categorize_result(adapter_id, listings_count, error):
@@ -57,10 +233,12 @@ def get_category_name(adapter_id):
     return 'Other'
 
 
-def test_all_platforms():
+def test_all_platforms(diagnose_mode=False):
     """Test all platforms and collect results."""
     print("="*70)
     print("HOUSE HUNT HERO - PLATFORM TEST")
+    if diagnose_mode:
+        print("(Diagnostic Mode Enabled)")
     print("="*70)
     print(f"Started: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
     
@@ -92,12 +270,27 @@ def test_all_platforms():
             'category': get_category_name(adapter_id),
             'status': categorize_result(adapter_id, len(listings), error),
             'sample_titles': [l.title[:80] for l in listings[:3]] if listings else [],
+            'diagnostics': None,
         }
         
         results.append(result)
         
         status_icon = "✅" if result['status'] == 'Working' else "⚠️" if result['status'] == 'Empty' else "❌"
-        print(f"{status_icon} {len(listings)} properties ({duration:.1f}s)")
+        print(f"{status_icon} {len(listings)} properties ({duration:.1f}s)", end="")
+        
+        # Capture diagnostics for zero-property platforms or if diagnose mode enabled
+        should_diagnose = diagnose_mode or (len(listings) == 0 and not error)
+        if should_diagnose:
+            print(" [Capturing diagnostics...]", end="", flush=True)
+            diagnostics = capture_diagnostics(adapter, adapter_id, diagnose_mode)
+            result['diagnostics'] = diagnostics
+            if diagnostics['screenshot_path'] or diagnostics['html_path']:
+                save_diagnostic_report(adapter_id, diagnostics)
+                print(" Done")
+            else:
+                print(" Skipped")
+        else:
+            print()
     
     print(f"\nCompleted: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     return results
@@ -223,6 +416,8 @@ def generate_report(results):
         ])
         for r in empty_results:
             lines.append(f"- **{r['adapter_id']}** - May need selector refinement or may have limited inventory")
+            if r.get('diagnostics') and r['diagnostics'].get('screenshot_path'):
+                lines.append(f"  - Diagnostics available: `reports/diagnostics/{r['adapter_id']}/`")
         lines.append("")
     
     lines.extend([
@@ -253,8 +448,19 @@ def generate_report(results):
 
 def main():
     """Main test execution."""
+    # Parse command-line arguments
+    parser = argparse.ArgumentParser(
+        description='Test all property search platforms and generate a comprehensive report.'
+    )
+    parser.add_argument(
+        '--diagnose',
+        action='store_true',
+        help='Enable detailed diagnostics for all platforms (captures screenshots, HTML, network requests)'
+    )
+    args = parser.parse_args()
+    
     # Run tests
-    results = test_all_platforms()
+    results = test_all_platforms(diagnose_mode=args.diagnose)
     
     # Generate report
     print("\nGenerating report...")
@@ -266,6 +472,11 @@ def main():
         f.write(report)
     
     print(f"✅ Report saved to: {report_path}")
+    
+    # Count diagnostics captured
+    diagnostics_captured = len([r for r in results if r.get('diagnostics') and r['diagnostics'].get('screenshot_path')])
+    if diagnostics_captured > 0:
+        print(f"📊 Diagnostics captured for {diagnostics_captured} platforms in reports/diagnostics/")
     
     # Print summary
     working = len([r for r in results if r['status'] == 'Working'])

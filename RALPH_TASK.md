@@ -63,7 +63,7 @@ This task encompasses the remaining work to expand property search coverage, imp
 
 #### Enhanced Test Diagnostics & Tools
 
-7. [ ] [B81B06](TODO/B81B06.md) - Add diagnostic capture to test_all_platforms.py
+7. [x] [B81B06](TODO/B81B06.md) - Add diagnostic capture to test_all_platforms.py
    - Test script captures screenshots for zero-property platforms
    - Saves HTML snapshots to reports/diagnostics/{adapter_id}/page.html
    - Logs network requests and console errors
