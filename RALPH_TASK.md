@@ -12,7 +12,7 @@ This task encompasses the remaining work to expand property search coverage, imp
 
 ### Medium Priority Sources
 
-1. [ ] [FC7E1E](TODO/FC7E1E.md) - Implement commercial real estate sites (5 platforms, focus on multi-family)
+1. [x] [FC7E1E](TODO/FC7E1E.md) - Implement commercial real estate sites (5 platforms, focus on multi-family)
    - All 5 commercial platforms have adapters implemented
    - Source configs created with property_type_filters (multi-family focus)
    - Registered in `src/ingestion/registry.py`
