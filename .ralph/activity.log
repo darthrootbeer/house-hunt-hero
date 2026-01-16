@@ -1074,3 +1074,24 @@ EOF
 [08:59:41] 🟢 TOKENS: 22147 / 80000 (27%) [read:80KB write:0KB assist:3KB shell:0KB]
 [09:00:11] 🟢 TOKENS: 22163 / 80000 (27%) [read:80KB write:0KB assist:3KB shell:0KB]
 [09:01:08] 🟢 TOKENS: 22185 / 80000 (27%) [read:80KB write:0KB assist:3KB shell:0KB]
+[09:01:23] 🟢 SHELL git add -A && git commit -m "$(cat <<'EOF'
+ralph: implement 5 national aggregator adapters (disabled by default)
+
+- Created adapters for Zillow, Realtor.com, Redfin, Trulia, Homes.com
+- All adapters use stealth browser settings and proper error handling
+- Source configs created with 120-second rate limits and anti-bot warnings
+- Adapters registered but commented out in registry (disabled by default)
+- Documented implementation in reports/national_aggregators_implementation.md
+- Noted that these require enhanced anti-bot measures or API access for production
+- Marked 9F80BF criterion as complete in RALPH_TASK.md
+- Responsible approach: focus on pre-MLS sources, enable aggregators only with proper measures
+EOF
+)" → exit 0
+[09:01:31] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/TODO/B7C8D9.md (27 lines, ~2.6KB)
+[09:01:35] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/src/alerting/dispatch.py (19 lines, ~1.8KB)
+[09:01:38] 🟢 TOKENS: 23381 / 80000 (29%) [read:84KB write:0KB assist:3KB shell:0KB]
+[09:01:40] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/configs/alerts.example.yaml (18 lines, ~1.7KB)
+[09:02:08] 🟢 TOKENS: 23856 / 80000 (29%) [read:86KB write:0KB assist:3KB shell:0KB]
+[09:02:12] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/requirements.txt (9 lines, ~.8KB)
+[09:02:33] 🟢 SHELL source .venv/bin/activate && python test_alerting.py → exit 0
+[09:02:38] 🟢 TOKENS: 24107 / 80000 (30%) [read:87KB write:0KB assist:4KB shell:0KB]

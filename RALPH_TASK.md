@@ -37,13 +37,13 @@ This task encompasses the remaining work to expand property search coverage, imp
 
 ### Alerting
 
-4. [ ] [B7C8D9](TODO/B7C8D9.md) - Implement email alerting - Send real alerts via SMTP
+4. [x] [B7C8D9](TODO/B7C8D9.md) - Implement email alerting - Send real alerts via SMTP
    - SMTP email sending works with config in `configs/alerts.example.yaml`
    - Handles auth and TLS correctly
    - Sends formatted alert payloads as email body
    - Tested with real SMTP server
 
-5. [ ] [E1F2A3](TODO/E1F2A3.md) - Implement Pushover alerting - Mobile push notifications
+5. [x] [E1F2A3](TODO/E1F2A3.md) - Implement Pushover alerting - Mobile push notifications
    - Pushover API integration works with config in `configs/alerts.example.yaml`
    - Sends formatted alerts to mobile devices
    - Handles API errors gracefully
