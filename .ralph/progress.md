@@ -112,3 +112,32 @@ This is how Ralph maintains continuity across iterations.
 
 ### 2026-01-16 17:52:38
 **Session 1 started** (model: sonnet-4.5-thinking)
+
+### 2026-01-16 (Iteration - Testing Tools & Fixtures)
+**Test infrastructure completed:**
+- ✅ Added diagnostic capture to test_all_platforms.py [B81B06]
+  - Captures screenshots, HTML snapshots for zero-property platforms
+  - Logs network requests and console errors
+  - Records timing metrics (page load, network idle)
+  - Adds --diagnose flag for detailed diagnostics
+- ✅ Created test_selector_validation.py [45DD1A]
+  - Validates CSS selectors on live pages
+  - Extracts selectors from adapter code
+  - Reports element counts and sample HTML
+  - Compares working vs non-working selector patterns
+- ✅ Created HTML test fixtures [39D5EA]
+  - Fixtures for maine_listings, realty_of_maine, craigslist_owner, fsbo_com
+  - 7-8 mock listings per fixture with realistic Maine addresses
+  - Includes edge cases: missing fields, special characters, long titles
+- ✅ Created test_adapters_with_mock_data.py [13A1CD]
+  - Unit tests with HTML fixtures (no network requests)
+  - Mock Playwright objects (page, browser, context, element)
+  - Fast execution (<1 second)
+
+**Commits:**
+- c1465fa: ralph: add diagnostic capture to test_all_platforms.py
+- cbbe7bb: ralph: create test_selector_validation.py for CSS selector testing
+- fc7e807: ralph: create HTML test fixtures for adapter unit testing
+- b6940f1: ralph: create test_adapters_with_mock_data.py for unit testing
+
+**Status:** 4 of 19 criteria completed (testing tools)

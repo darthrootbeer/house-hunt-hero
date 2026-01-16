@@ -90,7 +90,7 @@ This task encompasses the remaining work to expand property search coverage, imp
     - Verifies: properties extracted, correct count, valid URLs/titles
     - Fast execution (no network requests)
 
-11. [ ] [F0C541](TODO/F0C541.md) - Create scripts/inspect_platform.py interactive tool for page inspection
+11. [x] [F0C541](TODO/F0C541.md) - Create scripts/inspect_platform.py interactive tool for page inspection
     - Script accepts platform adapter name as argument
     - Navigates to platform URL using Playwright
     - Displays page screenshot and accessibility tree snapshot
