@@ -28,7 +28,7 @@ This task encompasses the remaining work to expand property search coverage, imp
    - Each adapter tested with actual Maine location searches and verified to retrieve listings successfully
    - Test results documented (listings found, data quality, selector/API accuracy, rate limit compliance)
 
-3. [ ] [FC180C](TODO/FC180C.md) - Implement land-specific sites (5 platforms: LandSearch, KW Land, etc.)
+3. [x] [FC180C](TODO/FC180C.md) - Implement land-specific sites (5 platforms: LandSearch, KW Land, etc.)
    - All 5 land platforms have adapters implemented
    - Source configs created with filters (structures, houses, not raw land)
    - Registered in `src/ingestion/registry.py`

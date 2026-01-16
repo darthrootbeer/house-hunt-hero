@@ -1,0 +1,21 @@
+source_id: "landwatch"
+label: "LandWatch - Maine Land"
+enabled: true
+method: "playwright"
+base_url: "https://www.landwatch.com"
+search_url: "https://www.landwatch.com/maine-land-for-sale"
+
+scraping:
+  listing_container_selector: ".property-tile, [class*='PropertyTile']"
+  listing_url_selector: "a[href*='/land-for-sale/']"
+  wait_timeout_ms: 15000
+
+property_filters:
+  exclude_terms: ['raw land', 'vacant', 'undeveloped land']
+
+rate_limit_seconds: 60
+
+notes: |
+  - Major land listings platform
+  - Filter for properties with structures
+  - Exclude vacant/raw land parcels

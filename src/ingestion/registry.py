@@ -65,6 +65,11 @@ from .adapters import (
     RedfinAdapter,
     TruliaAdapter,
     HomesComAdapter,
+    LandSearchAdapter,
+    LandWatchAdapter,
+    LandDotComAdapter,
+    MaineLandStoreAdapter,
+    KWLandAdapter,
 )
 from .base import IngestionAdapter
 
@@ -134,4 +139,9 @@ def get_adapters() -> List[IngestionAdapter]:
         # RedfinAdapter(),          # Redfin (enable with caution)
         # TruliaAdapter(),          # Trulia (enable with caution)
         # HomesComAdapter(),        # Homes.com (enable with caution)
+        LandSearchAdapter(),        # LandSearch - land with structures
+        LandWatchAdapter(),         # LandWatch - Maine land
+        # LandDotComAdapter(),      # Land.com (disabled: CDN protection)
+        MaineLandStoreAdapter(),    # The Maine Land Store
+        KWLandAdapter(),            # KW Land (Keller Williams)
     ]

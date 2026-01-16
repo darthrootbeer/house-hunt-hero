@@ -60,3 +60,8 @@ from .realtor_com import RealtorComAdapter
 from .redfin import RedfinAdapter
 from .trulia import TruliaAdapter
 from .homes_com import HomesComAdapter
+from .landsearch import LandSearchAdapter
+from .landwatch import LandWatchAdapter
+from .land_dot_com import LandDotComAdapter
+from .maine_land_store import MaineLandStoreAdapter
+from .kw_land import KWLandAdapter
