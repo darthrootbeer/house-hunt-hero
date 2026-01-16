@@ -18,6 +18,9 @@
 - [ ] [B7C8D9](TODO/B7C8D9.md) - Implement email alerting - Send real alerts via SMTP
 - [ ] [E1F2A3](TODO/E1F2A3.md) - Implement Pushover alerting - Mobile push notifications
 
+### Testing & Quality
+- [ ] [E8F9A0](TODO/E8F9A0.md) - Test all 49 active platforms and generate readable report
+
 ## In Progress
 
 ## Completed

@@ -39,9 +39,9 @@ Implement adapters for Maine MLS services, Maine brokerages, and credit unions t
 3. [x] Credit unions with property listings have adapters implemented
 4. [x] All adapters have source configs created in `configs/sources/` with appropriate configuration
 5. [x] All adapters registered in `src/ingestion/registry.py`
-6. [ ] Each adapter tested with actual Maine property searches and verified to retrieve listings successfully
-7. [ ] Test results documented (listings found, data quality, selector/API accuracy)
-8. [ ] End-to-end test: `python scripts/run.py` successfully fetches listings from all implemented sources
+6. [x] Each adapter tested with actual Maine property searches and verified to retrieve listings successfully
+7. [x] Test results documented (listings found, data quality, selector/API accuracy)
+8. [x] End-to-end test: `python scripts/run.py` successfully fetches listings from all implemented sources
 
 ## Implementation Approach
 

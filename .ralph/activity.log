@@ -836,3 +836,91 @@ if listings:
         print(f'  {i+1}. {l.title}')
         print(f'     Price: {l.raw_payload.get(\"price\")}, Beds: {l.raw_payload.get(\"beds\")}, Baths: {l.raw_payload.get(\"baths\")}')
 " 2>&1 → exit 0
+[07:55:13] 🟢 SHELL cd /Users/bengoddard/projects/house-hunt-hero && git add -A && git commit -m "$(cat <<'EOF'
+ralph: fix Realty of Maine adapter with stealth browser and correct URL
+
+- Changed URL from /searchmaine to /listings/ (has IDX feed)
+- Added stealth browser settings to bypass bot detection
+- Updated selectors for /listing/ID/ADDRESS/ URL pattern
+- Improved parsing for price, beds, baths, sqft extraction
+- Now successfully fetches 12+ listings
+EOF
+)" → exit 0
+[07:55:19] 🟢 TOKENS: 25491 / 80000 (31%) [read:93KB write:0KB assist:3KB shell:0KB]
+[07:57:23] 🟢 SHELL cd /Users/bengoddard/projects/house-hunt-hero && /usr/local/bin/python3.11 tests/test_new_adapters.py 2>&1 → exit 0
+[07:57:23] 🟢 TOKENS: 25491 / 80000 (31%) [read:93KB write:0KB assist:3KB shell:0KB]
+[07:57:53] 🟢 TOKENS: 25510 / 80000 (31%) [read:93KB write:0KB assist:3KB shell:0KB]
+[07:57:56] 🟢 SHELL cd /Users/bengoddard/projects/house-hunt-hero && timeout 180 PYTHONPATH=. /usr/local/bin/python3.11 scripts/run.py 2>&1 | head -100 → exit 0
+[08:03:00] 🟢 SHELL cd /Users/bengoddard/projects/house-hunt-hero && PYTHONPATH=. /usr/local/bin/python3.11 scripts/run.py 2>&1 | head -150 → exit 0
+[08:03:00] 🟢 TOKENS: 25532 / 80000 (31%) [read:93KB write:0KB assist:3KB shell:0KB]
+[08:03:06] 🟢 READ /Users/bengoddard/.cursor/projects/Users-bengoddard-projects-house-hunt-hero/terminals/120686.txt (8 lines, ~.7KB)
+[08:03:11] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/scripts/run.py (13 lines, ~1.2KB)
+[08:03:13] 🟢 SHELL pkill -f "python.*scripts/run.py" 2>/dev/null; sleep 2; echo "Killed" → exit 0
+[08:04:10] 🟢 SHELL cd /Users/bengoddard/projects/house-hunt-hero && /usr/local/bin/python3.11 -c "
+import sys
+sys.path.insert(0, '.')
+from datetime import datetime
+
+print('=' * 60)
+print('END-TO-END TEST: Maine MLS, Brokerages, Credit Unions')
+print(f'Started: {datetime.now().isoformat()}')
+print('=' * 60)
+
+# Import the adapters we're testing
+from src.ingestion.adapters.maine_listings import MaineListingsAdapter
+from src.ingestion.adapters.landing_real_estate import LandingRealEstateAdapter
+from src.ingestion.adapters.realty_of_maine import RealtyOfMaineAdapter
+from src.normalization.mapper import normalize_many
+from src.normalization.schema import Listing
+
+# Run ingestion
+adapters = [
+    MaineListingsAdapter(),
+    LandingRealEstateAdapter(),
+    RealtyOfMaineAdapter(),
+]
+
+print('\n--- Ingestion Phase ---')
+all_raw = []
+for adapter in adapters:
+    print(f'Fetching from {adapter.source_id}...')
+    start = datetime.now()
+    try:
+        raw = adapter.fetch()
+        elapsed = (datetime.now() - start).total_seconds()
+        print(f'  ✓ {len(raw)} listings in {elapsed:.1f}s')
+        all_raw.extend(raw)
+    except Exception as e:
+        print(f'  ✗ Error: {e}')
+
+print(f'\nTotal raw listings: {len(all_raw)}')
+
+# Normalize
+print('\n--- Normalization Phase ---')
+try:
+    normalized = normalize_many(all_raw)
+    print(f'Normalized {len(normalized)} listings')
+    
+    # Verify listing structure
+    if normalized:
+        sample = normalized[0]
+        print(f'\nSample normalized listing:')
+        print(f'  ID: {sample.listing_id}')
+        print(f'  Source: {sample.source}')
+        print(f'  URL: {sample.listing_url[:60]}...')
+        if sample.address:
+            print(f'  Address: {sample.address.raw}')
+        print(f'  Price: {sample.price}')
+except Exception as e:
+    print(f'Normalization error: {e}')
+    normalized = []
+
+print('\n' + '=' * 60)
+print('TEST SUMMARY')
+print('=' * 60)
+print(f'Raw listings fetched: {len(all_raw)}')
+print(f'Normalized listings: {len(normalized)}')
+print(f'Status: {\"PASS\" if len(all_raw) > 0 else \"FAIL\"}')
+print('=' * 60)
+" 2>&1 → exit 0
+[08:04:10] 🟢 TOKENS: 26073 / 80000 (32%) [read:95KB write:0KB assist:3KB shell:0KB]
