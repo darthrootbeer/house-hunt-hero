@@ -158,3 +158,202 @@ except Exception as e:
 ═══════════════════════════════════════════════════════════════
 Ralph Session Started: Fri Jan 16 07:31:57 EST 2026
 ═══════════════════════════════════════════════════════════════
+[07:32:00] 🟢 SESSION START: model=Claude 4.5 Opus (Thinking)
+[07:32:05] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/RALPH_TASK.md (109 lines, ~10.6KB)
+[07:32:05] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/.ralph/guardrails.md (28 lines, ~2.7KB)
+[07:32:06] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/.ralph/progress.md (62 lines, ~6.0KB)
+[07:32:06] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/.ralph/errors.log (5 lines, ~.4KB)
+[07:32:14] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/src/ingestion/registry.py (117 lines, ~11.4KB)
+[07:32:15] 🟢 SHELL cd /Users/bengoddard/projects/house-hunt-hero && python scripts/run.py 2>&1 | head -100 → exit 0
+[07:32:20] 🟢 SHELL cd /Users/bengoddard/projects/house-hunt-hero && PYTHONPATH=. python scripts/run.py 2>&1 | head -150 → exit 0
+[07:32:42] 🟢 SHELL cd /Users/bengoddard/projects/house-hunt-hero && pip install -r requirements.txt 2>&1 | tail -20 → exit 0
+[07:32:42] 🟢 TOKENS: 8898 / 80000 (11%) [read:31KB write:0KB assist:0KB shell:0KB]
+[07:32:47] 🟢 SHELL cd /Users/bengoddard/projects/house-hunt-hero && python -m playwright install chromium 2>&1 | tail -10 → exit 0
+[07:32:51] 🟢 SHELL which python && python --version && which pip && pip show playwright 2>&1 | head -10 → exit 0
+[07:33:11] 🟢 SHELL /usr/local/bin/python3.11 -c "import playwright; print('playwright OK')" && /usr/local/bin/python3.11 -m playwright install chromium 2>&1 | tail -15 → exit 0
+[07:33:13] 🟢 TOKENS: 8941 / 80000 (11%) [read:31KB write:0KB assist:0KB shell:0KB]
+[07:38:15] 🟢 SHELL cd /Users/bengoddard/projects/house-hunt-hero && PYTHONPATH=. /usr/local/bin/python3.11 scripts/run.py 2>&1 → exit 0
+[07:38:15] 🟢 TOKENS: 8955 / 80000 (11%) [read:31KB write:0KB assist:0KB shell:0KB]
+[07:38:22] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/src/ingestion/adapters/maine_listings.py (110 lines, ~10.7KB)
+[07:38:23] 🟢 SHELL pkill -f "python.*scripts/run.py" 2>/dev/null; sleep 1; echo "Process killed" → exit 0
+[07:38:47] 🟢 TOKENS: 11754 / 80000 (14%) [read:42KB write:0KB assist:0KB shell:0KB]
+[07:40:50] 🟢 SHELL cd /Users/bengoddard/projects/house-hunt-hero && /usr/local/bin/python3.11 tests/test_new_adapters.py 2>&1 → exit 0
+[07:40:50] 🟢 TOKENS: 11754 / 80000 (14%) [read:42KB write:0KB assist:0KB shell:0KB]
+[07:41:04] 🟢 SHELL agent-browser open "https://mainelistings.com/listings?mls_status=Active,Active+Under+Contract,Coming+Soon+/+No+Show&on_market_date_since=7&sort_by=on_market_date&sort_order=desc" 2>&1 | head -30 → exit 0
+[07:41:12] 🟢 SHELL agent-browser wait 3000 && agent-browser snapshot -i 2>&1 | head -100 → exit 0
+[07:41:17] 🟢 SHELL agent-browser close && agent-browser open "https://swanagency.com/properties/search/?type=res" 2>&1 → exit 0
+[07:41:25] 🟢 SHELL agent-browser open "https://swanagency.com/properties/search/?type=res" 2>&1 → exit 0
+[07:41:25] 🟢 TOKENS: 11820 / 80000 (14%) [read:42KB write:0KB assist:1KB shell:0KB]
+[07:41:30] 🟢 SHELL agent-browser close && agent-browser open "https://www.realtyofmaine.com/searchmaine" 2>&1 → exit 0
+[07:41:39] 🟢 SHELL agent-browser open "https://www.realtyofmaine.com/searchmaine" 2>&1 → exit 0
+[07:41:43] 🟢 SHELL agent-browser close && agent-browser open "https://fontaineteam.com/foreclosed-and-bank-owned-homes/" 2>&1 → exit 0
+[07:41:57] 🟢 SHELL sleep 2 && agent-browser open "https://fontaineteam.com/foreclosed-and-bank-owned-homes/" 2>&1 → exit 0
+[07:41:57] 🟢 TOKENS: 11820 / 80000 (14%) [read:42KB write:0KB assist:1KB shell:0KB]
+[07:42:01] 🟢 SHELL agent-browser snapshot -i 2>&1 → exit 0
+[07:42:05] 🟢 SHELL agent-browser snapshot 2>&1 | head -100 → exit 0
+[07:42:09] 🟢 SHELL agent-browser wait --load networkidle && agent-browser snapshot 2>&1 | head -200 → exit 0
+[07:42:14] 🟢 SHELL agent-browser screenshot reports/fontaine_test.png 2>&1 → exit 0
+[07:42:17] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/reports/fontaine_test.png (0 lines, ~0KB)
+[07:42:33] 🟢 SHELL agent-browser close && sleep 2 && agent-browser open "https://www.mhfcu.com/about-us/property-listings" 2>&1 → exit 0
+[07:42:33] 🟢 TOKENS: 11820 / 80000 (14%) [read:42KB write:0KB assist:1KB shell:0KB]
+[07:42:43] 🟢 SHELL agent-browser open "https://www.mhfcu.com" && agent-browser wait 3000 && agent-browser snapshot -i 2>&1 | head -80 → exit 0
+[07:42:57] 🟢 SHELL agent-browser click @e60 && agent-browser wait 3000 && agent-browser snapshot 2>&1 | head -80 → exit 0
+[07:43:01] 🟢 SHELL agent-browser snapshot -i 2>&1 | grep -i "property\|sale\|for sale"  → exit 0
+[07:43:03] 🟢 TOKENS: 11834 / 80000 (14%) [read:42KB write:0KB assist:1KB shell:0KB]
+[07:43:15] 🟢 SHELL agent-browser find text "Property For Sale" click 2>&1 → exit 0
+[07:43:25] 🟢 SHELL agent-browser open "https://www.mhfcu.com/properties" && agent-browser wait 3000 && agent-browser snapshot 2>&1 | head -80 → exit 0
+[07:43:32] 🟢 SHELL agent-browser click @e5 && agent-browser wait 2000 && agent-browser scroll down 500 && agent-browser snapshot 2>&1 | head -100 → exit 0
+[07:43:34] 🟢 TOKENS: 11834 / 80000 (14%) [read:42KB write:0KB assist:1KB shell:0KB]
+[07:43:36] 🟢 SHELL agent-browser screenshot reports/mhfcu_properties.png 2>&1 && agent-browser scroll down 1000 && agent-browser screenshot reports/mhfcu_properties2.png 2>&1 → exit 0
+[07:43:40] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/reports/mhfcu_properties.png (0 lines, ~0KB)
+[07:43:40] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/reports/mhfcu_properties2.png (0 lines, ~0KB)
+[07:44:04] 🟢 SHELL agent-browser close && sleep 2 && agent-browser open "https://landinghomesmaine.com" 2>&1 → exit 0
+[07:44:04] 🟢 TOKENS: 11890 / 80000 (14%) [read:42KB write:0KB assist:1KB shell:0KB]
+[07:44:12] 🟢 SHELL agent-browser wait 3000 && agent-browser screenshot reports/landing_home.png && agent-browser snapshot -i 2>&1 | head -60 → exit 0
+[07:44:18] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/reports/landing_home.png (0 lines, ~0KB)
+[07:44:25] 🟢 SHELL agent-browser click @e2 && agent-browser wait 1000 && agent-browser find text "Listings" click 2>&1 → exit 0
+[07:44:33] 🟢 SHELL agent-browser open "https://landinghomesmaine.com/our-listings/" && agent-browser wait 3000 && agent-browser screenshot reports/landing_listings.png 2>&1 → exit 0
+[07:44:36] 🟢 TOKENS: 11917 / 80000 (14%) [read:42KB write:0KB assist:1KB shell:0KB]
+[07:44:37] 🟢 SHELL agent-browser snapshot 2>&1 | head -150 → exit 0
+[07:44:46] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/src/ingestion/adapters/landing_real_estate.py (89 lines, ~8.6KB)
+[07:45:10] 🟢 TOKENS: 14198 / 80000 (17%) [read:50KB write:0KB assist:1KB shell:0KB]
+[07:45:19] 🟢 SHELL cd /Users/bengoddard/projects/house-hunt-hero && /usr/local/bin/python3.11 -c "
+import sys
+sys.path.insert(0, '.')
+from src.ingestion.adapters.landing_real_estate import LandingRealEstateAdapter
+
+adapter = LandingRealEstateAdapter()
+print(f'Testing {adapter.source_id}...')
+listings = adapter.fetch()
+print(f'Found {len(listings)} listings')
+if listings:
+    for i, l in enumerate(listings[:3]):
+        print(f'  {i+1}. {l.title[:60]}')
+        print(f'     URL: {l.listing_url[:70]}...')
+        print(f'     Payload: {l.raw_payload}')
+" 2>&1 → exit 0
+[07:45:31] 🟢 SHELL cd /Users/bengoddard/projects/house-hunt-hero && /usr/local/bin/python3.11 -c "
+from playwright.sync_api import sync_playwright
+
+with sync_playwright() as p:
+    browser = p.chromium.launch(headless=True)
+    page = browser.new_page()
+    page.set_extra_http_headers({
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+    })
+    page.goto('https://landinghomesmaine.com/our-listings/', timeout=30000)
+    page.wait_for_load_state('networkidle', timeout=20000)
+    
+    # Debug: check what links exist
+    items = page.query_selector_all('a[href*=\"/idx/\"]')
+    print(f'Found {len(items)} IDX links')
+    
+    all_links = page.query_selector_all('a')
+    print(f'Total links on page: {len(all_links)}')
+    
+    # Print first 20 href attributes to see what's available
+    for i, link in enumerate(all_links[:30]):
+        href = link.get_attribute('href') or ''
+        text = link.inner_text()[:50] if link.inner_text() else ''
+        if href and '/idx' in href.lower():
+            print(f'  IDX: {href[:80]}')
+    
+    browser.close()
+" 2>&1 → exit 0
+[07:45:45] 🟢 SHELL cd /Users/bengoddard/projects/house-hunt-hero && /usr/local/bin/python3.11 -c "
+from playwright.sync_api import sync_playwright
+import time
+
+with sync_playwright() as p:
+    browser = p.chromium.launch(headless=True)
+    page = browser.new_page()
+    page.set_extra_http_headers({
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+    })
+    page.goto('https://landinghomesmaine.com/our-listings/', timeout=60000)
+    
+    # Wait longer for content
+    page.wait_for_timeout(5000)
+    
+    # Check page content
+    content = page.content()
+    print(f'Page content length: {len(content)}')
+    print('Has idx in content:', '/idx/' in content)
+    
+    # Print title
+    print(f'Page title: {page.title()}')
+    
+    # Check for cookie consent or other overlays
+    consents = page.query_selector_all('[class*=\"consent\"], [class*=\"cookie\"], [id*=\"cookie\"]')
+    print(f'Cookie consent elements: {len(consents)}')
+    
+    browser.close()
+" 2>&1 → exit 0
+[07:45:45] 🟢 TOKENS: 14209 / 80000 (17%) [read:50KB write:0KB assist:1KB shell:0KB]
+[07:46:02] 🟢 SHELL cd /Users/bengoddard/projects/house-hunt-hero && /usr/local/bin/python3.11 -c "
+from playwright.sync_api import sync_playwright
+import time
+
+with sync_playwright() as p:
+    # Use more realistic browser args
+    browser = p.chromium.launch(
+        headless=True,
+        args=['--disable-blink-features=AutomationControlled']
+    )
+    context = browser.new_context(
+        user_agent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
+        viewport={'width': 1920, 'height': 1080},
+        locale='en-US',
+    )
+    
+    # Stealth script to mask automation
+    context.add_init_script('''
+        Object.defineProperty(navigator, \"webdriver\", {
+            get: () => undefined
+        });
+    ''')
+    
+    page = context.new_page()
+    page.goto('https://landinghomesmaine.com/our-listings/', timeout=60000)
+    page.wait_for_timeout(5000)
+    
+    print(f'Page title: {page.title()}')
+    content = page.content()
+    print(f'Page content length: {len(content)}')
+    print('Has idx in content:', '/idx/' in content)
+    
+    browser.close()
+" 2>&1 → exit 0
+[07:46:15] 🟢 TOKENS: 14261 / 80000 (17%) [read:50KB write:0KB assist:1KB shell:0KB]
+[07:46:15] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/src/ingestion/adapters/landing_real_estate.py (147 lines, ~14.3KB)
+[07:46:42] 🟢 SHELL cd /Users/bengoddard/projects/house-hunt-hero && /usr/local/bin/python3.11 -c "
+import sys
+sys.path.insert(0, '.')
+from src.ingestion.adapters.landing_real_estate import LandingRealEstateAdapter
+
+adapter = LandingRealEstateAdapter()
+print(f'Testing {adapter.source_id}...')
+listings = adapter.fetch()
+print(f'Found {len(listings)} listings')
+if listings:
+    for i, l in enumerate(listings[:3]):
+        print(f'  {i+1}. {l.title[:60]}')
+        print(f'     URL: {l.listing_url[:70]}...')
+        print(f'     Payload: {l.raw_payload}')
+" 2>&1 → exit 0
+[07:46:45] 🟢 TOKENS: 17936 / 80000 (22%) [read:65KB write:0KB assist:1KB shell:0KB]
+[07:47:11] 🟢 SHELL cd /Users/bengoddard/projects/house-hunt-hero && /usr/local/bin/python3.11 -c "
+import sys
+sys.path.insert(0, '.')
+from src.ingestion.adapters.landing_real_estate import LandingRealEstateAdapter
+
+adapter = LandingRealEstateAdapter()
+print(f'Testing {adapter.source_id}...')
+listings = adapter.fetch()
+print(f'Found {len(listings)} listings')
+if listings:
+    for i, l in enumerate(listings[:5]):
+        print(f'  {i+1}. {l.title}')
+        print(f'     Price: {l.raw_payload.get(\"price\")}, Status: {l.raw_payload.get(\"status\")}, Beds: {l.raw_payload.get(\"beds\")}, Baths: {l.raw_payload.get(\"baths\")}')
+" 2>&1 → exit 0
+[07:47:15] 🟢 TOKENS: 17965 / 80000 (22%) [read:65KB write:0KB assist:2KB shell:0KB]
