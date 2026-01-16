@@ -9,10 +9,10 @@ This is a simple test task to verify that Ralph Wiggum is working correctly.
 
 ## Success Criteria
 
-1. [ ] Create a file named `test_ralph_works.txt` in the project root
-2. [ ] Write the text "Ralph works! Test completed successfully." to the file
-3. [ ] Commit the file to git with message "ralph: test task completed"
-4. [ ] Verify the file exists and contains the expected text
+1. [x] Create a file named `test_ralph_works.txt` in the project root
+2. [x] Write the text "Ralph works! Test completed successfully." to the file
+3. [x] Commit the file to git with message "ralph: test task completed"
+4. [x] Verify the file exists and contains the expected text
 
 ## Context
 
