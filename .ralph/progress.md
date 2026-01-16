@@ -5,7 +5,7 @@
 ## Summary
 
 - Iterations completed: 1
-- Current status: COMPLETE
+- Current status: IN PROGRESS - Implementation complete, testing pending
 
 ## How This Works
 
@@ -40,3 +40,19 @@ This is how Ralph maintains continuity across iterations.
 
 ### 2026-01-16 07:23:44
 **Session 1 started** (model: composer-1)
+
+### 2026-01-16 (Iteration 2 - Maine MLS, Brokerages, Credit Unions)
+**Implementation completed:**
+- ✅ Created adapters for 2 MLS platforms (Maine Listings, Maine State MLS)
+- ✅ Created adapters for all 12 Maine brokerages
+- ✅ Created adapter for Maine Highlands FCU (credit union with listings)
+- ✅ Documented Maine State Credit Union and Maine Credit Unions Directory as contact_required (no listings)
+- ✅ Created source configs for all adapters in `configs/sources/`
+- ✅ Registered all adapters in `src/ingestion/registry.py`
+- ⏳ Testing pending (requires playwright installation and actual site access)
+- ⏳ End-to-end test pending
+
+**Commits:**
+- f38021f: ralph: implement Maine Listings and Maine State MLS adapters with configs and registry
+- f6fc91b: ralph: implement all 12 Maine brokerage adapters with configs and registry
+- ba05321: ralph: implement credit union adapters (Maine Highlands FCU with listings, others documented as contact_required)
