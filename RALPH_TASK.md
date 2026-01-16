@@ -83,7 +83,7 @@ This task encompasses the remaining work to expand property search coverage, imp
    - Properties use realistic Maine addresses
    - Includes edge cases: missing fields, special characters, long titles
 
-10. [ ] [13A1CD](TODO/13A1CD.md) - Create test_adapters_with_mock_data.py for unit testing with HTML fixtures
+10. [x] [13A1CD](TODO/13A1CD.md) - Create test_adapters_with_mock_data.py for unit testing with HTML fixtures
     - Test file loads HTML fixtures for each adapter
     - Creates mock Playwright page object with fixture HTML
     - Runs adapter's fetch() method with mock page
