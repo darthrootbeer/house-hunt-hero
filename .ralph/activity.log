@@ -1165,3 +1165,178 @@ EOF
 ═══════════════════════════════════════════════════════════════
 Ralph Session Started: Fri Jan 16 17:52:38 EST 2026
 ═══════════════════════════════════════════════════════════════
+[17:52:42] 🟢 SESSION START: model=Claude 4.5 Sonnet (Thinking)
+[17:52:49] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/RALPH_TASK.md (266 lines, ~25.9KB)
+[17:52:50] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/.ralph/progress.md (115 lines, ~11.2KB)
+[17:53:02] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/TODO/B81B06.md (36 lines, ~3.5KB)
+[17:53:03] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/test_all_platforms.py (278 lines, ~27.1KB)
+[17:53:08] 🟢 TOKENS: 18239 / 80000 (22%) [read:67KB write:0KB assist:0KB shell:0KB]
+[17:53:47] 🟢 TOKENS: 18264 / 80000 (22%) [read:67KB write:0KB assist:0KB shell:0KB]
+[17:54:10] 🟢 SHELL mkdir -p reports/diagnostics → exit 0
+[17:54:10] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/requirements.txt (9 lines, ~.8KB)
+[17:54:14] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/test_all_platforms.py (489 lines, ~47.7KB)
+[17:54:18] 🟢 TOKENS: 30741 / 80000 (38%) [read:116KB write:0KB assist:0KB shell:0KB]
+[17:54:19] 🟢 SHELL python test_all_platforms.py --help → exit 0
+[17:54:26] 🟢 SHELL python -m pip install -q playwright && python -m playwright install chromium → exit 0
+[17:54:32] 🟢 SHELL which python && python --version && python -c "import playwright; print('Playwright installed')" 2>&1 → exit 0
+[17:54:32] 🟢 SHELL ls -la | grep -E "(venv|env|.venv)" || echo "No virtual environment found" → exit 0
+[17:54:37] 🟢 SHELL source .venv/bin/activate && python test_all_platforms.py --help → exit 0
+[17:54:50] 🟢 TOKENS: 30828 / 80000 (38%) [read:116KB write:0KB assist:0KB shell:0KB]
+[17:54:52] 🟢 SHELL git add test_all_platforms.py RALPH_TASK.md reports/diagnostics/.gitkeep 2>/dev/null || git add test_all_platforms.py RALPH_TASK.md → exit 0
+[17:54:54] 🟢 SHELL git commit -m "ralph: add diagnostic capture to test_all_platforms.py
+
+- Captures screenshots for zero-property platforms automatically
+- Saves HTML snapshots to reports/diagnostics/{adapter_id}/page.html
+- Logs network requests (XHR/fetch/document) and console errors/warnings
+- Records timing metrics (page load, network idle times)
+- Adds --diagnose flag to enable diagnostics for all platforms
+- Generates diagnostic_report.md for each platform with captured data
+- Creates reports/diagnostics/ directory structure" → exit 0
+[17:54:54] 🟢 SHELL git status → exit 0
+[17:54:59] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/TODO/45DD1A.md (35 lines, ~3.4KB)
+[17:55:06] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/src/ingestion/adapters/maine_listings.py (114 lines, ~11.1KB)
+[17:55:06] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/src/ingestion/adapters/realty_of_maine.py (121 lines, ~11.8KB)
+[17:55:42] 🟢 TOKENS: 37628 / 80000 (47%) [read:142KB write:0KB assist:1KB shell:0KB]
+[17:55:47] 🟢 SHELL source .venv/bin/activate && python tests/test_selector_validation.py --help → exit 0
+[17:55:54] 🟢 SHELL source .venv/bin/activate && cd /Users/bengoddard/projects/house-hunt-hero && python tests/test_selector_validation.py --help → exit 0
+[17:56:04] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/tests/test_new_adapters.py (166 lines, ~16.2KB)
+[17:56:14] 🟢 TOKENS: 41827 / 80000 (52%) [read:159KB write:0KB assist:1KB shell:0KB]
+[17:56:15] 🟢 SHELL source .venv/bin/activate && python tests/test_selector_validation.py --help → exit 0
+[17:56:32] 🟢 SHELL git add tests/test_selector_validation.py RALPH_TASK.md && git commit -m "ralph: create test_selector_validation.py for CSS selector testing
+
+- Extracts CSS selectors from adapter source code
+- Navigates to platform URLs using Playwright
+- Tests each selector and counts matching elements
+- Extracts sample HTML from matched elements
+- Generates report flagging selectors with zero matches
+- Compares working vs non-working selector strategies
+- Accepts specific adapter IDs or tests all adapters
+- Saves report to reports/selector_validation_report.md" → exit 0
+[17:56:32] 🟢 SHELL git status → exit 0
+[17:56:37] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/TODO/39D5EA.md (35 lines, ~3.4KB)
+[17:56:44] 🟢 SHELL mkdir -p tests/fixtures/html → exit 0
+[17:56:44] 🟢 TOKENS: 42761 / 80000 (53%) [read:162KB write:0KB assist:1KB shell:0KB]
+[17:57:21] 🟢 TOKENS: 42773 / 80000 (53%) [read:162KB write:0KB assist:1KB shell:0KB]
+[17:57:55] 🟢 TOKENS: 42773 / 80000 (53%) [read:162KB write:0KB assist:1KB shell:0KB]
+[17:58:13] 🟢 SHELL git add tests/fixtures/ RALPH_TASK.md && git commit -m "ralph: create HTML test fixtures for adapter unit testing
+
+- Created fixtures for maine_listings, realty_of_maine, craigslist_owner, fsbo_com
+- Each fixture contains 7-8 mock property listings with realistic Maine addresses
+- Includes edge cases: missing price, missing beds/baths, special characters, long titles
+- Covers MLS, Brokerage, Classifieds, and FSBO platform types
+- Added tests/fixtures/README.md documenting fixture structure and usage
+- Fixtures enable unit testing without network access (<50KB each)" → exit 0
+[17:58:14] 🟢 SHELL git status → exit 0
+[17:58:19] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/TODO/13A1CD.md (36 lines, ~3.5KB)
+[17:58:25] 🟢 TOKENS: 43710 / 80000 (54%) [read:166KB write:0KB assist:1KB shell:0KB]
+[17:58:58] 🟢 TOKENS: 43728 / 80000 (54%) [read:166KB write:0KB assist:1KB shell:0KB]
+[17:59:00] 🟢 SHELL source .venv/bin/activate && python tests/test_adapters_with_mock_data.py 2>&1 | head -50 → exit 0
+[17:59:06] 🟢 SHELL source .venv/bin/activate && python -c "import bs4; print('bs4 installed')" 2>&1 → exit 0
+[17:59:07] 🟢 SHELL source .venv/bin/activate && pip list | grep -i beautiful → exit 0
+[17:59:13] 🟢 SHELL source .venv/bin/activate && pip install -q beautifulsoup4 lxml → exit 0
+[17:59:19] 🟢 SHELL source .venv/bin/activate && python tests/test_adapters_with_mock_data.py 2>&1 | head -100 → exit 0
+[17:59:25] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/src/ingestion/adapters/craigslist_owner.py (86 lines, ~8.3KB)
+[17:59:29] 🟢 TOKENS: 45922 / 80000 (57%) [read:174KB write:0KB assist:2KB shell:0KB]
+[18:00:01] 🟢 TOKENS: 45991 / 80000 (57%) [read:174KB write:0KB assist:2KB shell:0KB]
+[18:00:31] 🟢 TOKENS: 45991 / 80000 (57%) [read:174KB write:0KB assist:2KB shell:0KB]
+[18:00:41] 🟢 SHELL source .venv/bin/activate && python tests/test_adapters_with_mock_data.py 2>&1 → exit 0
+[18:00:58] 🟢 SHELL git add tests/test_adapters_with_mock_data.py RALPH_TASK.md && git commit -m "ralph: create test_adapters_with_mock_data.py for unit testing
+
+- Creates mock Playwright page, browser, context, and element classes
+- Loads HTML fixtures and serves them via mock objects
+- Tests adapter parsing logic without network requests
+- Validates property extraction, count, URLs, and titles
+- Tests edge cases (missing fields, special characters)
+- Fast execution (<1 second, no network dependencies)
+- Supports nested element queries (query_selector on elements)
+- Mock methods: goto, wait_for_timeout, wait_for_selector, set_extra_http_headers" → exit 0
+[18:00:58] 🟢 SHELL git log --oneline -5 → exit 0
+[18:01:02] 🟢 TOKENS: 46007 / 80000 (57%) [read:174KB write:0KB assist:2KB shell:0KB]
+[18:01:05] 🟢 SHELL git push origin main → exit 0
+[18:01:24] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/TODO/F0C541.md (38 lines, ~3.7KB)
+[18:01:54] 🟢 TOKENS: 47004 / 80000 (58%) [read:178KB write:0KB assist:2KB shell:0KB]
+[18:01:59] 🟢 SHELL chmod +x scripts/inspect_platform.py → exit 0
+[18:02:00] 🟢 SHELL source .venv/bin/activate && python scripts/inspect_platform.py --list 2>&1 | head -30 → exit 0
+[18:02:18] 🟢 SHELL git add scripts/inspect_platform.py RALPH_TASK.md .ralph/progress.md && git commit -m "ralph: create scripts/inspect_platform.py for interactive page inspection
+
+- Accepts adapter name as command-line argument
+- Navigates to platform URL using Playwright (shows browser by default)
+- Takes full-page screenshot and saves to reports/inspection/
+- Saves HTML snapshot for reference
+- Shows page links and element counts
+- Interactive selector tester: input CSS selectors, see matching elements
+- Displays matched element HTML, text, and attributes
+- Exports findings to text file with selector test results
+- Includes --list flag to show all available adapters
+- Includes --headless flag for background operation" → exit 0
+[18:02:18] 🟢 SHELL git status → exit 0
+[18:02:23] 🟢 READ /Users/bengoddard/projects/house-hunt-hero/TODO/6EDE07.md (35 lines, ~3.4KB)
+[18:02:27] 🟢 TOKENS: 47921 / 80000 (59%) [read:181KB write:0KB assist:2KB shell:0KB]
+[18:03:04] 🟢 TOKENS: 47934 / 80000 (59%) [read:181KB write:0KB assist:2KB shell:0KB]
+[18:03:10] 🟢 SHELL chmod +x scripts/run_diagnostics.py → exit 0
+[18:03:11] 🟢 SHELL source .venv/bin/activate && python scripts/run_diagnostics.py --help → exit 0
+[18:03:28] 🟢 SHELL git add scripts/run_diagnostics.py RALPH_TASK.md && git commit -m "ralph: create scripts/run_diagnostics.py for batch diagnostics
+
+- Accepts --platforms flag with list of adapter names
+- Accepts --all flag to diagnose all adapters
+- Captures diagnostics (screenshot, HTML, network, console) for each platform
+- Generates individual reports in reports/diagnostics/{adapter_id}/
+- Creates summary report analyzing common issues across platforms
+- Identifies: anti-bot protection, console errors, slow loading, network issues
+- Provides recommendations for each issue type
+- Runs sequentially to avoid rate limits" → exit 0
+[18:03:29] 🟢 SHELL git push origin main → exit 0
+[18:03:34] 🟢 TOKENS: 47961 / 80000 (59%) [read:181KB write:0KB assist:2KB shell:0KB]
+[18:03:40] 🟡 READ /Users/bengoddard/projects/house-hunt-hero/TODO/62C966.md (33 lines, ~3.2KB)
+[18:03:45] 🟡 READ /Users/bengoddard/projects/house-hunt-hero/reports/platform_test_report.md (408 lines, ~39.8KB)
+[18:04:21] 🟡 TOKENS: 59033 / 80000 (73%) - approaching limit [read:224KB write:0KB assist:3KB shell:0KB]
+[18:04:37] 🟡 SHELL git add reports/platform_status.md RALPH_TASK.md && git commit -m "ralph: create platform status tracker
+
+- Lists all 58 platforms with current status (✅ Working, ⚠️ Needs Fix, etc.)
+- Organized by category (Classifieds, Brokerages, MLS, FSBO, etc.)
+- Shows 7 working platforms (12%), 51 need fixes (88%)
+- Includes last tested date, selector info, diagnostic commands
+- Documents working selectors for successful platforms
+- Provides next actions prioritized by platform category
+- Includes instructions for fixing platforms" → exit 0
+[18:04:42] 🟡 READ /Users/bengoddard/projects/house-hunt-hero/TODO/74CFE6.md (33 lines, ~3.2KB)
+[18:04:47] 🟡 SHELL mkdir -p docs/fixes → exit 0
+[18:05:05] 🟡 TOKENS: 59892 / 80000 (74%) - approaching limit [read:227KB write:0KB assist:3KB shell:0KB]
+[18:05:38] 🟡 TOKENS: 59916 / 80000 (74%) - approaching limit [read:227KB write:0KB assist:3KB shell:0KB]
+[18:05:42] 🟡 SHELL git add docs/ RALPH_TASK.md && git commit -m "ralph: create platform fix documentation template
+
+- Created PLATFORM_FIX_TEMPLATE.md with comprehensive fix documentation structure
+- Includes sections: issue description, diagnostic findings, selector analysis, code changes, test results, notes
+- Created docs/fixes/ directory for individual fix documentation
+- Added example fix documentation for maine_listings platform
+- Shows before/after test results and selector changes
+- Includes commit message template and future maintenance notes
+- Referenced in platform status tracker" → exit 0
+[18:05:44] 🟡 SHELL git push origin main → exit 0
+[18:06:08] 🟡 TOKENS: 59924 / 80000 (74%) - approaching limit [read:227KB write:0KB assist:3KB shell:0KB]
+[18:06:10] 🟡 SHELL git add .ralph/progress.md && git commit -m "ralph: update progress log with completed testing infrastructure
+
+- Completed 8 of 19 criteria (42%)
+- Testing infrastructure 100% complete
+- Platform status tracking and fix documentation in place
+- Remaining: 11 criteria for platform fixes (51 platforms)
+- All tools created to support platform fixing workflow" → exit 0
+[18:06:13] 🟡 SHELL git push origin main → exit 0
+[18:06:23] 🟡 READ /Users/bengoddard/projects/house-hunt-hero/TODO/7BD1E6.md (36 lines, ~3.5KB)
+[18:06:23] 🟡 READ /Users/bengoddard/projects/house-hunt-hero/src/ingestion/adapters/maine_state_mls.py (121 lines, ~11.8KB)
+[18:06:47] 🔴 TOKENS: 64846 / 80000 (81%) - approaching limit [read:243KB write:0KB assist:7KB shell:0KB]
+[18:06:47] 🔴 SESSION END: 845015ms, ~64846 tokens used
+[18:06:47] 🔴 TOKENS: 64846 / 80000 (81%) - approaching limit [read:243KB write:0KB assist:7KB shell:0KB]
+[18:06:48] TODO: Moved task [13A1CD] to Completed
+[18:06:48] TODO: Moved task [39D5EA] to Completed
+[18:06:48] TODO: Moved task [45DD1A] to Completed
+[18:06:48] TODO: Moved task [62C966] to Completed
+[18:06:48] TODO: Moved task [6EDE07] to Completed
+[18:06:48] TODO: Moved task [74CFE6] to Completed
+[18:06:48] TODO: Moved task [B81B06] to Completed
+[18:06:48] TODO: Moved task [F0C541] to Completed
+[18:06:48] TODO: Synced 14 completed task(s) from RALPH_TASK.md to TODO.md
+
+═══════════════════════════════════════════════════════════════
+Ralph Session Started: Fri Jan 16 18:06:50 EST 2026
+═══════════════════════════════════════════════════════════════

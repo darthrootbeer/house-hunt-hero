@@ -13,12 +13,6 @@
 ### Testing & Quality
 
 #### Enhanced Test Diagnostics & Tools
-- [ ] [B81B06](TODO/B81B06.md) - Add diagnostic capture to test_all_platforms.py (screenshots, HTML, network logs)
-- [ ] [45DD1A](TODO/45DD1A.md) - Create test_selector_validation.py to test CSS selectors on live pages
-- [ ] [39D5EA](TODO/39D5EA.md) - Create HTML test fixtures in tests/fixtures/html/ for platform structure samples
-- [ ] [13A1CD](TODO/13A1CD.md) - Create test_adapters_with_mock_data.py for unit testing with HTML fixtures
-- [ ] [F0C541](TODO/F0C541.md) - Create scripts/inspect_platform.py interactive tool for page inspection
-- [ ] [6EDE07](TODO/6EDE07.md) - Create scripts/run_diagnostics.py for batch diagnostic report generation
 
 #### Platform Fixes (Zero Property Platforms)
 - [ ] [1FC3FD](TODO/1FC3FD.md) - Fix FSBO platforms (7 platforms: ownerama, brokerless, flat_fee_group, etc.)
@@ -28,12 +22,18 @@
 - [ ] [A551DB](TODO/A551DB.md) - Fix classifieds platforms (oodle, town_ads, sun_journal, etc.)
 
 #### Documentation & Tracking
-- [ ] [62C966](TODO/62C966.md) - Create reports/platform_status.md to track fixing progress
-- [ ] [74CFE6](TODO/74CFE6.md) - Create docs/PLATFORM_FIX_TEMPLATE.md for fix documentation
 
 ## In Progress
 
 ## Completed
+- [x] [F0C541](TODO/F0C541.md) - Create scripts/inspect_platform.py interactive tool for page inspection
+- [x] [B81B06](TODO/B81B06.md) - Add diagnostic capture to test_all_platforms.py (screenshots, HTML, network logs)
+- [x] [74CFE6](TODO/74CFE6.md) - Create docs/PLATFORM_FIX_TEMPLATE.md for fix documentation
+- [x] [6EDE07](TODO/6EDE07.md) - Create scripts/run_diagnostics.py for batch diagnostic report generation
+- [x] [62C966](TODO/62C966.md) - Create reports/platform_status.md to track fixing progress
+- [x] [45DD1A](TODO/45DD1A.md) - Create test_selector_validation.py to test CSS selectors on live pages
+- [x] [39D5EA](TODO/39D5EA.md) - Create HTML test fixtures in tests/fixtures/html/ for platform structure samples
+- [x] [13A1CD](TODO/13A1CD.md) - Create test_adapters_with_mock_data.py for unit testing with HTML fixtures
 - [x] [FC7E1E](TODO/FC7E1E.md) - Implement commercial real estate sites (5 platforms, focus on multi-family)
 - [x] [9F80BF](TODO/9F80BF.md) - Implement national aggregators (Zillow, Realtor.com, Redfin, Trulia, Homes.com)
 - [x] [FC180C](TODO/FC180C.md) - Implement land-specific sites (5 platforms: LandSearch, KW Land, etc.)
