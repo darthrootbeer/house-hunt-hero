@@ -12,11 +12,13 @@ class FSBOHomeListingsAdapter(IngestionAdapter):
     """Fetches FSBO listings from FSBOHomeListings.com."""
 
     source_id = "fsbo_home_listings"
-    # Maine listings
-    SEARCH_URL = "https://www.fsbohomelistings.com/ME"
+    
+    # Major Maine cities to search
+    CITIES = ["Portland", "Bangor", "Lewiston", "Auburn", "Biddeford", "Sanford", "Augusta", "Saco"]
 
     def fetch(self) -> List[RawListing]:
         listings: List[RawListing] = []
+        seen_urls = set()
 
         try:
             with sync_playwright() as p:
@@ -26,56 +28,68 @@ class FSBOHomeListingsAdapter(IngestionAdapter):
                     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
                 })
 
-                page.goto(self.SEARCH_URL, timeout=30000)
-                page.wait_for_load_state("networkidle", timeout=15000)
-
-                items = page.query_selector_all(".listing, .property, .result, [class*='listing'], [class*='property']")
-
-                if not items:
-                    items = page.query_selector_all("a[href*='/property'], a[href*='/listing'], a[href*='/ME/']")
-
-                for item in items[:50]:
+                # Search each major city
+                for city in self.CITIES:
                     try:
-                        if item.tag_name == "a":
-                            url = item.get_attribute("href") or ""
-                        else:
-                            link = item.query_selector("a")
-                            url = link.get_attribute("href") if link else ""
+                        url = f"https://www.fsbohomelistings.com/ME/{city}"
+                        page.goto(url, timeout=30000)
+                        page.wait_for_timeout(3000)  # Wait for dynamic content
 
-                        if not url or url.startswith("#"):
-                            continue
+                        # Find all listing links - they're in h4 headings with links to /details/
+                        listing_links = page.query_selector_all("h4 a[href*='/details/']")
 
-                        if url.startswith("/"):
-                            url = f"https://www.fsbohomelistings.com{url}"
+                        for link in listing_links:
+                            try:
+                                listing_url = link.get_attribute("href") or ""
+                                if not listing_url or listing_url in seen_urls:
+                                    continue
 
-                        title_el = item.query_selector("h2, h3, .title, [class*='title']")
-                        title = title_el.inner_text() if title_el else "No title"
+                                seen_urls.add(listing_url)
 
-                        price_el = item.query_selector(".price, [class*='price']")
-                        price = price_el.inner_text() if price_el else ""
+                                # URL is already absolute on this site
+                                if listing_url.startswith("/"):
+                                    listing_url = f"https://www.fsbohomelistings.com{listing_url}"
 
-                        location_el = item.query_selector(".location, [class*='location'], .address")
-                        location = location_el.inner_text() if location_el else ""
+                                # Get title from link text
+                                title = link.inner_text().strip() if link.inner_text() else "No title"
 
-                        listings.append(
-                            RawListing(
-                                source=self.source_id,
-                                source_timestamp=datetime.now(timezone.utc),
-                                listing_url=url,
-                                title=title,
-                                raw_payload={
-                                    "price": price,
-                                    "location": location,
-                                },
-                            )
-                        )
+                                # Find the parent container to get more details
+                                # The structure has address and price info as siblings after the h4
+                                parent = link.evaluate_handle("el => el.closest('h4').parentElement")
+
+                                # Try to extract price from sibling list items
+                                price = ""
+                                try:
+                                    price_items = parent.query_selector_all("li")
+                                    for li in price_items:
+                                        text = li.inner_text()
+                                        if "$" in text:
+                                            price = text.strip()
+                                            break
+                                except Exception:
+                                    pass
+
+                                listings.append(
+                                    RawListing(
+                                        source=self.source_id,
+                                        source_timestamp=datetime.now(timezone.utc),
+                                        listing_url=listing_url,
+                                        title=title,
+                                        raw_payload={
+                                            "price": price,
+                                            "location": city,
+                                        },
+                                    )
+                                )
+                            except Exception:
+                                continue
+
                     except Exception:
+                        # Continue to next city if one fails
                         continue
 
                 browser.close()
 
-        except PlaywrightTimeout:
-            pass
         except Exception:
             pass
 

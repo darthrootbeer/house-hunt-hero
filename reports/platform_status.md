@@ -1,6 +1,6 @@
 # Platform Status Tracker
 
-**Last Updated:** 2026-01-16
+**Last Updated:** 2026-01-19
 
 **Purpose:** Track platform fix progress and selector changes
 
@@ -9,16 +9,29 @@
 - ⚠️ **Needs Fix** - Returns zero properties, needs selector update
 - 🔧 **In Progress** - Currently being fixed
 - ❌ **Broken** - Has errors or known blockers
+- 🚫 **Not Applicable** - Seller service only, no public listings to scrape
 - 📋 **Not Started** - Not yet investigated
 
 ---
 
 ## Summary
 
-- **Working:** 7 platforms (12%)
-- **Needs Fix:** 51 platforms (88%)
+- **Working:** 6 platforms (10%)
+- **Needs Fix:** 43 platforms (72%)
+- **Not Applicable:** 9 platforms (15%) - Seller services without public listings
 - **In Progress:** 0 platforms
 - **Broken:** 0 platforms
+
+### Current Working Adapters (2026-01-19 test)
+| Adapter | Listings | Notes |
+|---------|----------|-------|
+| craigslist_owner | 25 | Stable |
+| craigslist_maine | 25 | Stable |
+| fsbo_home_listings | 21 | **Fixed 2026-01-19** |
+| maine_listings | 24 | Stable |
+| realty_of_maine | 12 | Stable |
+| landing_real_estate | 10 | Stable |
+| **Total** | **117** | |
 
 ---
 
@@ -176,43 +189,50 @@
 
 ---
 
-### FSBO Platforms (0/9 working)
+### FSBO Platforms (1/9 working)
 
-#### ⚠️ ownerama
-- **Last Tested:** 2026-01-16
-- **Status:** Needs Fix (0 properties)
+#### ✅ fsbo_home_listings
+- **Last Tested:** 2026-01-19
+- **Status:** Working (21 properties found)
+- **Selectors:** `h4 a[href*='/details/']`
+- **Notes:** Fixed 2026-01-19 - searches multiple Maine cities
 
-#### ⚠️ brokerless
-- **Last Tested:** 2026-01-16
-- **Status:** Needs Fix (0 properties)
+#### 🚫 ownerama
+- **Last Tested:** 2026-01-19
+- **Status:** Not Applicable - Seller service only
+- **Notes:** Flat-fee MLS listing service for sellers, no public property search
+
+#### 🚫 brokerless
+- **Last Tested:** 2026-01-19
+- **Status:** Not Applicable - Seller service only
+- **Notes:** Flat-fee MLS listing service for sellers, no public property search
+
+#### 🚫 fsbo_com
+- **Last Tested:** 2026-01-19
+- **Status:** Not Applicable - Seller service only
+- **Notes:** Flat-fee MLS listing service for sellers, no public property search
+
+#### 🚫 isold_my_house
+- **Last Tested:** 2026-01-19
+- **Status:** Not Applicable - Seller service only
+- **Notes:** Flat-fee MLS listing service, redirects to seller packages
+
+#### 🚫 hoang_realty_fsbo
+- **Last Tested:** 2026-01-19
+- **Status:** Not Applicable - Requires direct contact
+- **Notes:** FSBO program requires contacting agent, no public listings
 
 #### ⚠️ flat_fee_group
 - **Last Tested:** 2026-01-16
-- **Status:** Needs Fix (0 properties)
+- **Status:** Needs Investigation
 
 #### ⚠️ the_rock_foundation
 - **Last Tested:** 2026-01-16
-- **Status:** Needs Fix (0 properties)
-
-#### ⚠️ fsbo_home_listings
-- **Last Tested:** 2026-01-16
-- **Status:** Needs Fix (0 properties)
+- **Status:** Needs Investigation
 
 #### ⚠️ diy_flat_fee
 - **Last Tested:** 2026-01-16
-- **Status:** Needs Fix (0 properties)
-
-#### ⚠️ isold_my_house
-- **Last Tested:** 2026-01-16
-- **Status:** Needs Fix (0 properties)
-
-#### ⚠️ hoang_realty_fsbo
-- **Last Tested:** 2026-01-16
-- **Status:** Needs Fix (0 properties)
-
-#### ⚠️ fsbo_com
-- **Last Tested:** 2026-01-16
-- **Status:** Needs Fix (0 properties)
+- **Status:** Needs Investigation
 
 ---
 
