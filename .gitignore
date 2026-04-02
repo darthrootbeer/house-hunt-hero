@@ -1,10 +1,19 @@
+# Python
 __pycache__/
+*.pyc
 .venv/
+
+# Secrets
 .env
+*.env
+
+# macOS
+.DS_Store
+
+# Editor
+.cursor/
+.claude/
+
+# State
 state/
 *.db
-.DS_Store
-.cursor/
-
-# Ralph config (may contain API key)
-.cursor/ralph-config.json
