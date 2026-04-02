@@ -761,5 +761,488 @@
       "inventory": null
     },
     "notes": "Mt. Washington Valley tourist/ski town. Great outdoor access and dining scene but outlet-mall commercialized. Tourist density dilutes the quiet/private feel. Higher prices than most options."
+  },
+  {
+    "slug": "norway-south-paris-me",
+    "name": "Norway / South Paris",
+    "state": "ME",
+    "county": "Oxford County",
+    "county_fips_state": "23",
+    "county_fips_county": "017",
+    "distance_tier": "T1",
+    "drive_minutes": 25,
+    "drive_note": "~25 min via Rt 26",
+    "population": 5100,
+    "hard_fails": [],
+    "vibe": {
+      "creative_culture": 7,
+      "nature_access": 8,
+      "food_drink": 6,
+      "walkability": 5,
+      "quiet_privacy": 7,
+      "community_fit": 7,
+      "pet_friendly": 7,
+      "practical": 8
+    },
+    "places": {
+      "bookstores": [
+        {"name": "The Tribune (430 Main St — books, cards, gifts)", "source": "Yelp"},
+        {"name": "Food for Thought (446 Main St — used/vintage books, records, art)", "source": "foodforthoughtme.com"}
+      ],
+      "record_stores": [
+        {"name": "Food for Thought (446 Main St — 2,000+ collectible records)", "source": "foodforthoughtme.com"}
+      ],
+      "music_venues": [
+        {"name": "Norway Opera House (restored historic performance space)", "source": "visitmaine.com"},
+        {"name": "Celebration Barn Theater (190 Stock Farm Rd, S. Paris — physical theater, circus)", "source": "celebrationbarn.com"},
+        {"name": "Norway Brewing Company (237 Main St — live music in taproom)", "source": "norwaybrewing.com"},
+        {"name": "290 Maine (290 Main St — live music, trivia)", "source": "norwaydowntown.org"},
+        {"name": "Wook Nook (495 Main St — live music events)", "source": "Yelp"}
+      ],
+      "art_galleries": [
+        {"name": "Lights Out Gallery (18 Maple St — converted snowshoe factory, contemporary art)", "source": "lightsoutgallery.org"},
+        {"name": "McLaughlin Garden & Homestead (97 Main St, S. Paris — garden + art programs)", "source": "visitmaine.com"}
+      ],
+      "indie_cinema": [],
+      "outdoor_outfitters": [
+        {"name": "Green Machine Bike Shop (419 Main St — bikes, ski equipment)", "source": "UMaine Undiscovered Maine"}
+      ],
+      "kayak_canoe_rental": [],
+      "ski_areas": [
+        {"name": "Mt. Abram (Greenwood, ~15 min — 51 trails, family-friendly)", "source": "mtabram.com"},
+        {"name": "Sunday River (Newry, ~25 min — 8 peaks, 139 trails)", "source": "sundayriver.com"},
+        {"name": "Roberts Farm Preserve (209 Roberts Farm Rd — 25km free Nordic trails)", "source": "norway-maine.com"},
+        {"name": "Carter's XC Ski Center Oxford (420 Main St — 30km groomed)", "source": "cartersxcski.com"}
+      ],
+      "coffee_shops": [
+        {"name": "Cafe Nomad (450 Main St — espresso, baked goods, local food)", "source": "Facebook"},
+        {"name": "Oxford Hills Mercantile (9 Market Sq, S. Paris — coffee bar, bakery)", "source": "oxfordhillsmercantile.com"}
+      ],
+      "restaurants": [
+        {"name": "Norway Brewing Company (237 Main St — brewpub, seasonal local food)", "source": "norwaybrewing.com"},
+        {"name": "290 Maine (290 Main St — bar & restaurant, outdoor space)", "source": "norwaydowntown.org"},
+        {"name": "Wook Nook (495 Main St — food, drink, live music)", "source": "Yelp"},
+        {"name": "Dolce Amici (427 Main St — Italian cafe, gelato, cocktails)", "source": "restaurantji.com"},
+        {"name": "Maurice Restaurant Francais (109 Main St, S. Paris — French-American, since 1974)", "source": "mauricerestaurant.com"},
+        {"name": "Luchador Tacos (3 Nichol St, S. Paris — Mexican)", "source": "norwaydowntown.org"},
+        {"name": "X Vault Pub & Provisions (10 Market Sq, S. Paris — gastropub, poke bowls)", "source": "norwaydowntown.org"},
+        {"name": "Cafe Nomad (450 Main St — homemade food, cafe)", "source": "Facebook"},
+        {"name": "Ordway Grove Market & Deli (493 Main St — organic/natural deli)", "source": "UMaine Undiscovered Maine"}
+      ],
+      "farmers_markets": [
+        {"name": "Norway Farmers' Market (26 Whitman St — Thu 5-8pm, Jul-Aug)", "source": "alandaycommunitygarden.org"},
+        {"name": "South Paris Farmers' Market (9 Market Sq — Thu 2-6pm, through Oct)", "source": "sunjournal.com"}
+      ],
+      "breweries": [
+        {"name": "Norway Brewing Company (237 Main St — since 2016, taproom + beer garden)", "source": "norwaybrewing.com"}
+      ],
+      "libraries": [
+        {"name": "Norway Memorial Library (258 Main St)", "source": "norwaymemoriallibrary.org"},
+        {"name": "Paris Public Library (37 Market Sq, S. Paris)", "source": "paris.lib.me.us"}
+      ],
+      "yoga_studios": [
+        {"name": "Foot Behind Head Yoga Studio (432 Main St — Ashtanga, 18+ years)", "source": "Tripadvisor"}
+      ],
+      "coworking_spaces": [],
+      "vet_clinics": [
+        {"name": "Norway Veterinary Hospital (10 Main St — since 1964)", "source": "norwayvet.com"},
+        {"name": "Oxford Hills Veterinary Hospital (136 Western Ave, S. Paris — companion + farm)", "source": "oxfordhillsvet.com"}
+      ],
+      "pet_grooming": [
+        {"name": "The Groom Room (19 Maple St — holistic pet spa, one-to-one)", "source": "thegroomroomnorway.com"},
+        {"name": "Fluffin' Cute (Main St — premium grooming, 20+ years exp)", "source": "fluffincutefursalon.com"}
+      ],
+      "pet_boarding": [
+        {"name": "Norway Kennels (owners live on property)", "source": "norwaykennels.com"},
+        {"name": "Bed-n-Biscuit Kennels (East Hebron, short drive — since 2004)", "source": "bednbiscuitkennels.com"}
+      ],
+      "pet_supply": [
+        {"name": "Pawsibilities & Fabulous Finds (104 Waterford Rd — pet care thrift store)", "source": "responsiblepetcare.org"},
+        {"name": "Paris Farmers Union (227 Main St, S. Paris — pet food/supplies)", "source": "parisfarmersunion.com"}
+      ],
+      "animal_shelters": [
+        {"name": "Responsible Pet Care of Oxford Hills (9 Swallow Rd, S. Paris — no-kill)", "source": "responsiblepetcare.org"}
+      ],
+      "grocery_stores": [
+        {"name": "Fare Share Food Co-op (443 Main St — natural/organic, community-owned)", "source": "faresharecoop.org"},
+        {"name": "Hannaford Supermarket (Oxford, ~5 min)", "source": "hannaford.com"},
+        {"name": "Ordway Grove Market & Deli (493 Main St — organic/natural)", "source": "UMaine Undiscovered Maine"}
+      ],
+      "hardware_stores": [
+        {"name": "Aubuchon Hardware (138 Main St)", "source": "hardwarestore.com"},
+        {"name": "Paris Farmers Union (227 Main St, S. Paris — hardware + farm supply)", "source": "parisfarmersunion.com"}
+      ],
+      "farm_supply": [
+        {"name": "Paris Farmers Union (227 Main St, S. Paris — since 1919)", "source": "parisfarmersunion.com"},
+        {"name": "Tractor Supply Co. (Oxford, ~5 min)", "source": "tractorsupply.com"}
+      ],
+      "urgent_care": [
+        {"name": "MaineHealth Stephens Hospital (181 Main St — 24/7 ER)", "source": "mainehealth.org"},
+        {"name": "Concentra Urgent Care (176 Main St — walk-in Mon-Fri)", "source": "concentra.com"}
+      ]
+    },
+    "market": {
+      "zhvi_latest": null, "zhvi_6m_change_pct": null, "median_sale_price": null, "dom": null, "inventory": null
+    },
+    "notes": "Oxford County service center. Same county data as Bethel. Record store (Food for Thought), opera house, Celebration Barn, food co-op. Practical and affordable."
+  },
+  {
+    "slug": "fryeburg-me",
+    "name": "Fryeburg",
+    "state": "ME",
+    "county": "Oxford County",
+    "county_fips_state": "23",
+    "county_fips_county": "017",
+    "distance_tier": "T2",
+    "drive_minutes": 30,
+    "drive_note": "~30 min via Rt 302",
+    "population": 3449,
+    "hard_fails": [],
+    "vibe": {
+      "creative_culture": 4,
+      "nature_access": 8,
+      "food_drink": 5,
+      "walkability": 3,
+      "quiet_privacy": 8,
+      "community_fit": 5,
+      "pet_friendly": 6,
+      "practical": 4
+    },
+    "places": {
+      "bookstores": [],
+      "record_stores": [],
+      "music_venues": [
+        {"name": "Leura Hill Eastman Performing Arts Center (Fryeburg Academy — 75+ shows/yr)", "source": "fryeburgacademy.org"},
+        {"name": "Top of the 9th at Fryeburg House of Pizza (11 Portland St — live music)", "source": "fryeburghouseofpizza.com"},
+        {"name": "Saco River Brewing (10 Jockey Cap Ln — live music Tuesdays)", "source": "sacoriverbrewing.com"}
+      ],
+      "art_galleries": [
+        {"name": "Studio 22 (art studio/gallery, classes)", "source": "studio22fryeburg.com"},
+        {"name": "Earth & Fire Studio (blown glass lighting, fine art)", "source": "earthandfirestudio.net"},
+        {"name": "Pace Galleries / Nadler Gallery (Fryeburg Academy — Tue/Thu 10am-1pm)", "source": "fryeburgacademy.org"}
+      ],
+      "indie_cinema": [],
+      "outdoor_outfitters": [],
+      "kayak_canoe_rental": [
+        {"name": "Saco River Canoe & Kayak (1009 Main St — since 1971, seasonal)", "source": "sacorivercanoe.com"}
+      ],
+      "ski_areas": [
+        {"name": "Weston's Farm Nordic (48 River St — XC skiing on farm property)", "source": "westonsfarm.com"}
+      ],
+      "coffee_shops": [
+        {"name": "Fair Grounds Coffee (627 Main St — verify current status)", "source": "Facebook"},
+        {"name": "Spice & Grain (17 Portland St — co-op cafe, baked goods)", "source": "spiceandgrain.org"}
+      ],
+      "restaurants": [
+        {"name": "302 West Smokehouse & Tavern (636 Main St — BBQ)", "source": "302west.com"},
+        {"name": "Oxford House Inn Restaurant (548 Main St — upscale farm-to-table)", "source": "oxfordhouseinn.com"},
+        {"name": "Fryeburg House of Pizza (11 Portland St)", "source": "fryeburghouseofpizza.com"},
+        {"name": "Fryeburg Kitchen and Marketplace (2 Jockey Cap Ln — seafood, oyster bar)", "source": "Yelp"},
+        {"name": "Long River Chinese (117 Bridgton Rd)", "source": "Yelp"},
+        {"name": "Old Saco Inn Bistro (125 Old Saco Ln)", "source": "oldsacoinn.com"},
+        {"name": "Saco River Brewing (10 Jockey Cap Ln — taproom + food trucks)", "source": "sacoriverbrewing.com"}
+      ],
+      "farmers_markets": [
+        {"name": "Fryeburg Farmers' Market (83 Portland St — Sun 10am-1pm, Jun-Sep)", "source": "uppersacoca.org"},
+        {"name": "Weston's Farm Stand (48 River St — organic, seasonal May-Oct)", "source": "westonsfarm.com"}
+      ],
+      "breweries": [
+        {"name": "Saco River Brewing (10 Jockey Cap Ln)", "source": "sacoriverbrewing.com"},
+        {"name": "Tom Gobbler Brewing (394 West Fryeburg Rd — log cabin, verify hours)", "source": "Facebook"}
+      ],
+      "libraries": [
+        {"name": "Fryeburg Public Library (515 Main St — 1832 stone schoolhouse)", "source": "fryeburgpubliclibrary.org"}
+      ],
+      "yoga_studios": [
+        {"name": "HeartSpace (600 Main St — yoga, massage, Pilates, dance fitness)", "source": "heartspacefryeburg.com"}
+      ],
+      "coworking_spaces": [],
+      "vet_clinics": [
+        {"name": "Fryeburg Veterinary Hospital (203 Bridgton Rd — AAHA-accredited, also boarding/grooming)", "source": "fryeburgvet.com"}
+      ],
+      "pet_grooming": [
+        {"name": "Dippitty Dog Grooming (183 Bridgton Rd — all breeds)", "source": "nokillnetwork.org"},
+        {"name": "Fryeburg Veterinary Hospital (grooming as add-on)", "source": "fryeburgvet.com"}
+      ],
+      "pet_boarding": [
+        {"name": "Fryeburg Veterinary Hospital (on-site boarding)", "source": "fryeburgvet.com"}
+      ],
+      "pet_supply": [
+        {"name": "Sniff My Snack LLC (82 Lovell Rd — holistic pet treat bakery)", "source": "sniffmysnack.com"}
+      ],
+      "animal_shelters": [
+        {"name": "Harvest Hills Animal Shelter (1389 Bridgton Rd — no-kill, by appt)", "source": "harvesthills.org"}
+      ],
+      "grocery_stores": [
+        {"name": "Thriftway Supermarket (111 Bridgton Rd — full-service local)", "source": "Yelp"},
+        {"name": "Spice & Grain (17 Portland St — co-op health food)", "source": "spiceandgrain.org"}
+      ],
+      "hardware_stores": [
+        {"name": "Trumbulls Hardware (27 Portland St — Do It Best affiliate)", "source": "doitbest.com"}
+      ],
+      "farm_supply": [],
+      "urgent_care": [
+        {"name": "Fryeburg Family Medicine (253 Bridgton Rd — walk-in primary care)", "source": "cmhc.org"}
+      ]
+    },
+    "market": {
+      "zhvi_latest": null, "zhvi_6m_change_pct": null, "median_sale_price": null, "dom": null, "inventory": null
+    },
+    "notes": "ME/NH border town. Fryeburg Academy, Fryeburg Fair. Saco River access. Quiet but thin on services — no cinema, no bookstore, no farm supply. Close to Conway for shopping."
+  },
+  {
+    "slug": "bridgton-me",
+    "name": "Bridgton",
+    "state": "ME",
+    "county": "Cumberland County",
+    "county_fips_state": "23",
+    "county_fips_county": "005",
+    "distance_tier": "T2",
+    "drive_minutes": 45,
+    "drive_note": "~45 min via Rt 302",
+    "population": 5500,
+    "hard_fails": [],
+    "vibe": {
+      "creative_culture": 6,
+      "nature_access": 8,
+      "food_drink": 7,
+      "walkability": 6,
+      "quiet_privacy": 7,
+      "community_fit": 6,
+      "pet_friendly": 7,
+      "practical": 6
+    },
+    "places": {
+      "bookstores": [
+        {"name": "Bridgton Books (140 Main St — independent, ~30 years)", "source": "bridgtonbooks.com"}
+      ],
+      "record_stores": [],
+      "music_venues": [
+        {"name": "The Queen's Head (271 Main St — pub with regular live music)", "source": "queensheadbridgton.com"},
+        {"name": "Depot Street Tap House (18 Depot St — live music, outdoor movie screen)", "source": "Tripadvisor"},
+        {"name": "Music on Main (downtown — free outdoor summer concert series)", "source": "musiconmainbridgton.com"},
+        {"name": "Deertrees Theatre (Harrison, ~10 min — summer performing arts)", "source": "deertrees-theatre.org"}
+      ],
+      "art_galleries": [
+        {"name": "Gallery 302 (112 Main St — 40+ local artists co-op, year-round)", "source": "gallery302.com"},
+        {"name": "Aperto Fine Art (63 Main St — contemporary fine art)", "source": "apertofineart.com"}
+      ],
+      "indie_cinema": [
+        {"name": "Magic Lantern Movie Theater (9 Depot St — indie, themed theaters)", "source": "magiclanternmovies.com"},
+        {"name": "Bridgton Twin Drive-In (383 Portland Rd — Maine's oldest, since 1957, seasonal)", "source": "Facebook"}
+      ],
+      "outdoor_outfitters": [
+        {"name": "Unc'l Lunkers Bait & Tackle (6 Gage St — fishing/hunting gear)", "source": "unc-l-lunkers.com"}
+      ],
+      "kayak_canoe_rental": [
+        {"name": "Lake Region Paddle (1 Mountain Rd — kayak/SUP/canoe, delivery to area lakes)", "source": "lakeregionpaddle.com"}
+      ],
+      "ski_areas": [
+        {"name": "Pleasant Mountain (119 Mountain Rd — Maine's oldest, 40 trails, night skiing)", "source": "pleasantmountain.com"}
+      ],
+      "coffee_shops": [
+        {"name": "Beth's Kitchen Cafe (108 Main St — locally roasted coffee, bakery, breakfast)", "source": "bethskitchencafe.com"},
+        {"name": "Sail Away Coffee (152 Portland Rd — drive-through)", "source": "Yelp"}
+      ],
+      "restaurants": [
+        {"name": "Ancora Italian Kitchen (18a Depot St — wood-fired pizza, handmade pasta)", "source": "ancoramaine.com"},
+        {"name": "Standard Gastropub (233 Main St — 300+ craft beers, upscale pub)", "source": "standardgastropub.com"},
+        {"name": "The Queen's Head (271 Main St — 22 draft lines, Maine craft focus)", "source": "queensheadbridgton.com"},
+        {"name": "Black Horse Tavern (26 Portland Rd — since 1987, Sunday brunch)", "source": "theblackhorsetavern.com"},
+        {"name": "Cafe Paprika (146 Harrison Rd — Mediterranean/Moorish)", "source": "paprika-online.com"},
+        {"name": "Nilfa's Kusina (160 Main St — Filipino/Asian fusion, breakfast/lunch)", "source": "Yelp"},
+        {"name": "Elevation Sushi and Taco (103 Main St)", "source": "giftly.com"},
+        {"name": "A La Mexicana 2 (243 Portland Rd — Mexican)", "source": "Yelp"},
+        {"name": "Maine Lobster Express (7 Main St — seafood)", "source": "mainelobsterexpress.com"},
+        {"name": "Campfire Grille (518 Portland Rd — comfort food, outdoor dining)", "source": "thecampfiregrille.com"},
+        {"name": "Depot Street Tap House (18 Depot St — craft cocktails, small plates)", "source": "restaurantji.com"},
+        {"name": "Pondicherry House (2 Cottage St — pizza)", "source": "pondicherryhouse.com"}
+      ],
+      "farmers_markets": [
+        {"name": "Bridgton Farmers' Market (Sat 8am-12pm, May-Oct — summer)", "source": "mainefarmersmarkets.org"},
+        {"name": "Bridgton Winter Farmers' Market (Sat 9am-12pm, Nov-Apr)", "source": "mainefarmersmarkets.org"}
+      ],
+      "breweries": [],
+      "libraries": [
+        {"name": "Bridgton Public Library (1 Church St — est. 1895, National Register)", "source": "bridgtonlibrary.org"}
+      ],
+      "yoga_studios": [
+        {"name": "North of Ninety (118 Main St — yoga and meditation)", "source": "northofninety.com"},
+        {"name": "Yoga with Rose (Salmon Point Beach — outdoor yoga)", "source": "yogawithrose.com"}
+      ],
+      "coworking_spaces": [],
+      "vet_clinics": [
+        {"name": "Bridgton Veterinary Hospital (213 Harrison Rd — AAHA, also boarding/grooming)", "source": "bridgtonvets.com"}
+      ],
+      "pet_grooming": [
+        {"name": "Wicked Wags (now in N. Waterford — still serves region)", "source": "shopwickedwags.com"},
+        {"name": "Bridgton Veterinary Hospital (grooming as part of vet services)", "source": "bridgtonvets.com"}
+      ],
+      "pet_boarding": [
+        {"name": "Bridgton Veterinary Hospital (climate-controlled boarding)", "source": "bridgtonvets.com"}
+      ],
+      "pet_supply": [
+        {"name": "Paris Farmers Union (13 Sandy Creek Rd — pet food/supplies)", "source": "parisfarmersunion.com"}
+      ],
+      "animal_shelters": [
+        {"name": "Harvest Hills Animal Shelter (1389 Bridgton Rd, Fryeburg — serves Bridgton)", "source": "harvesthills.org"},
+        {"name": "All Ears Animal Rescue (245 Wildwood Rd — behavioral specialists)", "source": "aears.org"},
+        {"name": "3 Dogs Rescue (495 S. Bridgton Rd — foster-based)", "source": "3dogsrescue.com"}
+      ],
+      "grocery_stores": [
+        {"name": "Hannaford Supermarket (109 Portland Rd — full grocery + pharmacy)", "source": "hannaford.com"},
+        {"name": "Food City (295 Main St — locally owned)", "source": "foodcitymkt.com"}
+      ],
+      "hardware_stores": [
+        {"name": "Hayes Ace Hardware & Rental (204 Portland Rd — family-owned ~60 years)", "source": "hayesacehardware.com"}
+      ],
+      "farm_supply": [
+        {"name": "Paris Farmers Union (13 Sandy Creek Rd — since 1919)", "source": "parisfarmersunion.com"}
+      ],
+      "urgent_care": [
+        {"name": "Bridgton Hospital / ER (10 Hospital Dr — 24/7 ER)", "source": "cmhc.org"},
+        {"name": "Central Maine Healthcare Urgent Care (14 Wyonegonic Rd — Mon-Fri)", "source": "urgentcare.com"}
+      ]
+    },
+    "market": {
+      "zhvi_latest": null, "zhvi_6m_change_pct": null, "median_sale_price": null, "dom": null, "inventory": null
+    },
+    "notes": "Lakes region town. Bookstore, two art galleries, indie cinema + drive-in, year-round farmers market. Pleasant Mountain ski. No brewery (Bear Bones closed 2026). Solid middle option."
+  },
+  {
+    "slug": "lewiston-auburn-me",
+    "name": "Lewiston / Auburn",
+    "state": "ME",
+    "county": "Androscoggin County",
+    "county_fips_state": "23",
+    "county_fips_county": "001",
+    "distance_tier": "T3",
+    "drive_minutes": 90,
+    "drive_note": "~1.5 hrs via Rt 26 / ME Tpke",
+    "population": 36000,
+    "hard_fails": [],
+    "vibe": {
+      "creative_culture": 7,
+      "nature_access": 5,
+      "food_drink": 7,
+      "walkability": 5,
+      "quiet_privacy": 3,
+      "community_fit": 6,
+      "pet_friendly": 8,
+      "practical": 9
+    },
+    "places": {
+      "bookstores": [
+        {"name": "Quiet City Books (downtown Lewiston — indie, new + used, since 2016)", "source": "quietcitybooks.com"}
+      ],
+      "record_stores": [
+        {"name": "NerdCore Records (97C Lisbon St — vinyl, CDs, cassettes, D&D, underground)", "source": "nerdcoremaine.com"},
+        {"name": "Bull Moose (20 East Ave — Maine chain, new/used music/movies/games)", "source": "bullmoose.com"}
+      ],
+      "music_venues": [
+        {"name": "Gendron Franco Center (46 Cedar St — 428-seat performing arts hall)", "source": "francocenter.org"},
+        {"name": "The Public Theatre (Lisbon & Maple — professional theater + indie films)", "source": "thepublictheatre.org"},
+        {"name": "Baxter Brewing / The Pub (120 Mill St — live music events, 24 taps)", "source": "baxterbrewing.com"},
+        {"name": "Gritty McDuff's Auburn (68 Main St — live music every other Fri)", "source": "grittys.com"},
+        {"name": "Lost Valley Brewpub (200 Lost Valley Rd — summer concerts on mountain)", "source": "lostvalleyski.com"}
+      ],
+      "art_galleries": [
+        {"name": "Atrium Gallery at USM L-A (51 Westminster St — free, rotating Maine artists)", "source": "usm.maine.edu"},
+        {"name": "L/A Arts (Art Walk LA — 30+ storefronts as galleries, monthly summer)", "source": "laarts.org"}
+      ],
+      "indie_cinema": [
+        {"name": "The Public Theatre (indie films and film festivals alongside live theater)", "source": "thepublictheatre.org"}
+      ],
+      "outdoor_outfitters": [
+        {"name": "Shaker Hill Outdoors (paddle sports, kayaks, fishing tackle)", "source": "bestthingsme.com"}
+      ],
+      "kayak_canoe_rental": [
+        {"name": "Auburn Self-Service Kayak Rentals (Androscoggin River — app-based, $15/hr)", "source": "wcyy.com"}
+      ],
+      "ski_areas": [
+        {"name": "Lost Valley (200 Lost Valley Rd, Auburn — 22 trails, night skiing, brewpub)", "source": "lostvalleyski.com"},
+        {"name": "Black Mountain of Maine (Rumford, ~1 hr — affordable family mountain)", "source": "skiblackmountain.org"}
+      ],
+      "coffee_shops": [
+        {"name": "Blue Jay Coffee (downtown Lewiston)", "source": "bluejaycoffee.me"},
+        {"name": "Crouse House Coffee (local roaster, donates 10% to nonprofits)", "source": "crousehousecoffee.com"},
+        {"name": "Little River Coffee (local indie)", "source": "lrcoffeeco.com"},
+        {"name": "Common Grounds Cafe (nonprofit cafe by The Root Cellar)", "source": "stacker.com"}
+      ],
+      "restaurants": [
+        {"name": "Fish Bones Grill (70 Lincoln St — canal-side, seafood, since 2005)", "source": "fishbonesgrill.com"},
+        {"name": "DaVinci's Italian Eatery (150 Mill St — Bates Mill)", "source": "davinciseatery.com"},
+        {"name": "Mother India (114 Lisbon St — North Indian, since 2009)", "source": "Yelp"},
+        {"name": "bon Vivant (133 Lisbon St — farm-to-table New American)", "source": "portlandfoodmap.com"},
+        {"name": "The Blue Feather (49 Lisbon St — opened Jun 2025, brunch/dinner)", "source": "sunjournal.com"},
+        {"name": "Saban's Cuisine (270 Lisbon St — Somali halal)", "source": "sabanscuisine.com"},
+        {"name": "Rolly's Diner (87 Mill St, Auburn — classic diner, breakfast all day)", "source": "rollysnewauburn.com"},
+        {"name": "Mac's Grill (1052 Minot Ave, Auburn — steakhouse, 20+ years)", "source": "macsgrill.com"},
+        {"name": "El Pocho's Mexican Grill (Lisbon St)", "source": "downtownlewiston.com"},
+        {"name": "The Italian Bakery (famous Friday doughnuts)", "source": "downtownlewiston.com"},
+        {"name": "Firehouse Grill (47 Broad St, Auburn)", "source": "firehouseauburn.com"}
+      ],
+      "farmers_markets": [
+        {"name": "Lewiston Farmers' Market (year-round — summer Sun, winter Thu)", "source": "lewistonfarmersmarket.com"}
+      ],
+      "breweries": [
+        {"name": "Baxter Brewing Co. (130 Mill St — first ME brewery to can exclusively)", "source": "baxterbrewing.com"},
+        {"name": "Gritty McDuff's Auburn (68 Main St — English ales, river deck)", "source": "grittys.com"},
+        {"name": "Lost Valley Brewing (200 Lost Valley Rd — on-mountain nano)", "source": "lostvalleyski.com"}
+      ],
+      "libraries": [
+        {"name": "Lewiston Public Library (200 Lisbon St)", "source": "lplonline.org"},
+        {"name": "Auburn Public Library (49 Spring St)", "source": "auburnpubliclibrary.org"}
+      ],
+      "yoga_studios": [
+        {"name": "Chill Yoga (178 Lisbon St — since 2007, yoga/meditation/Ayurveda)", "source": "chillyoga.net"},
+        {"name": "The Sanctuary (351 Lisbon St — yoga, reflexology)", "source": "thesanctuarymaine.com"}
+      ],
+      "coworking_spaces": [
+        {"name": "MUNKA Coworking (213 Lisbon St — 24/7 access)", "source": "munkacoworking.com"},
+        {"name": "Co-Lab Create (woman-owned creative coworking + event space)", "source": "colabcreate.space"}
+      ],
+      "vet_clinics": [
+        {"name": "Taylor Brook Animal Hospital (33 Millett Dr, Auburn — AAHA-adjacent)", "source": "taylorbrookanimalhospital.com"},
+        {"name": "Lisbon Road Animal Hospital (1981 Lisbon Rd — AAHA-accredited)", "source": "lisbonroadanimalhospital.com"},
+        {"name": "Animal Emergency Clinic of Mid-Maine (37 Strawberry Ave — emergency-only)", "source": "aec-midmaine.com"}
+      ],
+      "pet_grooming": [
+        {"name": "4 Paws Pet Grooming (675 Main St — small dogs/cats, gentle)", "source": "4pawsdoggrooming.com"},
+        {"name": "Top Dog Professional Grooming (20 Coburn St, Auburn — full-service + self-wash)", "source": "topdogprofessional.com"}
+      ],
+      "pet_boarding": [
+        {"name": "Shangri-La Kennels (852 Washington St N, Auburn)", "source": "shangrilakennels.com"},
+        {"name": "PawzLodge (581 Auburn Rd, Turner — daycare + boarding)", "source": "pawzlodge.com"}
+      ],
+      "pet_supply": [
+        {"name": "Scales and Tails Pet Supplies (120 Center St, Auburn — opened 2024, locally owned)", "source": "sunjournal.com"}
+      ],
+      "animal_shelters": [
+        {"name": "Greater Androscoggin Humane Society (55 Strawberry Ave — since 1885)", "source": "gahumane.org"}
+      ],
+      "grocery_stores": [
+        {"name": "Axis Natural Foods (120 Center St, Auburn — since 1970, natural/organic)", "source": "axisnaturalfoods.com"},
+        {"name": "Hannaford (692 Sabattus St, Lewiston)", "source": "hannaford.com"},
+        {"name": "Shaw's (27 E Ave, Lewiston)", "source": "shaws.com"}
+      ],
+      "hardware_stores": [
+        {"name": "Drillen Ace Hardware (1086 Sabattus St, Lewiston)", "source": "acehardware.com"},
+        {"name": "Petro's Ace Hardware (965 Minot Ave, Auburn)", "source": "acehardware.com"}
+      ],
+      "farm_supply": [
+        {"name": "Paris Farmers Union (671 Main St, Lewiston)", "source": "parisfarmersunion.com"},
+        {"name": "Tractor Supply Co. (1619 Lisbon St, Lewiston)", "source": "tractorsupply.com"}
+      ],
+      "urgent_care": [
+        {"name": "St. Mary's Urgent Care (791 Turner St, Auburn — walk-in)", "source": "stmarysmaine.com"},
+        {"name": "ConvenientMD (Auburn — 7 days, 8am-8pm)", "source": "convenientmd.com"},
+        {"name": "Maine Urgent Care (685 Sabattus St, Lewiston)", "source": "Facebook"}
+      ]
+    },
+    "market": {
+      "zhvi_latest": null, "zhvi_6m_change_pct": null, "median_sale_price": null, "dom": null, "inventory": null
+    },
+    "notes": "Revitalizing twin cities. 2 record stores (NerdCore underground!), Franco Center, Baxter Brewing, diverse food scene (Somali, Indian, Italian, French). Affordable but urban — lowest quiet/privacy score."
   }
 ]

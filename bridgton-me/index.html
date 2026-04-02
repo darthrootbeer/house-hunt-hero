@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bridgton, ME — Soulplace Profile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d1117; --surface: #161b22; --surface2: #1c2330; --border: #2d3748;
+  --navy: #1a2744; --green: #3d7a5a; --green-light: #5aaa82; --green-dim: #2a5240;
+  --amber: #c9883a; --amber-light: #e8a84e; --amber-dim: #7a5020;
+  --text: #e2e8f0; --text-muted: #8899aa; --text-dim: #4a5568;
+  --red: #c0392b; --red-light: #e74c3c;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Lora', Georgia, serif; font-size: 16px; line-height: 1.6; }
+.container { max-width: 800px; margin: 0 auto; padding: 0 24px; }
+
+/* Header */
+header { background: var(--navy); border-bottom: 2px solid var(--green-dim); padding: 28px 0 20px; }
+.header-inner { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 12px; }
+.header-title { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 700; color: var(--text); letter-spacing: -0.01em; }
+.header-subtitle { font-family: 'Lora', serif; font-style: italic; color: var(--text-muted); font-size: 0.95rem; margin-top: 4px; }
+.header-meta { text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--text-muted); line-height: 1.7; }
+.back-link { font-family: 'Inter', sans-serif; font-size: 0.82rem; color: var(--green-light); text-decoration: none; }
+.back-link:hover { text-decoration: underline; }
+
+/* Quick stats bar */
+.quick-stats { display: flex; flex-wrap: wrap; gap: 12px; margin: 24px 0 28px; }
+.qs { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px 16px; flex: 1; min-width: 120px; }
+.qs-label { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-dim); }
+.qs-value { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 600; color: var(--text); margin-top: 2px; }
+
+/* Section labels */
+.section-label { font-family: 'Inter', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--text); margin: 32px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+
+/* Vibe bars — RPG style, two-column grid */
+.vibe-section { margin-bottom: 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 4px 24px; }
+.vibe-row { margin-bottom: 12px; }
+.vibe-label { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
+.vibe-name { font-family: 'Inter', sans-serif; font-size: 0.88rem; font-weight: 600; color: var(--text); }
+.vibe-score { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--text-muted); }
+.vibe-track { background: var(--surface2); border-radius: 4px; height: 10px; overflow: hidden; position: relative; }
+.vibe-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+.vibe-desc { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 0.72rem; color: var(--text-dim); margin-top: 3px; }
+
+/* Places list — verifiable names + sources */
+.places-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 24px; }
+.places-group { margin-bottom: 8px; }
+.places-group-label { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--green-light); margin-bottom: 6px; }
+.cat-block { margin-bottom: 4px; }
+.cat-block[open] { margin-bottom: 10px; }
+.cat-header { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); cursor: pointer; list-style: none; }
+.cat-header::-webkit-details-marker { display: none; }
+.cat-header::before { content: "▶"; font-size: 0.55rem; color: var(--text-dim); margin-right: 6px; transition: transform 0.15s; }
+.cat-block[open] > .cat-header::before { transform: rotate(90deg); }
+.cat-name { font-family: 'Inter', sans-serif; font-size: 0.82rem; font-weight: 600; color: var(--text); }
+.cat-count { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--text-muted); }
+.cat-header.cat-absent .cat-name { color: var(--text-dim); }
+.cat-header.cat-absent .cat-count { color: var(--text-dim); }
+.place-row { padding: 3px 0 3px 8px; font-size: 0.82rem; line-height: 1.5; }
+.place-name { color: var(--text); }
+.place-source { font-family: 'JetBrains Mono', monospace; font-size: 0.66rem; color: var(--text-dim); margin-left: 8px; }
+.place-none { color: var(--text-dim); font-style: italic; font-size: 0.78rem; }
+.places-empty { color: var(--text-dim); font-style: italic; }
+
+/* Market stats */
+.market-section { margin-bottom: 32px; }
+.mkt-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+.mkt-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.mkt-label { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-dim); margin-bottom: 4px; }
+.mkt-value { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--text); }
+.delta { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; margin-top: 4px; display: block; }
+.delta.up { color: var(--amber-light); }
+.delta.down { color: var(--green-light); }
+.unavailable { background: var(--surface); border: 1px dashed var(--border); border-radius: 8px; padding: 20px; text-align: center; color: var(--text-muted); font-style: italic; font-size: 0.88rem; }
+
+/* Hard fails */
+.hard-fail-box { background: rgba(192,57,43,0.08); border: 1px solid rgba(192,57,43,0.3); border-radius: 8px; padding: 16px 20px; margin-bottom: 24px; }
+.hard-fail-title { font-family: 'Inter', sans-serif; font-size: 0.88rem; font-weight: 600; color: var(--red-light); margin-bottom: 8px; }
+.hard-fail-list { list-style: none; padding: 0; }
+.hard-fail-list li { font-size: 0.85rem; color: var(--red-light); padding: 2px 0; }
+.hard-fail-list li::before { content: "✖ "; }
+
+/* Notes */
+.notes-box { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--amber); border-radius: 8px; padding: 16px 20px; margin-bottom: 24px; font-size: 0.88rem; color: var(--amber-light); line-height: 1.6; }
+
+/* Info row */
+.info-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 12px 0 20px; }
+
+footer { background: var(--surface); border-top: 1px solid var(--border); padding: 20px 0; margin-top: 48px; text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 0.73rem; color: var(--text-dim); }
+
+@media (max-width: 480px) {
+  .container { padding: 0 14px; }
+  .header-title { font-size: 1.6rem; }
+  .header-meta { text-align: left; }
+  .quick-stats { flex-direction: column; }
+  .mkt-grid { grid-template-columns: 1fr 1fr; }
+  .vibe-section { grid-template-columns: 1fr; }
+  .places-list { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <div class="header-inner">
+      <div>
+        <a href="../market_report/" class="back-link">&larr; Market Report</a>
+        <div class="header-title">Bridgton, ME</div>
+        <div class="header-subtitle">Cumberland County &nbsp;&middot;&nbsp; 30–60 min</div>
+      </div>
+      <div class="header-meta">
+        <div>~45 min via Rt 302</div>
+        <div>Pop. 5,500</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="quick-stats">
+    <div class="qs"><div class="qs-label">Vibe Score</div><div class="qs-value">6.6/10</div></div>
+    <div class="qs"><div class="qs-label">Distance</div><div class="qs-value">T2</div></div>
+    <div class="qs"><div class="qs-label">Population</div><div class="qs-value">5,500</div></div>
+  </div>
+
+  
+
+  <div class="notes-box">Lakes region town. Bookstore, two art galleries, indie cinema + drive-in, year-round farmers market. Pleasant Mountain ski. No brewery (Bear Bones closed 2026). Solid middle option.</div>
+
+  <div class="section-label">Soulplace Profile</div>
+  <div class="vibe-section">
+    <div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Creative Culture</span>
+    <span class="vibe-score">6/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:60%;background:#a855f7;opacity:0.65;"></div>
+  </div>
+  <div class="vibe-desc">Bookstores, record shops, music venues, indie cinema, arts scene</div>
+</div><div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Nature Access</span>
+    <span class="vibe-score">8/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:80%;background:#22c55e;opacity:0.85;"></div>
+  </div>
+  <div class="vibe-desc">Trails, mountains, water, skiing, state parks within 20 min</div>
+</div><div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Food & Drink</span>
+    <span class="vibe-score">7/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:70%;background:#f59e0b;opacity:0.85;"></div>
+  </div>
+  <div class="vibe-desc">Coffee shops, restaurants, farmers markets, local food culture</div>
+</div><div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Walkability</span>
+    <span class="vibe-score">6/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:60%;background:#3b82f6;opacity:0.65;"></div>
+  </div>
+  <div class="vibe-desc">Can you walk to a coffee shop, post office, grocery?</div>
+</div><div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Quiet & Privacy</span>
+    <span class="vibe-score">7/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:70%;background:#6366f1;opacity:0.85;"></div>
+  </div>
+  <div class="vibe-desc">Low density, wooded lots, no HOA culture, dark skies</div>
+</div><div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Community Fit</span>
+    <span class="vibe-score">6/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:60%;background:#ec4899;opacity:0.65;"></div>
+  </div>
+  <div class="vibe-desc">People like us — creative, progressive-leaning, dog people, not flashy</div>
+</div><div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Pet Friendly</span>
+    <span class="vibe-score">7/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:70%;background:#14b8a6;opacity:0.85;"></div>
+  </div>
+  <div class="vibe-desc">Vet clinics, dog parks, pet-friendly trails and businesses</div>
+</div><div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Practical</span>
+    <span class="vibe-score">6/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:60%;background:#8b5cf6;opacity:0.65;"></div>
+  </div>
+  <div class="vibe-desc">Groceries, medical, hardware, gas — can you live here without driving 45 min?</div>
+</div>
+  </div>
+
+  <div class="section-label">What's There</div>
+  <div class="places-list"><div class="places-group"><div class="places-group-label">Creative Culture</div><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Bookstores</span><span class="cat-count">1</span></summary><div class="place-row"><span class="place-name">Bridgton Books (140 Main St — independent, ~30 years)</span><span class="place-source">source: bridgtonbooks.com</span></div></details><details class="cat-block"><summary class="cat-header cat-absent"><span class="cat-name">Record Stores</span><span class="cat-count">0</span></summary><div class="place-row place-none">None found</div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Music Venues</span><span class="cat-count">4</span></summary><div class="place-row"><span class="place-name">The Queen's Head (271 Main St — pub with regular live music)</span><span class="place-source">source: queensheadbridgton.com</span></div><div class="place-row"><span class="place-name">Depot Street Tap House (18 Depot St — live music, outdoor movie screen)</span><span class="place-source">source: Tripadvisor</span></div><div class="place-row"><span class="place-name">Music on Main (downtown — free outdoor summer concert series)</span><span class="place-source">source: musiconmainbridgton.com</span></div><div class="place-row"><span class="place-name">Deertrees Theatre (Harrison, ~10 min — summer performing arts)</span><span class="place-source">source: deertrees-theatre.org</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Art Galleries</span><span class="cat-count">2</span></summary><div class="place-row"><span class="place-name">Gallery 302 (112 Main St — 40+ local artists co-op, year-round)</span><span class="place-source">source: gallery302.com</span></div><div class="place-row"><span class="place-name">Aperto Fine Art (63 Main St — contemporary fine art)</span><span class="place-source">source: apertofineart.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Independent Cinemas</span><span class="cat-count">2</span></summary><div class="place-row"><span class="place-name">Magic Lantern Movie Theater (9 Depot St — indie, themed theaters)</span><span class="place-source">source: magiclanternmovies.com</span></div><div class="place-row"><span class="place-name">Bridgton Twin Drive-In (383 Portland Rd — Maine's oldest, since 1957, seasonal)</span><span class="place-source">source: Facebook</span></div></details></div><div class="places-group"><div class="places-group-label">Nature Access</div><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Outdoor Outfitters</span><span class="cat-count">1</span></summary><div class="place-row"><span class="place-name">Unc'l Lunkers Bait & Tackle (6 Gage St — fishing/hunting gear)</span><span class="place-source">source: unc-l-lunkers.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Kayak / Canoe Rentals</span><span class="cat-count">1</span></summary><div class="place-row"><span class="place-name">Lake Region Paddle (1 Mountain Rd — kayak/SUP/canoe, delivery to area lakes)</span><span class="place-source">source: lakeregionpaddle.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Ski Areas</span><span class="cat-count">1</span></summary><div class="place-row"><span class="place-name">Pleasant Mountain (119 Mountain Rd — Maine's oldest, 40 trails, night skiing)</span><span class="place-source">source: pleasantmountain.com</span></div></details></div><div class="places-group"><div class="places-group-label">Food & Drink</div><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Coffee Shops</span><span class="cat-count">2</span></summary><div class="place-row"><span class="place-name">Beth's Kitchen Cafe (108 Main St — locally roasted coffee, bakery, breakfast)</span><span class="place-source">source: bethskitchencafe.com</span></div><div class="place-row"><span class="place-name">Sail Away Coffee (152 Portland Rd — drive-through)</span><span class="place-source">source: Yelp</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Restaurants</span><span class="cat-count">12</span></summary><div class="place-row"><span class="place-name">Ancora Italian Kitchen (18a Depot St — wood-fired pizza, handmade pasta)</span><span class="place-source">source: ancoramaine.com</span></div><div class="place-row"><span class="place-name">Standard Gastropub (233 Main St — 300+ craft beers, upscale pub)</span><span class="place-source">source: standardgastropub.com</span></div><div class="place-row"><span class="place-name">The Queen's Head (271 Main St — 22 draft lines, Maine craft focus)</span><span class="place-source">source: queensheadbridgton.com</span></div><div class="place-row"><span class="place-name">Black Horse Tavern (26 Portland Rd — since 1987, Sunday brunch)</span><span class="place-source">source: theblackhorsetavern.com</span></div><div class="place-row"><span class="place-name">Cafe Paprika (146 Harrison Rd — Mediterranean/Moorish)</span><span class="place-source">source: paprika-online.com</span></div><div class="place-row"><span class="place-name">Nilfa's Kusina (160 Main St — Filipino/Asian fusion, breakfast/lunch)</span><span class="place-source">source: Yelp</span></div><div class="place-row"><span class="place-name">Elevation Sushi and Taco (103 Main St)</span><span class="place-source">source: giftly.com</span></div><div class="place-row"><span class="place-name">A La Mexicana 2 (243 Portland Rd — Mexican)</span><span class="place-source">source: Yelp</span></div><div class="place-row"><span class="place-name">Maine Lobster Express (7 Main St — seafood)</span><span class="place-source">source: mainelobsterexpress.com</span></div><div class="place-row"><span class="place-name">Campfire Grille (518 Portland Rd — comfort food, outdoor dining)</span><span class="place-source">source: thecampfiregrille.com</span></div><div class="place-row"><span class="place-name">Depot Street Tap House (18 Depot St — craft cocktails, small plates)</span><span class="place-source">source: restaurantji.com</span></div><div class="place-row"><span class="place-name">Pondicherry House (2 Cottage St — pizza)</span><span class="place-source">source: pondicherryhouse.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Farmers Markets</span><span class="cat-count">2</span></summary><div class="place-row"><span class="place-name">Bridgton Farmers' Market (Sat 8am-12pm, May-Oct — summer)</span><span class="place-source">source: mainefarmersmarkets.org</span></div><div class="place-row"><span class="place-name">Bridgton Winter Farmers' Market (Sat 9am-12pm, Nov-Apr)</span><span class="place-source">source: mainefarmersmarkets.org</span></div></details><details class="cat-block"><summary class="cat-header cat-absent"><span class="cat-name">Breweries / Taprooms</span><span class="cat-count">0</span></summary><div class="place-row place-none">None found</div></details></div><div class="places-group"><div class="places-group-label">Community Fit</div><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Libraries</span><span class="cat-count">1</span></summary><div class="place-row"><span class="place-name">Bridgton Public Library (1 Church St — est. 1895, National Register)</span><span class="place-source">source: bridgtonlibrary.org</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Yoga Studios</span><span class="cat-count">2</span></summary><div class="place-row"><span class="place-name">North of Ninety (118 Main St — yoga and meditation)</span><span class="place-source">source: northofninety.com</span></div><div class="place-row"><span class="place-name">Yoga with Rose (Salmon Point Beach — outdoor yoga)</span><span class="place-source">source: yogawithrose.com</span></div></details><details class="cat-block"><summary class="cat-header cat-absent"><span class="cat-name">Coworking Spaces</span><span class="cat-count">0</span></summary><div class="place-row place-none">None found</div></details></div><div class="places-group"><div class="places-group-label">Pet Friendly</div><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Vet Clinics</span><span class="cat-count">1</span></summary><div class="place-row"><span class="place-name">Bridgton Veterinary Hospital (213 Harrison Rd — AAHA, also boarding/grooming)</span><span class="place-source">source: bridgtonvets.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Pet Groomers</span><span class="cat-count">2</span></summary><div class="place-row"><span class="place-name">Wicked Wags (now in N. Waterford — still serves region)</span><span class="place-source">source: shopwickedwags.com</span></div><div class="place-row"><span class="place-name">Bridgton Veterinary Hospital (grooming as part of vet services)</span><span class="place-source">source: bridgtonvets.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Pet Boarding / Kennels</span><span class="cat-count">1</span></summary><div class="place-row"><span class="place-name">Bridgton Veterinary Hospital (climate-controlled boarding)</span><span class="place-source">source: bridgtonvets.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Pet Supply Stores</span><span class="cat-count">1</span></summary><div class="place-row"><span class="place-name">Paris Farmers Union (13 Sandy Creek Rd — pet food/supplies)</span><span class="place-source">source: parisfarmersunion.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Animal Shelters</span><span class="cat-count">3</span></summary><div class="place-row"><span class="place-name">Harvest Hills Animal Shelter (1389 Bridgton Rd, Fryeburg — serves Bridgton)</span><span class="place-source">source: harvesthills.org</span></div><div class="place-row"><span class="place-name">All Ears Animal Rescue (245 Wildwood Rd — behavioral specialists)</span><span class="place-source">source: aears.org</span></div><div class="place-row"><span class="place-name">3 Dogs Rescue (495 S. Bridgton Rd — foster-based)</span><span class="place-source">source: 3dogsrescue.com</span></div></details></div><div class="places-group"><div class="places-group-label">Practical</div><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Grocery Stores</span><span class="cat-count">2</span></summary><div class="place-row"><span class="place-name">Hannaford Supermarket (109 Portland Rd — full grocery + pharmacy)</span><span class="place-source">source: hannaford.com</span></div><div class="place-row"><span class="place-name">Food City (295 Main St — locally owned)</span><span class="place-source">source: foodcitymkt.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Hardware Stores</span><span class="cat-count">1</span></summary><div class="place-row"><span class="place-name">Hayes Ace Hardware & Rental (204 Portland Rd — family-owned ~60 years)</span><span class="place-source">source: hayesacehardware.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Farm & Feed Supply</span><span class="cat-count">1</span></summary><div class="place-row"><span class="place-name">Paris Farmers Union (13 Sandy Creek Rd — since 1919)</span><span class="place-source">source: parisfarmersunion.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Urgent Care / Medical</span><span class="cat-count">2</span></summary><div class="place-row"><span class="place-name">Bridgton Hospital / ER (10 Hospital Dr — 24/7 ER)</span><span class="place-source">source: cmhc.org</span></div><div class="place-row"><span class="place-name">Central Maine Healthcare Urgent Care (14 Wyonegonic Rd — Mon-Fri)</span><span class="place-source">source: urgentcare.com</span></div></details></div></div>
+
+  <div class="market-section">
+  <div class="section-label">Market — Cumberland County</div>
+  <div class="unavailable">Market data not yet loaded. Run update_market_data.py to populate.</div>
+</div>
+
+</div>
+
+<footer>
+  <div>Soulplace Seeker &nbsp;&middot;&nbsp; House Hunt Hero</div>
+</footer>
+
+</body>
+</html>

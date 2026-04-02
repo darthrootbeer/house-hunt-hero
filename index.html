@@ -66,7 +66,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
     <div class="header-inner">
       <div>
         <div class="header-title">Soulplace Seeker</div>
-        <div class="header-subtitle">Where should we live? Comparing 5 towns across 8 vibe dimensions.</div>
+        <div class="header-subtitle">Where should we live? Comparing 9 towns across 8 vibe dimensions.</div>
       </div>
       <div class="header-meta">
         <a href="market_report/" class="header-link">Oxford County Market Report &rarr;</a>
@@ -92,6 +92,20 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
   <div class="card-pills"><span class="card-pill book">Bookstore</span></div>
   <div class="card-notes">Home base. Maegan's family nearby. Tourist town with ski resort (Sunday River). Small but real downtown.</div>
 </a>
+<a href="norway-south-paris-me/" class="town-card">
+  <div class="card-top">
+    <div>
+      <div class="card-name">Norway / South Paris, ME</div>
+      <div class="card-meta">T1 &middot; ~25 min via Rt 26 &middot; Pop. 5,100</div>
+    </div>
+    <div class="card-score">6.9</div>
+  </div>
+  <div class="card-radar"><canvas id="radar_1" width="160" height="160"></canvas></div>
+  <div class="card-strengths">Top: Nature Access, Practical, Creative Culture</div>
+  <div class="card-stats">50 places verified</div>
+  <div class="card-pills"><span class="card-pill record">Record Store</span> <span class="card-pill book">Bookstore</span></div>
+  <div class="card-notes">Oxford County service center. Same county data as Bethel. Record store (Food for Thought), opera house, Celebration Barn, food co-op. Practical and affordable.</div>
+</a>
 <a href="conway-nh/" class="town-card">
   <div class="card-top">
     <div>
@@ -100,11 +114,39 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
     </div>
     <div class="card-score">7.1</div>
   </div>
-  <div class="card-radar"><canvas id="radar_1" width="160" height="160"></canvas></div>
+  <div class="card-radar"><canvas id="radar_2" width="160" height="160"></canvas></div>
   <div class="card-strengths">Top: Nature Access, Food & Drink, Pet Friendly</div>
   <div class="card-stats">96 places verified</div>
   <div class="card-pills"><span class="card-pill record">Record Store</span> <span class="card-pill book">Bookstore</span></div>
   <div class="card-notes">Mt. Washington Valley tourist/ski town. Great outdoor access and dining scene but outlet-mall commercialized. Tourist density dilutes the quiet/private feel. Higher prices than most options.</div>
+</a>
+<a href="bridgton-me/" class="town-card">
+  <div class="card-top">
+    <div>
+      <div class="card-name">Bridgton, ME</div>
+      <div class="card-meta">T2 &middot; ~45 min via Rt 302 &middot; Pop. 5,500</div>
+    </div>
+    <div class="card-score">6.6</div>
+  </div>
+  <div class="card-radar"><canvas id="radar_3" width="160" height="160"></canvas></div>
+  <div class="card-strengths">Top: Nature Access, Food & Drink, Quiet & Privacy</div>
+  <div class="card-stats">45 places verified</div>
+  <div class="card-pills"><span class="card-pill book">Bookstore</span></div>
+  <div class="card-notes">Lakes region town. Bookstore, two art galleries, indie cinema + drive-in, year-round farmers market. Pleasant Mountain ski. No brewery (Bear Bones closed 2026). Solid middle option.</div>
+</a>
+<a href="fryeburg-me/" class="town-card">
+  <div class="card-top">
+    <div>
+      <div class="card-name">Fryeburg, ME</div>
+      <div class="card-meta">T2 &middot; ~30 min via Rt 302 &middot; Pop. 3,449</div>
+    </div>
+    <div class="card-score">5.4</div>
+  </div>
+  <div class="card-radar"><canvas id="radar_4" width="160" height="160"></canvas></div>
+  <div class="card-strengths">Top: Nature Access, Quiet & Privacy, Pet Friendly</div>
+  <div class="card-stats">33 places verified</div>
+  <div class="card-pills"></div>
+  <div class="card-notes">ME/NH border town. Fryeburg Academy, Fryeburg Fair. Saco River access. Quiet but thin on services — no cinema, no bookstore, no farm supply. Close to Conway for shopping.</div>
 </a>
 <a href="littleton-nh/" class="town-card">
   <div class="card-top">
@@ -114,7 +156,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
     </div>
     <div class="card-score">8.0</div>
   </div>
-  <div class="card-radar"><canvas id="radar_2" width="160" height="160"></canvas></div>
+  <div class="card-radar"><canvas id="radar_5" width="160" height="160"></canvas></div>
   <div class="card-strengths">Top: Nature Access, Food & Drink, Creative Culture</div>
   <div class="card-stats">76 places verified</div>
   <div class="card-pills"><span class="card-pill book">Bookstore</span></div>
@@ -128,7 +170,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
     </div>
     <div class="card-score">7.1</div>
   </div>
-  <div class="card-radar"><canvas id="radar_3" width="160" height="160"></canvas></div>
+  <div class="card-radar"><canvas id="radar_6" width="160" height="160"></canvas></div>
   <div class="card-strengths">Top: Creative Culture, Community Fit, Practical</div>
   <div class="card-stats">68 places verified</div>
   <div class="card-pills"><span class="card-pill record">Record Store</span> <span class="card-pill book">Bookstore</span></div>
@@ -142,11 +184,25 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
     </div>
     <div class="card-score">6.2</div>
   </div>
-  <div class="card-radar"><canvas id="radar_4" width="160" height="160"></canvas></div>
+  <div class="card-radar"><canvas id="radar_7" width="160" height="160"></canvas></div>
   <div class="card-strengths">Top: Nature Access, Quiet & Privacy, Food & Drink</div>
   <div class="card-stats">54 places verified</div>
   <div class="card-pills"><span class="card-pill book">Bookstore</span></div>
   <div class="card-notes">Lakes, mountains, Saddleback ski. Very remote — thin inventory, minimal services. Strong sense of place. Beautiful but isolated.</div>
+</a>
+<a href="lewiston-auburn-me/" class="town-card">
+  <div class="card-top">
+    <div>
+      <div class="card-name">Lewiston / Auburn, ME</div>
+      <div class="card-meta">T3 &middot; ~1.5 hrs via Rt 26 / ME Tpke &middot; Pop. 36,000</div>
+    </div>
+    <div class="card-score">6.2</div>
+  </div>
+  <div class="card-radar"><canvas id="radar_8" width="160" height="160"></canvas></div>
+  <div class="card-strengths">Top: Practical, Pet Friendly, Creative Culture</div>
+  <div class="card-stats">59 places verified</div>
+  <div class="card-pills"><span class="card-pill record">Record Store</span> <span class="card-pill book">Bookstore</span></div>
+  <div class="card-notes">Revitalizing twin cities. 2 record stores (NerdCore underground!), Franco Center, Baxter Brewing, diverse food scene (Somali, Indian, Italian, French). Affordable but urban — lowest quiet/privacy score.</div>
 </a>
   </div>
 </div>
@@ -192,7 +248,7 @@ new Chart(document.getElementById('radar_1'), {
   data: {
     labels: ["Creative Culture", "Nature Access", "Food & Drink", "Walkability", "Quiet & Privacy", "Community Fit", "Pet Friendly", "Practical"],
     datasets: [{
-      data: [6, 10, 9, 5, 4, 5, 9, 9],
+      data: [7, 8, 6, 5, 7, 7, 7, 8],
       backgroundColor: 'rgba(90,170,130,0.15)',
       borderColor: '#5aaa82',
       borderWidth: 1.5,
@@ -220,7 +276,7 @@ new Chart(document.getElementById('radar_2'), {
   data: {
     labels: ["Creative Culture", "Nature Access", "Food & Drink", "Walkability", "Quiet & Privacy", "Community Fit", "Pet Friendly", "Practical"],
     datasets: [{
-      data: [8, 9, 9, 8, 6, 8, 8, 8],
+      data: [6, 10, 9, 5, 4, 5, 9, 9],
       backgroundColor: 'rgba(90,170,130,0.15)',
       borderColor: '#5aaa82',
       borderWidth: 1.5,
@@ -248,7 +304,7 @@ new Chart(document.getElementById('radar_3'), {
   data: {
     labels: ["Creative Culture", "Nature Access", "Food & Drink", "Walkability", "Quiet & Privacy", "Community Fit", "Pet Friendly", "Practical"],
     datasets: [{
-      data: [8, 7, 7, 6, 6, 8, 7, 8],
+      data: [6, 8, 7, 6, 7, 6, 7, 6],
       backgroundColor: 'rgba(90,170,130,0.15)',
       borderColor: '#5aaa82',
       borderWidth: 1.5,
@@ -276,7 +332,119 @@ new Chart(document.getElementById('radar_4'), {
   data: {
     labels: ["Creative Culture", "Nature Access", "Food & Drink", "Walkability", "Quiet & Privacy", "Community Fit", "Pet Friendly", "Practical"],
     datasets: [{
+      data: [4, 8, 5, 3, 8, 5, 6, 4],
+      backgroundColor: 'rgba(90,170,130,0.15)',
+      borderColor: '#5aaa82',
+      borderWidth: 1.5,
+      pointRadius: 2,
+      pointBackgroundColor: '#5aaa82'
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: false } },
+    scales: {
+      r: {
+        min: 0, max: 10,
+        ticks: { display: false, stepSize: 2 },
+        grid: { color: '#2d3748' },
+        angleLines: { color: '#2d3748' },
+        pointLabels: { color: '#8899aa', font: { size: 9, family: "'JetBrains Mono', monospace" } }
+      }
+    }
+  }
+});
+
+new Chart(document.getElementById('radar_5'), {
+  type: 'radar',
+  data: {
+    labels: ["Creative Culture", "Nature Access", "Food & Drink", "Walkability", "Quiet & Privacy", "Community Fit", "Pet Friendly", "Practical"],
+    datasets: [{
+      data: [8, 9, 9, 8, 6, 8, 8, 8],
+      backgroundColor: 'rgba(90,170,130,0.15)',
+      borderColor: '#5aaa82',
+      borderWidth: 1.5,
+      pointRadius: 2,
+      pointBackgroundColor: '#5aaa82'
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: false } },
+    scales: {
+      r: {
+        min: 0, max: 10,
+        ticks: { display: false, stepSize: 2 },
+        grid: { color: '#2d3748' },
+        angleLines: { color: '#2d3748' },
+        pointLabels: { color: '#8899aa', font: { size: 9, family: "'JetBrains Mono', monospace" } }
+      }
+    }
+  }
+});
+
+new Chart(document.getElementById('radar_6'), {
+  type: 'radar',
+  data: {
+    labels: ["Creative Culture", "Nature Access", "Food & Drink", "Walkability", "Quiet & Privacy", "Community Fit", "Pet Friendly", "Practical"],
+    datasets: [{
+      data: [8, 7, 7, 6, 6, 8, 7, 8],
+      backgroundColor: 'rgba(90,170,130,0.15)',
+      borderColor: '#5aaa82',
+      borderWidth: 1.5,
+      pointRadius: 2,
+      pointBackgroundColor: '#5aaa82'
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: false } },
+    scales: {
+      r: {
+        min: 0, max: 10,
+        ticks: { display: false, stepSize: 2 },
+        grid: { color: '#2d3748' },
+        angleLines: { color: '#2d3748' },
+        pointLabels: { color: '#8899aa', font: { size: 9, family: "'JetBrains Mono', monospace" } }
+      }
+    }
+  }
+});
+
+new Chart(document.getElementById('radar_7'), {
+  type: 'radar',
+  data: {
+    labels: ["Creative Culture", "Nature Access", "Food & Drink", "Walkability", "Quiet & Privacy", "Community Fit", "Pet Friendly", "Practical"],
+    datasets: [{
       data: [5, 10, 6, 4, 9, 6, 6, 4],
+      backgroundColor: 'rgba(90,170,130,0.15)',
+      borderColor: '#5aaa82',
+      borderWidth: 1.5,
+      pointRadius: 2,
+      pointBackgroundColor: '#5aaa82'
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: false } },
+    scales: {
+      r: {
+        min: 0, max: 10,
+        ticks: { display: false, stepSize: 2 },
+        grid: { color: '#2d3748' },
+        angleLines: { color: '#2d3748' },
+        pointLabels: { color: '#8899aa', font: { size: 9, family: "'JetBrains Mono', monospace" } }
+      }
+    }
+  }
+});
+
+new Chart(document.getElementById('radar_8'), {
+  type: 'radar',
+  data: {
+    labels: ["Creative Culture", "Nature Access", "Food & Drink", "Walkability", "Quiet & Privacy", "Community Fit", "Pet Friendly", "Practical"],
+    datasets: [{
+      data: [7, 5, 7, 5, 3, 6, 8, 9],
       backgroundColor: 'rgba(90,170,130,0.15)',
       borderColor: '#5aaa82',
       borderWidth: 1.5,
