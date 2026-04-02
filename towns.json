@@ -12,105 +12,130 @@
     "population": 2607,
     "hard_fails": [],
     "vibe": {
-      "creative_culture": 5,
-      "nature_access": 9,
-      "food_drink": 4,
-      "walkability": 4,
+      "creative_culture": 7,
+      "nature_access": 10,
+      "food_drink": 8,
+      "walkability": 5,
       "quiet_privacy": 8,
       "community_fit": 7,
-      "pet_friendly": 6,
+      "pet_friendly": 7,
       "practical": 7
     },
     "places": {
-      "bookstores": [],
+      "bookstores": [
+        {"name": "The Book Nook (162 Main St — new & preloved books)", "source": "bethelmaine.com chamber directory"}
+      ],
       "record_stores": [],
       "music_venues": [
-        {"name": "The Gem Theater (live performances via BAAM)", "source": "thegemtheater.com"},
-        {"name": "Suds Pub at The Bethel Inn (live music nights)", "source": "bethelmaine.com"},
-        {"name": "Foggy Goggle at Sunday River (live bands, après-ski)", "source": "visitsundayriver.com"},
-        {"name": "Steam Mill Brewing (live events)", "source": "steammillbrew.com"}
+        {"name": "The Gem Theater (live performances via BAAM, 48 Cross St)", "source": "thegemtheater.com"},
+        {"name": "Suds Pub at The Sudbury Inn (live music Fri-Sat, 151 Main St)", "source": "thesudburyinn.com"},
+        {"name": "Steam Mill Brewing (live events, 96 Sunday River Rd)", "source": "steammillbrew.com"},
+        {"name": "Matterhorn Ski Bar (live music daily in season, Newry)", "source": "matterhornskibar.com"},
+        {"name": "Westside Beer Garden at Mt. Abram (live music, seasonal)", "source": "westsidebeergarden.com"}
       ],
       "art_galleries": [
-        {"name": "Maine Mineral & Gem Museum (four galleries)", "source": "mainemineralmuseum.org"},
-        {"name": "Bethel Area Arts & Music / BAAM (rotating exhibits, mural project)", "source": "bethelareaartsandmusic.com"}
+        {"name": "Elements Art Gallery (100+ Maine artisans, 162 Main St)", "source": "elementsartgallerymaine.com"},
+        {"name": "Table Rock Arts Center / TRAC (rotating exhibits, 162 Main St)", "source": "tablerockartscenter.com"},
+        {"name": "Maine Mineral & Gem Museum (four galleries, 99 Main St)", "source": "mainemineralmuseum.org"},
+        {"name": "Bethel Area Arts & Music / BAAM (mural project, rotating exhibits)", "source": "bethelareaartsandmusic.com"}
       ],
       "indie_cinema": [
-        {"name": "The Gem Theater (indie + first-run films)", "source": "thegemtheater.com"}
+        {"name": "The Gem Theater (4 screens, indie + first-run, 48 Cross St)", "source": "thegemtheater.com"}
       ],
       "outdoor_outfitters": [
-        {"name": "True North Adventureware", "source": "truenorthadventureware.com"},
-        {"name": "Sport Thoma (ski/snowboard/kayak sales & rentals)", "source": "sportthoma.com"},
-        {"name": "Carter's XC Ski Center & Shop", "source": "cartersxcski.com"},
-        {"name": "Mahoosuc Guide Service (guided wilderness trips)", "source": "mahoosuc.com"}
+        {"name": "True North Adventureware (196 Walkers Mills Rd)", "source": "truenorthadventureware.com"},
+        {"name": "Sport Thoma (ski/snowboard/kayak, 288 Mayville Rd)", "source": "sportthoma.com"},
+        {"name": "Carter's XC Ski Center & Shop (786 Intervale Rd)", "source": "cartersxcski.com"},
+        {"name": "Community Sports (consignment gear, 162 Main St)", "source": "bethelmaine.com chamber directory"},
+        {"name": "Mahoosuc Guide Service (guided wilderness trips, Newry)", "source": "mahoosuc.com"}
       ],
       "kayak_canoe_rental": [
         {"name": "Bethel Outdoor Adventure (canoe/kayak/tubing on Androscoggin)", "source": "betheloutdooradventure.com"},
-        {"name": "Sport Thoma (kayak/canoe/paddleboard rentals)", "source": "sportthoma.com"}
+        {"name": "Sport Thoma (kayak/canoe/SUP rentals)", "source": "sportthoma.com"}
       ],
       "ski_areas": [
-        {"name": "Sunday River Ski Resort (8 peaks, Newry)", "source": "visitsundayriver.com"},
+        {"name": "Sunday River Resort (8 peaks, 139 trails, Newry)", "source": "sundayriver.com"},
+        {"name": "Mt. Abram (51 trails, family-oriented, Greenwood ~7mi)", "source": "mtabram.com"},
         {"name": "Carter's XC Ski Center (55km groomed Nordic)", "source": "cartersxcski.com"}
       ],
       "coffee_shops": [
         {"name": "Gemini Cafe & Bakery (96 Main St)", "source": "thegeminicafe.com"},
-        {"name": "DiCocoa's (125 Main St — reopened weekends)", "source": "Yelp, sunjournal.com"}
+        {"name": "Cafe DiCocoa (125 Main St)", "source": "Yelp"},
+        {"name": "The Grind (roving — Philbrook Place Tue-Fri, Mt. Abram weekends)", "source": "Tripadvisor"},
+        {"name": "Coffee Hound Coffee Bar (South Ridge Lodge, Sunday River — seasonal)", "source": "Tripadvisor"},
+        {"name": "Dunkin' (6 Lincoln St)", "source": "Yelp"}
       ],
       "restaurants": [
-        {"name": "Cho Sun Sushi Bar & Grill", "source": "chosun207.com"},
-        {"name": "Sunday River Brewing Company", "source": "Yelp, Tripadvisor"},
-        {"name": "Steam Mill Brewing", "source": "steammillbrew.com"},
-        {"name": "The Millbrook Tavern at Bethel Inn", "source": "OpenTable"},
-        {"name": "Good Food Store & Catering (natural/organic)", "source": "goodfoodbethel.com"}
+        {"name": "Butcher Burger (188 Main St — burgers, lobster rolls)", "source": "butcherburger.com"},
+        {"name": "Cho Sun Sushi Bar & Grill (141 Main St — sushi, Korean BBQ)", "source": "chosun207.com"},
+        {"name": "Kowloon Village (190 Main St — Szechuan & Hunan)", "source": "kowloonvillage.com"},
+        {"name": "Le Mu Eats (119 Main St — Laotian/French fusion)", "source": "lemueats.wixsite.com"},
+        {"name": "Crossroads Diner & Deli (24 Mayville Rd — breakfast/lunch)", "source": "Yelp"},
+        {"name": "Sudbury Inn Dining Room (151 Main St — Tue-Sat dinner)", "source": "thesudburyinn.com"},
+        {"name": "The Millbrook Tavern & Grille (21 Broad St — at Bethel Resort)", "source": "Yelp, OpenTable"},
+        {"name": "Mountain Social Kitchen & Bar (at Bethel Inn — craft cocktails)", "source": "socialbarharbor.com"},
+        {"name": "Watershed Wood-Fired Kitchen (11 Philbrook St — pizza, pasta)", "source": "restaurantguru.com"},
+        {"name": "Modern Barn (19 Summer St — upscale steakhouse, Wine Spectator award)", "source": "modernbarn207.com"},
+        {"name": "The Elizabeth Inn & Restaurant (Main St — fine dining)", "source": "Down East Magazine"},
+        {"name": "Bethel House of Pizza (Greek-style pizza, calzones)", "source": "bethelmaine.com chamber directory"},
+        {"name": "The Bethel Sugar Shack (156 W Bethel Rd — burgers, milkshakes)", "source": "thebethelsugarshack.com"},
+        {"name": "Matterhorn Ski Bar (292 Sunday River Rd, Newry — wood-fired pizza)", "source": "matterhornskibar.com"},
+        {"name": "The Local Hub (224 Main St, Greenwood — breakfast/brunch, ~10 min)", "source": "localhubmaine.com"},
+        {"name": "Sunday River Brewing Company (29 Sunday River Rd)", "source": "Yelp, Tripadvisor"},
+        {"name": "Steam Mill Brewing (96 Sunday River Rd)", "source": "steammillbrew.com"},
+        {"name": "Good Food Store & Catering (212 Mayville Rd — prepared foods)", "source": "goodfoodbethel.com"}
       ],
       "farmers_markets": [
-        {"name": "Bethel Farmers' Market (Sat 9am–12:30pm, May–Oct)", "source": "bethelfarmersmarket.org"}
+        {"name": "Bethel Farmers' Market (Sat 9am-12:30pm, May-Oct, 1 Park St)", "source": "bethelfarmersmarket.org"}
       ],
       "breweries": [
-        {"name": "Sunday River Brewing Company", "source": "Yelp, Tripadvisor"},
-        {"name": "Steam Mill Brewing", "source": "steammillbrew.com"},
-        {"name": "Suds Pub at Bethel Inn (29 craft taps, not a brewery)", "source": "bethelmaine.com"}
+        {"name": "Sunday River Brewing Company (29 Sunday River Rd)", "source": "Yelp, Tripadvisor"},
+        {"name": "Steam Mill Brewing (96 Sunday River Rd)", "source": "steammillbrew.com"}
       ],
       "libraries": [
-        {"name": "Bethel Library Association (5 Broad St, est. 1879)", "source": "bethellibraryassociation.org"}
+        {"name": "Bethel Library Association (6 Broad St, est. 1879)", "source": "bethellibraryassociation.org"}
       ],
       "yoga_studios": [
-        {"name": "Chillosophy Yoga (32 Parkway Rd)", "source": "yogachillosophy.com"},
-        {"name": "Yogamoto (75 Main St — verify current status)", "source": "Yelp, Facebook"}
+        {"name": "Chillosophy Yoga (32 Parkway Rd — opened late 2023)", "source": "yogachillosophy.com"},
+        {"name": "Open Sky Yoga (8 Abbott Farm Rd — intimate studio, woodstove)", "source": "yogatrail.com"},
+        {"name": "Yogamoto (75 Main St — relocating, verify status)", "source": "Yelp"}
       ],
       "coworking_spaces": [
-        {"name": "The Gem Coworking Space (48 Cross St)", "source": "bethelmaine.com"}
+        {"name": "The Gem Coworking Space (48 Cross St — limited hours)", "source": "bethelmaine.com chamber directory"}
       ],
       "vet_clinics": [
-        {"name": "Bethel Animal Hospital (179 Walkers Mills Rd)", "source": "bethelanimalhospital.com"}
+        {"name": "Bethel Animal Hospital (179 Walkers Mills Rd — also birds, reptiles)", "source": "bethelanimalhospital.com"}
       ],
       "pet_grooming": [
-        {"name": "Barker Brook Kennels (120 Sunday River Rd)", "source": "barkerbrookkennels.com"}
+        {"name": "Barker Brook Kennels (120 Sunday River Rd — by appointment)", "source": "barkerbrookkennels.com"}
       ],
       "pet_boarding": [
-        {"name": "Barker Brook Kennels (boarding 365 days/yr, daycare 7 days/wk)", "source": "barkerbrookkennels.com"},
+        {"name": "Barker Brook Kennels (boarding 365 days/yr, daycare, 120 Sunday River Rd)", "source": "barkerbrookkennels.com"},
+        {"name": "Tucker's Dog House (340 Walkers Mills Rd — daycare & overnight)", "source": "tucksdoghouse.com"},
         {"name": "Auntie Tori's Place LLC (in-home doggy daycare)", "source": "Facebook"}
       ],
       "pet_supply": [
         {"name": "Peterson's Pet Stop (186 Main St)", "source": "Yelp"}
       ],
       "animal_shelters": [
-        {"name": "Harvest Hills Animal Shelter (Fryeburg, ~35 min — no-kill)", "source": "harvesthills.org"},
-        {"name": "Responsible Pet Care of Oxford Hills (South Paris, ~25 min — no-kill cat shelter)", "source": "responsiblepetcare.org"}
+        {"name": "Harvest Hills Animal Shelter (Fryeburg, ~45 min — no-kill, by appt)", "source": "harvesthills.org"},
+        {"name": "Responsible Pet Care of Oxford Hills (South Paris, ~30 min)", "source": "responsiblepetcare.org"}
       ],
       "grocery_stores": [
-        {"name": "Mainely Provisions (72 Main St — full-service grocery)", "source": "mainelyprovisions.com"},
-        {"name": "Good Food Store (212 Mayville Rd — natural/organic)", "source": "goodfoodbethel.com"}
+        {"name": "Mainely Provisions (72 Main St — full grocery, custom-cut meats)", "source": "mainelyprovisions.com"},
+        {"name": "Good Food Store (212 Mayville Rd — natural/organic, prepared foods)", "source": "goodfoodbethel.com"}
       ],
       "hardware_stores": [
-        {"name": "Brooks Brothers True Value (Main St — 90+ years)", "source": "bethelmaine.com"}
+        {"name": "Brooks Bros. True Value (73 Main St — 90+ years)", "source": "brooksbrosofmaine.com"},
+        {"name": "Western Maine Supply Co. (lumber, building supplies, contractor supply)", "source": "westernmainesupply.com"}
       ],
       "farm_supply": [
-        {"name": "Tractor Supply Co. (Oxford, ~30 min — closest TSC)", "source": "tractorsupply.com"}
+        {"name": "Paris Farmers Union (South Paris, ~25 min — feed, grain, farm supplies, since 1919)", "source": "parisfarmersunion.com"},
+        {"name": "Tractor Supply Co. (Oxford, ~30 min)", "source": "tractorsupply.com"}
       ],
       "urgent_care": [
-        {"name": "Bethel Family Health Center (HealthReach network)", "source": "healthreach.org"},
-        {"name": "Stephens Memorial Hospital (Norway, ~25 min — 24/7 ER)", "source": "mainehealth.org"},
-        {"name": "Rumford Hospital (Rumford, ~30 min — 24/7 ER)", "source": "cmhc.org"}
+        {"name": "Bethel Family Health Center (32 Railroad St — walk-in, HealthReach)", "source": "healthreach.org"},
+        {"name": "Stephens Memorial Hospital (Norway, ~30 min — 24/7 ER)", "source": "mainehealth.org"}
       ]
     },
     "market": {
