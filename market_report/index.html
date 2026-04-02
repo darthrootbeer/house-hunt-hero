@@ -64,8 +64,6 @@ header { background: var(--navy); border-bottom: 2px solid var(--green-dim); pad
 .score-marker { position: absolute; top: -4px; width: 16px; height: 16px; background: white; border-radius: 50%; border: 2px solid var(--amber-light); transform: translateX(-50%); }
 
 /* Chart panels */
-.chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 20px; }
-@media (max-width: 860px) { .chart-grid { grid-template-columns: 1fr; } }
 .chart-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px;
   border-left-width: 2px; border-left-color: var(--panel-accent, var(--border)); }
 .chart-panel.full { grid-column: 1 / -1; }
@@ -92,7 +90,7 @@ header { background: var(--navy); border-bottom: 2px solid var(--green-dim); pad
 .trend-tag.down-bad  { background: rgba(201,136,58,0.15);  color: #c9883a; border: 1px solid rgba(201,136,58,0.35); }
 .trend-tag.flat      { background: rgba(136,153,170,0.12); color: #8899aa; border: 1px solid rgba(136,153,170,0.25); }
 .chart-container { position: relative; height: 240px; }
-/* Zoom toggle buttons */
+/* Zoom toggle buttons — used by flow chart */
 .zoom-btns { display: -webkit-box; display: flex; gap: 4px; flex-shrink: 0; }
 .zoom-btn { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.05em;
   padding: 4px 10px; min-height: 28px; border-radius: 14px; border: 1px solid var(--border);
@@ -127,21 +125,6 @@ header { background: var(--navy); border-bottom: 2px solid var(--green-dim); pad
 /* Section header */
 .section-header { font-family: 'Inter', -apple-system, sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--text); margin: 32px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); letter-spacing: -0.01em; }
 
-/* Forecast */
-.forecast-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
-@media (max-width: 600px) { .forecast-grid { grid-template-columns: 1fr; } }
-.forecast-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 18px; }
-.forecast-horizon { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.10em; color: var(--amber); margin-bottom: 6px; }
-.forecast-price { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 600; }
-.forecast-range { font-family: 'JetBrains Mono', monospace; font-size: 0.80rem; color: var(--text-muted); margin-top: 4px; }
-
-/* Mortgage table */
-.mortgage-table { width: 100%; border-collapse: collapse; font-size: 0.87rem; font-family: 'JetBrains Mono', monospace; }
-.mortgage-table th { background: var(--surface2); color: var(--text-muted); padding: 8px 12px; text-align: left; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; border-bottom: 1px solid var(--border); }
-.mortgage-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
-.mortgage-table tr:last-child td { border-bottom: none; }
-.mortgage-table tr.hl td { color: var(--amber-light); background: rgba(201,136,58,0.07); }
-
 /* Backup cities */
 .city-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 18px; }
 .city-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 22px; }
@@ -163,13 +146,6 @@ header { background: var(--navy); border-bottom: 2px solid var(--green-dim); pad
 .city-notes { margin-top: 10px; font-size: 0.82rem; color: var(--text-muted); font-style: italic; line-height: 1.5; }
 .city-user-note { margin-top: 8px; font-size: 0.82rem; color: var(--amber); }
 
-/* Legend */
-.legend { margin-bottom: 10px; }
-.legend-item { display: inline-flex; align-items: center; gap: 6px; font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--text-muted); margin-right: 16px; }
-.legend-solid { width: 22px; height: 2px; background: var(--amber); }
-.legend-dashed { width: 22px; height: 2px; background: repeating-linear-gradient(90deg, var(--green-light) 0, var(--green-light) 4px, transparent 4px, transparent 8px); }
-.legend-shaded { width: 14px; height: 14px; background: rgba(90,170,130,0.12); border: 1px solid rgba(90,170,130,0.3); border-radius: 2px; }
-
 .source-note { font-family: 'JetBrains Mono', monospace; font-size: 0.70rem; color: var(--text-dim); margin-top: 8px; }
 
 footer { background: var(--surface); border-top: 1px solid var(--border); padding: 20px 0; margin-top: 48px; text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 0.73rem; color: var(--text-dim); }
@@ -185,7 +161,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
         <div class="header-subtitle">Oxford County / Bethel area &nbsp;·&nbsp; 25-minute primary radius</div>
       </div>
       <div class="header-meta">
-        <div class="updated">Updated April 02, 2026 at 09:54 AM</div>
+        <div class="updated">Updated April 02, 2026 at 02:12 PM</div>
         <div>Search started January 1, 2026</div>
         <div>Data: Redfin · Zillow · FRED</div>
       </div>
@@ -207,25 +183,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
     <div class="pulse-label">&#9670; Market Pulse — Oxford County / Bethel, ME</div>
     <div class="pulse-text">Supply is holding steady at 4.5 months — plenty of inventory right now. Oxford County home values are up 0.8% over 6 months ($308,373 today). Your $420K ceiling still has room. You have a slight edge as a buyer (44/100) — there's negotiating room but don't dawdle on good listings.</div>
   </div>
-  <div class="stat-grid"><div class="stat-card"><div class="stat-label">Home Values</div><div class="stat-body"><div class="stat-value amber">$308.4K<span style="font-size:1.0rem;color:#c9883a;margin-left:8px;font-family:'JetBrains Mono',monospace;">↑0.5%</span></div><div><span class="signal-pill good">Comfortable</span><div class="signal-detail">Budget has headroom — you're in a good spot</div></div></div><div class="stat-sub">Is a listing priced fairly? Compare it to this.</div></div><div class="stat-card"><div class="stat-label">Closing Prices</div><div class="stat-body"><div class="stat-value ">$372.3K<span style="font-size:1.0rem;color:#5aaa82;margin-left:8px;font-family:'JetBrains Mono',monospace;">↓2.8%</span></div><div><span class="signal-pill bad">Getting close</span><div class="signal-detail">Approaching your ceiling — factor in renovation costs</div></div></div><div class="stat-sub">What people actually paid — not what was listed.</div></div><div class="stat-card"><div class="stat-label">Time to Sell</div><div class="stat-body"><div class="stat-value amber">65d<span style="font-size:1.0rem;color:#5aaa82;margin-left:8px;font-family:'JetBrains Mono',monospace;">↑8.3%</span></div><div><span class="signal-pill good">Very slow</span><div class="signal-detail">Take your time and negotiate — buyer's advantage</div></div></div><div class="stat-sub">Slow = you have time to decide. Fast = be ready.</div></div><div class="stat-card"><div class="stat-label">Discounts?</div><div class="stat-body"><div class="stat-value green">-3.3%</div><div><span class="signal-pill good">Strong discounts</span><div class="signal-detail">Buyers getting solid deals below asking — push on price</div></div></div><div class="stat-sub">Negative = buyers got a discount. Positive = paid over asking.</div></div><div class="stat-card"><div class="stat-label">Listing Count</div><div class="stat-body"><div class="stat-value ">4.1K<span style="font-size:1.0rem;color:#c9883a;margin-left:8px;font-family:'JetBrains Mono',monospace;">↓6.9%</span></div><div><span class="signal-pill bad">Tightening</span><div class="signal-detail">Market is tightening — fewer options ahead</div></div></div><div class="stat-sub">More homes = more options and less pressure on you.</div></div><div class="stat-card"><div class="stat-label">Buyer vs. Seller?</div><div class="stat-body"><div class="stat-value" style="font-size:1.6rem;color:var(--amber-light);">Buyer's Advantage</div><div><span class="signal-pill good">Buyer advantage</span><div class="signal-detail">You have the edge — don't be afraid to negotiate</div></div><div style="position:relative;margin-top:10px;"><div class="score-bar-wrap"><div class="score-bar"></div><div class="score-marker" style="left:44%;"></div></div></div></div><div class="stat-sub">Below 50 = you have leverage. Above 50 = sellers win.</div></div><div class="stat-card"><div class="stat-label">Mortgage Rate</div><div class="stat-body"><div class="stat-value ">N/A</div></div><div class="stat-sub">That's ~$N/A/mo on $350K with 20% down.</div></div></div>
-  <div class="legend">
-    <span class="legend-item"><span class="legend-solid"></span>Search start Jan 1, 2026</span>
-    <span class="legend-item"><span class="legend-dashed"></span>Moving average</span>
-    <span class="legend-item"><span class="legend-shaded"></span>Spring/Fall seasonal bands</span>
-  </div>
-  <div class="chart-grid"><div class="chart-panel" data-panel="mos"><div class="chart-header"><div class="chart-title">Months of Supply</div><div class="zoom-btns"><button class="zoom-btn active" onclick="setChartZoom('chartMoS','6mo',this)">6mo</button><button class="zoom-btn" onclick="setChartZoom('chartMoS','2yr',this)">2yr</button></div></div><span class="trend-tag up-good">↑ rising fast</span><div class="chart-subtitle">How long it would take to sell every home currently listed. Under 3 months = sellers win. Over 6 months = you win.</div><div class="chart-container"><canvas id="chartMoS"></canvas></div></div>
-<div class="chart-panel" data-panel="price"><div class="chart-header"><div class="chart-title">Maine Median Sale Price</div><div class="zoom-btns"><button class="zoom-btn active" onclick="setChartZoom('chartPrice','6mo',this)">6mo</button><button class="zoom-btn" onclick="setChartZoom('chartPrice','2yr',this)">2yr</button></div></div><span class="trend-tag down-good">↓ trending down</span><div class="chart-subtitle">The thick line is the monthly sale price. The smoother lines show the trend — ignore the month-to-month noise and watch those instead.</div><div class="chart-container"><canvas id="chartPrice"></canvas></div></div>
-<div class="chart-panel" data-panel="dom"><div class="chart-header"><div class="chart-title">Days on Market</div><div class="zoom-btns"><button class="zoom-btn active" onclick="setChartZoom('chartDOM','6mo',this)">6mo</button><button class="zoom-btn" onclick="setChartZoom('chartDOM','2yr',this)">2yr</button></div></div><span class="trend-tag up-good">↑ rising fast</span><div class="chart-subtitle">When this drops, buyers are moving fast and you'll have less time to decide. When it rises, you have breathing room.</div><div class="chart-container"><canvas id="chartDOM"></canvas></div></div>
-<div class="chart-panel" data-panel="s2l"><div class="chart-header"><div class="chart-title">Sale-to-List Ratio</div><div class="zoom-btns"><button class="zoom-btn active" onclick="setChartZoom('chartS2L','6mo',this)">6mo</button><button class="zoom-btn" onclick="setChartZoom('chartS2L','2yr',this)">2yr</button></div></div><span class="trend-tag flat">↓ holding steady</span><div class="chart-subtitle">Above 100% = buyers paid over asking. Below 100% = sold at a discount. The stat card above shows this as a +/- delta from asking for easier reading.</div><div class="chart-container"><canvas id="chartS2L"></canvas></div></div></div>
-  
-<div class="section-header">Oxford County ZHVI (Zillow Home Value Index)</div>
-<div class="chart-panel full" data-panel="zhvi">
-  <div class="chart-header"><div class="chart-title">Oxford County, ME — Median Home Value</div><div class="zoom-btns"><button class="zoom-btn active" onclick="setChartZoom('chartZHVI','6mo',this)">6mo</button><button class="zoom-btn" onclick="setChartZoom('chartZHVI','2yr',this)">2yr</button></div></div>
-  <div class="chart-subtitle">Smoothed, seasonally adjusted · Middle tier. Default: 6 months.</div>
-  <div class="chart-container"><canvas id="chartZHVI"></canvas></div>
-  
-  <div class="source-note">Source: Zillow Research (zillow_zhvi_oxford_county)</div>
-</div>
+  <div class="stat-grid"><div class="stat-card"><div class="stat-label">Home Values</div><div class="stat-body"><div class="stat-value amber">$308.4K<span style="font-size:1.0rem;color:#c9883a;margin-left:8px;font-family:'JetBrains Mono',monospace;">↑0.5%</span></div><div><span class="signal-pill good">Comfortable</span><div class="signal-detail">Budget has headroom — you're in a good spot</div></div></div><div class="stat-sub">Is a listing priced fairly? Compare it to this.</div></div><div class="stat-card"><div class="stat-label">Closing Prices</div><div class="stat-body"><div class="stat-value ">$372.3K<span style="font-size:1.0rem;color:#5aaa82;margin-left:8px;font-family:'JetBrains Mono',monospace;">↓2.8%</span></div><div><span class="signal-pill bad">Getting close</span><div class="signal-detail">Approaching your ceiling — factor in renovation costs</div></div></div><div class="stat-sub">What people actually paid — not what was listed.</div></div><div class="stat-card"><div class="stat-label">Time to Sell</div><div class="stat-body"><div class="stat-value amber">65d<span style="font-size:1.0rem;color:#5aaa82;margin-left:8px;font-family:'JetBrains Mono',monospace;">↑8.3%</span></div><div><span class="signal-pill good">Very slow</span><div class="signal-detail">Take your time and negotiate — buyer's advantage</div></div></div><div class="stat-sub">Slow = you have time to decide. Fast = be ready.</div></div><div class="stat-card"><div class="stat-label">Discounts?</div><div class="stat-body"><div class="stat-value green">-3.3%</div><div><span class="signal-pill good">Strong discounts</span><div class="signal-detail">Buyers getting solid deals below asking — push on price</div></div></div><div class="stat-sub">Negative = buyers got a discount. Positive = paid over asking.</div></div><div class="stat-card"><div class="stat-label">Listing Count</div><div class="stat-body"><div class="stat-value ">4.1K<span style="font-size:1.0rem;color:#c9883a;margin-left:8px;font-family:'JetBrains Mono',monospace;">↓6.9%</span></div><div><span class="signal-pill bad">Tightening</span><div class="signal-detail">Market is tightening — fewer options ahead</div></div></div><div class="stat-sub">More homes = more options and less pressure on you.</div></div><div class="stat-card"><div class="stat-label">Buyer vs. Seller?</div><div class="stat-body"><div class="stat-value" style="font-size:1.6rem;color:var(--amber-light);">Buyer's Advantage</div><div><span class="signal-pill good">Buyer advantage</span><div class="signal-detail">You have the edge — don't be afraid to negotiate</div></div><div style="position:relative;margin-top:10px;"><div class="score-bar-wrap"><div class="score-bar"></div><div class="score-marker" style="left:44%;"></div></div></div></div><div class="stat-sub">Below 50 = you have leverage. Above 50 = sellers win.</div></div></div>
   
 <div class="section-header">Oxford County — Market Activity</div>
 <div class="chart-panel full" data-panel="flow">
@@ -239,34 +197,6 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
   <div class="chart-container" style="height:260px;"><canvas id="chartFlow"></canvas></div>
   <div class="source-note">Source: Redfin county tracker · Oxford County, ME · All residential</div>
 </div>
-  
-<div class="section-header">Price Outlook — Where Is This Headed?</div>
-<div class="chart-panel full" data-panel="forecast">
-  <div class="chart-title">18-Month History + 90-Day Projection</div>
-  <div class="chart-subtitle">Solid line = actual history. Dashed green = projected trend. Shaded band = range of likely outcomes. Trend: $1,309/month rising. Not a financial prediction.</div>
-  <div class="chart-container" style="height:280px;"><canvas id="chartForecast"></canvas></div>
-  <div class="forecast-grid" style="margin-top:14px;grid-template-columns:1fr 1fr 1fr;">
-    <div class="forecast-card">
-      <div class="forecast-horizon">3-Month Estimate &nbsp; May 29, 2026</div>
-      <div class="forecast-price">$326.7K</div>
-      <div class="forecast-range">Range: $308.4K – $344.9K</div>
-    </div>
-    <div class="forecast-card">
-      <div class="forecast-horizon">6-Month Estimate &nbsp; August 27, 2026</div>
-      <div class="forecast-price">$330.6K</div>
-      <div class="forecast-range">Range: $312.4K – $348.8K</div>
-    </div>
-    <div class="forecast-card">
-      <div class="forecast-horizon">9-Month Estimate &nbsp; November 25, 2026</div>
-      <div class="forecast-price">$334.5K</div>
-      <div class="forecast-range">Range: $316.3K – $352.7K</div>
-    </div>
-  </div>
-</div>
-  
-  
-<div class="section-header">Mortgage Rate Context</div>
-<div class="unavailable"><div class="icon">&#9888;</div><div>FRED mortgage rate data unavailable — FRED_API_KEY not set — add to env to enable mortgage rate chart</div></div>
 </div>
 </div>
 
@@ -515,7 +445,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
 
 <footer>
   <div>Oxford County / Bethel Area Market Tracker &nbsp;·&nbsp; Redfin S3 · Zillow Research · FRED</div>
-  <div style="margin-top:4px;">Generated April 02, 2026 at 09:54 AM &nbsp;·&nbsp; Not financial advice — verify all data before acting</div>
+  <div style="margin-top:4px;">Generated April 02, 2026 at 02:12 PM &nbsp;·&nbsp; Not financial advice — verify all data before acting</div>
 </footer>
 
 <script>
@@ -536,37 +466,6 @@ if (window.innerWidth <= 480) {
   Chart.defaults.elements.point.hoverRadius = 4;
 }
 
-const SEARCH_START_DATE = '2026-01-01';
-
-function searchStartAnnotation(labels) {
-  const idx = labels.findIndex(l => l >= SEARCH_START_DATE);
-  if (idx < 0) return {};
-  return {
-    ss: {
-      type: 'line', xMin: idx, xMax: idx,
-      borderColor: 'rgba(201,136,58,0.9)', borderWidth: 2, borderDash: [6,4],
-      label: {
-        display: true, content: 'Jan 1 2026', color: '#e8a84e',
-        font: { size: 10 }, position: 'start',
-        backgroundColor: 'rgba(26,39,68,0.9)', padding: { x:6, y:3 }
-      }
-    }
-  };
-}
-
-function seasonBands(labels) {
-  const out = {};
-  labels.forEach((l, i) => {
-    if (!l) return;
-    const m = parseInt(l.slice(5, 7));
-    if ((m >= 3 && m <= 5) || (m >= 9 && m <= 11)) {
-      out['b'+i] = { type:'box', xMin:i-0.5, xMax:i+0.5,
-        backgroundColor:'rgba(90,170,130,0.07)', borderWidth:0, drawTime:'beforeDatasetsDraw' };
-    }
-  });
-  return out;
-}
-
 function baseOpts(labels, yLabel, fmtFn, extraOpts = {}) {
   return Object.assign({
     responsive: true, maintainAspectRatio: false,
@@ -578,7 +477,7 @@ function baseOpts(labels, yLabel, fmtFn, extraOpts = {}) {
         padding:10, titleColor:'#e2e8f0', bodyColor:'#8899aa',
         callbacks: { label: ctx => ctx.parsed.y == null ? null : '  ' + ctx.dataset.label + ': ' + fmtFn(ctx.parsed.y) }
       },
-      annotation: { annotations: { ...searchStartAnnotation(labels), ...seasonBands(labels) } }
+      annotation: { annotations: {} }
     },
     scales: {
       x: { ticks:{ maxRotation:45, color:'#556677', callback: function(val, idx) {
@@ -607,7 +506,7 @@ function fmtDateLabel(d) {
   return MONTHS[parseInt(parts[1])-1] + " '" + parts[0].slice(2);
 }
 
-// Chart zoom registry: chartId -> { chart, slices: { '6mo': {labels,datasets}, '2yr': {labels,datasets} } }
+// Chart zoom registry: chartId -> { chart, slices }
 const _zoomRegistry = {};
 function _registerZoom(chartId, slices) { _zoomRegistry[chartId] = { slices }; }
 function _storeChart(chartId, chart) {
@@ -621,9 +520,7 @@ function setChartZoom(chartId, window, btn) {
   const labels = slice.labels;
   reg.chart.data.labels = labels;
   reg.chart.data.datasets.forEach((ds, i) => { if (slice.datasets[i]) ds.data = slice.datasets[i]; });
-  reg.chart.options.plugins.annotation.annotations = {
-    ...searchStartAnnotation(labels), ...seasonBands(labels)
-  };
+  reg.chart.options.plugins.annotation.annotations = {};
   reg.chart.options.scales.x.ticks.callback = function(val, idx) {
     var d = labels[idx]; if (!d || !d.match || !d.match(/^\d{4}-\d{2}/)) return '';
     var m = parseInt(d.slice(5,7));
@@ -635,77 +532,6 @@ function setChartZoom(chartId, window, btn) {
   btn.classList.add('active');
 }
 
-
-(function() {
-  _registerZoom('chartMoS', {
-    '6mo': { labels: ["2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01", "2026-03-01", "2026-04-01"], datasets: [[3.2, 2.9, 3.8, 2.8, 4.6, 4.5], [3.1, 3.03, 3.3, 3.17, 3.73, 3.97], [null, null, null, null, null, 4.5, 4.8028571428571425, 5.105714285714286], [null, null, null, null, null, 4.5, 4.610742857142856, 4.6972571428571435], [null, null, null, null, null, 4.5, 4.994971428571429, 5.514171428571429]] },
-    '2yr': { labels: ["2024-03-01", "2024-04-01", "2024-05-01", "2024-06-01", "2024-07-01", "2024-08-01", "2024-09-01", "2024-10-01", "2024-11-01", "2024-12-01", "2025-01-01", "2025-02-01", "2025-03-01", "2025-04-01", "2025-05-01", "2025-06-01", "2025-07-01", "2025-08-01", "2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01", "2026-03-01", "2026-04-01"], datasets: [[2.4, 2.5, 2.4, 2.6, 2.6, 2.6, 2.7, 2.6, 2.7, 2.4, 3.0, 3.4, 3.1, 3.2, 3.0, 3.1, 3.1, 3.0, 3.2, 2.9, 3.8, 2.8, 4.6, 4.5], [2.67, 2.53, 2.43, 2.5, 2.53, 2.6, 2.63, 2.63, 2.67, 2.57, 2.7, 2.93, 3.17, 3.23, 3.1, 3.1, 3.07, 3.07, 3.1, 3.03, 3.3, 3.17, 3.73, 3.97], [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 4.5, 4.8028571428571425, 5.105714285714286], [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 4.5, 4.610742857142856, 4.6972571428571435], [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 4.5, 4.994971428571429, 5.514171428571429]] }
-  });
-  var chart = new Chart(document.getElementById('chartMoS'), {
-    type: 'line',
-    data: { labels: ["2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01", "2026-03-01", "2026-04-01"], datasets: [{"label": "Months of Supply", "data": [3.2, 2.9, 3.8, 2.8, 4.6, 4.5], "borderColor": "#5aaa82", "backgroundColor": "rgba(90,170,130,0.08)", "tension": 0.4, "fill": true, "pointRadius": 3, "borderWidth": 2}, {"label": "3-mo MA", "data": [3.1, 3.03, 3.3, 3.17, 3.73, 3.97], "borderColor": "#c9883a", "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4}, {"label": "Forecast", "data": [null, null, null, null, null, 4.5, 4.8028571428571425, 5.105714285714286], "borderColor": "rgba(90,170,130,0.85)", "borderDash": [5, 4], "backgroundColor": "rgba(90,170,130,0)", "tension": 0.3, "fill": false, "pointRadius": 3, "borderWidth": 1.5, "pointBackgroundColor": "rgba(90,170,130,0.7)"}, {"label": "Conf. low", "data": [null, null, null, null, null, 4.5, 4.610742857142856, 4.6972571428571435], "borderColor": "rgba(90,170,130,0.15)", "borderDash": [2, 4], "backgroundColor": "rgba(90,170,130,0.10)", "tension": 0.3, "fill": "+1", "pointRadius": 0, "borderWidth": 1}, {"label": "Conf. high", "data": [null, null, null, null, null, 4.5, 4.994971428571429, 5.514171428571429], "borderColor": "rgba(90,170,130,0.15)", "borderDash": [2, 4], "backgroundColor": "rgba(90,170,130,0.10)", "tension": 0.3, "fill": false, "pointRadius": 0, "borderWidth": 1}] },
-    options: baseOpts(["2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01", "2026-03-01", "2026-04-01"], 'Months', fmtMos)
-  });
-  _storeChart('chartMoS', chart);
-})();
-
-(function() {
-  _registerZoom('chartPrice', {
-    '6mo': { labels: ["2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01", "2026-03-01", "2026-04-01"], datasets: [[396000.0, 426800.0, 397100.0, 387500.0, 382900.0, 372300.0], [410333.33, 413700.0, 406633.33, 403800.0, 389166.67, 380900.0], [397300.0, 401211.11, 404511.11, 407133.33, 404966.67, 401566.67], [null, null, null, null, null, 372300.0, 364877.14285714284, 357454.28571428574], [null, null, null, null, null, 372300.0, 350282.0571428571, 328857.9428571429], [null, null, null, null, null, 372300.0, 379472.22857142857, 386050.62857142865]] },
-    '2yr': { labels: ["2024-03-01", "2024-04-01", "2024-05-01", "2024-06-01", "2024-07-01", "2024-08-01", "2024-09-01", "2024-10-01", "2024-11-01", "2024-12-01", "2025-01-01", "2025-02-01", "2025-03-01", "2025-04-01", "2025-05-01", "2025-06-01", "2025-07-01", "2025-08-01", "2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01", "2026-03-01", "2026-04-01"], datasets: [[378000.0, 370800.0, 393100.0, 407000.0, 404700.0, 396400.0, 396800.0, 390900.0, 377200.0, 391400.0, 391600.0, 367400.0, 363900.0, 402400.0, 402900.0, 416500.0, 416700.0, 418300.0, 396000.0, 426800.0, 397100.0, 387500.0, 382900.0, 372300.0], [360400.0, 364233.33, 380633.33, 390300.0, 401600.0, 402700.0, 399300.0, 394700.0, 388300.0, 386500.0, 386733.33, 383466.67, 374300.0, 377900.0, 389733.33, 407266.67, 412033.33, 417166.67, 410333.33, 413700.0, 406633.33, 403800.0, 389166.67, 380900.0], [364588.89, 364566.67, 367255.56, 371100.0, 373777.78, 378044.44, 383333.33, 386844.44, 390544.44, 392033.33, 394344.44, 391488.89, 386700.0, 386444.44, 387166.67, 389355.56, 392222.22, 396788.89, 397300.0, 401211.11, 404511.11, 407133.33, 404966.67, 401566.67], [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 372300.0, 364877.14285714284, 357454.28571428574], [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 372300.0, 350282.0571428571, 328857.9428571429], [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 372300.0, 379472.22857142857, 386050.62857142865]] }
-  });
-  var chart = new Chart(document.getElementById('chartPrice'), {
-    type: 'line',
-    data: { labels: ["2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01", "2026-03-01", "2026-04-01"], datasets: [{"label": "Median Price (ME state)", "data": [396000.0, 426800.0, 397100.0, 387500.0, 382900.0, 372300.0], "borderColor": "#c9883a", "backgroundColor": "rgba(201,136,58,0.1)", "tension": 0.4, "fill": true, "pointRadius": 3, "borderWidth": 2}, {"label": "3-mo MA", "data": [410333.33, 413700.0, 406633.33, 403800.0, 389166.67, 380900.0], "borderColor": "#5aaa82", "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4}, {"label": "9-mo MA", "data": [397300.0, 401211.11, 404511.11, 407133.33, 404966.67, 401566.67], "borderColor": "#3d7a5a", "borderDash": [2, 3], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4}, {"label": "Forecast", "data": [null, null, null, null, null, 372300.0, 364877.14285714284, 357454.28571428574], "borderColor": "rgba(90,170,130,0.85)", "borderDash": [5, 4], "backgroundColor": "rgba(90,170,130,0)", "tension": 0.3, "fill": false, "pointRadius": 3, "borderWidth": 1.5, "pointBackgroundColor": "rgba(90,170,130,0.7)"}, {"label": "Conf. low", "data": [null, null, null, null, null, 372300.0, 350282.0571428571, 328857.9428571429], "borderColor": "rgba(90,170,130,0.15)", "borderDash": [2, 4], "backgroundColor": "rgba(90,170,130,0.10)", "tension": 0.3, "fill": "+1", "pointRadius": 0, "borderWidth": 1}, {"label": "Conf. high", "data": [null, null, null, null, null, 372300.0, 379472.22857142857, 386050.62857142865], "borderColor": "rgba(90,170,130,0.15)", "borderDash": [2, 4], "backgroundColor": "rgba(90,170,130,0.10)", "tension": 0.3, "fill": false, "pointRadius": 0, "borderWidth": 1}] },
-    options: baseOpts(["2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01", "2026-03-01", "2026-04-01"], 'Price ($)', fmtDollar)
-  });
-  _storeChart('chartPrice', chart);
-})();
-
-(function() {
-  _registerZoom('chartDOM', {
-    '6mo': { labels: ["2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01", "2026-03-01", "2026-04-01"], datasets: [[42.0, 47.0, 50.0, 54.0, 60.0, 65.0], [39.33, 43.0, 46.33, 50.33, 54.67, 59.67], [null, null, null, null, null, 65.0, 69.51428571428572, 74.02857142857142], [null, null, null, null, null, 65.0, 66.73371428571429, 68.10628571428572], [null, null, null, null, null, 65.0, 72.29485714285715, 79.95085714285715]] },
-    '2yr': { labels: ["2024-03-01", "2024-04-01", "2024-05-01", "2024-06-01", "2024-07-01", "2024-08-01", "2024-09-01", "2024-10-01", "2024-11-01", "2024-12-01", "2025-01-01", "2025-02-01", "2025-03-01", "2025-04-01", "2025-05-01", "2025-06-01", "2025-07-01", "2025-08-01", "2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01", "2026-03-01", "2026-04-01"], datasets: [[36.0, 34.0, 31.0, 26.0, 29.0, 33.0, 36.0, 39.0, 42.0, 46.0, 61.0, 60.0, 48.0, 46.0, 31.0, 31.0, 36.0, 40.0, 42.0, 47.0, 50.0, 54.0, 60.0, 65.0], [46.0, 40.67, 33.67, 30.33, 28.67, 29.33, 32.67, 36.0, 39.0, 42.33, 49.67, 55.67, 56.33, 51.33, 41.67, 36.0, 32.67, 35.67, 39.33, 43.0, 46.33, 50.33, 54.67, 59.67], [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 65.0, 69.51428571428572, 74.02857142857142], [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 65.0, 66.73371428571429, 68.10628571428572], [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 65.0, 72.29485714285715, 79.95085714285715]] }
-  });
-  var chart = new Chart(document.getElementById('chartDOM'), {
-    type: 'line',
-    data: { labels: ["2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01", "2026-03-01", "2026-04-01"], datasets: [{"label": "Median DOM", "data": [42.0, 47.0, 50.0, 54.0, 60.0, 65.0], "borderColor": "#5aaa82", "backgroundColor": "rgba(90,170,130,0.08)", "tension": 0.4, "fill": true, "pointRadius": 3, "borderWidth": 2}, {"label": "3-mo MA", "data": [39.33, 43.0, 46.33, 50.33, 54.67, 59.67], "borderColor": "#c9883a", "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4}, {"label": "Forecast", "data": [null, null, null, null, null, 65.0, 69.51428571428572, 74.02857142857142], "borderColor": "rgba(90,170,130,0.85)", "borderDash": [5, 4], "backgroundColor": "rgba(90,170,130,0)", "tension": 0.3, "fill": false, "pointRadius": 3, "borderWidth": 1.5, "pointBackgroundColor": "rgba(90,170,130,0.7)"}, {"label": "Conf. low", "data": [null, null, null, null, null, 65.0, 66.73371428571429, 68.10628571428572], "borderColor": "rgba(90,170,130,0.15)", "borderDash": [2, 4], "backgroundColor": "rgba(90,170,130,0.10)", "tension": 0.3, "fill": "+1", "pointRadius": 0, "borderWidth": 1}, {"label": "Conf. high", "data": [null, null, null, null, null, 65.0, 72.29485714285715, 79.95085714285715], "borderColor": "rgba(90,170,130,0.15)", "borderDash": [2, 4], "backgroundColor": "rgba(90,170,130,0.10)", "tension": 0.3, "fill": false, "pointRadius": 0, "borderWidth": 1}] },
-    options: baseOpts(["2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01", "2026-03-01", "2026-04-01"], 'Days', fmtDays)
-  });
-  _storeChart('chartDOM', chart);
-})();
-
-(function() {
-  _registerZoom('chartS2L', {
-    '6mo': { labels: ["2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01", "2026-03-01", "2026-04-01"], datasets: [[0.9787283293, 0.9784587016, 0.9770601498, 0.9724323872, 0.9698592641, 0.9667889354], [0.98, 0.98, 0.98, 0.98, 0.97, 0.97], [null, null, null, null, null, 0.9667889354, 0.9642139912685714, 0.9616390471371429], [null, null, null, null, null, 0.9667889354, 0.9256454316178285, 0.8847079233661714], [null, null, null, null, null, 0.9667889354, 1.0027825509193142, 1.0385701709081143]] },
-    '2yr': { labels: ["2024-03-01", "2024-04-01", "2024-05-01", "2024-06-01", "2024-07-01", "2024-08-01", "2024-09-01", "2024-10-01", "2024-11-01", "2024-12-01", "2025-01-01", "2025-02-01", "2025-03-01", "2025-04-01", "2025-05-01", "2025-06-01", "2025-07-01", "2025-08-01", "2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01", "2026-03-01", "2026-04-01"], datasets: [[0.9907462478, 0.9932818451, 0.9986622468, 1.004270728, 0.996271708, 0.9897643828, 0.9851546311, 0.9808902736, 0.9802391933, 0.9764913844, 0.9710981308, 0.9747983308, 0.9811202691, 0.9884515983, 0.9942502199, 0.9923200597, 0.9896953113, 0.982717409, 0.9787283293, 0.9784587016, 0.9770601498, 0.9724323872, 0.9698592641, 0.9667889354], [0.98, 0.99, 0.99, 1.0, 1.0, 1.0, 0.99, 0.99, 0.98, 0.98, 0.98, 0.97, 0.98, 0.98, 0.99, 0.99, 0.99, 0.99, 0.98, 0.98, 0.98, 0.98, 0.97, 0.97], [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 0.9667889354, 0.9642139912685714, 0.9616390471371429], [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 0.9667889354, 0.9256454316178285, 0.8847079233661714], [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 0.9667889354, 1.0027825509193142, 1.0385701709081143]] }
-  });
-  var chart = new Chart(document.getElementById('chartS2L'), {
-    type: 'line',
-    data: { labels: ["2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01", "2026-03-01", "2026-04-01"], datasets: [{"label": "Sale/List Ratio", "data": [0.9787283293, 0.9784587016, 0.9770601498, 0.9724323872, 0.9698592641, 0.9667889354], "borderColor": "#5aaa82", "backgroundColor": "rgba(90,170,130,0.08)", "tension": 0.4, "fill": true, "pointRadius": 3, "borderWidth": 2}, {"label": "3-mo MA", "data": [0.98, 0.98, 0.98, 0.98, 0.97, 0.97], "borderColor": "#c9883a", "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4}, {"label": "Forecast", "data": [null, null, null, null, null, 0.9667889354, 0.9642139912685714, 0.9616390471371429], "borderColor": "rgba(90,170,130,0.85)", "borderDash": [5, 4], "backgroundColor": "rgba(90,170,130,0)", "tension": 0.3, "fill": false, "pointRadius": 3, "borderWidth": 1.5, "pointBackgroundColor": "rgba(90,170,130,0.7)"}, {"label": "Conf. low", "data": [null, null, null, null, null, 0.9667889354, 0.9256454316178285, 0.8847079233661714], "borderColor": "rgba(90,170,130,0.15)", "borderDash": [2, 4], "backgroundColor": "rgba(90,170,130,0.10)", "tension": 0.3, "fill": "+1", "pointRadius": 0, "borderWidth": 1}, {"label": "Conf. high", "data": [null, null, null, null, null, 0.9667889354, 1.0027825509193142, 1.0385701709081143], "borderColor": "rgba(90,170,130,0.15)", "borderDash": [2, 4], "backgroundColor": "rgba(90,170,130,0.10)", "tension": 0.3, "fill": false, "pointRadius": 0, "borderWidth": 1}] },
-    options: baseOpts(["2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01", "2026-03-01", "2026-04-01"], '% of Asking Price', fmtPct)
-  });
-  _storeChart('chartS2L', chart);
-})();
-
-(function() {
-  _registerZoom('chartZHVI', {
-    '6mo': { labels: ["2025-09-30", "2025-10-31", "2025-11-30", "2025-12-31", "2026-01-31", "2026-02-28", "2026-03-01", "2026-04-01"], datasets: [[305104.91849499213, 305145.6007188111, 305369.64526031667, 305884.04298530734, 306940.52100357454, 308373.1254866552], [305104.92, 305125.26, 305206.72, 305466.43, 306064.74, 307065.9], [null, null, null, null, null, 308373.1254866552, 309008.5595877294, 309643.9936888036], [null, null, null, null, null, 308373.1254866552, 296648.2172042202, 284872.4741936993], [null, null, null, null, null, 308373.1254866552, 321368.9019712386, 334415.5131839079]] },
-    '2yr': { labels: ["2024-03-31", "2024-04-30", "2024-05-31", "2024-06-30", "2024-07-31", "2024-08-31", "2024-09-30", "2024-10-31", "2024-11-30", "2024-12-31", "2025-01-31", "2025-02-28", "2025-03-31", "2025-04-30", "2025-05-31", "2025-06-30", "2025-07-31", "2025-08-31", "2025-09-30", "2025-10-31", "2025-11-30", "2025-12-31", "2026-01-31", "2026-02-28", "2026-03-01", "2026-04-01"], datasets: [[299636.5068726446, 302675.77428193536, 304670.5559639821, 305285.3683117088, 304957.06292801857, 305342.4464357316, 306370.8960903205, 307968.8787082623, 308563.2900530499, 309122.62181844475, 309429.0749763585, 309937.36919058906, 309848.05725939554, 309590.69283863617, 309498.2102239451, 308860.2216055532, 307458.3345839563, 305856.0682411511, 305104.91849499213, 305145.6007188111, 305369.64526031667, 305884.04298530734, 306940.52100357454, 308373.1254866552], [299636.51, 301156.14, 302327.61, 304210.57, 304971.0, 305194.96, 305556.8, 306560.74, 307634.35, 308551.6, 309038.33, 309496.36, 309738.17, 309792.04, 309645.65, 309316.37, 308605.59, 307391.54, 306139.77, 305368.86, 305206.72, 305466.43, 306064.74, 307065.9], [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 308373.1254866552, 309008.5595877294, 309643.9936888036], [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 308373.1254866552, 296648.2172042202, 284872.4741936993], [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 308373.1254866552, 321368.9019712386, 334415.5131839079]] }
-  });
-  var chart = new Chart(document.getElementById('chartZHVI'), {
-    type: 'line',
-    data: { labels: ["2025-09-30", "2025-10-31", "2025-11-30", "2025-12-31", "2026-01-31", "2026-02-28", "2026-03-01", "2026-04-01"], datasets: [{"label": "Oxford County ZHVI", "data": [305104.91849499213, 305145.6007188111, 305369.64526031667, 305884.04298530734, 306940.52100357454, 308373.1254866552], "borderColor": "#c9883a", "backgroundColor": "rgba(201,136,58,0.12)", "tension": 0.4, "fill": true, "pointRadius": 2, "borderWidth": 2}, {"label": "3-mo MA", "data": [305104.92, 305125.26, 305206.72, 305466.43, 306064.74, 307065.9], "borderColor": "#5aaa82", "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4}, {"label": "Forecast", "data": [null, null, null, null, null, 308373.1254866552, 309008.5595877294, 309643.9936888036], "borderColor": "rgba(90,170,130,0.85)", "borderDash": [5, 4], "backgroundColor": "rgba(90,170,130,0)", "tension": 0.3, "fill": false, "pointRadius": 3, "borderWidth": 1.5, "pointBackgroundColor": "rgba(90,170,130,0.7)"}, {"label": "Conf. low", "data": [null, null, null, null, null, 308373.1254866552, 296648.2172042202, 284872.4741936993], "borderColor": "rgba(90,170,130,0.15)", "borderDash": [2, 4], "backgroundColor": "rgba(90,170,130,0.10)", "tension": 0.3, "fill": "+1", "pointRadius": 0, "borderWidth": 1}, {"label": "Conf. high", "data": [null, null, null, null, null, 308373.1254866552, 321368.9019712386, 334415.5131839079], "borderColor": "rgba(90,170,130,0.15)", "borderDash": [2, 4], "backgroundColor": "rgba(90,170,130,0.10)", "tension": 0.3, "fill": false, "pointRadius": 0, "borderWidth": 1}] },
-    options: baseOpts(["2025-09-30", "2025-10-31", "2025-11-30", "2025-12-31", "2026-01-31", "2026-02-28", "2026-03-01", "2026-04-01"], 'Home Value ($)', fmtDollar)
-  });
-  _storeChart('chartZHVI', chart);
-})();
-
-new Chart(document.getElementById('chartForecast'), {
-  type: 'line',
-  data: { labels: ["2024-09-30", "2024-10-31", "2024-11-30", "2024-12-31", "2025-01-31", "2025-02-28", "2025-03-31", "2025-04-30", "2025-05-31", "2025-06-30", "2025-07-31", "2025-08-31", "2025-09-30", "2025-10-31", "2025-11-30", "2025-12-31", "2026-01-31", "2026-02-28", "May 29, 2026", "August 27, 2026", "November 25, 2026"], datasets: [{"label": "Historical", "data": [306370.8960903205, 307968.8787082623, 308563.2900530499, 309122.62181844475, 309429.0749763585, 309937.36919058906, 309848.05725939554, 309590.69283863617, 309498.2102239451, 308860.2216055532, 307458.3345839563, 305856.0682411511, 305104.91849499213, 305145.6007188111, 305369.64526031667, 305884.04298530734, 306940.52100357454, 308373.1254866552, null, null, null], "borderColor": "#c9883a", "backgroundColor": "rgba(201,136,58,0.08)", "tension": 0.3, "fill": true, "pointRadius": 2, "borderWidth": 2}, {"label": "Projected", "data": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 308373.1254866552, 326664, 330590, 334516], "borderColor": "#5aaa82", "borderDash": [6, 4], "backgroundColor": "rgba(90,170,130,0.0)", "tension": 0.3, "fill": false, "pointRadius": 5, "borderWidth": 2, "pointStyle": "circle", "pointBackgroundColor": "#5aaa82"}, {"label": "Confidence band (low)", "data": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 308373.1254866552, 308441, 312367, 316293], "borderColor": "rgba(90,170,130,0.2)", "borderDash": [2, 4], "backgroundColor": "rgba(90,170,130,0.12)", "tension": 0.3, "fill": "+1", "pointRadius": 0, "borderWidth": 1}, {"label": "Confidence band (high)", "data": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 308373.1254866552, 344887, 348813, 352739], "borderColor": "rgba(90,170,130,0.2)", "borderDash": [2, 4], "backgroundColor": "rgba(90,170,130,0.12)", "tension": 0.3, "fill": false, "pointRadius": 0, "borderWidth": 1}] },
-  options: baseOpts(["2024-09-30", "2024-10-31", "2024-11-30", "2024-12-31", "2025-01-31", "2025-02-28", "2025-03-31", "2025-04-30", "2025-05-31", "2025-06-30", "2025-07-31", "2025-08-31", "2025-09-30", "2025-10-31", "2025-11-30", "2025-12-31", "2026-01-31", "2026-02-28", "May 29, 2026", "August 27, 2026", "November 25, 2026"], 'Home Value ($)', fmtDollar)
-});
 
 (function() {
   _registerZoom('chartFlow', {

@@ -76,17 +76,6 @@ def parse_csv(text):
     return list(csv.DictReader(io.StringIO(text)))
 
 
-def moving_average(values, window):
-    result = []
-    for i, v in enumerate(values):
-        if v is None:
-            result.append(None)
-            continue
-        window_vals = [x for x in values[max(0, i - window + 1):i + 1] if x is not None]
-        result.append(round(sum(window_vals) / len(window_vals), 2) if window_vals else None)
-    return result
-
-
 def safe_float(val):
     try:
         return float(str(val).replace(",", "").replace("$", "").replace("%", "").strip())
@@ -515,57 +504,6 @@ def linear_regression(xs, ys):
     return slope, (sy - slope * sx) / n
 
 
-def price_forecast(redfin_data, zillow_data):
-    """Project ZHVI 60 and 90 days out using linear regression."""
-    # Prefer Oxford County ZHVI (more local) over Maine state median
-    if zillow_data.get("dates") and len(zillow_data["dates"]) >= 12:
-        dates = zillow_data["dates"]
-        prices = zillow_data["zhvi"]
-        source_label = "Oxford County ZHVI"
-    elif redfin_data.get("dates") and len([p for p in redfin_data.get("median_price", []) if p]) >= 6:
-        dates = redfin_data["dates"]
-        prices = redfin_data["median_price"]
-        source_label = "Maine state median"
-    else:
-        return None
-
-    valid = [(d, p) for d, p in zip(dates, prices) if p is not None]
-    if len(valid) < 6:
-        return None
-
-    base = datetime.strptime(valid[0][0][:10], "%Y-%m-%d")
-    xs = [(datetime.strptime(d[:10], "%Y-%m-%d") - base).days for d, _ in valid]
-    ys = [p for _, p in valid]
-
-    slope, intercept = linear_regression(xs, ys)
-    residuals = [y - (slope * x + intercept) for x, y in zip(xs, ys)]
-    mean_r = sum(residuals) / len(residuals)
-    std_r = (sum((r - mean_r) ** 2 for r in residuals) / max(len(residuals) - 1, 1)) ** 0.5
-
-    last_x = xs[-1]
-    last_date = datetime.strptime(valid[-1][0][:10], "%Y-%m-%d")
-
-    def project(days_out):
-        x = last_x + days_out
-        pred = slope * x + intercept
-        ci = 1.96 * std_r
-        return {
-            "date": (last_date + timedelta(days=days_out)).strftime("%B %d, %Y"),
-            "predicted": round(pred),
-            "low": round(pred - ci),
-            "high": round(pred + ci),
-        }
-
-    return {
-        "day90": project(90),
-        "day180": project(180),
-        "day270": project(270),
-        "trend_monthly": round(slope * 30),
-        "source": source_label,
-        "n_months": len(valid),
-    }
-
-
 def mortgage_payment(price, rate_pct, down_pct=0.20, term_years=30):
     loan = price * (1 - down_pct)
     r = rate_pct / 100 / 12
@@ -914,8 +852,6 @@ header { background: var(--navy); border-bottom: 2px solid var(--green-dim); pad
 .score-marker { position: absolute; top: -4px; width: 16px; height: 16px; background: white; border-radius: 50%; border: 2px solid var(--amber-light); transform: translateX(-50%); }
 
 /* Chart panels */
-.chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 20px; }
-@media (max-width: 860px) { .chart-grid { grid-template-columns: 1fr; } }
 .chart-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px;
   border-left-width: 2px; border-left-color: var(--panel-accent, var(--border)); }
 .chart-panel.full { grid-column: 1 / -1; }
@@ -942,7 +878,7 @@ header { background: var(--navy); border-bottom: 2px solid var(--green-dim); pad
 .trend-tag.down-bad  { background: rgba(201,136,58,0.15);  color: #c9883a; border: 1px solid rgba(201,136,58,0.35); }
 .trend-tag.flat      { background: rgba(136,153,170,0.12); color: #8899aa; border: 1px solid rgba(136,153,170,0.25); }
 .chart-container { position: relative; height: 240px; }
-/* Zoom toggle buttons */
+/* Zoom toggle buttons — used by flow chart */
 .zoom-btns { display: -webkit-box; display: flex; gap: 4px; flex-shrink: 0; }
 .zoom-btn { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.05em;
   padding: 4px 10px; min-height: 28px; border-radius: 14px; border: 1px solid var(--border);
@@ -977,21 +913,6 @@ header { background: var(--navy); border-bottom: 2px solid var(--green-dim); pad
 /* Section header */
 .section-header { font-family: 'Inter', -apple-system, sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--text); margin: 32px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); letter-spacing: -0.01em; }
 
-/* Forecast */
-.forecast-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
-@media (max-width: 600px) { .forecast-grid { grid-template-columns: 1fr; } }
-.forecast-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 18px; }
-.forecast-horizon { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.10em; color: var(--amber); margin-bottom: 6px; }
-.forecast-price { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 600; }
-.forecast-range { font-family: 'JetBrains Mono', monospace; font-size: 0.80rem; color: var(--text-muted); margin-top: 4px; }
-
-/* Mortgage table */
-.mortgage-table { width: 100%; border-collapse: collapse; font-size: 0.87rem; font-family: 'JetBrains Mono', monospace; }
-.mortgage-table th { background: var(--surface2); color: var(--text-muted); padding: 8px 12px; text-align: left; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; border-bottom: 1px solid var(--border); }
-.mortgage-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
-.mortgage-table tr:last-child td { border-bottom: none; }
-.mortgage-table tr.hl td { color: var(--amber-light); background: rgba(201,136,58,0.07); }
-
 /* Backup cities */
 .city-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 18px; }
 .city-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 22px; }
@@ -1012,13 +933,6 @@ header { background: var(--navy); border-bottom: 2px solid var(--green-dim); pad
 .fit-bar-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--green-dim), var(--green-light)); }
 .city-notes { margin-top: 10px; font-size: 0.82rem; color: var(--text-muted); font-style: italic; line-height: 1.5; }
 .city-user-note { margin-top: 8px; font-size: 0.82rem; color: var(--amber); }
-
-/* Legend */
-.legend { margin-bottom: 10px; }
-.legend-item { display: inline-flex; align-items: center; gap: 6px; font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--text-muted); margin-right: 16px; }
-.legend-solid { width: 22px; height: 2px; background: var(--amber); }
-.legend-dashed { width: 22px; height: 2px; background: repeating-linear-gradient(90deg, var(--green-light) 0, var(--green-light) 4px, transparent 4px, transparent 8px); }
-.legend-shaded { width: 14px; height: 14px; background: rgba(90,170,130,0.12); border: 1px solid rgba(90,170,130,0.3); border-radius: 2px; }
 
 .source-note { font-family: 'JetBrains Mono', monospace; font-size: 0.70rem; color: var(--text-dim); margin-top: 8px; }
 
@@ -1058,17 +972,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
     <div class="pulse-text">__PULSE__</div>
   </div>
   <div class="stat-grid">__STATS__</div>
-  <div class="legend">
-    <span class="legend-item"><span class="legend-solid"></span>Search start Jan 1, 2026</span>
-    <span class="legend-item"><span class="legend-dashed"></span>Moving average</span>
-    <span class="legend-item"><span class="legend-shaded"></span>Spring/Fall seasonal bands</span>
-  </div>
-  <div class="chart-grid">__CHARTS__</div>
-  __ZHVI_SECTION__
   __FLOW_SECTION__
-  __FORECAST_SECTION__
-  __MORTGAGE_SECTION__
-  __RATE_SECTION__
 </div>
 </div>
 
@@ -1113,37 +1017,6 @@ if (window.innerWidth <= 480) {
   Chart.defaults.elements.point.hoverRadius = 4;
 }
 
-const SEARCH_START_DATE = '2026-01-01';
-
-function searchStartAnnotation(labels) {
-  const idx = labels.findIndex(l => l >= SEARCH_START_DATE);
-  if (idx < 0) return {};
-  return {
-    ss: {
-      type: 'line', xMin: idx, xMax: idx,
-      borderColor: 'rgba(201,136,58,0.9)', borderWidth: 2, borderDash: [6,4],
-      label: {
-        display: true, content: 'Jan 1 2026', color: '#e8a84e',
-        font: { size: 10 }, position: 'start',
-        backgroundColor: 'rgba(26,39,68,0.9)', padding: { x:6, y:3 }
-      }
-    }
-  };
-}
-
-function seasonBands(labels) {
-  const out = {};
-  labels.forEach((l, i) => {
-    if (!l) return;
-    const m = parseInt(l.slice(5, 7));
-    if ((m >= 3 && m <= 5) || (m >= 9 && m <= 11)) {
-      out['b'+i] = { type:'box', xMin:i-0.5, xMax:i+0.5,
-        backgroundColor:'rgba(90,170,130,0.07)', borderWidth:0, drawTime:'beforeDatasetsDraw' };
-    }
-  });
-  return out;
-}
-
 function baseOpts(labels, yLabel, fmtFn, extraOpts = {}) {
   return Object.assign({
     responsive: true, maintainAspectRatio: false,
@@ -1155,7 +1028,7 @@ function baseOpts(labels, yLabel, fmtFn, extraOpts = {}) {
         padding:10, titleColor:'#e2e8f0', bodyColor:'#8899aa',
         callbacks: { label: ctx => ctx.parsed.y == null ? null : '  ' + ctx.dataset.label + ': ' + fmtFn(ctx.parsed.y) }
       },
-      annotation: { annotations: { ...searchStartAnnotation(labels), ...seasonBands(labels) } }
+      annotation: { annotations: {} }
     },
     scales: {
       x: { ticks:{ maxRotation:45, color:'#556677', callback: function(val, idx) {
@@ -1184,7 +1057,7 @@ function fmtDateLabel(d) {
   return MONTHS[parseInt(parts[1])-1] + " '" + parts[0].slice(2);
 }
 
-// Chart zoom registry: chartId -> { chart, slices: { '6mo': {labels,datasets}, '2yr': {labels,datasets} } }
+// Chart zoom registry: chartId -> { chart, slices }
 const _zoomRegistry = {};
 function _registerZoom(chartId, slices) { _zoomRegistry[chartId] = { slices }; }
 function _storeChart(chartId, chart) {
@@ -1198,9 +1071,7 @@ function setChartZoom(chartId, window, btn) {
   const labels = slice.labels;
   reg.chart.data.labels = labels;
   reg.chart.data.datasets.forEach((ds, i) => { if (slice.datasets[i]) ds.data = slice.datasets[i]; });
-  reg.chart.options.plugins.annotation.annotations = {
-    ...searchStartAnnotation(labels), ...seasonBands(labels)
-  };
+  reg.chart.options.plugins.annotation.annotations = {};
   reg.chart.options.scales.x.ticks.callback = function(val, idx) {
     var d = labels[idx]; if (!d || !d.match || !d.match(/^\d{4}-\d{2}/)) return '';
     var m = parseInt(d.slice(5,7));
@@ -1261,15 +1132,12 @@ def fmt_count(v):
 def build_html(redfin_data, zillow_data, fred_data, backup_cities, city_data, flow_data=None):
     updated = datetime.now().strftime("%B %d, %Y at %I:%M %p")
     score, score_label = compute_market_score(redfin_data, zillow_data)
-    forecast = price_forecast(redfin_data, zillow_data)
 
     # Latest values
     median_price = last_valid(redfin_data.get("median_price", []))
     dom_val = last_valid(redfin_data.get("dom", []))
     s2l_val = last_valid(redfin_data.get("sale_to_list", []))
     inv_val = last_valid(redfin_data.get("inventory", []))
-    mos_val = last_valid(redfin_data.get("months_of_supply", []))
-    rate_val = last_valid(fred_data.get("rates", []))
     zhvi_val = last_valid(zillow_data.get("zhvi", []))
 
     # S2L display — show as % above/below asking for instant readability
@@ -1282,7 +1150,6 @@ def build_html(redfin_data, zillow_data, fred_data, backup_cities, city_data, fl
         s2l_display = f"{sign}{delta:.1f}%"
         s2l_note = "over asking" if delta >= 0 else "below asking"
 
-    payment = f"{mortgage_payment(350000, rate_val):,.0f}" if rate_val else "N/A"
     pulse = generate_market_pulse(redfin_data, zillow_data, fred_data, score, score_label or "unknown")
 
     # ── Month-over-month deltas ──
@@ -1290,7 +1157,6 @@ def build_html(redfin_data, zillow_data, fred_data, backup_cities, city_data, fl
     _, _, price_pct = mom_delta(redfin_data.get("median_price", []))
     _, _, dom_pct = mom_delta(redfin_data.get("dom", []))
     inv_cur, inv_prev, inv_pct = mom_delta(redfin_data.get("inventory", []))
-    _, _, rate_pct = mom_delta(fred_data.get("rates", []))
     s2l_delta = (((s2l_val if s2l_val < 10 else s2l_val / 100) - 1.0) * 100) if s2l_val else None
 
     # ── Stat cards ──
@@ -1347,476 +1213,13 @@ def build_html(redfin_data, zillow_data, fred_data, backup_cities, city_data, fl
         f'<div class="stat-sub">Below 50 = you have leverage. Above 50 = sellers win.</div></div>'
     )
     stats_html += score_html
-    stats_html += stat_card("Mortgage Rate",
-                             f"{rate_val:.1f}%" if rate_val else "N/A",
-                             "amber" if rate_val else "",
-                             f"That's ~${payment}/mo on $350K with 20% down.",
-                             delta_badge(rate_pct, "down"),
-                             rate_signal(rate_val))
 
     # ── Chart JS accumulator ──
     js = []
-    charts_html = []
-
-    dates = redfin_data.get("dates", [])
-
-    # Trim windows for Redfin charts
-    CHART_MONTHS_6  = 6
-    CHART_MONTHS_2Y = 24
-    CHART_MONTHS    = 18  # kept for ZHVI/forecast compatibility
 
     def trim_to(lst, n):
         """Return last n entries of lst (or all if shorter)."""
         return lst[-n:] if lst and len(lst) > n else (lst or [])
-
-    def proj_stub(series, n_months=2):
-        """
-        Return (proj_vals, low_vals, high_vals) as 2-point stubs from the last
-        data point of series, using a simple linear extrapolation from the last
-        6 valid values. Used to show a short forecast nub on each chart.
-        """
-        vals = [v for v in series if v is not None]
-        if len(vals) < 3:
-            return None, None, None
-        recent = vals[-6:]
-        n = len(recent)
-        xs = list(range(n))
-        mean_x = sum(xs) / n
-        mean_y = sum(recent) / n
-        slope = sum((x - mean_x) * (y - mean_y) for x, y in zip(xs, recent)) / \
-                max(sum((x - mean_x)**2 for x in xs), 1e-9)
-        last = vals[-1]
-        proj = [last + slope * m for m in range(1, n_months + 1)]
-        # Confidence: ±8% widening per step
-        low  = [last] + [p * (1 - 0.04 * i) for i, p in enumerate(proj, 1)]
-        high = [last] + [p * (1 + 0.04 * i) for i, p in enumerate(proj, 1)]
-        mid  = [last] + proj
-        return mid, low, high
-
-    def future_dates(last_date, n_months):
-        """Generate n_months of YYYY-MM-01 strings after last_date."""
-        from datetime import datetime
-        try:
-            dt = datetime.strptime(last_date[:7], "%Y-%m")
-        except ValueError:
-            return []
-        out = []
-        for i in range(1, n_months + 1):
-            m = dt.month + i
-            y = dt.year + (m - 1) // 12
-            m = ((m - 1) % 12) + 1
-            out.append(f"{y:04d}-{m:02d}-01")
-        return out
-
-    def make_zoom_chart(cid, build_datasets_fn, y_label, fmt_name, all_dates,
-                        proj_series=None, proj_good_dir="up"):
-        """
-        Build a Chart.js chart with 6mo/2yr zoom toggle.
-        build_datasets_fn(sliced_data) -> list of dataset dicts
-        proj_series: raw (unsliced) series used to compute the forecast stub.
-        Returns (canvas_html, js_snippet, zoom_buttons_html).
-        """
-        n_all = len(all_dates)
-
-        def build_slice(n):
-            sliced_dates = trim_to(all_dates, n)
-            ds = build_datasets_fn(n)
-            if proj_series:
-                n_proj = 2
-                mid, low, high = proj_stub(trim_to(proj_series, n), n_proj)
-                if mid:
-                    fdates = future_dates(sliced_dates[-1] if sliced_dates else "", n_proj)
-                    pad = [None] * (len(sliced_dates) - 1)
-                    ds = ds + [
-                        {"label": "Forecast", "data": pad + mid,
-                         "borderColor": "rgba(90,170,130,0.85)", "borderDash": [5, 4],
-                         "backgroundColor": "rgba(90,170,130,0)", "tension": 0.3,
-                         "fill": False, "pointRadius": 3, "borderWidth": 1.5,
-                         "pointBackgroundColor": "rgba(90,170,130,0.7)"},
-                        {"label": "Conf. low", "data": pad + low,
-                         "borderColor": "rgba(90,170,130,0.15)", "borderDash": [2, 4],
-                         "backgroundColor": "rgba(90,170,130,0.10)", "tension": 0.3,
-                         "fill": "+1", "pointRadius": 0, "borderWidth": 1},
-                        {"label": "Conf. high", "data": pad + high,
-                         "borderColor": "rgba(90,170,130,0.15)", "borderDash": [2, 4],
-                         "backgroundColor": "rgba(90,170,130,0.10)", "tension": 0.3,
-                         "fill": False, "pointRadius": 0, "borderWidth": 1},
-                    ]
-                    sliced_dates = sliced_dates + fdates
-            return sliced_dates, ds
-
-        dates_6mo, ds_6mo = build_slice(CHART_MONTHS_6)
-        dates_2yr, ds_2yr = build_slice(CHART_MONTHS_2Y)
-
-        c = canvas(cid)
-        # Embed both slices as JS data, then build chart from 6mo slice (default)
-        ds_6mo_js  = json.dumps(ds_6mo)
-        ds_2yr_js  = json.dumps(ds_2yr)
-        dates_6mo_js = json.dumps(dates_6mo)
-        dates_2yr_js = json.dumps(dates_2yr)
-
-        # Dataset arrays only (for zoom swap)
-        ds_6mo_data = json.dumps([d["data"] for d in ds_6mo])
-        ds_2yr_data = json.dumps([d["data"] for d in ds_2yr])
-
-        j = f"""
-(function() {{
-  _registerZoom('{cid}', {{
-    '6mo': {{ labels: {dates_6mo_js}, datasets: {ds_6mo_data} }},
-    '2yr': {{ labels: {dates_2yr_js}, datasets: {ds_2yr_data} }}
-  }});
-  var chart = new Chart(document.getElementById('{cid}'), {{
-    type: 'line',
-    data: {{ labels: {dates_6mo_js}, datasets: {ds_6mo_js} }},
-    options: baseOpts({dates_6mo_js}, '{y_label}', {fmt_name})
-  }});
-  _storeChart('{cid}', chart);
-}})();"""
-
-        zoom_btns = (
-            f'<div class="zoom-btns">'
-            f'<button class="zoom-btn active" onclick="setChartZoom(\'{cid}\',\'6mo\',this)">6mo</button>'
-            f'<button class="zoom-btn" onclick="setChartZoom(\'{cid}\',\'2yr\',this)">2yr</button>'
-            f'</div>'
-        )
-        return c, j, zoom_btns
-
-    # Keep legacy helper for non-zoom charts (ZHVI, rate, etc.)
-    def t(lst):
-        return trim_to(lst, CHART_MONTHS)
-
-    dates_trim = t(dates)
-
-    def make_line_chart(cid, series_list, y_label, fmt_name, use_dates=None):
-        chart_dates = use_dates if use_dates is not None else dates_trim
-        c = canvas(cid)
-        ds_js = json.dumps(series_list)
-        j = f"""
-new Chart(document.getElementById('{cid}'), {{
-  type: 'line',
-  data: {{ labels: {json.dumps(chart_dates)}, datasets: {ds_js} }},
-  options: baseOpts({json.dumps(chart_dates)}, '{y_label}', {fmt_name})
-}});"""
-        return c, j
-
-    # Price chart
-    prices = redfin_data.get("median_price", [])
-    if dates and any(p for p in prices if p):
-        ma3_full = moving_average(prices, 3)
-        ma9_full = moving_average(prices, 9)
-
-        def price_datasets(n):
-            return [
-                {"label": "Median Price (ME state)", "data": trim_to(prices, n), "borderColor": "#c9883a",
-                 "backgroundColor": "rgba(201,136,58,0.1)", "tension": 0.4, "fill": True,
-                 "pointRadius": 3, "borderWidth": 2},
-                {"label": "3-mo MA", "data": trim_to(ma3_full, n), "borderColor": "#5aaa82",
-                 "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4},
-                {"label": "9-mo MA", "data": trim_to(ma9_full, n), "borderColor": "#3d7a5a",
-                 "borderDash": [2, 3], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4},
-            ]
-
-        c, j, zbtn = make_zoom_chart("chartPrice", price_datasets, "Price ($)", "fmtDollar",
-                                     dates, proj_series=prices, proj_good_dir="down")
-        price_chart_html = (
-            f'<div class="chart-panel" data-panel="price">'
-            f'<div class="chart-header"><div class="chart-title">Maine Median Sale Price</div>{zbtn}</div>'
-            f'{trend_tag(prices, "down")}'
-            f'<div class="chart-subtitle">The thick line is the monthly sale price. The smoother lines show the trend — ignore the month-to-month noise and watch those instead.</div>{c}</div>'
-        )
-        price_chart_js = j
-    else:
-        price_chart_html = f'<div class="chart-panel">{unavailable("Redfin price data unavailable")}</div>'
-        price_chart_js = None
-
-    # Months of supply chart — chart #1 (most important signal)
-    moss = redfin_data.get("months_of_supply", [])
-    invs = redfin_data.get("inventory", [])
-    if dates and any(v for v in moss if v):
-        mos_ma_full = moving_average(moss, 3)
-
-        def mos_datasets(n):
-            return [
-                {"label": "Months of Supply", "data": trim_to(moss, n), "borderColor": "#5aaa82",
-                 "backgroundColor": "rgba(90,170,130,0.08)", "tension": 0.4, "fill": True,
-                 "pointRadius": 3, "borderWidth": 2},
-                {"label": "3-mo MA", "data": trim_to(mos_ma_full, n), "borderColor": "#c9883a",
-                 "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4},
-            ]
-
-        c, j, zbtn = make_zoom_chart("chartMoS", mos_datasets, "Months", "fmtMos",
-                                     dates, proj_series=moss, proj_good_dir="up")
-        charts_html.append(
-            f'<div class="chart-panel" data-panel="mos">'
-            f'<div class="chart-header"><div class="chart-title">Months of Supply</div>{zbtn}</div>'
-            f'{trend_tag(moss, "up")}'
-            f'<div class="chart-subtitle">How long it would take to sell every home currently listed. Under 3 months = sellers win. Over 6 months = you win.</div>{c}</div>'
-        )
-        js.append(j)
-    elif dates and any(v for v in invs if v):
-        inv_ma = moving_average(invs, 3)
-        datasets = [
-            {"label": "Active Listings", "data": t(invs), "backgroundColor": "rgba(61,122,90,0.45)",
-             "borderColor": "#3d7a5a", "borderWidth": 1},
-            {"label": "3-mo MA", "data": t(inv_ma), "type": "line", "borderColor": "#c9883a",
-             "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4},
-        ]
-        inv_html = f'<div class="chart-container"><canvas id="chartInv"></canvas></div>'
-        inv_js = f"""
-new Chart(document.getElementById('chartInv'), {{
-  type: 'bar',
-  data: {{ labels: {json.dumps(dates_trim)}, datasets: {json.dumps(datasets)} }},
-  options: baseOpts({json.dumps(dates_trim)}, 'Listings', fmtNum)
-}});"""
-        charts_html.append(
-            f'<div class="chart-panel"><div class="chart-title">Active Inventory</div>'
-            f'<div class="chart-subtitle">Homes for sale right now. More = more choices, less pressure. Watch for a sudden drop.</div>{inv_html}</div>'
-        )
-        js.append(inv_js)
-    else:
-        charts_html.append(
-            f'<div class="chart-panel">{unavailable("Inventory data unavailable")}</div>')
-
-    # Price chart — chart #2
-    charts_html.append(price_chart_html)
-    if price_chart_js:
-        js.append(price_chart_js)
-
-    # DOM chart
-    doms = redfin_data.get("dom", [])
-    if dates and any(d for d in doms if d):
-        dom_ma_full = moving_average(doms, 3)
-
-        def dom_datasets(n):
-            return [
-                {"label": "Median DOM", "data": trim_to(doms, n), "borderColor": "#5aaa82",
-                 "backgroundColor": "rgba(90,170,130,0.08)", "tension": 0.4, "fill": True,
-                 "pointRadius": 3, "borderWidth": 2},
-                {"label": "3-mo MA", "data": trim_to(dom_ma_full, n), "borderColor": "#c9883a",
-                 "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4},
-            ]
-
-        c, j, zbtn = make_zoom_chart("chartDOM", dom_datasets, "Days", "fmtDays",
-                                     dates, proj_series=doms, proj_good_dir="up")
-        charts_html.append(
-            f'<div class="chart-panel" data-panel="dom">'
-            f'<div class="chart-header"><div class="chart-title">Days on Market</div>{zbtn}</div>'
-            f'{trend_tag(doms, "up")}'
-            f'<div class="chart-subtitle">When this drops, buyers are moving fast and you\'ll have less time to decide. When it rises, you have breathing room.</div>{c}</div>'
-        )
-        js.append(j)
-    else:
-        charts_html.append(
-            f'<div class="chart-panel">{unavailable("Days-on-market data unavailable")}</div>')
-
-    # Sale-to-list chart
-    s2ls = redfin_data.get("sale_to_list", [])
-    if dates and any(v for v in s2ls if v):
-        s2l_ma_full = moving_average(s2ls, 3)
-
-        def s2l_datasets(n):
-            return [
-                {"label": "Sale/List Ratio", "data": trim_to(s2ls, n), "borderColor": "#5aaa82",
-                 "backgroundColor": "rgba(90,170,130,0.08)", "tension": 0.4, "fill": True,
-                 "pointRadius": 3, "borderWidth": 2},
-                {"label": "3-mo MA", "data": trim_to(s2l_ma_full, n), "borderColor": "#c9883a",
-                 "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4},
-            ]
-
-        c, j, zbtn = make_zoom_chart("chartS2L", s2l_datasets, "% of Asking Price", "fmtPct",
-                                     dates, proj_series=s2ls, proj_good_dir="down")
-        charts_html.append(
-            f'<div class="chart-panel" data-panel="s2l">'
-            f'<div class="chart-header"><div class="chart-title">Sale-to-List Ratio</div>{zbtn}</div>'
-            f'{trend_tag(s2ls, "down")}'
-            f'<div class="chart-subtitle">Above 100% = buyers paid over asking. Below 100% = sold at a discount. The stat card above shows this as a +/- delta from asking for easier reading.</div>{c}</div>'
-        )
-        js.append(j)
-    else:
-        charts_html.append(
-            f'<div class="chart-panel">{unavailable("Sale-to-list data unavailable")}</div>')
-
-    # ── Oxford County ZHVI section ──
-    zhvi_section = ""
-    zd = []  # used below in forecast section
-    zv = []
-    if zillow_data.get("dates") and zillow_data.get("zhvi"):
-        zd_full = zillow_data["dates"]
-        zv_full = zillow_data["zhvi"]
-
-        def zhvi_datasets_fn(n):
-            zd_s = trim_to(zd_full, n)
-            zv_s = trim_to(zv_full, n)
-            zv_ma_s = moving_average(zv_s, 3)
-            return [
-                {"label": "Oxford County ZHVI", "data": zv_s, "borderColor": "#c9883a",
-                 "backgroundColor": "rgba(201,136,58,0.12)", "tension": 0.4, "fill": True,
-                 "pointRadius": 2, "borderWidth": 2},
-                {"label": "3-mo MA", "data": zv_ma_s, "borderColor": "#5aaa82",
-                 "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4},
-            ]
-
-        zhvi_c, zhvi_j, zhvi_zbtn = make_zoom_chart(
-            "chartZHVI", zhvi_datasets_fn, "Home Value ($)", "fmtDollar",
-            zd_full, proj_series=zv_full, proj_good_dir="down"
-        )
-        # Keep 18mo trimmed slices for the forecast section below
-        ztrim = max(0, len(zd_full) - CHART_MONTHS)
-        zd = zd_full[ztrim:]
-        zv = zv_full[ztrim:]
-
-        js.append(zhvi_j)
-        note = zillow_data.get("note", "")
-        zhvi_section = f"""
-<div class="section-header">Oxford County ZHVI (Zillow Home Value Index)</div>
-<div class="chart-panel full" data-panel="zhvi">
-  <div class="chart-header"><div class="chart-title">Oxford County, ME — Median Home Value</div>{zhvi_zbtn}</div>
-  <div class="chart-subtitle">Smoothed, seasonally adjusted · Middle tier. Default: 6 months.</div>
-  {zhvi_c}
-  {'<div class="source-note">Note: ' + note + '</div>' if note else ''}
-  <div class="source-note">Source: Zillow Research ({zillow_data.get('source','')})</div>
-</div>"""
-    else:
-        zhvi_section = f"""
-<div class="section-header">Oxford County ZHVI</div>
-{unavailable(f"Zillow ZHVI data unavailable — {zillow_data.get('error','check source')}")}"""
-
-    # ── Forecast section — integrated chart ──
-    forecast_section = ""
-    if forecast:
-        ft = forecast["trend_monthly"]
-        trend_str = f"${abs(ft):,}/month {'rising' if ft > 0 else 'falling'}" if ft else "flat"
-        d90  = forecast["day90"]
-        d180 = forecast["day180"]
-        d270 = forecast["day270"]
-
-        # Build chart: last 18 months of ZHVI history + 4 projected points (now, +90d, +180d, +270d)
-        if zillow_data.get("dates") and zillow_data.get("zhvi"):
-            hist_dates = zd  # already trimmed to 18mo above
-            hist_vals = zv
-        else:
-            hist_dates = t(dates)
-            hist_vals = t(redfin_data.get("median_price", []))
-
-        last_hist_val = next((v for v in reversed(hist_vals) if v is not None), None)
-        proj_dates = [hist_dates[-1] if hist_dates else "", d90["date"], d180["date"], d270["date"]]
-        proj_vals  = [last_hist_val, d90["predicted"],  d180["predicted"],  d270["predicted"]]
-        proj_low   = [last_hist_val, d90["low"],        d180["low"],        d270["low"]]
-        proj_high  = [last_hist_val, d90["high"],       d180["high"],       d270["high"]]
-
-        n_hist = len(hist_vals)
-        all_labels  = list(hist_dates) + proj_dates[1:]
-        hist_padded = list(hist_vals) + [None, None, None]
-        proj_padded = [None] * (n_hist - 1) + proj_vals
-        low_padded  = [None] * (n_hist - 1) + proj_low
-        high_padded = [None] * (n_hist - 1) + proj_high
-
-        fc_datasets = [
-            {"label": "Historical", "data": hist_padded,
-             "borderColor": "#c9883a", "backgroundColor": "rgba(201,136,58,0.08)",
-             "tension": 0.3, "fill": True, "pointRadius": 2, "borderWidth": 2},
-            {"label": "Projected", "data": proj_padded,
-             "borderColor": "#5aaa82", "borderDash": [6, 4],
-             "backgroundColor": "rgba(90,170,130,0.0)",
-             "tension": 0.3, "fill": False, "pointRadius": 5, "borderWidth": 2,
-             "pointStyle": "circle", "pointBackgroundColor": "#5aaa82"},
-            {"label": "Confidence band (low)", "data": low_padded,
-             "borderColor": "rgba(90,170,130,0.2)", "borderDash": [2, 4],
-             "backgroundColor": "rgba(90,170,130,0.12)",
-             "tension": 0.3, "fill": "+1", "pointRadius": 0, "borderWidth": 1},
-            {"label": "Confidence band (high)", "data": high_padded,
-             "borderColor": "rgba(90,170,130,0.2)", "borderDash": [2, 4],
-             "backgroundColor": "rgba(90,170,130,0.12)",
-             "tension": 0.3, "fill": False, "pointRadius": 0, "borderWidth": 1},
-        ]
-
-        fc_js = f"""
-new Chart(document.getElementById('chartForecast'), {{
-  type: 'line',
-  data: {{ labels: {json.dumps(all_labels)}, datasets: {json.dumps(fc_datasets)} }},
-  options: baseOpts({json.dumps(all_labels)}, 'Home Value ($)', fmtDollar)
-}});"""
-        js.append(fc_js)
-
-        forecast_section = f"""
-<div class="section-header">Price Outlook — Where Is This Headed?</div>
-<div class="chart-panel full" data-panel="forecast">
-  <div class="chart-title">18-Month History + 90-Day Projection</div>
-  <div class="chart-subtitle">Solid line = actual history. Dashed green = projected trend. Shaded band = range of likely outcomes. Trend: {trend_str}. Not a financial prediction.</div>
-  <div class="chart-container" style="height:280px;"><canvas id="chartForecast"></canvas></div>
-  <div class="forecast-grid" style="margin-top:14px;grid-template-columns:1fr 1fr 1fr;">
-    <div class="forecast-card">
-      <div class="forecast-horizon">3-Month Estimate &nbsp; {d90['date']}</div>
-      <div class="forecast-price">{fmt_compact(d90['predicted'])}</div>
-      <div class="forecast-range">Range: {fmt_compact(d90['low'])} – {fmt_compact(d90['high'])}</div>
-    </div>
-    <div class="forecast-card">
-      <div class="forecast-horizon">6-Month Estimate &nbsp; {d180['date']}</div>
-      <div class="forecast-price">{fmt_compact(d180['predicted'])}</div>
-      <div class="forecast-range">Range: {fmt_compact(d180['low'])} – {fmt_compact(d180['high'])}</div>
-    </div>
-    <div class="forecast-card">
-      <div class="forecast-horizon">9-Month Estimate &nbsp; {d270['date']}</div>
-      <div class="forecast-price">{fmt_compact(d270['predicted'])}</div>
-      <div class="forecast-range">Range: {fmt_compact(d270['low'])} – {fmt_compact(d270['high'])}</div>
-    </div>
-  </div>
-</div>"""
-
-    # ── Mortgage section ──
-    mortgage_section = ""
-    if rate_val:
-        rows_html = ""
-        for scenario in [5.0, 5.5, 6.0, 6.5, 7.0, 7.5, 8.0, 8.5]:
-            pmt = mortgage_payment(350000, scenario)
-            curr_pmt = mortgage_payment(350000, rate_val)
-            diff = pmt - curr_pmt
-            diff_str = f"+${diff:,.0f}" if diff > 0 else f"${diff:,.0f}"
-            is_cur = abs(scenario - rate_val) < 0.26
-            cls = ' class="hl"' if is_cur else ""
-            lbl = f"{scenario:.1f}%" + (" ← now" if is_cur else "")
-            rows_html += f"<tr{cls}><td>{lbl}</td><td>${pmt:,.0f}</td><td>{'—' if is_cur else diff_str}</td></tr>"
-        mortgage_section = f"""
-<div class="section-header">Purchase Power at $350K Target</div>
-<div class="chart-grid">
-  <div class="chart-panel">
-    <div class="chart-title">Monthly Payment Scenarios (P+I, 20% down)</div>
-    <div class="chart-subtitle">$350,000 purchase price · 30-year fixed</div>
-    <table class="mortgage-table">
-      <thead><tr><th>Rate</th><th>Monthly (P+I)</th><th>vs. Current</th></tr></thead>
-      <tbody>{rows_html}</tbody>
-    </table>
-  </div>
-  <div class="chart-panel">
-    <div class="chart-title">30-Year Fixed Rate</div>
-    <div class="chart-subtitle">Weekly — FRED MORTGAGE30US</div>
-    {canvas('chartRate')}
-  </div>
-</div>"""
-
-        if fred_data.get("dates"):
-            rd = fred_data["dates"]
-            rv = fred_data["rates"]
-            rate_js = f"""
-new Chart(document.getElementById('chartRate'), {{
-  type: 'line',
-  data: {{
-    labels: {json.dumps(rd)},
-    datasets: [{{
-      label: '30-yr Fixed', data: {json.dumps(rv)},
-      borderColor: '#5aaa82', backgroundColor: 'rgba(90,170,130,0.08)',
-      tension: 0.3, fill: true, pointRadius: 1, borderWidth: 2
-    }}]
-  }},
-  options: baseOpts({json.dumps(rd)}, 'Rate (%)', fmtRate)
-}});"""
-            js.append(rate_js)
-
-    rate_section = ""
-    if not rate_val:
-        rate_section = f"""
-<div class="section-header">Mortgage Rate Context</div>
-{unavailable(f"FRED mortgage rate data unavailable — {fred_data.get('error','set FRED_API_KEY environment variable')}")}"""
 
     # ── Backup cities ──
     city_cards = ""
@@ -1939,12 +1342,7 @@ new Chart(document.getElementById('chartRate'), {{
     html = html.replace("__UPDATED__", updated)
     html = html.replace("__PULSE__", pulse)
     html = html.replace("__STATS__", stats_html)
-    html = html.replace("__CHARTS__", "\n".join(charts_html))
-    html = html.replace("__ZHVI_SECTION__", zhvi_section)
     html = html.replace("__FLOW_SECTION__", flow_section)
-    html = html.replace("__FORECAST_SECTION__", forecast_section)
-    html = html.replace("__MORTGAGE_SECTION__", mortgage_section)
-    html = html.replace("__RATE_SECTION__", rate_section)
     html = html.replace("__CHART_JS__", "\n".join(js))
     html = html.replace("__CITIES__", city_cards)
     return html
