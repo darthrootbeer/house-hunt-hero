@@ -146,5 +146,161 @@
       "inventory": null
     },
     "notes": "Home base. Maegan's family nearby. Tourist town with ski resort (Sunday River). Small but real downtown."
+  },
+  {
+    "slug": "littleton-nh",
+    "name": "Littleton",
+    "state": "NH",
+    "county": "Grafton County",
+    "county_fips_state": "33",
+    "county_fips_county": "009",
+    "distance_tier": "T3",
+    "drive_minutes": 90,
+    "drive_note": "~1.5 hrs via I-93 / Rt 302",
+    "population": 5928,
+    "hard_fails": [],
+    "vibe": {
+      "creative_culture": 8,
+      "nature_access": 9,
+      "food_drink": 9,
+      "walkability": 8,
+      "quiet_privacy": 6,
+      "community_fit": 8,
+      "pet_friendly": 8,
+      "practical": 8
+    },
+    "places": {
+      "bookstores": [
+        {"name": "Little Village Toy & Book Shop (81 Main St)", "source": "littlevillagetoy.com"}
+      ],
+      "record_stores": [],
+      "music_venues": [
+        {"name": "The Loading Dock (35 Mill St — nonprofit arts space, live music)", "source": "theloadingdocknh.com"},
+        {"name": "The Colonial Theatre (2 Main St, Bethlehem — historic venue, ~10 min)", "source": "thecolonialtheatre.org"},
+        {"name": "Schilling Beer Co. (18 Mill St — live music events)", "source": "schillingbeer.com"}
+      ],
+      "art_galleries": [
+        {"name": "League of NH Craftsmen — Littleton Gallery (81 Main St)", "source": "littleton.nhcrafts.org"},
+        {"name": "BAD ART (35 Mill St — studio/gallery co-op on Riverwalk)", "source": "Yelp"},
+        {"name": "Shaun Terhune Fine Art Photography Gallery (Main St)", "source": "shaunterhune.com"}
+      ],
+      "indie_cinema": [
+        {"name": "Jax Jr. Cinemas (32 Main St)", "source": "jaxjr.com"}
+      ],
+      "outdoor_outfitters": [
+        {"name": "Lahout's — America's Oldest Ski Shop (245 Union St)", "source": "lahouts.com"},
+        {"name": "Corey's Sport Shop (outdoor gear, ski/snowboard rentals)", "source": "grousemountain.com"}
+      ],
+      "kayak_canoe_rental": [
+        {"name": "North Country Kayak (Moore Reservoir)", "source": "northcountrykayak.com"},
+        {"name": "Echo Lake Beach & Boat Rentals (Franconia Notch — seasonal)", "source": "nhstateparks.org"}
+      ],
+      "ski_areas": [
+        {"name": "Cannon Mountain (285 acres, 2330 ft vert, Franconia ~15 min)", "source": "cannonmt.com"},
+        {"name": "Franconia Village XC Ski Center (30km groomed Nordic)", "source": "skinh.com"},
+        {"name": "Bretton Woods (~30 min — largest in NH)", "source": "brettonwoods.com"},
+        {"name": "Loon Mountain (~40 min)", "source": "loonmtn.com"}
+      ],
+      "coffee_shops": [
+        {"name": "The Coffee Pot Restaurant (30 Main St — all-day breakfast, 42 years)", "source": "thecoffeepotrestaurant.com"},
+        {"name": "Inkwell Coffee & Teahouse (24 Beacon St)", "source": "inkwellnh.com"},
+        {"name": "Crumb Bum Bakery", "source": "Yelp"},
+        {"name": "Tall Provisions", "source": "Yelp"},
+        {"name": "Franconia Coffee House (334 Main St, Franconia)", "source": "menupix.com"}
+      ],
+      "restaurants": [
+        {"name": "Schilling Beer Co. (18 Mill St — European-inspired brewpub)", "source": "schillingbeer.com"},
+        {"name": "Sour's Taverna (26 Thayers Ln)", "source": "sourstaverna.com"},
+        {"name": "Mill Street Kitchen (16 Mill St)", "source": "Tripadvisor"},
+        {"name": "Littleton Freehouse Taproom & Eatery", "source": "littletonfreehouse.com"},
+        {"name": "The Little Grille (62 Cottage St)", "source": "Tripadvisor"},
+        {"name": "The Beal House (2 W Main St)", "source": "Facebook"},
+        {"name": "Chang Thai Cafe (77 Main St)", "source": "golittleton.com"},
+        {"name": "Littleton Diner (145 Main St)", "source": "golittleton.com"},
+        {"name": "Gold House Pizza & Greek (77 Main St)", "source": "golittleton.com"},
+        {"name": "Mr. Lin's Kitchen", "source": "mrlinskitchen.com"},
+        {"name": "Topic of the Town (25 Main St)", "source": "menuguide.com"},
+        {"name": "Jack & Fin's (42 Main St)", "source": "menuguide.com"},
+        {"name": "Jing Fong (60 Main St)", "source": "menuguide.com"},
+        {"name": "Cold Mountain Cafe (Bethlehem, ~10 min)", "source": "coldmountaincafe.com"},
+        {"name": "El Mirador (Bethlehem — Mexican, ~10 min)", "source": "Tripadvisor"},
+        {"name": "Rek'-Lis Brewing Co. (Bethlehem, ~10 min)", "source": "reklisbrewing.com"},
+        {"name": "Polly's Pancake Parlor (Sugar Hill — iconic, 80+ years)", "source": "pollyspancakeparlor.com"},
+        {"name": "Iron Furnace Brewing (115 Main St, Franconia)", "source": "ironfurnacebrewing.com"},
+        {"name": "Wildbloom Beer (42 Main St)", "source": "Tripadvisor"}
+      ],
+      "farmers_markets": [
+        {"name": "Littleton Farmers Market (Sun 10am-1pm, Jun-Oct, 77 Riverglen Ln)", "source": "littletonfarmersmarket.com"}
+      ],
+      "breweries": [
+        {"name": "Schilling Beer Co. (18 Mill St)", "source": "schillingbeer.com"},
+        {"name": "Wildbloom Beer (42 Main St)", "source": "Tripadvisor"},
+        {"name": "Littleton Freehouse Taproom", "source": "littletonfreehouse.com"},
+        {"name": "Iron Furnace Brewing (Franconia)", "source": "ironfurnacebrewing.com"},
+        {"name": "Rek'-Lis Brewing Co. (Bethlehem, ~10 min)", "source": "reklisbrewing.com"}
+      ],
+      "libraries": [
+        {"name": "Littleton Public Library (92 Main St)", "source": "littletonpubliclibrary.org"},
+        {"name": "Abbie Greenleaf Library (Franconia)", "source": "abbielibrary.org"}
+      ],
+      "yoga_studios": [
+        {"name": "Studium Fitness (Rail Trail Village — yoga, Pilates, barre)", "source": "studiumfitness.com"},
+        {"name": "DustOff Yoga (111 Saranac St — trauma-informed yoga)", "source": "dustoffyoga.com"},
+        {"name": "Root To Bloom Studio", "source": "roottobloomstudio.com"},
+        {"name": "Iyengar Yoga North (23 Ammonoosuc St)", "source": "iyengaryoganorth.com"}
+      ],
+      "coworking_spaces": [
+        {"name": "Notch Coworking", "source": "notchcoworking.com"}
+      ],
+      "vet_clinics": [
+        {"name": "Companion Pet Care of Littleton (22 Maple St)", "source": "cpclittleton.com"},
+        {"name": "Littleton Area Veterinary Urgent Care (59 W Main St — after-hours)", "source": "littletonves.org"}
+      ],
+      "pet_grooming": [
+        {"name": "Littleton Pet Center (1985 St Johnsbury Rd)", "source": "petnetid.com"},
+        {"name": "Lori Fillion's Grooming Boutique & Daycare (119 Ledgeway Rd)", "source": "Facebook"},
+        {"name": "Snoot Studio Grooming (Lisbon, ~10 min)", "source": "snootstudiogrooming.com"}
+      ],
+      "pet_boarding": [
+        {"name": "Littleton Pet Center (1985 St Johnsbury Rd — boarding, daycare)", "source": "pethotels.com"},
+        {"name": "K9 Fun Town LLC (Twin Mountain — cage-free, ~25 min)", "source": "k9funtown.com"},
+        {"name": "Happy Tails NH (in-home pet sitting, serves Littleton area)", "source": "nhhappytails.com"}
+      ],
+      "pet_supply": [
+        {"name": "Tailswag (indie pet boutique & treat bar)", "source": "tailswagnh.com"},
+        {"name": "Littleton Pet Center (1985 St Johnsbury Rd)", "source": "petnetid.com"}
+      ],
+      "animal_shelters": [
+        {"name": "Above the Notch Humane Society (Sugar Hill — serves Littleton area)", "source": "atnhs.org"},
+        {"name": "Second Chance Animal Rescue (no-kill feline rescue)", "source": "petfinder.com"}
+      ],
+      "grocery_stores": [
+        {"name": "Littleton Food Co-op (43 Bethlehem Rd — community-owned)", "source": "littletoncoop.com"},
+        {"name": "Shaw's Supermarket (625 Meadow St)", "source": "shaws.com"},
+        {"name": "Littleton Market & Produce (locally owned)", "source": "littletonmarketandproduce.com"}
+      ],
+      "hardware_stores": [
+        {"name": "Aubuchon Hardware (556 Meadow St)", "source": "yellowpages.com"},
+        {"name": "Lowe's (1037 Meadow St)", "source": "lowes.com"},
+        {"name": "Appalachian Supply Inc. (970 Meadow St — plumbing, electrical)", "source": "appalachiansupplyinc.com"}
+      ],
+      "farm_supply": [
+        {"name": "Tractor Supply Co. (685 Meadow St)", "source": "tractorsupply.com"},
+        {"name": "Track-Side Farm and Garden Center (51 Cottage St)", "source": "frommfamily.com"}
+      ],
+      "urgent_care": [
+        {"name": "Littleton Regional Healthcare (600 St Johnsbury Rd — full hospital)", "source": "littletonhealthcare.org"},
+        {"name": "Littleton Regional Healthcare Urgent Care (walk-in, daily 8am-8pm)", "source": "littletonhealthcare.org"},
+        {"name": "ConvenientMD Urgent Care (551 Meadow St — walk-in, daily 8am-8pm)", "source": "convenientmd.com"}
+      ]
+    },
+    "market": {
+      "zhvi_latest": null,
+      "zhvi_6m_change_pct": null,
+      "median_sale_price": null,
+      "dom": null,
+      "inventory": null
+    },
+    "notes": "Punches above its weight: Art Deco cinema, great coffee, bookshop, indie music scene, 5 breweries. Walkable Main St. Grafton County prices lower than ski corridor."
   }
 ]
