@@ -855,7 +855,8 @@ header { background: var(--navy); border-bottom: 2px solid var(--green-dim); pad
 @media (max-width: 860px) { .chart-grid { grid-template-columns: 1fr; } }
 .chart-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px; }
 .chart-panel.full { grid-column: 1 / -1; }
-.chart-title { font-family: 'Playfair Display', serif; font-size: 1.0rem; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+.chart-header { display: -webkit-box; display: flex; -webkit-box-pack: justify; justify-content: space-between; -webkit-box-align: start; align-items: flex-start; margin-bottom: 6px; gap: 8px; }
+.chart-title { font-family: 'Playfair Display', serif; font-size: 1.0rem; font-weight: 600; color: var(--text); }
 .chart-subtitle { font-size: 0.79rem; color: var(--text-muted); margin-bottom: 14px; font-style: italic; }
 .trend-tag { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; margin-bottom: 8px; }
 .trend-tag.up-good   { background: rgba(90,170,130,0.15); color: #5aaa82; border: 1px solid rgba(90,170,130,0.35); }
@@ -864,6 +865,23 @@ header { background: var(--navy); border-bottom: 2px solid var(--green-dim); pad
 .trend-tag.down-bad  { background: rgba(201,136,58,0.15);  color: #c9883a; border: 1px solid rgba(201,136,58,0.35); }
 .trend-tag.flat      { background: rgba(136,153,170,0.12); color: #8899aa; border: 1px solid rgba(136,153,170,0.25); }
 .chart-container { position: relative; height: 240px; }
+/* Zoom toggle buttons */
+.zoom-btns { display: -webkit-box; display: flex; gap: 4px; flex-shrink: 0; }
+.zoom-btn { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.05em;
+  padding: 4px 10px; min-height: 28px; border-radius: 14px; border: 1px solid var(--border);
+  background: transparent; color: var(--text-muted); cursor: pointer; -webkit-tap-highlight-color: transparent;
+  transition: border-color 0.15s, color 0.15s, background 0.15s; }
+.zoom-btn.active { background: var(--surface2); color: var(--text); border-color: var(--green-light); }
+.zoom-btn:hover:not(.active) { border-color: #4a5568; color: var(--text); }
+@media (max-width: 480px) {
+  .zoom-btn { padding: 5px 12px; min-height: 36px; font-size: 0.72rem; }
+  .chart-container { height: 200px; }
+  .stat-grid { grid-template-columns: 1fr 1fr; }
+  .container { padding: 0 14px; }
+  .tab-btn { padding: 12px 16px; font-size: 0.85rem; }
+  .header-title { font-size: 1.4rem; }
+  .header-meta { text-align: left; }
+}
 
 /* Unavailable state */
 .unavailable { background: var(--surface); border: 1px dashed var(--border); border-radius: 8px; padding: 28px; text-align: center; color: var(--text-muted); font-style: italic; font-size: 0.9rem; }
@@ -1067,6 +1085,27 @@ function fmtDateLabel(d) {
   return MONTHS[parseInt(parts[1])-1] + " '" + parts[0].slice(2);
 }
 
+// Chart zoom registry: chartId -> { chart, slices: { '6mo': {labels,datasets}, '2yr': {labels,datasets} } }
+const _zoomRegistry = {};
+function _registerZoom(chartId, slices) { _zoomRegistry[chartId] = { slices }; }
+function _storeChart(chartId, chart) {
+  if (_zoomRegistry[chartId]) _zoomRegistry[chartId].chart = chart;
+}
+function setChartZoom(chartId, window, btn) {
+  const reg = _zoomRegistry[chartId];
+  if (!reg || !reg.chart) return;
+  const slice = reg.slices[window];
+  if (!slice) return;
+  reg.chart.data.labels = slice.labels;
+  reg.chart.data.datasets.forEach((ds, i) => { if (slice.datasets[i]) ds.data = slice.datasets[i]; });
+  reg.chart.options.plugins.annotation.annotations = {
+    ...searchStartAnnotation(slice.labels), ...seasonBands(slice.labels)
+  };
+  reg.chart.update();
+  btn.closest('.zoom-btns').querySelectorAll('.zoom-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
 __CHART_JS__
 </script>
 </body>
@@ -1204,21 +1243,134 @@ def build_html(redfin_data, zillow_data, fred_data, backup_cities, city_data):
 
     dates = redfin_data.get("dates", [])
 
-    # Trim to last 18 months for all Redfin charts
-    CHART_MONTHS = 18
-    if len(dates) > CHART_MONTHS:
-        trim = len(dates) - CHART_MONTHS
-    else:
-        trim = 0
+    # Trim windows for Redfin charts
+    CHART_MONTHS_6  = 6
+    CHART_MONTHS_2Y = 24
+    CHART_MONTHS    = 18  # kept for ZHVI/forecast compatibility
 
+    def trim_to(lst, n):
+        """Return last n entries of lst (or all if shorter)."""
+        return lst[-n:] if lst and len(lst) > n else (lst or [])
+
+    def proj_stub(series, n_months=2):
+        """
+        Return (proj_vals, low_vals, high_vals) as 2-point stubs from the last
+        data point of series, using a simple linear extrapolation from the last
+        6 valid values. Used to show a short forecast nub on each chart.
+        """
+        vals = [v for v in series if v is not None]
+        if len(vals) < 3:
+            return None, None, None
+        recent = vals[-6:]
+        n = len(recent)
+        xs = list(range(n))
+        mean_x = sum(xs) / n
+        mean_y = sum(recent) / n
+        slope = sum((x - mean_x) * (y - mean_y) for x, y in zip(xs, recent)) / \
+                max(sum((x - mean_x)**2 for x in xs), 1e-9)
+        last = vals[-1]
+        proj = [last + slope * m for m in range(1, n_months + 1)]
+        # Confidence: ±8% widening per step
+        low  = [last] + [p * (1 - 0.04 * i) for i, p in enumerate(proj, 1)]
+        high = [last] + [p * (1 + 0.04 * i) for i, p in enumerate(proj, 1)]
+        mid  = [last] + proj
+        return mid, low, high
+
+    def future_dates(last_date, n_months):
+        """Generate n_months of YYYY-MM-01 strings after last_date."""
+        from datetime import datetime
+        try:
+            dt = datetime.strptime(last_date[:7], "%Y-%m")
+        except ValueError:
+            return []
+        out = []
+        for i in range(1, n_months + 1):
+            m = dt.month + i
+            y = dt.year + (m - 1) // 12
+            m = ((m - 1) % 12) + 1
+            out.append(f"{y:04d}-{m:02d}-01")
+        return out
+
+    def make_zoom_chart(cid, build_datasets_fn, y_label, fmt_name, all_dates,
+                        proj_series=None, proj_good_dir="up"):
+        """
+        Build a Chart.js chart with 6mo/2yr zoom toggle.
+        build_datasets_fn(sliced_data) -> list of dataset dicts
+        proj_series: raw (unsliced) series used to compute the forecast stub.
+        Returns (canvas_html, js_snippet, zoom_buttons_html).
+        """
+        n_all = len(all_dates)
+
+        def build_slice(n):
+            sliced_dates = trim_to(all_dates, n)
+            ds = build_datasets_fn(n)
+            if proj_series:
+                n_proj = 2
+                mid, low, high = proj_stub(trim_to(proj_series, n), n_proj)
+                if mid:
+                    fdates = future_dates(sliced_dates[-1] if sliced_dates else "", n_proj)
+                    pad = [None] * (len(sliced_dates) - 1)
+                    ds = ds + [
+                        {"label": "Forecast", "data": pad + mid,
+                         "borderColor": "rgba(90,170,130,0.85)", "borderDash": [5, 4],
+                         "backgroundColor": "rgba(90,170,130,0)", "tension": 0.3,
+                         "fill": False, "pointRadius": 3, "borderWidth": 1.5,
+                         "pointBackgroundColor": "rgba(90,170,130,0.7)"},
+                        {"label": "Conf. low", "data": pad + low,
+                         "borderColor": "rgba(90,170,130,0.15)", "borderDash": [2, 4],
+                         "backgroundColor": "rgba(90,170,130,0.10)", "tension": 0.3,
+                         "fill": "+1", "pointRadius": 0, "borderWidth": 1},
+                        {"label": "Conf. high", "data": pad + high,
+                         "borderColor": "rgba(90,170,130,0.15)", "borderDash": [2, 4],
+                         "backgroundColor": "rgba(90,170,130,0.10)", "tension": 0.3,
+                         "fill": False, "pointRadius": 0, "borderWidth": 1},
+                    ]
+                    sliced_dates = sliced_dates + fdates
+            return sliced_dates, ds
+
+        dates_6mo, ds_6mo = build_slice(CHART_MONTHS_6)
+        dates_2yr, ds_2yr = build_slice(CHART_MONTHS_2Y)
+
+        c = canvas(cid)
+        # Embed both slices as JS data, then build chart from 6mo slice (default)
+        ds_6mo_js  = json.dumps(ds_6mo)
+        ds_2yr_js  = json.dumps(ds_2yr)
+        dates_6mo_js = json.dumps(dates_6mo)
+        dates_2yr_js = json.dumps(dates_2yr)
+
+        # Dataset arrays only (for zoom swap)
+        ds_6mo_data = json.dumps([d["data"] for d in ds_6mo])
+        ds_2yr_data = json.dumps([d["data"] for d in ds_2yr])
+
+        j = f"""
+(function() {{
+  _registerZoom('{cid}', {{
+    '6mo': {{ labels: {dates_6mo_js}, datasets: {ds_6mo_data} }},
+    '2yr': {{ labels: {dates_2yr_js}, datasets: {ds_2yr_data} }}
+  }});
+  var chart = new Chart(document.getElementById('{cid}'), {{
+    type: 'line',
+    data: {{ labels: {dates_6mo_js}, datasets: {ds_6mo_js} }},
+    options: baseOpts({dates_6mo_js}, '{y_label}', {fmt_name})
+  }});
+  _storeChart('{cid}', chart);
+}})();"""
+
+        zoom_btns = (
+            f'<div class="zoom-btns">'
+            f'<button class="zoom-btn active" onclick="setChartZoom(\'{cid}\',\'6mo\',this)">6mo</button>'
+            f'<button class="zoom-btn" onclick="setChartZoom(\'{cid}\',\'2yr\',this)">2yr</button>'
+            f'</div>'
+        )
+        return c, j, zoom_btns
+
+    # Keep legacy helper for non-zoom charts (ZHVI, rate, etc.)
     def t(lst):
-        """Trim a parallel list to last CHART_MONTHS entries."""
-        return lst[trim:] if lst else lst
+        return trim_to(lst, CHART_MONTHS)
 
     dates_trim = t(dates)
 
     def make_line_chart(cid, series_list, y_label, fmt_name, use_dates=None):
-        """Helper: return (chart_html, js_snippet). Defaults to trimmed date window."""
         chart_dates = use_dates if use_dates is not None else dates_trim
         c = canvas(cid)
         ds_js = json.dumps(series_list)
@@ -1233,20 +1385,25 @@ new Chart(document.getElementById('{cid}'), {{
     # Price chart
     prices = redfin_data.get("median_price", [])
     if dates and any(p for p in prices if p):
-        ma3 = moving_average(prices, 3)
-        ma9 = moving_average(prices, 9)
-        datasets = [
-            {"label": "Median Price (ME state)", "data": t(prices), "borderColor": "#c9883a",
-             "backgroundColor": "rgba(201,136,58,0.1)", "tension": 0.4, "fill": True,
-             "pointRadius": 3, "borderWidth": 2},
-            {"label": "3-mo MA", "data": t(ma3), "borderColor": "#5aaa82",
-             "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4},
-            {"label": "9-mo MA", "data": t(ma9), "borderColor": "#3d7a5a",
-             "borderDash": [2, 3], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4},
-        ]
-        c, j = make_line_chart("chartPrice", datasets, "Price ($)", "fmtDollar")
+        ma3_full = moving_average(prices, 3)
+        ma9_full = moving_average(prices, 9)
+
+        def price_datasets(n):
+            return [
+                {"label": "Median Price (ME state)", "data": trim_to(prices, n), "borderColor": "#c9883a",
+                 "backgroundColor": "rgba(201,136,58,0.1)", "tension": 0.4, "fill": True,
+                 "pointRadius": 3, "borderWidth": 2},
+                {"label": "3-mo MA", "data": trim_to(ma3_full, n), "borderColor": "#5aaa82",
+                 "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4},
+                {"label": "9-mo MA", "data": trim_to(ma9_full, n), "borderColor": "#3d7a5a",
+                 "borderDash": [2, 3], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4},
+            ]
+
+        c, j, zbtn = make_zoom_chart("chartPrice", price_datasets, "Price ($)", "fmtDollar",
+                                     dates, proj_series=prices, proj_good_dir="down")
         price_chart_html = (
-            f'<div class="chart-panel"><div class="chart-title">Maine Median Sale Price</div>'
+            f'<div class="chart-panel">'
+            f'<div class="chart-header"><div class="chart-title">Maine Median Sale Price</div>{zbtn}</div>'
             f'{trend_tag(prices, "down")}'
             f'<div class="chart-subtitle">The thick line is the monthly sale price. The smoother lines show the trend — ignore the month-to-month noise and watch those instead.</div>{c}</div>'
         )
@@ -1259,17 +1416,22 @@ new Chart(document.getElementById('{cid}'), {{
     moss = redfin_data.get("months_of_supply", [])
     invs = redfin_data.get("inventory", [])
     if dates and any(v for v in moss if v):
-        mos_ma = moving_average(moss, 3)
-        datasets = [
-            {"label": "Months of Supply", "data": t(moss), "borderColor": "#5aaa82",
-             "backgroundColor": "rgba(90,170,130,0.08)", "tension": 0.4, "fill": True,
-             "pointRadius": 3, "borderWidth": 2},
-            {"label": "3-mo MA", "data": t(mos_ma), "borderColor": "#c9883a",
-             "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4},
-        ]
-        c, j = make_line_chart("chartMoS", datasets, "Months", "fmtMos")
+        mos_ma_full = moving_average(moss, 3)
+
+        def mos_datasets(n):
+            return [
+                {"label": "Months of Supply", "data": trim_to(moss, n), "borderColor": "#5aaa82",
+                 "backgroundColor": "rgba(90,170,130,0.08)", "tension": 0.4, "fill": True,
+                 "pointRadius": 3, "borderWidth": 2},
+                {"label": "3-mo MA", "data": trim_to(mos_ma_full, n), "borderColor": "#c9883a",
+                 "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4},
+            ]
+
+        c, j, zbtn = make_zoom_chart("chartMoS", mos_datasets, "Months", "fmtMos",
+                                     dates, proj_series=moss, proj_good_dir="up")
         charts_html.append(
-            f'<div class="chart-panel"><div class="chart-title">Months of Supply</div>'
+            f'<div class="chart-panel">'
+            f'<div class="chart-header"><div class="chart-title">Months of Supply</div>{zbtn}</div>'
             f'{trend_tag(moss, "up")}'
             f'<div class="chart-subtitle">How long it would take to sell every home currently listed. Under 3 months = sellers win. Over 6 months = you win.</div>{c}</div>'
         )
@@ -1306,17 +1468,22 @@ new Chart(document.getElementById('chartInv'), {{
     # DOM chart
     doms = redfin_data.get("dom", [])
     if dates and any(d for d in doms if d):
-        dom_ma = moving_average(doms, 3)
-        datasets = [
-            {"label": "Median DOM", "data": t(doms), "borderColor": "#5aaa82",
-             "backgroundColor": "rgba(90,170,130,0.08)", "tension": 0.4, "fill": True,
-             "pointRadius": 3, "borderWidth": 2},
-            {"label": "3-mo MA", "data": t(dom_ma), "borderColor": "#c9883a",
-             "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4},
-        ]
-        c, j = make_line_chart("chartDOM", datasets, "Days", "fmtDays")
+        dom_ma_full = moving_average(doms, 3)
+
+        def dom_datasets(n):
+            return [
+                {"label": "Median DOM", "data": trim_to(doms, n), "borderColor": "#5aaa82",
+                 "backgroundColor": "rgba(90,170,130,0.08)", "tension": 0.4, "fill": True,
+                 "pointRadius": 3, "borderWidth": 2},
+                {"label": "3-mo MA", "data": trim_to(dom_ma_full, n), "borderColor": "#c9883a",
+                 "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4},
+            ]
+
+        c, j, zbtn = make_zoom_chart("chartDOM", dom_datasets, "Days", "fmtDays",
+                                     dates, proj_series=doms, proj_good_dir="up")
         charts_html.append(
-            f'<div class="chart-panel"><div class="chart-title">Days on Market</div>'
+            f'<div class="chart-panel">'
+            f'<div class="chart-header"><div class="chart-title">Days on Market</div>{zbtn}</div>'
             f'{trend_tag(doms, "up")}'
             f'<div class="chart-subtitle">When this drops, buyers are moving fast and you\'ll have less time to decide. When it rises, you have breathing room.</div>{c}</div>'
         )
@@ -1328,17 +1495,22 @@ new Chart(document.getElementById('chartInv'), {{
     # Sale-to-list chart
     s2ls = redfin_data.get("sale_to_list", [])
     if dates and any(v for v in s2ls if v):
-        s2l_ma = moving_average(s2ls, 3)
-        datasets = [
-            {"label": "Sale/List Ratio", "data": t(s2ls), "borderColor": "#5aaa82",
-             "backgroundColor": "rgba(90,170,130,0.08)", "tension": 0.4, "fill": True,
-             "pointRadius": 3, "borderWidth": 2},
-            {"label": "3-mo MA", "data": t(s2l_ma), "borderColor": "#c9883a",
-             "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4},
-        ]
-        c, j = make_line_chart("chartS2L", datasets, "% of Asking Price", "fmtPct")
+        s2l_ma_full = moving_average(s2ls, 3)
+
+        def s2l_datasets(n):
+            return [
+                {"label": "Sale/List Ratio", "data": trim_to(s2ls, n), "borderColor": "#5aaa82",
+                 "backgroundColor": "rgba(90,170,130,0.08)", "tension": 0.4, "fill": True,
+                 "pointRadius": 3, "borderWidth": 2},
+                {"label": "3-mo MA", "data": trim_to(s2l_ma_full, n), "borderColor": "#c9883a",
+                 "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4},
+            ]
+
+        c, j, zbtn = make_zoom_chart("chartS2L", s2l_datasets, "% of Asking Price", "fmtPct",
+                                     dates, proj_series=s2ls, proj_good_dir="down")
         charts_html.append(
-            f'<div class="chart-panel"><div class="chart-title">Sale-to-List Ratio</div>'
+            f'<div class="chart-panel">'
+            f'<div class="chart-header"><div class="chart-title">Sale-to-List Ratio</div>{zbtn}</div>'
             f'{trend_tag(s2ls, "down")}'
             f'<div class="chart-subtitle">Above 100% = buyers paid over asking. Below 100% = sold at a discount. The stat card above shows this as a +/- delta from asking for easier reading.</div>{c}</div>'
         )

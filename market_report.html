@@ -62,7 +62,8 @@ header { background: var(--navy); border-bottom: 2px solid var(--green-dim); pad
 @media (max-width: 860px) { .chart-grid { grid-template-columns: 1fr; } }
 .chart-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px; }
 .chart-panel.full { grid-column: 1 / -1; }
-.chart-title { font-family: 'Playfair Display', serif; font-size: 1.0rem; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+.chart-header { display: -webkit-box; display: flex; -webkit-box-pack: justify; justify-content: space-between; -webkit-box-align: start; align-items: flex-start; margin-bottom: 6px; gap: 8px; }
+.chart-title { font-family: 'Playfair Display', serif; font-size: 1.0rem; font-weight: 600; color: var(--text); }
 .chart-subtitle { font-size: 0.79rem; color: var(--text-muted); margin-bottom: 14px; font-style: italic; }
 .trend-tag { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; margin-bottom: 8px; }
 .trend-tag.up-good   { background: rgba(90,170,130,0.15); color: #5aaa82; border: 1px solid rgba(90,170,130,0.35); }
@@ -71,6 +72,23 @@ header { background: var(--navy); border-bottom: 2px solid var(--green-dim); pad
 .trend-tag.down-bad  { background: rgba(201,136,58,0.15);  color: #c9883a; border: 1px solid rgba(201,136,58,0.35); }
 .trend-tag.flat      { background: rgba(136,153,170,0.12); color: #8899aa; border: 1px solid rgba(136,153,170,0.25); }
 .chart-container { position: relative; height: 240px; }
+/* Zoom toggle buttons */
+.zoom-btns { display: -webkit-box; display: flex; gap: 4px; flex-shrink: 0; }
+.zoom-btn { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.05em;
+  padding: 4px 10px; min-height: 28px; border-radius: 14px; border: 1px solid var(--border);
+  background: transparent; color: var(--text-muted); cursor: pointer; -webkit-tap-highlight-color: transparent;
+  transition: border-color 0.15s, color 0.15s, background 0.15s; }
+.zoom-btn.active { background: var(--surface2); color: var(--text); border-color: var(--green-light); }
+.zoom-btn:hover:not(.active) { border-color: #4a5568; color: var(--text); }
+@media (max-width: 480px) {
+  .zoom-btn { padding: 5px 12px; min-height: 36px; font-size: 0.72rem; }
+  .chart-container { height: 200px; }
+  .stat-grid { grid-template-columns: 1fr 1fr; }
+  .container { padding: 0 14px; }
+  .tab-btn { padding: 12px 16px; font-size: 0.85rem; }
+  .header-title { font-size: 1.4rem; }
+  .header-meta { text-align: left; }
+}
 
 /* Unavailable state */
 .unavailable { background: var(--surface); border: 1px dashed var(--border); border-radius: 8px; padding: 28px; text-align: center; color: var(--text-muted); font-style: italic; font-size: 0.9rem; }
@@ -137,7 +155,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
         <div class="header-subtitle">Oxford County / Bethel area &nbsp;·&nbsp; 25-minute primary radius</div>
       </div>
       <div class="header-meta">
-        <div class="updated">Updated April 02, 2026 at 08:51 AM</div>
+        <div class="updated">Updated April 02, 2026 at 08:59 AM</div>
         <div>Search started January 1, 2026</div>
         <div>Data: Redfin · Zillow · FRED</div>
       </div>
@@ -165,10 +183,10 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
     <span class="legend-item"><span class="legend-dashed"></span>Moving average</span>
     <span class="legend-item"><span class="legend-shaded"></span>Spring/Fall seasonal bands</span>
   </div>
-  <div class="chart-grid"><div class="chart-panel"><div class="chart-title">Months of Supply</div><span class="trend-tag up-good">↑ rising fast</span><div class="chart-subtitle">How long it would take to sell every home currently listed. Under 3 months = sellers win. Over 6 months = you win.</div><div class="chart-container"><canvas id="chartMoS"></canvas></div></div>
-<div class="chart-panel"><div class="chart-title">Maine Median Sale Price</div><span class="trend-tag down-good">↓ trending down</span><div class="chart-subtitle">The thick line is the monthly sale price. The smoother lines show the trend — ignore the month-to-month noise and watch those instead.</div><div class="chart-container"><canvas id="chartPrice"></canvas></div></div>
-<div class="chart-panel"><div class="chart-title">Days on Market</div><span class="trend-tag up-good">↑ rising fast</span><div class="chart-subtitle">When this drops, buyers are moving fast and you'll have less time to decide. When it rises, you have breathing room.</div><div class="chart-container"><canvas id="chartDOM"></canvas></div></div>
-<div class="chart-panel"><div class="chart-title">Sale-to-List Ratio</div><span class="trend-tag flat">↓ holding steady</span><div class="chart-subtitle">Above 100% = buyers paid over asking. Below 100% = sold at a discount. The stat card above shows this as a +/- delta from asking for easier reading.</div><div class="chart-container"><canvas id="chartS2L"></canvas></div></div></div>
+  <div class="chart-grid"><div class="chart-panel"><div class="chart-header"><div class="chart-title">Months of Supply</div><div class="zoom-btns"><button class="zoom-btn active" onclick="setChartZoom('chartMoS','6mo',this)">6mo</button><button class="zoom-btn" onclick="setChartZoom('chartMoS','2yr',this)">2yr</button></div></div><span class="trend-tag up-good">↑ rising fast</span><div class="chart-subtitle">How long it would take to sell every home currently listed. Under 3 months = sellers win. Over 6 months = you win.</div><div class="chart-container"><canvas id="chartMoS"></canvas></div></div>
+<div class="chart-panel"><div class="chart-header"><div class="chart-title">Maine Median Sale Price</div><div class="zoom-btns"><button class="zoom-btn active" onclick="setChartZoom('chartPrice','6mo',this)">6mo</button><button class="zoom-btn" onclick="setChartZoom('chartPrice','2yr',this)">2yr</button></div></div><span class="trend-tag down-good">↓ trending down</span><div class="chart-subtitle">The thick line is the monthly sale price. The smoother lines show the trend — ignore the month-to-month noise and watch those instead.</div><div class="chart-container"><canvas id="chartPrice"></canvas></div></div>
+<div class="chart-panel"><div class="chart-header"><div class="chart-title">Days on Market</div><div class="zoom-btns"><button class="zoom-btn active" onclick="setChartZoom('chartDOM','6mo',this)">6mo</button><button class="zoom-btn" onclick="setChartZoom('chartDOM','2yr',this)">2yr</button></div></div><span class="trend-tag up-good">↑ rising fast</span><div class="chart-subtitle">When this drops, buyers are moving fast and you'll have less time to decide. When it rises, you have breathing room.</div><div class="chart-container"><canvas id="chartDOM"></canvas></div></div>
+<div class="chart-panel"><div class="chart-header"><div class="chart-title">Sale-to-List Ratio</div><div class="zoom-btns"><button class="zoom-btn active" onclick="setChartZoom('chartS2L','6mo',this)">6mo</button><button class="zoom-btn" onclick="setChartZoom('chartS2L','2yr',this)">2yr</button></div></div><span class="trend-tag flat">↓ holding steady</span><div class="chart-subtitle">Above 100% = buyers paid over asking. Below 100% = sold at a discount. The stat card above shows this as a +/- delta from asking for easier reading.</div><div class="chart-container"><canvas id="chartS2L"></canvas></div></div></div>
   
 <div class="section-header">Oxford County ZHVI (Zillow Home Value Index)</div>
 <div class="chart-panel full">
@@ -454,7 +472,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
 
 <footer>
   <div>Oxford County / Bethel Area Market Tracker &nbsp;·&nbsp; Redfin S3 · Zillow Research · FRED</div>
-  <div style="margin-top:4px;">Generated April 02, 2026 at 08:51 AM &nbsp;·&nbsp; Not financial advice — verify all data before acting</div>
+  <div style="margin-top:4px;">Generated April 02, 2026 at 08:59 AM &nbsp;·&nbsp; Not financial advice — verify all data before acting</div>
 </footer>
 
 <script>
@@ -535,30 +553,79 @@ function fmtDateLabel(d) {
   return MONTHS[parseInt(parts[1])-1] + " '" + parts[0].slice(2);
 }
 
+// Chart zoom registry: chartId -> { chart, slices: { '6mo': {labels,datasets}, '2yr': {labels,datasets} } }
+const _zoomRegistry = {};
+function _registerZoom(chartId, slices) { _zoomRegistry[chartId] = { slices }; }
+function _storeChart(chartId, chart) {
+  if (_zoomRegistry[chartId]) _zoomRegistry[chartId].chart = chart;
+}
+function setChartZoom(chartId, window, btn) {
+  const reg = _zoomRegistry[chartId];
+  if (!reg || !reg.chart) return;
+  const slice = reg.slices[window];
+  if (!slice) return;
+  reg.chart.data.labels = slice.labels;
+  reg.chart.data.datasets.forEach((ds, i) => { if (slice.datasets[i]) ds.data = slice.datasets[i]; });
+  reg.chart.options.plugins.annotation.annotations = {
+    ...searchStartAnnotation(slice.labels), ...seasonBands(slice.labels)
+  };
+  reg.chart.update();
+  btn.closest('.zoom-btns').querySelectorAll('.zoom-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
 
-new Chart(document.getElementById('chartMoS'), {
-  type: 'line',
-  data: { labels: ["2024-09-01", "2024-10-01", "2024-11-01", "2024-12-01", "2025-01-01", "2025-02-01", "2025-03-01", "2025-04-01", "2025-05-01", "2025-06-01", "2025-07-01", "2025-08-01", "2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01"], datasets: [{"label": "Months of Supply", "data": [2.7, 2.6, 2.7, 2.4, 3.0, 3.4, 3.1, 3.2, 3.0, 3.1, 3.1, 3.0, 3.2, 2.9, 3.8, 2.8, 4.6, 4.5], "borderColor": "#5aaa82", "backgroundColor": "rgba(90,170,130,0.08)", "tension": 0.4, "fill": true, "pointRadius": 3, "borderWidth": 2}, {"label": "3-mo MA", "data": [2.63, 2.63, 2.67, 2.57, 2.7, 2.93, 3.17, 3.23, 3.1, 3.1, 3.07, 3.07, 3.1, 3.03, 3.3, 3.17, 3.73, 3.97], "borderColor": "#c9883a", "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4}] },
-  options: baseOpts(["2024-09-01", "2024-10-01", "2024-11-01", "2024-12-01", "2025-01-01", "2025-02-01", "2025-03-01", "2025-04-01", "2025-05-01", "2025-06-01", "2025-07-01", "2025-08-01", "2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01"], 'Months', fmtMos)
-});
 
-new Chart(document.getElementById('chartPrice'), {
-  type: 'line',
-  data: { labels: ["2024-09-01", "2024-10-01", "2024-11-01", "2024-12-01", "2025-01-01", "2025-02-01", "2025-03-01", "2025-04-01", "2025-05-01", "2025-06-01", "2025-07-01", "2025-08-01", "2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01"], datasets: [{"label": "Median Price (ME state)", "data": [396800.0, 390900.0, 377200.0, 391400.0, 391600.0, 367400.0, 363900.0, 402400.0, 402900.0, 416500.0, 416700.0, 418300.0, 396000.0, 426800.0, 397100.0, 387500.0, 382900.0, 372300.0], "borderColor": "#c9883a", "backgroundColor": "rgba(201,136,58,0.1)", "tension": 0.4, "fill": true, "pointRadius": 3, "borderWidth": 2}, {"label": "3-mo MA", "data": [399300.0, 394700.0, 388300.0, 386500.0, 386733.33, 383466.67, 374300.0, 377900.0, 389733.33, 407266.67, 412033.33, 417166.67, 410333.33, 413700.0, 406633.33, 403800.0, 389166.67, 380900.0], "borderColor": "#5aaa82", "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4}, {"label": "9-mo MA", "data": [383333.33, 386844.44, 390544.44, 392033.33, 394344.44, 391488.89, 386700.0, 386444.44, 387166.67, 389355.56, 392222.22, 396788.89, 397300.0, 401211.11, 404511.11, 407133.33, 404966.67, 401566.67], "borderColor": "#3d7a5a", "borderDash": [2, 3], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4}] },
-  options: baseOpts(["2024-09-01", "2024-10-01", "2024-11-01", "2024-12-01", "2025-01-01", "2025-02-01", "2025-03-01", "2025-04-01", "2025-05-01", "2025-06-01", "2025-07-01", "2025-08-01", "2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01"], 'Price ($)', fmtDollar)
-});
+(function() {
+  _registerZoom('chartMoS', {
+    '6mo': { labels: ["2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01", "2026-03-01", "2026-04-01"], datasets: [[3.2, 2.9, 3.8, 2.8, 4.6, 4.5], [3.1, 3.03, 3.3, 3.17, 3.73, 3.97], [null, null, null, null, null, 4.5, 4.8028571428571425, 5.105714285714286], [null, null, null, null, null, 4.5, 4.610742857142856, 4.6972571428571435], [null, null, null, null, null, 4.5, 4.994971428571429, 5.514171428571429]] },
+    '2yr': { labels: ["2024-03-01", "2024-04-01", "2024-05-01", "2024-06-01", "2024-07-01", "2024-08-01", "2024-09-01", "2024-10-01", "2024-11-01", "2024-12-01", "2025-01-01", "2025-02-01", "2025-03-01", "2025-04-01", "2025-05-01", "2025-06-01", "2025-07-01", "2025-08-01", "2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01", "2026-03-01", "2026-04-01"], datasets: [[2.4, 2.5, 2.4, 2.6, 2.6, 2.6, 2.7, 2.6, 2.7, 2.4, 3.0, 3.4, 3.1, 3.2, 3.0, 3.1, 3.1, 3.0, 3.2, 2.9, 3.8, 2.8, 4.6, 4.5], [2.67, 2.53, 2.43, 2.5, 2.53, 2.6, 2.63, 2.63, 2.67, 2.57, 2.7, 2.93, 3.17, 3.23, 3.1, 3.1, 3.07, 3.07, 3.1, 3.03, 3.3, 3.17, 3.73, 3.97], [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 4.5, 4.8028571428571425, 5.105714285714286], [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 4.5, 4.610742857142856, 4.6972571428571435], [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 4.5, 4.994971428571429, 5.514171428571429]] }
+  });
+  var chart = new Chart(document.getElementById('chartMoS'), {
+    type: 'line',
+    data: { labels: ["2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01", "2026-03-01", "2026-04-01"], datasets: [{"label": "Months of Supply", "data": [3.2, 2.9, 3.8, 2.8, 4.6, 4.5], "borderColor": "#5aaa82", "backgroundColor": "rgba(90,170,130,0.08)", "tension": 0.4, "fill": true, "pointRadius": 3, "borderWidth": 2}, {"label": "3-mo MA", "data": [3.1, 3.03, 3.3, 3.17, 3.73, 3.97], "borderColor": "#c9883a", "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4}, {"label": "Forecast", "data": [null, null, null, null, null, 4.5, 4.8028571428571425, 5.105714285714286], "borderColor": "rgba(90,170,130,0.85)", "borderDash": [5, 4], "backgroundColor": "rgba(90,170,130,0)", "tension": 0.3, "fill": false, "pointRadius": 3, "borderWidth": 1.5, "pointBackgroundColor": "rgba(90,170,130,0.7)"}, {"label": "Conf. low", "data": [null, null, null, null, null, 4.5, 4.610742857142856, 4.6972571428571435], "borderColor": "rgba(90,170,130,0.15)", "borderDash": [2, 4], "backgroundColor": "rgba(90,170,130,0.10)", "tension": 0.3, "fill": "+1", "pointRadius": 0, "borderWidth": 1}, {"label": "Conf. high", "data": [null, null, null, null, null, 4.5, 4.994971428571429, 5.514171428571429], "borderColor": "rgba(90,170,130,0.15)", "borderDash": [2, 4], "backgroundColor": "rgba(90,170,130,0.10)", "tension": 0.3, "fill": false, "pointRadius": 0, "borderWidth": 1}] },
+    options: baseOpts(["2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01", "2026-03-01", "2026-04-01"], 'Months', fmtMos)
+  });
+  _storeChart('chartMoS', chart);
+})();
 
-new Chart(document.getElementById('chartDOM'), {
-  type: 'line',
-  data: { labels: ["2024-09-01", "2024-10-01", "2024-11-01", "2024-12-01", "2025-01-01", "2025-02-01", "2025-03-01", "2025-04-01", "2025-05-01", "2025-06-01", "2025-07-01", "2025-08-01", "2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01"], datasets: [{"label": "Median DOM", "data": [36.0, 39.0, 42.0, 46.0, 61.0, 60.0, 48.0, 46.0, 31.0, 31.0, 36.0, 40.0, 42.0, 47.0, 50.0, 54.0, 60.0, 65.0], "borderColor": "#5aaa82", "backgroundColor": "rgba(90,170,130,0.08)", "tension": 0.4, "fill": true, "pointRadius": 3, "borderWidth": 2}, {"label": "3-mo MA", "data": [32.67, 36.0, 39.0, 42.33, 49.67, 55.67, 56.33, 51.33, 41.67, 36.0, 32.67, 35.67, 39.33, 43.0, 46.33, 50.33, 54.67, 59.67], "borderColor": "#c9883a", "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4}] },
-  options: baseOpts(["2024-09-01", "2024-10-01", "2024-11-01", "2024-12-01", "2025-01-01", "2025-02-01", "2025-03-01", "2025-04-01", "2025-05-01", "2025-06-01", "2025-07-01", "2025-08-01", "2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01"], 'Days', fmtDays)
-});
+(function() {
+  _registerZoom('chartPrice', {
+    '6mo': { labels: ["2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01", "2026-03-01", "2026-04-01"], datasets: [[396000.0, 426800.0, 397100.0, 387500.0, 382900.0, 372300.0], [410333.33, 413700.0, 406633.33, 403800.0, 389166.67, 380900.0], [397300.0, 401211.11, 404511.11, 407133.33, 404966.67, 401566.67], [null, null, null, null, null, 372300.0, 364877.14285714284, 357454.28571428574], [null, null, null, null, null, 372300.0, 350282.0571428571, 328857.9428571429], [null, null, null, null, null, 372300.0, 379472.22857142857, 386050.62857142865]] },
+    '2yr': { labels: ["2024-03-01", "2024-04-01", "2024-05-01", "2024-06-01", "2024-07-01", "2024-08-01", "2024-09-01", "2024-10-01", "2024-11-01", "2024-12-01", "2025-01-01", "2025-02-01", "2025-03-01", "2025-04-01", "2025-05-01", "2025-06-01", "2025-07-01", "2025-08-01", "2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01", "2026-03-01", "2026-04-01"], datasets: [[378000.0, 370800.0, 393100.0, 407000.0, 404700.0, 396400.0, 396800.0, 390900.0, 377200.0, 391400.0, 391600.0, 367400.0, 363900.0, 402400.0, 402900.0, 416500.0, 416700.0, 418300.0, 396000.0, 426800.0, 397100.0, 387500.0, 382900.0, 372300.0], [360400.0, 364233.33, 380633.33, 390300.0, 401600.0, 402700.0, 399300.0, 394700.0, 388300.0, 386500.0, 386733.33, 383466.67, 374300.0, 377900.0, 389733.33, 407266.67, 412033.33, 417166.67, 410333.33, 413700.0, 406633.33, 403800.0, 389166.67, 380900.0], [364588.89, 364566.67, 367255.56, 371100.0, 373777.78, 378044.44, 383333.33, 386844.44, 390544.44, 392033.33, 394344.44, 391488.89, 386700.0, 386444.44, 387166.67, 389355.56, 392222.22, 396788.89, 397300.0, 401211.11, 404511.11, 407133.33, 404966.67, 401566.67], [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 372300.0, 364877.14285714284, 357454.28571428574], [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 372300.0, 350282.0571428571, 328857.9428571429], [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 372300.0, 379472.22857142857, 386050.62857142865]] }
+  });
+  var chart = new Chart(document.getElementById('chartPrice'), {
+    type: 'line',
+    data: { labels: ["2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01", "2026-03-01", "2026-04-01"], datasets: [{"label": "Median Price (ME state)", "data": [396000.0, 426800.0, 397100.0, 387500.0, 382900.0, 372300.0], "borderColor": "#c9883a", "backgroundColor": "rgba(201,136,58,0.1)", "tension": 0.4, "fill": true, "pointRadius": 3, "borderWidth": 2}, {"label": "3-mo MA", "data": [410333.33, 413700.0, 406633.33, 403800.0, 389166.67, 380900.0], "borderColor": "#5aaa82", "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4}, {"label": "9-mo MA", "data": [397300.0, 401211.11, 404511.11, 407133.33, 404966.67, 401566.67], "borderColor": "#3d7a5a", "borderDash": [2, 3], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4}, {"label": "Forecast", "data": [null, null, null, null, null, 372300.0, 364877.14285714284, 357454.28571428574], "borderColor": "rgba(90,170,130,0.85)", "borderDash": [5, 4], "backgroundColor": "rgba(90,170,130,0)", "tension": 0.3, "fill": false, "pointRadius": 3, "borderWidth": 1.5, "pointBackgroundColor": "rgba(90,170,130,0.7)"}, {"label": "Conf. low", "data": [null, null, null, null, null, 372300.0, 350282.0571428571, 328857.9428571429], "borderColor": "rgba(90,170,130,0.15)", "borderDash": [2, 4], "backgroundColor": "rgba(90,170,130,0.10)", "tension": 0.3, "fill": "+1", "pointRadius": 0, "borderWidth": 1}, {"label": "Conf. high", "data": [null, null, null, null, null, 372300.0, 379472.22857142857, 386050.62857142865], "borderColor": "rgba(90,170,130,0.15)", "borderDash": [2, 4], "backgroundColor": "rgba(90,170,130,0.10)", "tension": 0.3, "fill": false, "pointRadius": 0, "borderWidth": 1}] },
+    options: baseOpts(["2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01", "2026-03-01", "2026-04-01"], 'Price ($)', fmtDollar)
+  });
+  _storeChart('chartPrice', chart);
+})();
 
-new Chart(document.getElementById('chartS2L'), {
-  type: 'line',
-  data: { labels: ["2024-09-01", "2024-10-01", "2024-11-01", "2024-12-01", "2025-01-01", "2025-02-01", "2025-03-01", "2025-04-01", "2025-05-01", "2025-06-01", "2025-07-01", "2025-08-01", "2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01"], datasets: [{"label": "Sale/List Ratio", "data": [0.9851546311, 0.9808902736, 0.9802391933, 0.9764913844, 0.9710981308, 0.9747983308, 0.9811202691, 0.9884515983, 0.9942502199, 0.9923200597, 0.9896953113, 0.982717409, 0.9787283293, 0.9784587016, 0.9770601498, 0.9724323872, 0.9698592641, 0.9667889354], "borderColor": "#5aaa82", "backgroundColor": "rgba(90,170,130,0.08)", "tension": 0.4, "fill": true, "pointRadius": 3, "borderWidth": 2}, {"label": "3-mo MA", "data": [0.99, 0.99, 0.98, 0.98, 0.98, 0.97, 0.98, 0.98, 0.99, 0.99, 0.99, 0.99, 0.98, 0.98, 0.98, 0.98, 0.97, 0.97], "borderColor": "#c9883a", "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4}] },
-  options: baseOpts(["2024-09-01", "2024-10-01", "2024-11-01", "2024-12-01", "2025-01-01", "2025-02-01", "2025-03-01", "2025-04-01", "2025-05-01", "2025-06-01", "2025-07-01", "2025-08-01", "2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01"], '% of Asking Price', fmtPct)
-});
+(function() {
+  _registerZoom('chartDOM', {
+    '6mo': { labels: ["2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01", "2026-03-01", "2026-04-01"], datasets: [[42.0, 47.0, 50.0, 54.0, 60.0, 65.0], [39.33, 43.0, 46.33, 50.33, 54.67, 59.67], [null, null, null, null, null, 65.0, 69.51428571428572, 74.02857142857142], [null, null, null, null, null, 65.0, 66.73371428571429, 68.10628571428572], [null, null, null, null, null, 65.0, 72.29485714285715, 79.95085714285715]] },
+    '2yr': { labels: ["2024-03-01", "2024-04-01", "2024-05-01", "2024-06-01", "2024-07-01", "2024-08-01", "2024-09-01", "2024-10-01", "2024-11-01", "2024-12-01", "2025-01-01", "2025-02-01", "2025-03-01", "2025-04-01", "2025-05-01", "2025-06-01", "2025-07-01", "2025-08-01", "2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01", "2026-03-01", "2026-04-01"], datasets: [[36.0, 34.0, 31.0, 26.0, 29.0, 33.0, 36.0, 39.0, 42.0, 46.0, 61.0, 60.0, 48.0, 46.0, 31.0, 31.0, 36.0, 40.0, 42.0, 47.0, 50.0, 54.0, 60.0, 65.0], [46.0, 40.67, 33.67, 30.33, 28.67, 29.33, 32.67, 36.0, 39.0, 42.33, 49.67, 55.67, 56.33, 51.33, 41.67, 36.0, 32.67, 35.67, 39.33, 43.0, 46.33, 50.33, 54.67, 59.67], [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 65.0, 69.51428571428572, 74.02857142857142], [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 65.0, 66.73371428571429, 68.10628571428572], [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 65.0, 72.29485714285715, 79.95085714285715]] }
+  });
+  var chart = new Chart(document.getElementById('chartDOM'), {
+    type: 'line',
+    data: { labels: ["2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01", "2026-03-01", "2026-04-01"], datasets: [{"label": "Median DOM", "data": [42.0, 47.0, 50.0, 54.0, 60.0, 65.0], "borderColor": "#5aaa82", "backgroundColor": "rgba(90,170,130,0.08)", "tension": 0.4, "fill": true, "pointRadius": 3, "borderWidth": 2}, {"label": "3-mo MA", "data": [39.33, 43.0, 46.33, 50.33, 54.67, 59.67], "borderColor": "#c9883a", "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4}, {"label": "Forecast", "data": [null, null, null, null, null, 65.0, 69.51428571428572, 74.02857142857142], "borderColor": "rgba(90,170,130,0.85)", "borderDash": [5, 4], "backgroundColor": "rgba(90,170,130,0)", "tension": 0.3, "fill": false, "pointRadius": 3, "borderWidth": 1.5, "pointBackgroundColor": "rgba(90,170,130,0.7)"}, {"label": "Conf. low", "data": [null, null, null, null, null, 65.0, 66.73371428571429, 68.10628571428572], "borderColor": "rgba(90,170,130,0.15)", "borderDash": [2, 4], "backgroundColor": "rgba(90,170,130,0.10)", "tension": 0.3, "fill": "+1", "pointRadius": 0, "borderWidth": 1}, {"label": "Conf. high", "data": [null, null, null, null, null, 65.0, 72.29485714285715, 79.95085714285715], "borderColor": "rgba(90,170,130,0.15)", "borderDash": [2, 4], "backgroundColor": "rgba(90,170,130,0.10)", "tension": 0.3, "fill": false, "pointRadius": 0, "borderWidth": 1}] },
+    options: baseOpts(["2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01", "2026-03-01", "2026-04-01"], 'Days', fmtDays)
+  });
+  _storeChart('chartDOM', chart);
+})();
+
+(function() {
+  _registerZoom('chartS2L', {
+    '6mo': { labels: ["2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01", "2026-03-01", "2026-04-01"], datasets: [[0.9787283293, 0.9784587016, 0.9770601498, 0.9724323872, 0.9698592641, 0.9667889354], [0.98, 0.98, 0.98, 0.98, 0.97, 0.97], [null, null, null, null, null, 0.9667889354, 0.9642139912685714, 0.9616390471371429], [null, null, null, null, null, 0.9667889354, 0.9256454316178285, 0.8847079233661714], [null, null, null, null, null, 0.9667889354, 1.0027825509193142, 1.0385701709081143]] },
+    '2yr': { labels: ["2024-03-01", "2024-04-01", "2024-05-01", "2024-06-01", "2024-07-01", "2024-08-01", "2024-09-01", "2024-10-01", "2024-11-01", "2024-12-01", "2025-01-01", "2025-02-01", "2025-03-01", "2025-04-01", "2025-05-01", "2025-06-01", "2025-07-01", "2025-08-01", "2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01", "2026-03-01", "2026-04-01"], datasets: [[0.9907462478, 0.9932818451, 0.9986622468, 1.004270728, 0.996271708, 0.9897643828, 0.9851546311, 0.9808902736, 0.9802391933, 0.9764913844, 0.9710981308, 0.9747983308, 0.9811202691, 0.9884515983, 0.9942502199, 0.9923200597, 0.9896953113, 0.982717409, 0.9787283293, 0.9784587016, 0.9770601498, 0.9724323872, 0.9698592641, 0.9667889354], [0.98, 0.99, 0.99, 1.0, 1.0, 1.0, 0.99, 0.99, 0.98, 0.98, 0.98, 0.97, 0.98, 0.98, 0.99, 0.99, 0.99, 0.99, 0.98, 0.98, 0.98, 0.98, 0.97, 0.97], [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 0.9667889354, 0.9642139912685714, 0.9616390471371429], [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 0.9667889354, 0.9256454316178285, 0.8847079233661714], [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 0.9667889354, 1.0027825509193142, 1.0385701709081143]] }
+  });
+  var chart = new Chart(document.getElementById('chartS2L'), {
+    type: 'line',
+    data: { labels: ["2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01", "2026-03-01", "2026-04-01"], datasets: [{"label": "Sale/List Ratio", "data": [0.9787283293, 0.9784587016, 0.9770601498, 0.9724323872, 0.9698592641, 0.9667889354], "borderColor": "#5aaa82", "backgroundColor": "rgba(90,170,130,0.08)", "tension": 0.4, "fill": true, "pointRadius": 3, "borderWidth": 2}, {"label": "3-mo MA", "data": [0.98, 0.98, 0.98, 0.98, 0.97, 0.97], "borderColor": "#c9883a", "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4}, {"label": "Forecast", "data": [null, null, null, null, null, 0.9667889354, 0.9642139912685714, 0.9616390471371429], "borderColor": "rgba(90,170,130,0.85)", "borderDash": [5, 4], "backgroundColor": "rgba(90,170,130,0)", "tension": 0.3, "fill": false, "pointRadius": 3, "borderWidth": 1.5, "pointBackgroundColor": "rgba(90,170,130,0.7)"}, {"label": "Conf. low", "data": [null, null, null, null, null, 0.9667889354, 0.9256454316178285, 0.8847079233661714], "borderColor": "rgba(90,170,130,0.15)", "borderDash": [2, 4], "backgroundColor": "rgba(90,170,130,0.10)", "tension": 0.3, "fill": "+1", "pointRadius": 0, "borderWidth": 1}, {"label": "Conf. high", "data": [null, null, null, null, null, 0.9667889354, 1.0027825509193142, 1.0385701709081143], "borderColor": "rgba(90,170,130,0.15)", "borderDash": [2, 4], "backgroundColor": "rgba(90,170,130,0.10)", "tension": 0.3, "fill": false, "pointRadius": 0, "borderWidth": 1}] },
+    options: baseOpts(["2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01", "2026-03-01", "2026-04-01"], '% of Asking Price', fmtPct)
+  });
+  _storeChart('chartS2L', chart);
+})();
 
 new Chart(document.getElementById('chartZHVI'), {
   type: 'line',
