@@ -584,5 +584,182 @@
       "inventory": null
     },
     "notes": "College town (UMaine Farmington). Real bookstores, record store, coffee culture. Good services. Less dramatic landscape than Rangeley but very livable. Affordable."
+  },
+  {
+    "slug": "conway-nh",
+    "name": "Conway / North Conway",
+    "state": "NH",
+    "county": "Carroll County",
+    "county_fips_state": "33",
+    "county_fips_county": "003",
+    "distance_tier": "T2",
+    "drive_minutes": 60,
+    "drive_note": "~1 hr via Rt 302",
+    "population": 10115,
+    "hard_fails": [],
+    "vibe": {
+      "creative_culture": 6,
+      "nature_access": 10,
+      "food_drink": 9,
+      "walkability": 5,
+      "quiet_privacy": 4,
+      "community_fit": 5,
+      "pet_friendly": 9,
+      "practical": 9
+    },
+    "places": {
+      "bookstores": [
+        {"name": "White Birch Books (2568 White Mountain Hwy — independent)", "source": "whitebirchbooks.com"},
+        {"name": "Local Bookie (295 W Main St, Conway — used books)", "source": "Yelp"}
+      ],
+      "record_stores": [
+        {"name": "Revolution Records LLC (50 White Mountain Hwy — vinyl, CDs, equipment)", "source": "vinylmapper.com"}
+      ],
+      "music_venues": [
+        {"name": "Moat Mountain Smokehouse & Brewing (3378 White Mountain Hwy — live music)", "source": "moatmountain.com"},
+        {"name": "May Kelly's Cottage (3002 White Mountain Hwy — Irish pub, live music)", "source": "maykellys.com"},
+        {"name": "Horsefeathers (North Conway Village — pub, live music since 1976)", "source": "horsefeathers.com"},
+        {"name": "Red Parka Pub (Glen — live music, steakhouse)", "source": "backpacksandbubbly.com"},
+        {"name": "Delaney's Hole in the Wall (bar, live music)", "source": "easternslopeinn.com"},
+        {"name": "Eastern Slope Inn (acoustic sessions, concerts)", "source": "easternslopeinn.com"},
+        {"name": "Barley & Salt Tap House (1699 White Mountain Hwy — occasional live music)", "source": "barleyandsalt.com"},
+        {"name": "The Majestic Theatre (36 Main St, Conway — live performances)", "source": "northconwaynh.com"}
+      ],
+      "art_galleries": [
+        {"name": "MWV Arts Association — Main Street Art Gallery (16 Norcross Circle)", "source": "mwvarts.org"},
+        {"name": "White Mountain Museum & Gallery (2541 White Mountain Hwy — Fri-Sun)", "source": "Tripadvisor"},
+        {"name": "White Mountain Art & Artists", "source": "whitemountainart.com"},
+        {"name": "Macomber Glass Studio (Conway — glassblowing, by appointment)", "source": "northconwaynh.com"},
+        {"name": "League of NH Craftsmen — North Conway", "source": "northconwaynh.com"}
+      ],
+      "indie_cinema": [
+        {"name": "BarnZ's North Conway Cinema (32 Mountain Valley Blvd)", "source": "fandango.com"}
+      ],
+      "outdoor_outfitters": [
+        {"name": "International Mountain Equipment / IME (2733 White Mountain Hwy)", "source": "ime-usa.com"},
+        {"name": "Ragged Mountain Equipment (279 NH Rte 16-302, Intervale — makes own gear)", "source": "raggedmountain.com"},
+        {"name": "REI North Conway", "source": "rei.com"},
+        {"name": "The Rugged Mill (Patagonia, Pendleton, Kuhl — est. 2010)", "source": "theruggedmill.com"},
+        {"name": "Eastern Mountain Sports / EMS (1640 White Mountain Hwy)", "source": "northconwaynh.com"},
+        {"name": "Sun & Ski Sports (2709 White Mountain Hwy)", "source": "northconwaynh.com"}
+      ],
+      "kayak_canoe_rental": [
+        {"name": "Saco Canoe Rental Company (558 White Mountain Hwy — 40+ years)", "source": "sacocanoerental.com"},
+        {"name": "Saco Bound (on the Saco since 1972)", "source": "sacobound.com"},
+        {"name": "Saco Valley Canoe (Center Conway)", "source": "sacovalleycanoe.com"},
+        {"name": "Saco River Tubing & Kayak", "source": "sacorivertubing.com"}
+      ],
+      "ski_areas": [
+        {"name": "Cranmore Mountain (57 trails, 5 terrain parks — in town)", "source": "northconwaynh.com"},
+        {"name": "Attitash Mountain (Bartlett, ~15 min — 2 mountains)", "source": "attitashmtvillage.com"},
+        {"name": "Black Mountain (Jackson, ~15 min — family-friendly)", "source": "northconwaynh.com"},
+        {"name": "King Pine (Madison, ~15 min — family resort)", "source": "northconwaynh.com"},
+        {"name": "Wildcat Mountain (Pinkham Notch, ~30 min)", "source": "northconwaynh.com"},
+        {"name": "Jackson XC (150km groomed Nordic)", "source": "northconwaynh.com"}
+      ],
+      "coffee_shops": [
+        {"name": "Frontside Coffee Roasters (2697 White Mountain Hwy — in-house roasting)", "source": "frontsidecoffee.com"},
+        {"name": "The Met Coffeehouse (NC Village — locally owned 15+ years)", "source": "metropolitancoffeehouse.com"},
+        {"name": "Old Village Bakery (Seavey St — artisan bread, coffee)", "source": "northconwaynh.com"},
+        {"name": "Sweet Maple Cafe (breakfast/lunch)", "source": "sweetmaplecafenh.com"},
+        {"name": "Table + Tonic (farm-to-table cafe, organic/local)", "source": "northconwaynh.com"}
+      ],
+      "restaurants": [
+        {"name": "Moat Mountain Smokehouse & Brewing (brewpub)", "source": "moatmountain.com"},
+        {"name": "May Kelly's Cottage (Irish pub)", "source": "maykellys.com"},
+        {"name": "Horsefeathers (NC Village — since 1976)", "source": "horsefeathers.com"},
+        {"name": "Black Cap Grille (1498 White Mountain Hwy)", "source": "blackcapgrille.com"},
+        {"name": "Barley & Salt Tap House (1699 White Mountain Hwy — 30 rotating taps)", "source": "barleyandsalt.com"},
+        {"name": "Vito Marcello's Italian Bistro (45 Seavey St)", "source": "vitofoods.com"},
+        {"name": "Chef's Bistro (2724 White Mountain Hwy)", "source": "Tripadvisor"},
+        {"name": "Muddy Moose Restaurant & Pub (2344 White Mountain Hwy)", "source": "northconwaynh.com"},
+        {"name": "Delaney's Hole in the Wall", "source": "northconwaynh.com"},
+        {"name": "Peach's Restaurant (2506 White Mountain Hwy — breakfast/lunch)", "source": "peachesnorthconway.com"},
+        {"name": "Shalimar of India (2197 White Mountain Hwy)", "source": "northconwaynh.com"},
+        {"name": "Thai Nakornping (2115 White Mountain Hwy)", "source": "thainakornping.com"},
+        {"name": "Peking Sunrise (1179 Eastman Rd — Chinese/Japanese/Thai)", "source": "pekingsunrise.com"},
+        {"name": "Cafe Noche (147 Main St, Conway — Mexican)", "source": "northconwaynh.com"},
+        {"name": "White Mountain Cider Company (Glen — farm-to-table, cider donuts)", "source": "ciderconh.com"},
+        {"name": "Red Parka Pub (Glen — steakhouse, longtime favorite)", "source": "backpacksandbubbly.com"},
+        {"name": "Table + Tonic (farm-to-table, organic)", "source": "northconwaynh.com"},
+        {"name": "Wicked Fresh Craft Burgers (19 Barnes Rd)", "source": "northconwaynh.com"},
+        {"name": "Saco River Brewing Taphaus (NC Village — pizza, sandwiches)", "source": "sacorivertaphaus.com"},
+        {"name": "Almost There Restaurant & Pub", "source": "almosttherenh.com"},
+        {"name": "Ledge Brewing & Taco Bar (Intervale — brewery + tacos)", "source": "ledgebrewing.com"},
+        {"name": "Sunrise Shack (644 White Mountain Hwy, Glen — breakfast/lunch)", "source": "northconwaynh.com"}
+      ],
+      "farmers_markets": [
+        {"name": "MWV Farmers Market (78 Norcross Circle — Tue 3:30-6:30pm, Jun-Oct)", "source": "mwvfarmersmarket.com"}
+      ],
+      "breweries": [
+        {"name": "Moat Mountain Brewing Co. (3378 White Mountain Hwy — brewpub)", "source": "moatmountain.com"},
+        {"name": "Tuckerman Brewing Company (66 Hobbs St, Conway — since 1998)", "source": "ilovenorthconway.com"},
+        {"name": "Ledge Brewing & Taco Bar (Intervale)", "source": "ledgebrewing.com"},
+        {"name": "Saco River Brewing Taphaus (NC Village)", "source": "sacorivertaphaus.com"}
+      ],
+      "libraries": [
+        {"name": "Conway Public Library (15 Greenwood Ave — 1900 Classical Revival)", "source": "conwaypubliclibrary.org"},
+        {"name": "Pope Memorial Library (2719 Main St, North Conway)", "source": "popelibrarynh.org"}
+      ],
+      "yoga_studios": [
+        {"name": "Mountain Kula Yoga (3358 White Mountain Hwy — 7 days/week)", "source": "mountainkulayoga.com"},
+        {"name": "Be Well Studios (3358 White Mountain Hwy — yoga, dance, workshops)", "source": "bewellstudiosnh.com"},
+        {"name": "Hot Asana Studio (1500 White Mountain Hwy — hot yoga)", "source": "hotasanastudio.com"}
+      ],
+      "coworking_spaces": [
+        {"name": "Chuck Roast Venture Center (90 Odell Hill Rd — 24/7 access)", "source": "chuckroast.com"}
+      ],
+      "vet_clinics": [
+        {"name": "North Country Animal Hospital (2237 West Side Rd)", "source": "northcountryanimalhospital.com"},
+        {"name": "Conway Veterinary Hospital (296 East Main St)", "source": "myconwayvet.com"},
+        {"name": "Valley Animal Hospital at CAHS (223 East Main St)", "source": "conwayhumane.org"},
+        {"name": "MWV Mobile Veterinary Clinic (all species, comes to you)", "source": "mwvmobilevet.com"}
+      ],
+      "pet_grooming": [
+        {"name": "The Ultimutt Cut Pet Salon (66 Main St — spa treatments)", "source": "ultimuttcut.com"},
+        {"name": "Pet Rendezvous / Karla's (grooming + self-serve baths)", "source": "thepetrendezvous.com"},
+        {"name": "Paws & Claws Mobile Grooming (mobile, comes to home)", "source": "northconwaynh.com"}
+      ],
+      "pet_boarding": [
+        {"name": "Pet Rendezvous / Karla's (boarding, daycare, training — 35+ years)", "source": "thepetrendezvous.com"},
+        {"name": "Auntie Cindy's Albany Pet Care (cage-free, 5 play yards)", "source": "bringfido.com"}
+      ],
+      "pet_supply": [
+        {"name": "Four Your Paws Only (1821 White Mountain Hwy — bakery, raw bar, voted best in NH)", "source": "fouryourpawsonly.com"},
+        {"name": "Pet Rendezvous (supplies at boarding facility)", "source": "thepetrendezvous.com"}
+      ],
+      "animal_shelters": [
+        {"name": "Conway Area Humane Society (223 E Main St — no-kill, serves 18 towns)", "source": "conwayhumane.org"}
+      ],
+      "grocery_stores": [
+        {"name": "Hannaford Supermarket (32 Mountain Valley Blvd — full grocery + pharmacy)", "source": "hannaford.com"},
+        {"name": "Shaw's Supermarket (1150 Eastman Rd, Center Conway)", "source": "shaws.com"},
+        {"name": "The Local Grocer (organic, local produce, natural meats)", "source": "nhlocalgrocer.com"},
+        {"name": "Grant's Shop'n Save (Glen, ~5 min — independent)", "source": "northconwaynh.com"}
+      ],
+      "hardware_stores": [
+        {"name": "Lucy Hardware (239 NH Rte 16, Intervale — since 1933, equipment rental)", "source": "lucyhardware.com"},
+        {"name": "JD Tool & Hardware (locally owned, tool repair)", "source": "Facebook"},
+        {"name": "Lowe's (32 Mountain Valley Blvd)", "source": "lowes.com"},
+        {"name": "Home Depot (53 Barnes Rd)", "source": "homedepot.com"}
+      ],
+      "farm_supply": [
+        {"name": "Paris Farmers Union (feed, farm goods, garden — since 1919)", "source": "parisfarmersunion.com"},
+        {"name": "Tractor Supply Co. (170 N South Rd)", "source": "tractorsupply.com"}
+      ],
+      "urgent_care": [
+        {"name": "MaineHealth Memorial Hospital (3073 White Mountain Hwy — 24/7 ER)", "source": "mainehealth.org"},
+        {"name": "MaineHealth Urgent Care (1976 White Mountain Hwy — daily 8am-7pm, opened Jan 2026)", "source": "mainehealth.org"},
+        {"name": "Saco River Medical Group (7 Greenwood Ave — walk-in Mon-Sun)", "source": "sacodocs.com"}
+      ]
+    },
+    "market": {
+      "zhvi_latest": null,
+      "zhvi_6m_change_pct": null,
+      "median_sale_price": null,
+      "dom": null,
+      "inventory": null
+    },
+    "notes": "Mt. Washington Valley tourist/ski town. Great outdoor access and dining scene but outlet-mall commercialized. Tourist density dilutes the quiet/private feel. Higher prices than most options."
   }
 ]

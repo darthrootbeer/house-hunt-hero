@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conway / North Conway, NH — Soulplace Profile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d1117; --surface: #161b22; --surface2: #1c2330; --border: #2d3748;
+  --navy: #1a2744; --green: #3d7a5a; --green-light: #5aaa82; --green-dim: #2a5240;
+  --amber: #c9883a; --amber-light: #e8a84e; --amber-dim: #7a5020;
+  --text: #e2e8f0; --text-muted: #8899aa; --text-dim: #4a5568;
+  --red: #c0392b; --red-light: #e74c3c;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Lora', Georgia, serif; font-size: 16px; line-height: 1.6; }
+.container { max-width: 800px; margin: 0 auto; padding: 0 24px; }
+
+/* Header */
+header { background: var(--navy); border-bottom: 2px solid var(--green-dim); padding: 28px 0 20px; }
+.header-inner { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 12px; }
+.header-title { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 700; color: var(--text); letter-spacing: -0.01em; }
+.header-subtitle { font-family: 'Lora', serif; font-style: italic; color: var(--text-muted); font-size: 0.95rem; margin-top: 4px; }
+.header-meta { text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--text-muted); line-height: 1.7; }
+.back-link { font-family: 'Inter', sans-serif; font-size: 0.82rem; color: var(--green-light); text-decoration: none; }
+.back-link:hover { text-decoration: underline; }
+
+/* Quick stats bar */
+.quick-stats { display: flex; flex-wrap: wrap; gap: 12px; margin: 24px 0 28px; }
+.qs { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px 16px; flex: 1; min-width: 120px; }
+.qs-label { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-dim); }
+.qs-value { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 600; color: var(--text); margin-top: 2px; }
+
+/* Section labels */
+.section-label { font-family: 'Inter', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--text); margin: 32px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+
+/* Vibe bars — RPG style, two-column grid */
+.vibe-section { margin-bottom: 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 4px 24px; }
+.vibe-row { margin-bottom: 12px; }
+.vibe-label { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
+.vibe-name { font-family: 'Inter', sans-serif; font-size: 0.88rem; font-weight: 600; color: var(--text); }
+.vibe-score { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--text-muted); }
+.vibe-track { background: var(--surface2); border-radius: 4px; height: 10px; overflow: hidden; position: relative; }
+.vibe-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+.vibe-desc { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 0.72rem; color: var(--text-dim); margin-top: 3px; }
+
+/* Places list — verifiable names + sources */
+.places-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 24px; }
+.places-group { margin-bottom: 8px; }
+.places-group-label { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--green-light); margin-bottom: 6px; }
+.cat-block { margin-bottom: 4px; }
+.cat-block[open] { margin-bottom: 10px; }
+.cat-header { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); cursor: pointer; list-style: none; }
+.cat-header::-webkit-details-marker { display: none; }
+.cat-header::before { content: "▶"; font-size: 0.55rem; color: var(--text-dim); margin-right: 6px; transition: transform 0.15s; }
+.cat-block[open] > .cat-header::before { transform: rotate(90deg); }
+.cat-name { font-family: 'Inter', sans-serif; font-size: 0.82rem; font-weight: 600; color: var(--text); }
+.cat-count { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--text-muted); }
+.cat-header.cat-absent .cat-name { color: var(--text-dim); }
+.cat-header.cat-absent .cat-count { color: var(--text-dim); }
+.place-row { padding: 3px 0 3px 8px; font-size: 0.82rem; line-height: 1.5; }
+.place-name { color: var(--text); }
+.place-source { font-family: 'JetBrains Mono', monospace; font-size: 0.66rem; color: var(--text-dim); margin-left: 8px; }
+.place-none { color: var(--text-dim); font-style: italic; font-size: 0.78rem; }
+.places-empty { color: var(--text-dim); font-style: italic; }
+
+/* Market stats */
+.market-section { margin-bottom: 32px; }
+.mkt-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+.mkt-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.mkt-label { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-dim); margin-bottom: 4px; }
+.mkt-value { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--text); }
+.delta { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; margin-top: 4px; display: block; }
+.delta.up { color: var(--amber-light); }
+.delta.down { color: var(--green-light); }
+.unavailable { background: var(--surface); border: 1px dashed var(--border); border-radius: 8px; padding: 20px; text-align: center; color: var(--text-muted); font-style: italic; font-size: 0.88rem; }
+
+/* Hard fails */
+.hard-fail-box { background: rgba(192,57,43,0.08); border: 1px solid rgba(192,57,43,0.3); border-radius: 8px; padding: 16px 20px; margin-bottom: 24px; }
+.hard-fail-title { font-family: 'Inter', sans-serif; font-size: 0.88rem; font-weight: 600; color: var(--red-light); margin-bottom: 8px; }
+.hard-fail-list { list-style: none; padding: 0; }
+.hard-fail-list li { font-size: 0.85rem; color: var(--red-light); padding: 2px 0; }
+.hard-fail-list li::before { content: "✖ "; }
+
+/* Notes */
+.notes-box { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--amber); border-radius: 8px; padding: 16px 20px; margin-bottom: 24px; font-size: 0.88rem; color: var(--amber-light); line-height: 1.6; }
+
+/* Info row */
+.info-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 12px 0 20px; }
+
+footer { background: var(--surface); border-top: 1px solid var(--border); padding: 20px 0; margin-top: 48px; text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 0.73rem; color: var(--text-dim); }
+
+@media (max-width: 480px) {
+  .container { padding: 0 14px; }
+  .header-title { font-size: 1.6rem; }
+  .header-meta { text-align: left; }
+  .quick-stats { flex-direction: column; }
+  .mkt-grid { grid-template-columns: 1fr 1fr; }
+  .vibe-section { grid-template-columns: 1fr; }
+  .places-list { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <div class="header-inner">
+      <div>
+        <a href="../market_report/" class="back-link">&larr; Market Report</a>
+        <div class="header-title">Conway / North Conway, NH</div>
+        <div class="header-subtitle">Carroll County &nbsp;&middot;&nbsp; 30–60 min</div>
+      </div>
+      <div class="header-meta">
+        <div>~1 hr via Rt 302</div>
+        <div>Pop. 10,115</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="quick-stats">
+    <div class="qs"><div class="qs-label">Vibe Score</div><div class="qs-value">7.1/10</div></div>
+    <div class="qs"><div class="qs-label">Distance</div><div class="qs-value">T2</div></div>
+    <div class="qs"><div class="qs-label">Population</div><div class="qs-value">10,115</div></div>
+  </div>
+
+  
+
+  <div class="notes-box">Mt. Washington Valley tourist/ski town. Great outdoor access and dining scene but outlet-mall commercialized. Tourist density dilutes the quiet/private feel. Higher prices than most options.</div>
+
+  <div class="section-label">Soulplace Profile</div>
+  <div class="vibe-section">
+    <div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Creative Culture</span>
+    <span class="vibe-score">6/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:60%;background:#a855f7;opacity:0.65;"></div>
+  </div>
+  <div class="vibe-desc">Bookstores, record shops, music venues, indie cinema, arts scene</div>
+</div><div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Nature Access</span>
+    <span class="vibe-score">10/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:100%;background:#22c55e;opacity:0.85;"></div>
+  </div>
+  <div class="vibe-desc">Trails, mountains, water, skiing, state parks within 20 min</div>
+</div><div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Food & Drink</span>
+    <span class="vibe-score">9/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:90%;background:#f59e0b;opacity:0.85;"></div>
+  </div>
+  <div class="vibe-desc">Coffee shops, restaurants, farmers markets, local food culture</div>
+</div><div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Walkability</span>
+    <span class="vibe-score">5/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:50%;background:#3b82f6;opacity:0.65;"></div>
+  </div>
+  <div class="vibe-desc">Can you walk to a coffee shop, post office, grocery?</div>
+</div><div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Quiet & Privacy</span>
+    <span class="vibe-score">4/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:40%;background:#6366f1;opacity:0.65;"></div>
+  </div>
+  <div class="vibe-desc">Low density, wooded lots, no HOA culture, dark skies</div>
+</div><div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Community Fit</span>
+    <span class="vibe-score">5/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:50%;background:#ec4899;opacity:0.65;"></div>
+  </div>
+  <div class="vibe-desc">People like us — creative, progressive-leaning, dog people, not flashy</div>
+</div><div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Pet Friendly</span>
+    <span class="vibe-score">9/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:90%;background:#14b8a6;opacity:0.85;"></div>
+  </div>
+  <div class="vibe-desc">Vet clinics, dog parks, pet-friendly trails and businesses</div>
+</div><div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Practical</span>
+    <span class="vibe-score">9/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:90%;background:#8b5cf6;opacity:0.85;"></div>
+  </div>
+  <div class="vibe-desc">Groceries, medical, hardware, gas — can you live here without driving 45 min?</div>
+</div>
+  </div>
+
+  <div class="section-label">What's There</div>
+  <div class="places-list"><div class="places-group"><div class="places-group-label">Creative Culture</div><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Bookstores</span><span class="cat-count">2</span></summary><div class="place-row"><span class="place-name">White Birch Books (2568 White Mountain Hwy — independent)</span><span class="place-source">source: whitebirchbooks.com</span></div><div class="place-row"><span class="place-name">Local Bookie (295 W Main St, Conway — used books)</span><span class="place-source">source: Yelp</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Record Stores</span><span class="cat-count">1</span></summary><div class="place-row"><span class="place-name">Revolution Records LLC (50 White Mountain Hwy — vinyl, CDs, equipment)</span><span class="place-source">source: vinylmapper.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Music Venues</span><span class="cat-count">8</span></summary><div class="place-row"><span class="place-name">Moat Mountain Smokehouse & Brewing (3378 White Mountain Hwy — live music)</span><span class="place-source">source: moatmountain.com</span></div><div class="place-row"><span class="place-name">May Kelly's Cottage (3002 White Mountain Hwy — Irish pub, live music)</span><span class="place-source">source: maykellys.com</span></div><div class="place-row"><span class="place-name">Horsefeathers (North Conway Village — pub, live music since 1976)</span><span class="place-source">source: horsefeathers.com</span></div><div class="place-row"><span class="place-name">Red Parka Pub (Glen — live music, steakhouse)</span><span class="place-source">source: backpacksandbubbly.com</span></div><div class="place-row"><span class="place-name">Delaney's Hole in the Wall (bar, live music)</span><span class="place-source">source: easternslopeinn.com</span></div><div class="place-row"><span class="place-name">Eastern Slope Inn (acoustic sessions, concerts)</span><span class="place-source">source: easternslopeinn.com</span></div><div class="place-row"><span class="place-name">Barley & Salt Tap House (1699 White Mountain Hwy — occasional live music)</span><span class="place-source">source: barleyandsalt.com</span></div><div class="place-row"><span class="place-name">The Majestic Theatre (36 Main St, Conway — live performances)</span><span class="place-source">source: northconwaynh.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Art Galleries</span><span class="cat-count">5</span></summary><div class="place-row"><span class="place-name">MWV Arts Association — Main Street Art Gallery (16 Norcross Circle)</span><span class="place-source">source: mwvarts.org</span></div><div class="place-row"><span class="place-name">White Mountain Museum & Gallery (2541 White Mountain Hwy — Fri-Sun)</span><span class="place-source">source: Tripadvisor</span></div><div class="place-row"><span class="place-name">White Mountain Art & Artists</span><span class="place-source">source: whitemountainart.com</span></div><div class="place-row"><span class="place-name">Macomber Glass Studio (Conway — glassblowing, by appointment)</span><span class="place-source">source: northconwaynh.com</span></div><div class="place-row"><span class="place-name">League of NH Craftsmen — North Conway</span><span class="place-source">source: northconwaynh.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Independent Cinemas</span><span class="cat-count">1</span></summary><div class="place-row"><span class="place-name">BarnZ's North Conway Cinema (32 Mountain Valley Blvd)</span><span class="place-source">source: fandango.com</span></div></details></div><div class="places-group"><div class="places-group-label">Nature Access</div><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Outdoor Outfitters</span><span class="cat-count">6</span></summary><div class="place-row"><span class="place-name">International Mountain Equipment / IME (2733 White Mountain Hwy)</span><span class="place-source">source: ime-usa.com</span></div><div class="place-row"><span class="place-name">Ragged Mountain Equipment (279 NH Rte 16-302, Intervale — makes own gear)</span><span class="place-source">source: raggedmountain.com</span></div><div class="place-row"><span class="place-name">REI North Conway</span><span class="place-source">source: rei.com</span></div><div class="place-row"><span class="place-name">The Rugged Mill (Patagonia, Pendleton, Kuhl — est. 2010)</span><span class="place-source">source: theruggedmill.com</span></div><div class="place-row"><span class="place-name">Eastern Mountain Sports / EMS (1640 White Mountain Hwy)</span><span class="place-source">source: northconwaynh.com</span></div><div class="place-row"><span class="place-name">Sun & Ski Sports (2709 White Mountain Hwy)</span><span class="place-source">source: northconwaynh.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Kayak / Canoe Rentals</span><span class="cat-count">4</span></summary><div class="place-row"><span class="place-name">Saco Canoe Rental Company (558 White Mountain Hwy — 40+ years)</span><span class="place-source">source: sacocanoerental.com</span></div><div class="place-row"><span class="place-name">Saco Bound (on the Saco since 1972)</span><span class="place-source">source: sacobound.com</span></div><div class="place-row"><span class="place-name">Saco Valley Canoe (Center Conway)</span><span class="place-source">source: sacovalleycanoe.com</span></div><div class="place-row"><span class="place-name">Saco River Tubing & Kayak</span><span class="place-source">source: sacorivertubing.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Ski Areas</span><span class="cat-count">6</span></summary><div class="place-row"><span class="place-name">Cranmore Mountain (57 trails, 5 terrain parks — in town)</span><span class="place-source">source: northconwaynh.com</span></div><div class="place-row"><span class="place-name">Attitash Mountain (Bartlett, ~15 min — 2 mountains)</span><span class="place-source">source: attitashmtvillage.com</span></div><div class="place-row"><span class="place-name">Black Mountain (Jackson, ~15 min — family-friendly)</span><span class="place-source">source: northconwaynh.com</span></div><div class="place-row"><span class="place-name">King Pine (Madison, ~15 min — family resort)</span><span class="place-source">source: northconwaynh.com</span></div><div class="place-row"><span class="place-name">Wildcat Mountain (Pinkham Notch, ~30 min)</span><span class="place-source">source: northconwaynh.com</span></div><div class="place-row"><span class="place-name">Jackson XC (150km groomed Nordic)</span><span class="place-source">source: northconwaynh.com</span></div></details></div><div class="places-group"><div class="places-group-label">Food & Drink</div><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Coffee Shops</span><span class="cat-count">5</span></summary><div class="place-row"><span class="place-name">Frontside Coffee Roasters (2697 White Mountain Hwy — in-house roasting)</span><span class="place-source">source: frontsidecoffee.com</span></div><div class="place-row"><span class="place-name">The Met Coffeehouse (NC Village — locally owned 15+ years)</span><span class="place-source">source: metropolitancoffeehouse.com</span></div><div class="place-row"><span class="place-name">Old Village Bakery (Seavey St — artisan bread, coffee)</span><span class="place-source">source: northconwaynh.com</span></div><div class="place-row"><span class="place-name">Sweet Maple Cafe (breakfast/lunch)</span><span class="place-source">source: sweetmaplecafenh.com</span></div><div class="place-row"><span class="place-name">Table + Tonic (farm-to-table cafe, organic/local)</span><span class="place-source">source: northconwaynh.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Restaurants</span><span class="cat-count">22</span></summary><div class="place-row"><span class="place-name">Moat Mountain Smokehouse & Brewing (brewpub)</span><span class="place-source">source: moatmountain.com</span></div><div class="place-row"><span class="place-name">May Kelly's Cottage (Irish pub)</span><span class="place-source">source: maykellys.com</span></div><div class="place-row"><span class="place-name">Horsefeathers (NC Village — since 1976)</span><span class="place-source">source: horsefeathers.com</span></div><div class="place-row"><span class="place-name">Black Cap Grille (1498 White Mountain Hwy)</span><span class="place-source">source: blackcapgrille.com</span></div><div class="place-row"><span class="place-name">Barley & Salt Tap House (1699 White Mountain Hwy — 30 rotating taps)</span><span class="place-source">source: barleyandsalt.com</span></div><div class="place-row"><span class="place-name">Vito Marcello's Italian Bistro (45 Seavey St)</span><span class="place-source">source: vitofoods.com</span></div><div class="place-row"><span class="place-name">Chef's Bistro (2724 White Mountain Hwy)</span><span class="place-source">source: Tripadvisor</span></div><div class="place-row"><span class="place-name">Muddy Moose Restaurant & Pub (2344 White Mountain Hwy)</span><span class="place-source">source: northconwaynh.com</span></div><div class="place-row"><span class="place-name">Delaney's Hole in the Wall</span><span class="place-source">source: northconwaynh.com</span></div><div class="place-row"><span class="place-name">Peach's Restaurant (2506 White Mountain Hwy — breakfast/lunch)</span><span class="place-source">source: peachesnorthconway.com</span></div><div class="place-row"><span class="place-name">Shalimar of India (2197 White Mountain Hwy)</span><span class="place-source">source: northconwaynh.com</span></div><div class="place-row"><span class="place-name">Thai Nakornping (2115 White Mountain Hwy)</span><span class="place-source">source: thainakornping.com</span></div><div class="place-row"><span class="place-name">Peking Sunrise (1179 Eastman Rd — Chinese/Japanese/Thai)</span><span class="place-source">source: pekingsunrise.com</span></div><div class="place-row"><span class="place-name">Cafe Noche (147 Main St, Conway — Mexican)</span><span class="place-source">source: northconwaynh.com</span></div><div class="place-row"><span class="place-name">White Mountain Cider Company (Glen — farm-to-table, cider donuts)</span><span class="place-source">source: ciderconh.com</span></div><div class="place-row"><span class="place-name">Red Parka Pub (Glen — steakhouse, longtime favorite)</span><span class="place-source">source: backpacksandbubbly.com</span></div><div class="place-row"><span class="place-name">Table + Tonic (farm-to-table, organic)</span><span class="place-source">source: northconwaynh.com</span></div><div class="place-row"><span class="place-name">Wicked Fresh Craft Burgers (19 Barnes Rd)</span><span class="place-source">source: northconwaynh.com</span></div><div class="place-row"><span class="place-name">Saco River Brewing Taphaus (NC Village — pizza, sandwiches)</span><span class="place-source">source: sacorivertaphaus.com</span></div><div class="place-row"><span class="place-name">Almost There Restaurant & Pub</span><span class="place-source">source: almosttherenh.com</span></div><div class="place-row"><span class="place-name">Ledge Brewing & Taco Bar (Intervale — brewery + tacos)</span><span class="place-source">source: ledgebrewing.com</span></div><div class="place-row"><span class="place-name">Sunrise Shack (644 White Mountain Hwy, Glen — breakfast/lunch)</span><span class="place-source">source: northconwaynh.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Farmers Markets</span><span class="cat-count">1</span></summary><div class="place-row"><span class="place-name">MWV Farmers Market (78 Norcross Circle — Tue 3:30-6:30pm, Jun-Oct)</span><span class="place-source">source: mwvfarmersmarket.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Breweries / Taprooms</span><span class="cat-count">4</span></summary><div class="place-row"><span class="place-name">Moat Mountain Brewing Co. (3378 White Mountain Hwy — brewpub)</span><span class="place-source">source: moatmountain.com</span></div><div class="place-row"><span class="place-name">Tuckerman Brewing Company (66 Hobbs St, Conway — since 1998)</span><span class="place-source">source: ilovenorthconway.com</span></div><div class="place-row"><span class="place-name">Ledge Brewing & Taco Bar (Intervale)</span><span class="place-source">source: ledgebrewing.com</span></div><div class="place-row"><span class="place-name">Saco River Brewing Taphaus (NC Village)</span><span class="place-source">source: sacorivertaphaus.com</span></div></details></div><div class="places-group"><div class="places-group-label">Community Fit</div><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Libraries</span><span class="cat-count">2</span></summary><div class="place-row"><span class="place-name">Conway Public Library (15 Greenwood Ave — 1900 Classical Revival)</span><span class="place-source">source: conwaypubliclibrary.org</span></div><div class="place-row"><span class="place-name">Pope Memorial Library (2719 Main St, North Conway)</span><span class="place-source">source: popelibrarynh.org</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Yoga Studios</span><span class="cat-count">3</span></summary><div class="place-row"><span class="place-name">Mountain Kula Yoga (3358 White Mountain Hwy — 7 days/week)</span><span class="place-source">source: mountainkulayoga.com</span></div><div class="place-row"><span class="place-name">Be Well Studios (3358 White Mountain Hwy — yoga, dance, workshops)</span><span class="place-source">source: bewellstudiosnh.com</span></div><div class="place-row"><span class="place-name">Hot Asana Studio (1500 White Mountain Hwy — hot yoga)</span><span class="place-source">source: hotasanastudio.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Coworking Spaces</span><span class="cat-count">1</span></summary><div class="place-row"><span class="place-name">Chuck Roast Venture Center (90 Odell Hill Rd — 24/7 access)</span><span class="place-source">source: chuckroast.com</span></div></details></div><div class="places-group"><div class="places-group-label">Pet Friendly</div><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Vet Clinics</span><span class="cat-count">4</span></summary><div class="place-row"><span class="place-name">North Country Animal Hospital (2237 West Side Rd)</span><span class="place-source">source: northcountryanimalhospital.com</span></div><div class="place-row"><span class="place-name">Conway Veterinary Hospital (296 East Main St)</span><span class="place-source">source: myconwayvet.com</span></div><div class="place-row"><span class="place-name">Valley Animal Hospital at CAHS (223 East Main St)</span><span class="place-source">source: conwayhumane.org</span></div><div class="place-row"><span class="place-name">MWV Mobile Veterinary Clinic (all species, comes to you)</span><span class="place-source">source: mwvmobilevet.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Pet Groomers</span><span class="cat-count">3</span></summary><div class="place-row"><span class="place-name">The Ultimutt Cut Pet Salon (66 Main St — spa treatments)</span><span class="place-source">source: ultimuttcut.com</span></div><div class="place-row"><span class="place-name">Pet Rendezvous / Karla's (grooming + self-serve baths)</span><span class="place-source">source: thepetrendezvous.com</span></div><div class="place-row"><span class="place-name">Paws & Claws Mobile Grooming (mobile, comes to home)</span><span class="place-source">source: northconwaynh.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Pet Boarding / Kennels</span><span class="cat-count">2</span></summary><div class="place-row"><span class="place-name">Pet Rendezvous / Karla's (boarding, daycare, training — 35+ years)</span><span class="place-source">source: thepetrendezvous.com</span></div><div class="place-row"><span class="place-name">Auntie Cindy's Albany Pet Care (cage-free, 5 play yards)</span><span class="place-source">source: bringfido.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Pet Supply Stores</span><span class="cat-count">2</span></summary><div class="place-row"><span class="place-name">Four Your Paws Only (1821 White Mountain Hwy — bakery, raw bar, voted best in NH)</span><span class="place-source">source: fouryourpawsonly.com</span></div><div class="place-row"><span class="place-name">Pet Rendezvous (supplies at boarding facility)</span><span class="place-source">source: thepetrendezvous.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Animal Shelters</span><span class="cat-count">1</span></summary><div class="place-row"><span class="place-name">Conway Area Humane Society (223 E Main St — no-kill, serves 18 towns)</span><span class="place-source">source: conwayhumane.org</span></div></details></div><div class="places-group"><div class="places-group-label">Practical</div><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Grocery Stores</span><span class="cat-count">4</span></summary><div class="place-row"><span class="place-name">Hannaford Supermarket (32 Mountain Valley Blvd — full grocery + pharmacy)</span><span class="place-source">source: hannaford.com</span></div><div class="place-row"><span class="place-name">Shaw's Supermarket (1150 Eastman Rd, Center Conway)</span><span class="place-source">source: shaws.com</span></div><div class="place-row"><span class="place-name">The Local Grocer (organic, local produce, natural meats)</span><span class="place-source">source: nhlocalgrocer.com</span></div><div class="place-row"><span class="place-name">Grant's Shop'n Save (Glen, ~5 min — independent)</span><span class="place-source">source: northconwaynh.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Hardware Stores</span><span class="cat-count">4</span></summary><div class="place-row"><span class="place-name">Lucy Hardware (239 NH Rte 16, Intervale — since 1933, equipment rental)</span><span class="place-source">source: lucyhardware.com</span></div><div class="place-row"><span class="place-name">JD Tool & Hardware (locally owned, tool repair)</span><span class="place-source">source: Facebook</span></div><div class="place-row"><span class="place-name">Lowe's (32 Mountain Valley Blvd)</span><span class="place-source">source: lowes.com</span></div><div class="place-row"><span class="place-name">Home Depot (53 Barnes Rd)</span><span class="place-source">source: homedepot.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Farm & Feed Supply</span><span class="cat-count">2</span></summary><div class="place-row"><span class="place-name">Paris Farmers Union (feed, farm goods, garden — since 1919)</span><span class="place-source">source: parisfarmersunion.com</span></div><div class="place-row"><span class="place-name">Tractor Supply Co. (170 N South Rd)</span><span class="place-source">source: tractorsupply.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Urgent Care / Medical</span><span class="cat-count">3</span></summary><div class="place-row"><span class="place-name">MaineHealth Memorial Hospital (3073 White Mountain Hwy — 24/7 ER)</span><span class="place-source">source: mainehealth.org</span></div><div class="place-row"><span class="place-name">MaineHealth Urgent Care (1976 White Mountain Hwy — daily 8am-7pm, opened Jan 2026)</span><span class="place-source">source: mainehealth.org</span></div><div class="place-row"><span class="place-name">Saco River Medical Group (7 Greenwood Ave — walk-in Mon-Sun)</span><span class="place-source">source: sacodocs.com</span></div></details></div></div>
+
+  <div class="market-section">
+  <div class="section-label">Market — Carroll County</div>
+  <div class="unavailable">Market data not yet loaded. Run update_market_data.py to populate.</div>
+</div>
+
+</div>
+
+<footer>
+  <div>Soulplace Seeker &nbsp;&middot;&nbsp; House Hunt Hero</div>
+</footer>
+
+</body>
+</html>
