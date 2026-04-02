@@ -21,15 +21,25 @@
       "pet_friendly": 6,
       "practical": 7
     },
-    "vibe_sources": {
-      "coffee_shops": 2,
-      "bookstores": 0,
-      "record_stores": 0,
-      "music_venues": 1,
-      "vet_clinics": 1,
-      "dog_parks": 0,
-      "farmers_markets": 1,
-      "libraries": 1
+    "places": {
+      "coffee_shops": [
+        {"name": "Gemini Coffee Shop", "source": "Google Maps"}
+      ],
+      "bookstores": [],
+      "record_stores": [],
+      "music_venues": [
+        {"name": "Sunday River Brewing Company (live music)", "source": "Google Maps"}
+      ],
+      "vet_clinics": [
+        {"name": "Bethel Animal Hospital", "source": "Google Maps"}
+      ],
+      "dog_parks": [],
+      "farmers_markets": [
+        {"name": "Bethel Farmers Market (seasonal)", "source": "bethelmainefarmersmarket.com"}
+      ],
+      "libraries": [
+        {"name": "Bethel Library Association", "source": "Google Maps"}
+      ]
     },
     "market": {
       "zhvi_latest": null,
@@ -38,8 +48,6 @@
       "dom": null,
       "inventory": null
     },
-    "broadband": "mixed",
-    "broadband_note": "Spectrum in town; rural areas limited",
     "notes": "Home base. Maegan's family nearby. Tourist town with ski resort (Sunday River). Small but real downtown."
   }
 ]

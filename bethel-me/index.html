@@ -46,11 +46,19 @@ header { background: var(--navy); border-bottom: 2px solid var(--green-dim); pad
 .vibe-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
 .vibe-desc { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 0.72rem; color: var(--text-dim); margin-top: 3px; }
 
-/* Amenity source pills */
-.source-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
-.source-pill { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; padding: 4px 10px; border-radius: 14px; white-space: nowrap; }
-.source-present { background: rgba(90,170,130,0.15); color: var(--green-light); border: 1px solid rgba(90,170,130,0.3); }
-.source-absent { background: rgba(136,153,170,0.08); color: var(--text-dim); border: 1px solid rgba(136,153,170,0.15); }
+/* Places list — verifiable names + sources */
+.places-list { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 24px; }
+.cat-block { margin-bottom: 14px; }
+.cat-header { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-bottom: 1px solid var(--border); margin-bottom: 4px; }
+.cat-name { font-family: 'Inter', sans-serif; font-size: 0.82rem; font-weight: 600; color: var(--text); }
+.cat-count { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--text-muted); }
+.cat-header.cat-absent .cat-name { color: var(--text-dim); }
+.cat-header.cat-absent .cat-count { color: var(--text-dim); }
+.place-row { padding: 3px 0 3px 8px; font-size: 0.82rem; line-height: 1.5; }
+.place-name { color: var(--text); }
+.place-source { font-family: 'JetBrains Mono', monospace; font-size: 0.66rem; color: var(--text-dim); margin-left: 8px; }
+.place-none { color: var(--text-dim); font-style: italic; font-size: 0.78rem; }
+.places-empty { color: var(--text-dim); font-style: italic; }
 
 /* Market stats */
 .market-section { margin-bottom: 32px; }
@@ -85,6 +93,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
   .quick-stats { flex-direction: column; }
   .mkt-grid { grid-template-columns: 1fr 1fr; }
   .vibe-section { grid-template-columns: 1fr; }
+  .places-list { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -196,7 +205,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
   </div>
 
   <div class="section-label">What's There</div>
-  <div class="source-grid"><span class="source-pill source-present">☕ Coffee <b>2</b></span><span class="source-pill source-absent">📚 Books <b>0</b></span><span class="source-pill source-absent">🎵 Records <b>0</b></span><span class="source-pill source-present">🎶 Music <b>1</b></span><span class="source-pill source-present">🏥 Vet <b>1</b></span><span class="source-pill source-absent">🐾 Dog Park <b>0</b></span><span class="source-pill source-present">🌽 Market <b>1</b></span><span class="source-pill source-present">📖 Library <b>1</b></span></div>
+  <div class="places-list"><div class="cat-block"><div class="cat-header cat-present"><span class="cat-name">Coffee Shops</span><span class="cat-count">1</span></div><div class="place-row"><span class="place-name">Gemini Coffee Shop</span><span class="place-source">source: Google Maps</span></div></div><div class="cat-block"><div class="cat-header cat-absent"><span class="cat-name">Bookstores</span><span class="cat-count">0</span></div><div class="place-row place-none">None found</div></div><div class="cat-block"><div class="cat-header cat-absent"><span class="cat-name">Record Stores</span><span class="cat-count">0</span></div><div class="place-row place-none">None found</div></div><div class="cat-block"><div class="cat-header cat-present"><span class="cat-name">Music Venues</span><span class="cat-count">1</span></div><div class="place-row"><span class="place-name">Sunday River Brewing Company (live music)</span><span class="place-source">source: Google Maps</span></div></div><div class="cat-block"><div class="cat-header cat-present"><span class="cat-name">Vet Clinics</span><span class="cat-count">1</span></div><div class="place-row"><span class="place-name">Bethel Animal Hospital</span><span class="place-source">source: Google Maps</span></div></div><div class="cat-block"><div class="cat-header cat-absent"><span class="cat-name">Dog Parks</span><span class="cat-count">0</span></div><div class="place-row place-none">None found</div></div><div class="cat-block"><div class="cat-header cat-present"><span class="cat-name">Farmers Markets</span><span class="cat-count">1</span></div><div class="place-row"><span class="place-name">Bethel Farmers Market (seasonal)</span><span class="place-source">source: bethelmainefarmersmarket.com</span></div></div><div class="cat-block"><div class="cat-header cat-present"><span class="cat-name">Libraries</span><span class="cat-count">1</span></div><div class="place-row"><span class="place-name">Bethel Library Association</span><span class="place-source">source: Google Maps</span></div></div></div>
 
   <div class="market-section">
   <div class="section-label">Market — Oxford County</div>

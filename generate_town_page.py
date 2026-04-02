@@ -78,36 +78,38 @@ def vibe_bar_html(key, label, desc, score):
 </div>"""
 
 
-def vibe_sources_html(sources):
-    """Render the amenity counts that feed vibe scores."""
-    if not sources:
-        return ""
-    icons = {
-        "coffee_shops": "\u2615",
-        "bookstores": "\U0001F4DA",
-        "record_stores": "\U0001F3B5",
-        "music_venues": "\U0001F3B6",
-        "vet_clinics": "\U0001F3E5",
-        "dog_parks": "\U0001F43E",
-        "farmers_markets": "\U0001F33D",
-        "libraries": "\U0001F4D6",
-    }
-    labels = {
-        "coffee_shops": "Coffee",
-        "bookstores": "Books",
-        "record_stores": "Records",
-        "music_venues": "Music",
-        "vet_clinics": "Vet",
-        "dog_parks": "Dog Park",
-        "farmers_markets": "Market",
-        "libraries": "Library",
-    }
-    pills = []
-    for key, icon in icons.items():
-        count = sources.get(key, 0)
-        cls = "source-present" if count > 0 else "source-absent"
-        pills.append(f'<span class="source-pill {cls}">{icon} {labels[key]} <b>{count}</b></span>')
-    return f'<div class="source-grid">{"".join(pills)}</div>'
+PLACE_CATEGORIES = [
+    ("coffee_shops", "Coffee Shops"),
+    ("bookstores", "Bookstores"),
+    ("record_stores", "Record Stores"),
+    ("music_venues", "Music Venues"),
+    ("vet_clinics", "Vet Clinics"),
+    ("dog_parks", "Dog Parks"),
+    ("farmers_markets", "Farmers Markets"),
+    ("libraries", "Libraries"),
+]
+
+
+def places_html(places):
+    """Render named places with sources for verification."""
+    if not places:
+        return '<div class="places-empty">No place data yet.</div>'
+    sections = []
+    for key, heading in PLACE_CATEGORIES:
+        items = places.get(key, [])
+        count = len(items)
+        cls = "cat-present" if count > 0 else "cat-absent"
+        header = f'<div class="cat-header {cls}"><span class="cat-name">{heading}</span><span class="cat-count">{count}</span></div>'
+        if items:
+            rows = ""
+            for p in items:
+                source = p.get("source", "")
+                source_html = f'<span class="place-source">source: {source}</span>' if source else ""
+                rows += f'<div class="place-row"><span class="place-name">{p["name"]}</span>{source_html}</div>'
+            sections.append(f'<div class="cat-block">{header}{rows}</div>')
+        else:
+            sections.append(f'<div class="cat-block">{header}<div class="place-row place-none">None found</div></div>')
+    return f'<div class="places-list">{"".join(sections)}</div>'
 
 
 def market_section_html(market, county):
@@ -162,7 +164,7 @@ def generate_page(town):
     drive = town.get("drive_note", "")
     notes = town.get("notes", "")
     vibe = town.get("vibe", {})
-    sources = town.get("vibe_sources", {})
+    places = town.get("places", {})
     market = town.get("market", {})
     fails = town.get("hard_fails", [])
 
@@ -227,11 +229,19 @@ header {{ background: var(--navy); border-bottom: 2px solid var(--green-dim); pa
 .vibe-fill {{ height: 100%; border-radius: 4px; transition: width 0.6s ease; }}
 .vibe-desc {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 0.72rem; color: var(--text-dim); margin-top: 3px; }}
 
-/* Amenity source pills */
-.source-grid {{ display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }}
-.source-pill {{ font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; padding: 4px 10px; border-radius: 14px; white-space: nowrap; }}
-.source-present {{ background: rgba(90,170,130,0.15); color: var(--green-light); border: 1px solid rgba(90,170,130,0.3); }}
-.source-absent {{ background: rgba(136,153,170,0.08); color: var(--text-dim); border: 1px solid rgba(136,153,170,0.15); }}
+/* Places list — verifiable names + sources */
+.places-list {{ display: grid; grid-template-columns: 1fr 1fr; gap: 4px 24px; }}
+.cat-block {{ margin-bottom: 14px; }}
+.cat-header {{ display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-bottom: 1px solid var(--border); margin-bottom: 4px; }}
+.cat-name {{ font-family: 'Inter', sans-serif; font-size: 0.82rem; font-weight: 600; color: var(--text); }}
+.cat-count {{ font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--text-muted); }}
+.cat-header.cat-absent .cat-name {{ color: var(--text-dim); }}
+.cat-header.cat-absent .cat-count {{ color: var(--text-dim); }}
+.place-row {{ padding: 3px 0 3px 8px; font-size: 0.82rem; line-height: 1.5; }}
+.place-name {{ color: var(--text); }}
+.place-source {{ font-family: 'JetBrains Mono', monospace; font-size: 0.66rem; color: var(--text-dim); margin-left: 8px; }}
+.place-none {{ color: var(--text-dim); font-style: italic; font-size: 0.78rem; }}
+.places-empty {{ color: var(--text-dim); font-style: italic; }}
 
 /* Market stats */
 .market-section {{ margin-bottom: 32px; }}
@@ -266,6 +276,7 @@ footer {{ background: var(--surface); border-top: 1px solid var(--border); paddi
   .quick-stats {{ flex-direction: column; }}
   .mkt-grid {{ grid-template-columns: 1fr 1fr; }}
   .vibe-section {{ grid-template-columns: 1fr; }}
+  .places-list {{ grid-template-columns: 1fr; }}
 }}
 </style>
 </head>
@@ -305,7 +316,7 @@ footer {{ background: var(--surface); border-top: 1px solid var(--border); paddi
   </div>
 
   <div class="section-label">What's There</div>
-  {vibe_sources_html(sources)}
+  {places_html(places)}
 
   {market_section_html(market, county)}
 
