@@ -32,15 +32,16 @@ VIBE_DIMENSIONS = [
 ]
 
 
-def score_color(score):
-    """Return a heat-map color from red (0) through amber (5) to green (10)."""
-    if score <= 3:
-        return "#e74c3c"  # red
-    if score <= 5:
-        return "#c9883a"  # amber
-    if score <= 7:
-        return "#e8a84e"  # amber-light
-    return "#5aaa82"      # green
+VIBE_COLORS = {
+    "creative_culture": "#a855f7",  # purple
+    "nature_access": "#22c55e",     # green
+    "food_drink": "#f59e0b",        # amber
+    "walkability": "#3b82f6",       # blue
+    "quiet_privacy": "#6366f1",     # indigo
+    "community_fit": "#ec4899",     # pink
+    "pet_friendly": "#14b8a6",      # teal
+    "practical": "#8b5cf6",         # violet
+}
 
 TIER_LABELS = {
     "T1": "0–30 min from Bethel",
@@ -60,19 +61,20 @@ def fmt_compact(val):
     return f"${val:,.0f}"
 
 
-def vibe_bar_html(key, label, desc, score):
-    """Render one RPG-style vibe bar with heat-map color."""
+def vibe_bar_html(key, label, desc, score, vibe_key=None):
+    """Render one RPG-style vibe bar with per-dimension color."""
     if score is None:
         score = 0
     pct = score * 10
-    color = score_color(score)
+    color = VIBE_COLORS.get(vibe_key or key, "#8899aa")
+    opacity = 0.85 if score >= 7 else 0.65 if score >= 4 else 0.4
     return f"""<div class="vibe-row">
   <div class="vibe-label">
     <span class="vibe-name">{label}</span>
     <span class="vibe-score">{score}/10</span>
   </div>
   <div class="vibe-track">
-    <div class="vibe-fill" style="width:{pct}%;background:{color};"></div>
+    <div class="vibe-fill" style="width:{pct}%;background:{color};opacity:{opacity};"></div>
   </div>
   <div class="vibe-desc">{desc}</div>
 </div>"""
@@ -146,16 +148,16 @@ def places_html(places):
             items = places.get(key, [])
             count = len(items)
             cls = "cat-present" if count > 0 else "cat-absent"
-            header = f'<div class="cat-header {cls}"><span class="cat-name">{heading}</span><span class="cat-count">{count}</span></div>'
+            header = f'<span class="cat-name">{heading}</span><span class="cat-count">{count}</span>'
             if items:
                 rows = ""
                 for p in items:
                     source = p.get("source", "")
                     source_html = f'<span class="place-source">source: {source}</span>' if source else ""
                     rows += f'<div class="place-row"><span class="place-name">{p["name"]}</span>{source_html}</div>'
-                cat_blocks.append(f'<div class="cat-block">{header}{rows}</div>')
+                cat_blocks.append(f'<details class="cat-block"><summary class="cat-header {cls}">{header}</summary>{rows}</details>')
             else:
-                cat_blocks.append(f'<div class="cat-block">{header}<div class="place-row place-none">None found</div></div>')
+                cat_blocks.append(f'<details class="cat-block"><summary class="cat-header {cls}">{header}</summary><div class="place-row place-none">None found</div></details>')
         html_parts.append(
             f'<div class="places-group">'
             f'<div class="places-group-label">{group_label}</div>'
@@ -286,8 +288,12 @@ header {{ background: var(--navy); border-bottom: 2px solid var(--green-dim); pa
 .places-list {{ display: grid; grid-template-columns: 1fr 1fr; gap: 8px 24px; }}
 .places-group {{ margin-bottom: 8px; }}
 .places-group-label {{ font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--green-light); margin-bottom: 6px; }}
-.cat-block {{ margin-bottom: 14px; }}
-.cat-header {{ display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-bottom: 1px solid var(--border); margin-bottom: 4px; }}
+.cat-block {{ margin-bottom: 4px; }}
+.cat-block[open] {{ margin-bottom: 10px; }}
+.cat-header {{ display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); cursor: pointer; list-style: none; }}
+.cat-header::-webkit-details-marker {{ display: none; }}
+.cat-header::before {{ content: "\u25B6"; font-size: 0.55rem; color: var(--text-dim); margin-right: 6px; transition: transform 0.15s; }}
+.cat-block[open] > .cat-header::before {{ transform: rotate(90deg); }}
 .cat-name {{ font-family: 'Inter', sans-serif; font-size: 0.82rem; font-weight: 600; color: var(--text); }}
 .cat-count {{ font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--text-muted); }}
 .cat-header.cat-absent .cat-name {{ color: var(--text-dim); }}
