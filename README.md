@@ -21,31 +21,39 @@ Search started: **January 1, 2026**
 - 60 and 90-day price forecast with confidence band (linear regression)
 
 **Backup Cities tab:**
-Six candidate regions with current ZHVI, 6-month trend, drive time to Bethel, broadband rating, and profile fit score.
+Nine candidate regions with current ZHVI, 6-month trend, drive time to Bethel, broadband rating, and profile fit score.
 
 ### Data sources
 
 | Source | Data | Notes |
 |--------|------|-------|
-| Redfin Data Center | Median price, DOM, sale-to-list, inventory | Oxford County then Maine state fallback |
-| Zillow Research ZHVI | Home value index | County-level, state fallback |
-| FRED (Federal Reserve) | 30-yr mortgage rate | Keyless endpoint; API key unlocks more history |
+| Redfin Data Center | Median price, DOM, sale-to-list, inventory | Maine state-level data, filtered to Oxford County window |
+| Zillow Research ZHVI | Home value index | County-level FIPS lookup |
+| FRED (Federal Reserve) | 30-yr mortgage rate | API key required; mortgage panel hidden without it |
 
 ### Running locally
 
 ```bash
-# Install dependencies (standard library only — no pip install needed)
+# Standard library only — no pip install needed
 python update_market_data.py
 ```
 
 The report is written to `market_report.html`. Open it in any browser.
 
-**Optional: FRED API key** for full mortgage rate history.
+**Optional: FRED API key** for the mortgage rate panel.
 1. Get a free key at https://fred.stlouisfed.org/docs/api/api_key.html
 2. Set it: `export FRED_API_KEY=your_key_here`
 3. Or copy `env.example` to `.env` and source it: `source .env`
 
-Without the key, the script uses the keyless FRED CSV endpoint (recent data only).
+Without the key, the mortgage rate panel is hidden from the report.
+
+### Testing
+
+```bash
+python -m pytest tests/ -v
+```
+
+119 tests, 93% coverage. All tests use stdlib only — no additional test dependencies.
 
 ### Editing backup cities
 
@@ -55,7 +63,8 @@ Edit `backup_cities.json` to add, remove, or annotate candidate regions. Fields:
 {
   "id": "unique_slug",
   "name": "Display name",
-  "zhvi_region": "Name Zillow uses for metro matching",
+  "county_fips_state": "23",
+  "county_fips_county": "017",
   "drive_to_bethel_hrs": 1.5,
   "drive_note": "~1.5 hrs via Rt 4",
   "fit_score": 7,
@@ -81,10 +90,10 @@ The report is committed directly to `main` — no extra branches or deployments 
 
 ### Raw data
 
-All fetched CSVs are saved to `data/market/`:
-- `redfin_oxford_county.csv` or `redfin_maine_state.csv`
-- `zillow_zhvi_oxford_county.csv` or `zillow_zhvi_maine_state.csv`
-- `fred_mortgage30us.csv`
+Fetched data is saved to `data/market/` (excluded from git — regenerated on every run):
+- `redfin_maine_state.csv` — Redfin state-level TSV, filtered to Oxford County
+- `zillow_zhvi_oxford_county.csv` — Zillow county ZHVI series
+- `fred_mortgage30us.csv` — FRED mortgage rate (only written if API key is set)
 - `snapshot.json` — full data snapshot from last run
 
 ---

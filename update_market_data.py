@@ -11,10 +11,9 @@ import json
 import os
 import re
 import sys
-from datetime import datetime, date, timedelta
+from datetime import datetime, timedelta
 from pathlib import Path
 from urllib.request import urlopen, Request
-from urllib.error import URLError, HTTPError
 
 # ── Config ──────────────────────────────────────────────────────────────────
 
@@ -290,6 +289,8 @@ def compute_market_score(redfin_data, zillow_data):
         else: scores.append(22)
 
     if s2l is not None:
+        # Redfin returns sale-to-list as decimal (0.98) or percentage (98.0) depending on
+        # the data vintage. Normalize to decimal for scoring.
         pct = s2l if s2l < 10 else s2l / 100
         if pct >= 1.03: scores.append(95)
         elif pct >= 1.00: scores.append(72)
@@ -1357,6 +1358,11 @@ def main():
         print(f"  ! Zillow: {zillow_data['error']}")
     if fred_data.get("error"):
         print(f"  ! FRED:   {fred_data['error']}")
+
+    if redfin_data["source"] == "unavailable" and zillow_data["source"] == "unavailable":
+        print("\nFATAL: All primary data sources failed. Report not reliable.")
+        sys.exit(1)
+
     print("\nDone.")
 
 

@@ -17,3 +17,12 @@ __pycache__/
 # State
 state/
 *.db
+
+# Test artifacts
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Generated data (regenerated on every run)
+data/market/*.csv
+data/market/snapshot.json

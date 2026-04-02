@@ -644,50 +644,38 @@ class TestFetchFredData(unittest.TestCase):
         m.__exit__ = MagicMock(return_value=False)
         return m
 
-    def _with_key(self, key="test_key"):
-        original = umd.FRED_API_KEY
-        umd.FRED_API_KEY = key
-        return original
-
     def test_no_key_returns_unavailable(self):
-        orig = umd.FRED_API_KEY
-        umd.FRED_API_KEY = ""
-        result = umd.fetch_fred_mortgage_rate()
-        umd.FRED_API_KEY = orig
+        with patch.object(umd, 'FRED_API_KEY', ''):
+            result = umd.fetch_fred_mortgage_rate()
         self.assertEqual(result["source"], "unavailable")
         self.assertIn("FRED_API_KEY", result["error"])
 
     def test_api_error_response(self):
         error_json = json.dumps({"error_code": 400, "error_message": "Bad key"})
-        orig = self._with_key()
-        with patch("update_market_data.urlopen", return_value=self._mock(error_json)):
+        with patch.object(umd, 'FRED_API_KEY', 'test_key'), \
+             patch("update_market_data.urlopen", return_value=self._mock(error_json)):
             result = umd.fetch_fred_mortgage_rate()
-        umd.FRED_API_KEY = orig
         self.assertEqual(result["source"], "unavailable")
 
     def test_successful_response(self):
         obs = [{"date": f"2024-{m:02d}-01", "value": str(6.5 + m * 0.1)} for m in range(1, 13)]
         fred_json = json.dumps({"observations": obs})
-        orig = self._with_key()
-        with patch("update_market_data.urlopen", return_value=self._mock(fred_json)), \
+        with patch.object(umd, 'FRED_API_KEY', 'test_key'), \
+             patch("update_market_data.urlopen", return_value=self._mock(fred_json)), \
              patch("builtins.open", mock_open()):
             result = umd.fetch_fred_mortgage_rate()
-        umd.FRED_API_KEY = orig
         self.assertEqual(result["source"], "fred_mortgage30us")
         self.assertEqual(len(result["dates"]), 12)
 
     def test_network_failure(self):
-        orig = self._with_key()
-        with patch("update_market_data.urlopen", side_effect=Exception("timeout")):
+        with patch.object(umd, 'FRED_API_KEY', 'test_key'), \
+             patch("update_market_data.urlopen", side_effect=Exception("timeout")):
             result = umd.fetch_fred_mortgage_rate()
-        umd.FRED_API_KEY = orig
         self.assertEqual(result["source"], "unavailable")
 
     def test_result_has_required_keys(self):
-        orig = umd.FRED_API_KEY
-        umd.FRED_API_KEY = ""
-        result = umd.fetch_fred_mortgage_rate()
-        umd.FRED_API_KEY = orig
+        with patch.object(umd, 'FRED_API_KEY', ''):
+            result = umd.fetch_fred_mortgage_rate()
         for k in ["dates", "rates", "source", "error"]:
             self.assertIn(k, result)
 
@@ -698,11 +686,10 @@ class TestFetchFredData(unittest.TestCase):
             {"date": "2024-01-18", "value": "6.58"},
         ]
         fred_json = json.dumps({"observations": obs})
-        orig = self._with_key()
-        with patch("update_market_data.urlopen", return_value=self._mock(fred_json)), \
+        with patch.object(umd, 'FRED_API_KEY', 'test_key'), \
+             patch("update_market_data.urlopen", return_value=self._mock(fred_json)), \
              patch("builtins.open", mock_open()):
             result = umd.fetch_fred_mortgage_rate()
-        umd.FRED_API_KEY = orig
         if result["source"] == "fred_mortgage30us":
             self.assertEqual(len(result["dates"]), 2)
 
