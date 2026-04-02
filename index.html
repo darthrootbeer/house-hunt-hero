@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Soulplace Seeker — Town Comparison Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg: #0d1117; --surface: #161b22; --surface2: #1c2330; --border: #2d3748;
+  --navy: #1a2744; --green: #3d7a5a; --green-light: #5aaa82; --green-dim: #2a5240;
+  --amber: #c9883a; --amber-light: #e8a84e;
+  --text: #e2e8f0; --text-muted: #8899aa; --text-dim: #4a5568;
+  --red: #c0392b; --red-light: #e74c3c;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Lora', Georgia, serif; font-size: 16px; line-height: 1.6; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+header { background: var(--navy); border-bottom: 2px solid var(--green-dim); padding: 28px 0 20px; }
+.header-inner { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 12px; }
+.header-title { font-family: 'Playfair Display', serif; font-size: 2.0rem; font-weight: 700; color: var(--text); }
+.header-subtitle { font-family: 'Lora', serif; font-style: italic; color: var(--text-muted); font-size: 0.95rem; margin-top: 4px; }
+.header-meta { text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--text-muted); line-height: 1.7; }
+.header-link { color: var(--green-light); text-decoration: none; font-family: 'Inter', sans-serif; font-size: 0.82rem; }
+.header-link:hover { text-decoration: underline; }
+
+.town-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; padding: 32px 0; }
+
+.town-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px; text-decoration: none; color: var(--text); transition: border-color 0.2s, transform 0.15s; display: block; }
+.town-card:hover { border-color: var(--green-light); transform: translateY(-2px); }
+
+.card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+.card-name { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; }
+.card-meta { font-family: 'JetBrains Mono', monospace; font-size: 0.70rem; color: var(--text-dim); margin-top: 4px; }
+.card-score { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; color: var(--green-light); line-height: 1; }
+
+.card-radar { width: 160px; height: 160px; margin: 0 auto 12px; }
+.card-strengths { font-family: 'Inter', sans-serif; font-size: 0.78rem; color: var(--text-muted); margin-bottom: 6px; }
+.card-stats { font-family: 'JetBrains Mono', monospace; font-size: 0.70rem; color: var(--text-dim); margin-bottom: 8px; }
+
+.card-pills { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+.card-pill { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; padding: 2px 8px; border-radius: 10px; }
+.card-pill.record { background: rgba(168,85,247,0.15); color: #a855f7; border: 1px solid rgba(168,85,247,0.3); }
+.card-pill.book { background: rgba(99,102,241,0.15); color: #6366f1; border: 1px solid rgba(99,102,241,0.3); }
+.card-pill.fail { background: rgba(192,57,43,0.15); color: var(--red-light); border: 1px solid rgba(192,57,43,0.3); }
+
+.card-notes { font-size: 0.80rem; color: var(--text-dim); line-height: 1.5; font-style: italic; }
+
+footer { background: var(--surface); border-top: 1px solid var(--border); padding: 20px 0; margin-top: 48px; text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 0.73rem; color: var(--text-dim); }
+
+@media (max-width: 480px) {
+  .container { padding: 0 14px; }
+  .header-title { font-size: 1.5rem; }
+  .town-grid { grid-template-columns: 1fr; }
+  .card-radar { width: 140px; height: 140px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <div class="header-inner">
+      <div>
+        <div class="header-title">Soulplace Seeker</div>
+        <div class="header-subtitle">Where should we live? Comparing 5 towns across 8 vibe dimensions.</div>
+      </div>
+      <div class="header-meta">
+        <a href="market_report/" class="header-link">Oxford County Market Report &rarr;</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <div class="town-grid">
+    
+<a href="bethel-me/" class="town-card">
+  <div class="card-top">
+    <div>
+      <div class="card-name">Bethel, ME</div>
+      <div class="card-meta">T1 &middot; Home base &middot; Pop. 2,607</div>
+    </div>
+    <div class="card-score">7.4</div>
+  </div>
+  <div class="card-radar"><canvas id="radar_0" width="160" height="160"></canvas></div>
+  <div class="card-strengths">Top: Nature Access, Food & Drink, Quiet & Privacy</div>
+  <div class="card-stats">68 places verified</div>
+  <div class="card-pills"><span class="card-pill book">Bookstore</span></div>
+  <div class="card-notes">Home base. Maegan's family nearby. Tourist town with ski resort (Sunday River). Small but real downtown.</div>
+</a>
+<a href="conway-nh/" class="town-card">
+  <div class="card-top">
+    <div>
+      <div class="card-name">Conway / North Conway, NH</div>
+      <div class="card-meta">T2 &middot; ~1 hr via Rt 302 &middot; Pop. 10,115</div>
+    </div>
+    <div class="card-score">7.1</div>
+  </div>
+  <div class="card-radar"><canvas id="radar_1" width="160" height="160"></canvas></div>
+  <div class="card-strengths">Top: Nature Access, Food & Drink, Pet Friendly</div>
+  <div class="card-stats">96 places verified</div>
+  <div class="card-pills"><span class="card-pill record">Record Store</span> <span class="card-pill book">Bookstore</span></div>
+  <div class="card-notes">Mt. Washington Valley tourist/ski town. Great outdoor access and dining scene but outlet-mall commercialized. Tourist density dilutes the quiet/private feel. Higher prices than most options.</div>
+</a>
+<a href="littleton-nh/" class="town-card">
+  <div class="card-top">
+    <div>
+      <div class="card-name">Littleton, NH</div>
+      <div class="card-meta">T3 &middot; ~1.5 hrs via I-93 / Rt 302 &middot; Pop. 5,928</div>
+    </div>
+    <div class="card-score">8.0</div>
+  </div>
+  <div class="card-radar"><canvas id="radar_2" width="160" height="160"></canvas></div>
+  <div class="card-strengths">Top: Nature Access, Food & Drink, Creative Culture</div>
+  <div class="card-stats">76 places verified</div>
+  <div class="card-pills"><span class="card-pill book">Bookstore</span></div>
+  <div class="card-notes">Punches above its weight: Art Deco cinema, great coffee, bookshop, indie music scene, 5 breweries. Walkable Main St. Grafton County prices lower than ski corridor.</div>
+</a>
+<a href="farmington-me/" class="town-card">
+  <div class="card-top">
+    <div>
+      <div class="card-name">Farmington, ME</div>
+      <div class="card-meta">T3 &middot; ~1.25 hrs via Rt 2 &middot; Pop. 7,760</div>
+    </div>
+    <div class="card-score">7.1</div>
+  </div>
+  <div class="card-radar"><canvas id="radar_3" width="160" height="160"></canvas></div>
+  <div class="card-strengths">Top: Creative Culture, Community Fit, Practical</div>
+  <div class="card-stats">68 places verified</div>
+  <div class="card-pills"><span class="card-pill record">Record Store</span> <span class="card-pill book">Bookstore</span></div>
+  <div class="card-notes">College town (UMaine Farmington). Real bookstores, record store, coffee culture. Good services. Less dramatic landscape than Rangeley but very livable. Affordable.</div>
+</a>
+<a href="rangeley-me/" class="town-card">
+  <div class="card-top">
+    <div>
+      <div class="card-name">Rangeley, ME</div>
+      <div class="card-meta">T3 &middot; ~1.5 hrs via Rt 4 / Rt 17 &middot; Pop. 1,168</div>
+    </div>
+    <div class="card-score">6.2</div>
+  </div>
+  <div class="card-radar"><canvas id="radar_4" width="160" height="160"></canvas></div>
+  <div class="card-strengths">Top: Nature Access, Quiet & Privacy, Food & Drink</div>
+  <div class="card-stats">54 places verified</div>
+  <div class="card-pills"><span class="card-pill book">Bookstore</span></div>
+  <div class="card-notes">Lakes, mountains, Saddleback ski. Very remote — thin inventory, minimal services. Strong sense of place. Beautiful but isolated.</div>
+</a>
+  </div>
+</div>
+
+<footer>
+  <div>Soulplace Seeker &nbsp;&middot;&nbsp; House Hunt Hero</div>
+</footer>
+
+<script>
+Chart.defaults.color = '#8899aa';
+Chart.defaults.borderColor = '#2d3748';
+
+new Chart(document.getElementById('radar_0'), {
+  type: 'radar',
+  data: {
+    labels: ["Creative Culture", "Nature Access", "Food & Drink", "Walkability", "Quiet & Privacy", "Community Fit", "Pet Friendly", "Practical"],
+    datasets: [{
+      data: [7, 10, 8, 5, 8, 7, 7, 7],
+      backgroundColor: 'rgba(90,170,130,0.15)',
+      borderColor: '#5aaa82',
+      borderWidth: 1.5,
+      pointRadius: 2,
+      pointBackgroundColor: '#5aaa82'
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: false } },
+    scales: {
+      r: {
+        min: 0, max: 10,
+        ticks: { display: false, stepSize: 2 },
+        grid: { color: '#2d3748' },
+        angleLines: { color: '#2d3748' },
+        pointLabels: { color: '#8899aa', font: { size: 9, family: "'JetBrains Mono', monospace" } }
+      }
+    }
+  }
+});
+
+new Chart(document.getElementById('radar_1'), {
+  type: 'radar',
+  data: {
+    labels: ["Creative Culture", "Nature Access", "Food & Drink", "Walkability", "Quiet & Privacy", "Community Fit", "Pet Friendly", "Practical"],
+    datasets: [{
+      data: [6, 10, 9, 5, 4, 5, 9, 9],
+      backgroundColor: 'rgba(90,170,130,0.15)',
+      borderColor: '#5aaa82',
+      borderWidth: 1.5,
+      pointRadius: 2,
+      pointBackgroundColor: '#5aaa82'
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: false } },
+    scales: {
+      r: {
+        min: 0, max: 10,
+        ticks: { display: false, stepSize: 2 },
+        grid: { color: '#2d3748' },
+        angleLines: { color: '#2d3748' },
+        pointLabels: { color: '#8899aa', font: { size: 9, family: "'JetBrains Mono', monospace" } }
+      }
+    }
+  }
+});
+
+new Chart(document.getElementById('radar_2'), {
+  type: 'radar',
+  data: {
+    labels: ["Creative Culture", "Nature Access", "Food & Drink", "Walkability", "Quiet & Privacy", "Community Fit", "Pet Friendly", "Practical"],
+    datasets: [{
+      data: [8, 9, 9, 8, 6, 8, 8, 8],
+      backgroundColor: 'rgba(90,170,130,0.15)',
+      borderColor: '#5aaa82',
+      borderWidth: 1.5,
+      pointRadius: 2,
+      pointBackgroundColor: '#5aaa82'
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: false } },
+    scales: {
+      r: {
+        min: 0, max: 10,
+        ticks: { display: false, stepSize: 2 },
+        grid: { color: '#2d3748' },
+        angleLines: { color: '#2d3748' },
+        pointLabels: { color: '#8899aa', font: { size: 9, family: "'JetBrains Mono', monospace" } }
+      }
+    }
+  }
+});
+
+new Chart(document.getElementById('radar_3'), {
+  type: 'radar',
+  data: {
+    labels: ["Creative Culture", "Nature Access", "Food & Drink", "Walkability", "Quiet & Privacy", "Community Fit", "Pet Friendly", "Practical"],
+    datasets: [{
+      data: [8, 7, 7, 6, 6, 8, 7, 8],
+      backgroundColor: 'rgba(90,170,130,0.15)',
+      borderColor: '#5aaa82',
+      borderWidth: 1.5,
+      pointRadius: 2,
+      pointBackgroundColor: '#5aaa82'
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: false } },
+    scales: {
+      r: {
+        min: 0, max: 10,
+        ticks: { display: false, stepSize: 2 },
+        grid: { color: '#2d3748' },
+        angleLines: { color: '#2d3748' },
+        pointLabels: { color: '#8899aa', font: { size: 9, family: "'JetBrains Mono', monospace" } }
+      }
+    }
+  }
+});
+
+new Chart(document.getElementById('radar_4'), {
+  type: 'radar',
+  data: {
+    labels: ["Creative Culture", "Nature Access", "Food & Drink", "Walkability", "Quiet & Privacy", "Community Fit", "Pet Friendly", "Practical"],
+    datasets: [{
+      data: [5, 10, 6, 4, 9, 6, 6, 4],
+      backgroundColor: 'rgba(90,170,130,0.15)',
+      borderColor: '#5aaa82',
+      borderWidth: 1.5,
+      pointRadius: 2,
+      pointBackgroundColor: '#5aaa82'
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: false } },
+    scales: {
+      r: {
+        min: 0, max: 10,
+        ticks: { display: false, stepSize: 2 },
+        grid: { color: '#2d3748' },
+        angleLines: { color: '#2d3748' },
+        pointLabels: { color: '#8899aa', font: { size: 9, family: "'JetBrains Mono', monospace" } }
+      }
+    }
+  }
+});
+</script>
+</body>
+</html>

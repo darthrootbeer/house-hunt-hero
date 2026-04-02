@@ -391,6 +391,205 @@ footer {{ background: var(--surface); border-top: 1px solid var(--border); paddi
 </html>"""
 
 
+def generate_dashboard(towns):
+    """Generate the root index.html dashboard with town comparison cards."""
+
+    # Sort: T1 first, then by vibe score descending
+    tier_order = {"T1": 0, "T2": 1, "T3": 2, "T4": 3}
+    sorted_towns = sorted(towns, key=lambda t: (
+        tier_order.get(t.get("distance_tier", "T4"), 4),
+        -(sum(v for v in t.get("vibe", {}).values() if v is not None) / max(len(t.get("vibe", {})), 1))
+    ))
+
+    cards_html = ""
+    chart_js_parts = []
+
+    for i, town in enumerate(sorted_towns):
+        name = town["name"]
+        state = town["state"]
+        slug = town["slug"]
+        tier = town.get("distance_tier", "")
+        drive = town.get("drive_note", "")
+        pop = town.get("population")
+        notes = town.get("notes", "")
+        vibe = town.get("vibe", {})
+        places = town.get("places", {})
+        fails = town.get("hard_fails", [])
+
+        vibe_vals = [v for v in vibe.values() if v is not None]
+        avg_vibe = sum(vibe_vals) / len(vibe_vals) if vibe_vals else 0
+        pop_display = f"{pop:,}" if pop else "—"
+
+        # Count total places
+        total_places = sum(len(v) for v in places.values() if isinstance(v, list))
+
+        # Top strengths (highest 3 vibe scores)
+        sorted_vibes = sorted(vibe.items(), key=lambda x: x[1] or 0, reverse=True)
+        top3 = sorted_vibes[:3]
+        vibe_labels = {k: l for k, l, _ in VIBE_DIMENSIONS}
+        strengths = ", ".join(vibe_labels.get(k, k) for k, _ in top3)
+
+        # Has record store / bookstore?
+        has_records = len(places.get("record_stores", [])) > 0
+        has_books = len(places.get("bookstores", [])) > 0
+
+        # Highlight pills
+        pills = []
+        if has_records:
+            pills.append('<span class="card-pill record">Record Store</span>')
+        if has_books:
+            pills.append('<span class="card-pill book">Bookstore</span>')
+        if fails:
+            pills.append('<span class="card-pill fail">Hard Fails</span>')
+        pills_html = " ".join(pills)
+
+        # Mini vibe values for radar chart
+        radar_data = json.dumps([vibe.get(k, 0) for k, _, _ in VIBE_DIMENSIONS])
+        canvas_id = f"radar_{i}"
+
+        chart_js_parts.append(f"""
+new Chart(document.getElementById('{canvas_id}'), {{
+  type: 'radar',
+  data: {{
+    labels: {json.dumps([l for _, l, _ in VIBE_DIMENSIONS])},
+    datasets: [{{
+      data: {radar_data},
+      backgroundColor: 'rgba(90,170,130,0.15)',
+      borderColor: '#5aaa82',
+      borderWidth: 1.5,
+      pointRadius: 2,
+      pointBackgroundColor: '#5aaa82'
+    }}]
+  }},
+  options: {{
+    responsive: true, maintainAspectRatio: true,
+    plugins: {{ legend: {{ display: false }} }},
+    scales: {{
+      r: {{
+        min: 0, max: 10,
+        ticks: {{ display: false, stepSize: 2 }},
+        grid: {{ color: '#2d3748' }},
+        angleLines: {{ color: '#2d3748' }},
+        pointLabels: {{ color: '#8899aa', font: {{ size: 9, family: "'JetBrains Mono', monospace" }} }}
+      }}
+    }}
+  }}
+}});""")
+
+        cards_html += f"""
+<a href="{slug}/" class="town-card">
+  <div class="card-top">
+    <div>
+      <div class="card-name">{name}, {state}</div>
+      <div class="card-meta">{tier} &middot; {drive} &middot; Pop. {pop_display}</div>
+    </div>
+    <div class="card-score">{avg_vibe:.1f}</div>
+  </div>
+  <div class="card-radar"><canvas id="{canvas_id}" width="160" height="160"></canvas></div>
+  <div class="card-strengths">Top: {strengths}</div>
+  <div class="card-stats">{total_places} places verified</div>
+  <div class="card-pills">{pills_html}</div>
+  <div class="card-notes">{notes}</div>
+</a>"""
+
+    chart_js = "\n".join(chart_js_parts)
+
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Soulplace Seeker — Town Comparison Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root {{
+  --bg: #0d1117; --surface: #161b22; --surface2: #1c2330; --border: #2d3748;
+  --navy: #1a2744; --green: #3d7a5a; --green-light: #5aaa82; --green-dim: #2a5240;
+  --amber: #c9883a; --amber-light: #e8a84e;
+  --text: #e2e8f0; --text-muted: #8899aa; --text-dim: #4a5568;
+  --red: #c0392b; --red-light: #e74c3c;
+}}
+* {{ box-sizing: border-box; margin: 0; padding: 0; }}
+body {{ background: var(--bg); color: var(--text); font-family: 'Lora', Georgia, serif; font-size: 16px; line-height: 1.6; }}
+.container {{ max-width: 1200px; margin: 0 auto; padding: 0 24px; }}
+
+header {{ background: var(--navy); border-bottom: 2px solid var(--green-dim); padding: 28px 0 20px; }}
+.header-inner {{ display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 12px; }}
+.header-title {{ font-family: 'Playfair Display', serif; font-size: 2.0rem; font-weight: 700; color: var(--text); }}
+.header-subtitle {{ font-family: 'Lora', serif; font-style: italic; color: var(--text-muted); font-size: 0.95rem; margin-top: 4px; }}
+.header-meta {{ text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--text-muted); line-height: 1.7; }}
+.header-link {{ color: var(--green-light); text-decoration: none; font-family: 'Inter', sans-serif; font-size: 0.82rem; }}
+.header-link:hover {{ text-decoration: underline; }}
+
+.town-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; padding: 32px 0; }}
+
+.town-card {{ background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px; text-decoration: none; color: var(--text); transition: border-color 0.2s, transform 0.15s; display: block; }}
+.town-card:hover {{ border-color: var(--green-light); transform: translateY(-2px); }}
+
+.card-top {{ display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }}
+.card-name {{ font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; }}
+.card-meta {{ font-family: 'JetBrains Mono', monospace; font-size: 0.70rem; color: var(--text-dim); margin-top: 4px; }}
+.card-score {{ font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; color: var(--green-light); line-height: 1; }}
+
+.card-radar {{ width: 160px; height: 160px; margin: 0 auto 12px; }}
+.card-strengths {{ font-family: 'Inter', sans-serif; font-size: 0.78rem; color: var(--text-muted); margin-bottom: 6px; }}
+.card-stats {{ font-family: 'JetBrains Mono', monospace; font-size: 0.70rem; color: var(--text-dim); margin-bottom: 8px; }}
+
+.card-pills {{ display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }}
+.card-pill {{ font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; padding: 2px 8px; border-radius: 10px; }}
+.card-pill.record {{ background: rgba(168,85,247,0.15); color: #a855f7; border: 1px solid rgba(168,85,247,0.3); }}
+.card-pill.book {{ background: rgba(99,102,241,0.15); color: #6366f1; border: 1px solid rgba(99,102,241,0.3); }}
+.card-pill.fail {{ background: rgba(192,57,43,0.15); color: var(--red-light); border: 1px solid rgba(192,57,43,0.3); }}
+
+.card-notes {{ font-size: 0.80rem; color: var(--text-dim); line-height: 1.5; font-style: italic; }}
+
+footer {{ background: var(--surface); border-top: 1px solid var(--border); padding: 20px 0; margin-top: 48px; text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 0.73rem; color: var(--text-dim); }}
+
+@media (max-width: 480px) {{
+  .container {{ padding: 0 14px; }}
+  .header-title {{ font-size: 1.5rem; }}
+  .town-grid {{ grid-template-columns: 1fr; }}
+  .card-radar {{ width: 140px; height: 140px; }}
+}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <div class="header-inner">
+      <div>
+        <div class="header-title">Soulplace Seeker</div>
+        <div class="header-subtitle">Where should we live? Comparing {len(sorted_towns)} towns across 8 vibe dimensions.</div>
+      </div>
+      <div class="header-meta">
+        <a href="market_report/" class="header-link">Oxford County Market Report &rarr;</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <div class="town-grid">
+    {cards_html}
+  </div>
+</div>
+
+<footer>
+  <div>Soulplace Seeker &nbsp;&middot;&nbsp; House Hunt Hero</div>
+</footer>
+
+<script>
+Chart.defaults.color = '#8899aa';
+Chart.defaults.borderColor = '#2d3748';
+{chart_js}
+</script>
+</body>
+</html>"""
+
+
 def main():
     towns_file = ROOT / "towns.json"
     if not towns_file.exists():
@@ -408,6 +607,12 @@ def main():
         out_file = out_dir / "index.html"
         out_file.write_text(html)
         print(f"  {slug}/index.html ({len(html):,} bytes)")
+
+    # Generate dashboard
+    dashboard = generate_dashboard(towns)
+    dash_file = ROOT / "index.html"
+    dash_file.write_text(dashboard)
+    print(f"  index.html (dashboard, {len(dashboard):,} bytes)")
 
     print("Done.")
 
