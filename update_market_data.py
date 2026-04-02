@@ -799,7 +799,7 @@ HTML_TEMPLATE = r'''<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Maine Home Search — Market Intelligence</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
 <style>
@@ -825,7 +825,7 @@ header { background: var(--navy); border-bottom: 2px solid var(--green-dim); pad
 /* Tabs */
 .tabs { background: var(--surface); border-bottom: 1px solid var(--border); }
 .tab-list { display: flex; list-style: none; padding: 0 24px; max-width: 1200px; margin: 0 auto; }
-.tab-btn { padding: 16px 28px; background: none; border: none; border-bottom: 3px solid transparent; color: var(--text-muted); font-family: 'Playfair Display', serif; font-size: 0.95rem; cursor: pointer; transition: all 0.2s; }
+.tab-btn { padding: 16px 28px; background: none; border: none; border-bottom: 3px solid transparent; color: var(--text-muted); font-family: 'Inter', -apple-system, sans-serif; font-size: 0.90rem; font-weight: 500; cursor: pointer; transition: all 0.2s; }
 .tab-btn:hover { color: var(--text); }
 .tab-btn.active { color: var(--green-light); border-bottom-color: var(--green-light); }
 .tab-panel { display: none; padding: 32px 0; }
@@ -839,7 +839,7 @@ header { background: var(--navy); border-bottom: 2px solid var(--green-dim); pad
 /* Stat grid */
 .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; margin-bottom: 28px; align-items: stretch; }
 .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px 20px; display: flex; flex-direction: column; min-height: 200px; }
-.stat-label { font-family: 'JetBrains Mono', monospace; font-size: 0.70rem; text-transform: uppercase; letter-spacing: 0.10em; color: var(--text-muted); margin-bottom: 6px; }
+.stat-label { font-family: 'Inter', -apple-system, sans-serif; font-size: 0.70rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 6px; }
 .stat-value { font-family: 'Playfair Display', serif; font-size: 1.75rem; font-weight: 600; color: var(--text); line-height: 1.1; }
 .stat-value.green { color: var(--green-light); }
 .stat-value.amber { color: var(--amber-light); }
@@ -863,8 +863,8 @@ header { background: var(--navy); border-bottom: 2px solid var(--green-dim); pad
 .chart-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px; }
 .chart-panel.full { grid-column: 1 / -1; }
 .chart-header { display: -webkit-box; display: flex; -webkit-box-pack: justify; justify-content: space-between; -webkit-box-align: start; align-items: flex-start; margin-bottom: 6px; gap: 8px; }
-.chart-title { font-family: 'Playfair Display', serif; font-size: 1.0rem; font-weight: 600; color: var(--text); }
-.chart-subtitle { font-size: 0.79rem; color: var(--text-muted); margin-bottom: 14px; font-style: italic; }
+.chart-title { font-family: 'Inter', -apple-system, sans-serif; font-size: 1.0rem; font-weight: 600; color: var(--text); letter-spacing: -0.01em; }
+.chart-subtitle { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 0.79rem; color: var(--text-muted); margin-bottom: 14px; font-style: italic; }
 .trend-tag { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; margin-bottom: 8px; }
 .trend-tag.up-good   { background: rgba(90,170,130,0.15); color: #5aaa82; border: 1px solid rgba(90,170,130,0.35); }
 .trend-tag.up-bad    { background: rgba(201,136,58,0.15);  color: #c9883a; border: 1px solid rgba(201,136,58,0.35); }
@@ -895,7 +895,7 @@ header { background: var(--navy); border-bottom: 2px solid var(--green-dim); pad
 .unavailable .icon { font-size: 1.6rem; margin-bottom: 8px; opacity: 0.6; }
 
 /* Section header */
-.section-header { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 600; color: var(--text); margin: 32px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+.section-header { font-family: 'Inter', -apple-system, sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--text); margin: 32px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); letter-spacing: -0.01em; }
 
 /* Forecast */
 .forecast-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
@@ -916,8 +916,8 @@ header { background: var(--navy); border-bottom: 2px solid var(--green-dim); pad
 .city-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 18px; }
 .city-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 22px; }
 .city-card.primary { border-color: var(--green-dim); background: linear-gradient(135deg, var(--navy), #151e2e); }
-.city-name { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 600; margin-bottom: 2px; }
-.city-label { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.10em; color: var(--green-light); margin-bottom: 10px; }
+.city-name { font-family: 'Inter', -apple-system, sans-serif; font-size: 1.05rem; font-weight: 600; margin-bottom: 2px; letter-spacing: -0.01em; }
+.city-label { font-family: 'Inter', -apple-system, sans-serif; font-size: 0.68rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--green-light); margin-bottom: 10px; }
 .city-drive { font-size: 0.80rem; color: var(--text-muted); font-style: italic; margin-bottom: 14px; font-family: 'JetBrains Mono', monospace; }
 .city-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
 .city-metric-label { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-dim); }
@@ -1072,7 +1072,13 @@ function baseOpts(labels, yLabel, fmtFn, extraOpts = {}) {
       annotation: { annotations: { ...searchStartAnnotation(labels), ...seasonBands(labels) } }
     },
     scales: {
-      x: { ticks:{ maxTicksLimit:12, maxRotation:45, color:'#556677', callback: function(val, idx) { return fmtDateLabel(labels[idx]); } }, grid:{ color:'#1c2330' } },
+      x: { ticks:{ maxRotation:45, color:'#556677', callback: function(val, idx) {
+        var d = labels[idx]; if (!d || !d.match || !d.match(/^\d{4}-\d{2}/)) return '';
+        var m = parseInt(d.slice(5,7));
+        // 2yr+ view: show only quarterly labels (Jan/Apr/Jul/Oct); 6mo: every month
+        if (labels.length > 10 && m % 3 !== 1) return '';
+        return fmtDateLabel(d);
+      } }, grid:{ color:'#1c2330' } },
       y: { title:{ display:true, text:yLabel, color:'#556677', font:{size:10} },
            ticks:{ callback: fmtFn, color:'#556677' }, grid:{ color:'#1c2330' } }
     }
@@ -1103,10 +1109,17 @@ function setChartZoom(chartId, window, btn) {
   if (!reg || !reg.chart) return;
   const slice = reg.slices[window];
   if (!slice) return;
-  reg.chart.data.labels = slice.labels;
+  const labels = slice.labels;
+  reg.chart.data.labels = labels;
   reg.chart.data.datasets.forEach((ds, i) => { if (slice.datasets[i]) ds.data = slice.datasets[i]; });
   reg.chart.options.plugins.annotation.annotations = {
-    ...searchStartAnnotation(slice.labels), ...seasonBands(slice.labels)
+    ...searchStartAnnotation(labels), ...seasonBands(labels)
+  };
+  reg.chart.options.scales.x.ticks.callback = function(val, idx) {
+    var d = labels[idx]; if (!d || !d.match || !d.match(/^\d{4}-\d{2}/)) return '';
+    var m = parseInt(d.slice(5,7));
+    if (labels.length > 10 && m % 3 !== 1) return '';
+    return fmtDateLabel(d);
   };
   reg.chart.update();
   btn.closest('.zoom-btns').querySelectorAll('.zoom-btn').forEach(b => b.classList.remove('active'));
