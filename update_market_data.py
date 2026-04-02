@@ -112,7 +112,103 @@ def delta_badge(pct, good_direction="up"):
     positive = pct > 0
     good = (positive and good_direction == "up") or (not positive and good_direction == "down")
     color = "#5aaa82" if good else "#c9883a"
-    return f'<span style="font-size:0.78rem;color:{color};margin-left:6px;">{arrow}{abs(pct):.1f}%</span>'
+    return f'<span style="font-size:1.0rem;color:{color};margin-left:8px;font-family:\'JetBrains Mono\',monospace;">{arrow}{abs(pct):.1f}%</span>'
+
+
+def trend_tag(series, good_direction="up"):
+    """Compute 3-month trend from a series and return a pill HTML tag."""
+    vals = [v for v in series if v is not None]
+    if len(vals) < 4:
+        return '<span class="trend-tag flat">not enough data</span>'
+    recent = vals[-3:]
+    older  = vals[-6:-3] if len(vals) >= 6 else vals[:3]
+    avg_recent = sum(recent) / len(recent)
+    avg_older  = sum(older)  / len(older)
+    if avg_older == 0:
+        return '<span class="trend-tag flat">stable</span>'
+    pct = (avg_recent - avg_older) / avg_older * 100
+    going_up = pct > 0
+    magnitude = abs(pct)
+
+    if magnitude < 1:
+        label = "holding steady"
+        cls = "flat"
+    elif magnitude < 3:
+        label = ("edging up" if going_up else "easing down")
+        cls = ("up-good" if going_up == (good_direction == "up") else "up-bad") if going_up else \
+              ("down-good" if good_direction == "down" else "down-bad")
+    elif magnitude < 8:
+        label = ("trending up" if going_up else "trending down")
+        cls = ("up-good" if going_up == (good_direction == "up") else "up-bad") if going_up else \
+              ("down-good" if good_direction == "down" else "down-bad")
+    else:
+        label = ("rising fast" if going_up else "dropping fast")
+        cls = ("up-good" if going_up == (good_direction == "up") else "up-bad") if going_up else \
+              ("down-good" if good_direction == "down" else "down-bad")
+
+    arrow = "↑" if going_up else "↓"
+    return f'<span class="trend-tag {cls}">{arrow} {label}</span>'
+
+
+def signal_tag(text, good=True):
+    """Return a styled at-a-glance signal tag."""
+    color = "#5aaa82" if good else "#c9883a"
+    return f'<div style="font-size:0.82rem;font-weight:600;color:{color};margin-top:6px;letter-spacing:0.02em;">{text}</div>'
+
+
+def dom_signal(dom):
+    if dom is None: return ""
+    if dom < 20: return signal_tag("Move fast — homes are flying off the market", good=False)
+    if dom < 40: return signal_tag("Moderate pace — stay alert but no panic", good=True)
+    if dom < 65: return signal_tag("Slow market — you have breathing room", good=True)
+    return signal_tag("Very slow — take your time and negotiate", good=True)
+
+
+def mos_signal(mos):
+    if mos is None: return ""
+    if mos < 2: return signal_tag("Seller's market — very tight inventory", good=False)
+    if mos < 3: return signal_tag("Leaning seller — less room to negotiate", good=False)
+    if mos < 5: return signal_tag("Balanced — neither side has a clear edge", good=True)
+    if mos < 7: return signal_tag("Leaning buyer — you have leverage", good=True)
+    return signal_tag("Buyer's market — strong negotiating position", good=True)
+
+
+def price_signal(zhvi, budget=420000):
+    if zhvi is None: return ""
+    pct_of_budget = zhvi / budget * 100
+    if pct_of_budget < 70: return signal_tag("Well within budget — plenty of room", good=True)
+    if pct_of_budget < 85: return signal_tag("Comfortable — budget has headroom", good=True)
+    if pct_of_budget < 95: return signal_tag("Getting close to your ceiling", good=False)
+    return signal_tag("At or above your hard max — watch closely", good=False)
+
+
+def s2l_signal(delta_pct):
+    if delta_pct is None: return ""
+    if delta_pct >= 3: return signal_tag("Bidding wars — expect to pay over asking", good=False)
+    if delta_pct >= 0: return signal_tag("Near asking — limited negotiating room", good=False)
+    if delta_pct >= -3: return signal_tag("Slight discount available — room to negotiate", good=True)
+    return signal_tag("Buyers getting solid discounts", good=True)
+
+
+def inv_signal(inv, prev_inv):
+    if inv is None: return ""
+    if prev_inv and prev_inv > 0:
+        chg = (inv - prev_inv) / prev_inv * 100
+        if chg >= 10: return signal_tag("Inventory rising fast — more choices coming", good=True)
+        if chg >= 3: return signal_tag("Inventory growing — trend is in your favor", good=True)
+        if chg <= -10: return signal_tag("Inventory dropping fast — act on good listings", good=False)
+        if chg <= -3: return signal_tag("Inventory shrinking — market tightening", good=False)
+    if inv > 5000: return signal_tag("Plenty of homes listed — healthy supply", good=True)
+    if inv > 2000: return signal_tag("Moderate supply — enough to be selective", good=True)
+    return signal_tag("Limited supply — good listings will move fast", good=False)
+
+
+def rate_signal(rate):
+    if rate is None: return ""
+    if rate < 5.5: return signal_tag("Historically low — great time to lock in", good=True)
+    if rate < 6.5: return signal_tag("Manageable — near recent norms", good=True)
+    if rate < 7.5: return signal_tag("Elevated — adds ~$175/mo vs 6% rate", good=False)
+    return signal_tag("High — significantly impacts monthly payment", good=False)
 
 
 # ── Data Sources ─────────────────────────────────────────────────────────────
@@ -404,8 +500,9 @@ def price_forecast(redfin_data, zillow_data):
         }
 
     return {
-        "day60": project(60),
         "day90": project(90),
+        "day180": project(180),
+        "day270": project(270),
         "trend_monthly": round(slope * 30),
         "source": source_label,
         "n_months": len(valid),
@@ -740,13 +837,13 @@ header { background: var(--navy); border-bottom: 2px solid var(--green-dim); pad
 
 /* Stat grid */
 .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; margin-bottom: 28px; }
-.stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px 20px; }
+.stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px 20px; display: flex; flex-direction: column; }
 .stat-label { font-family: 'JetBrains Mono', monospace; font-size: 0.70rem; text-transform: uppercase; letter-spacing: 0.10em; color: var(--text-muted); margin-bottom: 6px; }
 .stat-value { font-family: 'Playfair Display', serif; font-size: 1.75rem; font-weight: 600; color: var(--text); line-height: 1.1; }
 .stat-value.green { color: var(--green-light); }
 .stat-value.amber { color: var(--amber-light); }
 .stat-value.red { color: var(--red-light); }
-.stat-sub { font-size: 0.80rem; color: var(--text-muted); margin-top: 4px; }
+.stat-sub { font-family: 'Lora', serif; font-size: 0.78rem; color: var(--text-muted); margin-top: auto; padding-top: 10px; border-top: 1px solid var(--border); }
 
 /* Score bar */
 .score-bar-wrap { background: var(--surface2); border-radius: 4px; height: 8px; margin: 10px 0 6px; position: relative; }
@@ -758,8 +855,14 @@ header { background: var(--navy); border-bottom: 2px solid var(--green-dim); pad
 @media (max-width: 860px) { .chart-grid { grid-template-columns: 1fr; } }
 .chart-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px; }
 .chart-panel.full { grid-column: 1 / -1; }
-.chart-title { font-family: 'Playfair Display', serif; font-size: 1.0rem; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.chart-title { font-family: 'Playfair Display', serif; font-size: 1.0rem; font-weight: 600; color: var(--text); margin-bottom: 6px; }
 .chart-subtitle { font-size: 0.79rem; color: var(--text-muted); margin-bottom: 14px; font-style: italic; }
+.trend-tag { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; margin-bottom: 8px; }
+.trend-tag.up-good   { background: rgba(90,170,130,0.15); color: #5aaa82; border: 1px solid rgba(90,170,130,0.35); }
+.trend-tag.up-bad    { background: rgba(201,136,58,0.15);  color: #c9883a; border: 1px solid rgba(201,136,58,0.35); }
+.trend-tag.down-good { background: rgba(90,170,130,0.15); color: #5aaa82; border: 1px solid rgba(90,170,130,0.35); }
+.trend-tag.down-bad  { background: rgba(201,136,58,0.15);  color: #c9883a; border: 1px solid rgba(201,136,58,0.35); }
+.trend-tag.flat      { background: rgba(136,153,170,0.12); color: #8899aa; border: 1px solid rgba(136,153,170,0.25); }
 .chart-container { position: relative; height: 240px; }
 
 /* Unavailable state */
@@ -944,19 +1047,25 @@ function baseOpts(labels, yLabel, fmtFn, extraOpts = {}) {
       annotation: { annotations: { ...searchStartAnnotation(labels), ...seasonBands(labels) } }
     },
     scales: {
-      x: { ticks:{ maxTicksLimit:12, maxRotation:45, color:'#556677' }, grid:{ color:'#1c2330' } },
+      x: { ticks:{ maxTicksLimit:12, maxRotation:45, color:'#556677', callback: function(val, idx) { return fmtDateLabel(labels[idx]); } }, grid:{ color:'#1c2330' } },
       y: { title:{ display:true, text:yLabel, color:'#556677', font:{size:10} },
            ticks:{ callback: fmtFn, color:'#556677' }, grid:{ color:'#1c2330' } }
     }
   }, extraOpts);
 }
 
-const fmtDollar = v => v == null ? '' : '$' + Math.round(v).toLocaleString();
+const fmtDollar = v => v == null ? '' : '$' + (Math.abs(v) >= 1000 ? (v/1000).toFixed(0) + 'K' : Math.round(v).toLocaleString());
 const fmtDays   = v => v == null ? '' : Math.round(v) + 'd';
 const fmtPct    = v => v == null ? '' : (v < 10 ? (v*100).toFixed(1) : v.toFixed(1)) + '%';
-const fmtNum    = v => v == null ? '' : Math.round(v).toLocaleString();
+const fmtNum    = v => v == null ? '' : (Math.abs(v) >= 1000 ? (v/1000).toFixed(1) + 'K' : Math.round(v).toLocaleString());
 const fmtRate   = v => v == null ? '' : v.toFixed(2) + '%';
 const fmtMos    = v => v == null ? '' : v.toFixed(1) + ' mo';
+const MONTHS    = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function fmtDateLabel(d) {
+  if (!d) return '';
+  const parts = d.slice(0,7).split('-');
+  return MONTHS[parseInt(parts[1])-1] + " '" + parts[0].slice(2);
+}
 
 __CHART_JS__
 </script>
@@ -973,9 +1082,10 @@ def unavailable(msg="Data unavailable — check source"):
     return f'<div class="unavailable"><div class="icon">&#9888;</div><div>{msg}</div></div>'
 
 
-def stat_card(label, value, color="", sub="", badge=""):
+def stat_card(label, value, color="", sub="", badge="", signal=""):
     return (f'<div class="stat-card"><div class="stat-label">{label}</div>'
             f'<div class="stat-value {color}">{value}{badge}</div>'
+            f'{signal}'
             f'<div class="stat-sub">{sub}</div></div>')
 
 
@@ -1032,43 +1142,61 @@ def build_html(redfin_data, zillow_data, fred_data, backup_cities, city_data):
     _, _, zhvi_pct = mom_delta(zillow_data.get("zhvi", []))
     _, _, price_pct = mom_delta(redfin_data.get("median_price", []))
     _, _, dom_pct = mom_delta(redfin_data.get("dom", []))
-    _, _, inv_pct = mom_delta(redfin_data.get("inventory", []))
+    inv_cur, inv_prev, inv_pct = mom_delta(redfin_data.get("inventory", []))
     _, _, rate_pct = mom_delta(fred_data.get("rates", []))
+    s2l_delta = (((s2l_val if s2l_val < 10 else s2l_val / 100) - 1.0) * 100) if s2l_val else None
 
     # ── Stat cards ──
     stats_html = ""
     stats_html += stat_card("Typical Home Value — Oxford County", fmt_compact(zhvi_val), "amber",
                              "Use this as your price anchor. Listings well above this need justification.",
-                             delta_badge(zhvi_pct, "down"))
+                             delta_badge(zhvi_pct, "down"),
+                             price_signal(zhvi_val))
     stats_html += stat_card("What Homes Are Actually Selling For", fmt_compact(median_price), "",
                              "Real closing prices — not asking prices. When this moves, the market moved.",
-                             delta_badge(price_pct, "down"))
+                             delta_badge(price_pct, "down"),
+                             price_signal(median_price))
     stats_html += stat_card("Days on Market", f"{dom_val:.0f}d" if dom_val else "N/A",
                              "green" if (dom_val and dom_val < 40) else "amber" if dom_val else "",
                              "How long homes sit before going under contract. Under 20d = competing offers. Over 60d = you have time.",
-                             delta_badge(dom_pct, "up"))
+                             delta_badge(dom_pct, "up"),
+                             dom_signal(dom_val))
     stats_html += stat_card("Are Buyers Paying Over or Under Asking?", s2l_display,
                              "amber" if s2l_val and s2l_note == "over asking" else "green" if s2l_val else "",
-                             s2l_note + " — below 0% means you have negotiating room. Above 0% means bidding wars.")
+                             "Shown as % above or below asking price. Negative = buyers got a discount. Positive = buyers paid over asking.",
+                             "",
+                             s2l_signal(s2l_delta))
     stats_html += stat_card("Active Inventory", fmt_count(inv_val), "",
                              "Homes for sale right now. More = more choices, less pressure. Watch for a sudden drop.",
-                             delta_badge(inv_pct, "up"))
+                             delta_badge(inv_pct, "up"),
+                             inv_signal(inv_val, inv_prev))
 
+    score_signal_text = (
+        "Strong buyer advantage — negotiate confidently" if (score or 50) < 35 else
+        "You have the edge — don't be afraid to negotiate" if (score or 50) < 45 else
+        "Balanced — neither side dominates" if (score or 50) < 55 else
+        "Sellers have the edge — move on good listings" if (score or 50) < 70 else
+        "Strong seller's market — expect competition"
+    )
+    score_signal_good = (score or 50) < 50
+    score_signal_color = "#5aaa82" if score_signal_good else "#c9883a"
     score_html = (
         f'<div class="stat-card"><div class="stat-label">Who Has the Upper Hand Right Now?</div>'
         f'<div class="stat-value" style="font-size:1.1rem;color:var(--amber-light);">'
         f'{score_label or "N/A"}</div>'
+        f'<div style="font-size:0.82rem;font-weight:600;color:{score_signal_color};margin-top:6px;">{score_signal_text}</div>'
         f'<div style="position:relative;margin-top:10px;">'
         f'<div class="score-bar-wrap"><div class="score-bar"></div>'
         f'<div class="score-marker" style="left:{score or 50}%;"></div></div></div>'
-        f'<div class="stat-sub">{score or "N/A"}/100 — below 50 favors you. Above 50 means sellers are in control.</div></div>'
+        f'<div class="stat-sub" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);">{score or "N/A"}/100 — below 50 favors you. Above 50 means sellers are in control.</div></div>'
     )
     stats_html += score_html
     stats_html += stat_card("What Borrowing Costs Right Now",
                              f"{rate_val:.1f}%" if rate_val else "N/A",
                              "amber" if rate_val else "",
                              f"~${payment}/mo on $350K (20% down) — every 1% up adds ~$175/mo",
-                             delta_badge(rate_pct, "down"))
+                             delta_badge(rate_pct, "down"),
+                             rate_signal(rate_val))
 
     # ── Chart JS accumulator ──
     js = []
@@ -1076,15 +1204,29 @@ def build_html(redfin_data, zillow_data, fred_data, backup_cities, city_data):
 
     dates = redfin_data.get("dates", [])
 
-    def make_line_chart(cid, series_list, y_label, fmt_name, xtras=""):
-        """Helper: return (chart_html, js_snippet)."""
+    # Trim to last 18 months for all Redfin charts
+    CHART_MONTHS = 18
+    if len(dates) > CHART_MONTHS:
+        trim = len(dates) - CHART_MONTHS
+    else:
+        trim = 0
+
+    def t(lst):
+        """Trim a parallel list to last CHART_MONTHS entries."""
+        return lst[trim:] if lst else lst
+
+    dates_trim = t(dates)
+
+    def make_line_chart(cid, series_list, y_label, fmt_name, use_dates=None):
+        """Helper: return (chart_html, js_snippet). Defaults to trimmed date window."""
+        chart_dates = use_dates if use_dates is not None else dates_trim
         c = canvas(cid)
         ds_js = json.dumps(series_list)
         j = f"""
 new Chart(document.getElementById('{cid}'), {{
   type: 'line',
-  data: {{ labels: {json.dumps(dates)}, datasets: {ds_js} }},
-  options: baseOpts({json.dumps(dates)}, '{y_label}', {fmt_name})
+  data: {{ labels: {json.dumps(chart_dates)}, datasets: {ds_js} }},
+  options: baseOpts({json.dumps(chart_dates)}, '{y_label}', {fmt_name})
 }});"""
         return c, j
 
@@ -1094,17 +1236,18 @@ new Chart(document.getElementById('{cid}'), {{
         ma3 = moving_average(prices, 3)
         ma9 = moving_average(prices, 9)
         datasets = [
-            {"label": "Median Price (ME state)", "data": prices, "borderColor": "#c9883a",
+            {"label": "Median Price (ME state)", "data": t(prices), "borderColor": "#c9883a",
              "backgroundColor": "rgba(201,136,58,0.1)", "tension": 0.4, "fill": True,
              "pointRadius": 3, "borderWidth": 2},
-            {"label": "3-mo MA", "data": ma3, "borderColor": "#5aaa82",
+            {"label": "3-mo MA", "data": t(ma3), "borderColor": "#5aaa82",
              "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4},
-            {"label": "9-mo MA", "data": ma9, "borderColor": "#3d7a5a",
+            {"label": "9-mo MA", "data": t(ma9), "borderColor": "#3d7a5a",
              "borderDash": [2, 3], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4},
         ]
         c, j = make_line_chart("chartPrice", datasets, "Price ($)", "fmtDollar")
         price_chart_html = (
             f'<div class="chart-panel"><div class="chart-title">Maine Median Sale Price</div>'
+            f'{trend_tag(prices, "down")}'
             f'<div class="chart-subtitle">The thick line is the monthly sale price. The smoother lines show the trend — ignore the month-to-month noise and watch those instead.</div>{c}</div>'
         )
         price_chart_js = j
@@ -1118,32 +1261,33 @@ new Chart(document.getElementById('{cid}'), {{
     if dates and any(v for v in moss if v):
         mos_ma = moving_average(moss, 3)
         datasets = [
-            {"label": "Months of Supply", "data": moss, "borderColor": "#5aaa82",
+            {"label": "Months of Supply", "data": t(moss), "borderColor": "#5aaa82",
              "backgroundColor": "rgba(90,170,130,0.08)", "tension": 0.4, "fill": True,
              "pointRadius": 3, "borderWidth": 2},
-            {"label": "3-mo MA", "data": mos_ma, "borderColor": "#c9883a",
+            {"label": "3-mo MA", "data": t(mos_ma), "borderColor": "#c9883a",
              "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4},
         ]
         c, j = make_line_chart("chartMoS", datasets, "Months", "fmtMos")
         charts_html.append(
             f'<div class="chart-panel"><div class="chart-title">Months of Supply</div>'
+            f'{trend_tag(moss, "up")}'
             f'<div class="chart-subtitle">How long it would take to sell every home currently listed. Under 3 months = sellers win. Over 6 months = you win.</div>{c}</div>'
         )
         js.append(j)
     elif dates and any(v for v in invs if v):
         inv_ma = moving_average(invs, 3)
         datasets = [
-            {"label": "Active Listings", "data": invs, "backgroundColor": "rgba(61,122,90,0.45)",
+            {"label": "Active Listings", "data": t(invs), "backgroundColor": "rgba(61,122,90,0.45)",
              "borderColor": "#3d7a5a", "borderWidth": 1},
-            {"label": "3-mo MA", "data": inv_ma, "type": "line", "borderColor": "#c9883a",
+            {"label": "3-mo MA", "data": t(inv_ma), "type": "line", "borderColor": "#c9883a",
              "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4},
         ]
         inv_html = f'<div class="chart-container"><canvas id="chartInv"></canvas></div>'
         inv_js = f"""
 new Chart(document.getElementById('chartInv'), {{
   type: 'bar',
-  data: {{ labels: {json.dumps(dates)}, datasets: {json.dumps(datasets)} }},
-  options: baseOpts({json.dumps(dates)}, 'Listings', fmtNum)
+  data: {{ labels: {json.dumps(dates_trim)}, datasets: {json.dumps(datasets)} }},
+  options: baseOpts({json.dumps(dates_trim)}, 'Listings', fmtNum)
 }});"""
         charts_html.append(
             f'<div class="chart-panel"><div class="chart-title">Active Inventory</div>'
@@ -1164,15 +1308,16 @@ new Chart(document.getElementById('chartInv'), {{
     if dates and any(d for d in doms if d):
         dom_ma = moving_average(doms, 3)
         datasets = [
-            {"label": "Median DOM", "data": doms, "borderColor": "#5aaa82",
+            {"label": "Median DOM", "data": t(doms), "borderColor": "#5aaa82",
              "backgroundColor": "rgba(90,170,130,0.08)", "tension": 0.4, "fill": True,
              "pointRadius": 3, "borderWidth": 2},
-            {"label": "3-mo MA", "data": dom_ma, "borderColor": "#c9883a",
+            {"label": "3-mo MA", "data": t(dom_ma), "borderColor": "#c9883a",
              "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4},
         ]
         c, j = make_line_chart("chartDOM", datasets, "Days", "fmtDays")
         charts_html.append(
             f'<div class="chart-panel"><div class="chart-title">Days on Market</div>'
+            f'{trend_tag(doms, "up")}'
             f'<div class="chart-subtitle">When this drops, buyers are moving fast and you\'ll have less time to decide. When it rises, you have breathing room.</div>{c}</div>'
         )
         js.append(j)
@@ -1185,16 +1330,17 @@ new Chart(document.getElementById('chartInv'), {{
     if dates and any(v for v in s2ls if v):
         s2l_ma = moving_average(s2ls, 3)
         datasets = [
-            {"label": "Sale/List Ratio", "data": s2ls, "borderColor": "#5aaa82",
+            {"label": "Sale/List Ratio", "data": t(s2ls), "borderColor": "#5aaa82",
              "backgroundColor": "rgba(90,170,130,0.08)", "tension": 0.4, "fill": True,
              "pointRadius": 3, "borderWidth": 2},
-            {"label": "3-mo MA", "data": s2l_ma, "borderColor": "#c9883a",
+            {"label": "3-mo MA", "data": t(s2l_ma), "borderColor": "#c9883a",
              "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4},
         ]
-        c, j = make_line_chart("chartS2L", datasets, "Ratio", "fmtPct")
+        c, j = make_line_chart("chartS2L", datasets, "% of Asking Price", "fmtPct")
         charts_html.append(
             f'<div class="chart-panel"><div class="chart-title">Sale-to-List Ratio</div>'
-            f'<div class="chart-subtitle">Above 0% means buyers are paying over asking — expect competition. Below 0% means you have room to negotiate.</div>{c}</div>'
+            f'{trend_tag(s2ls, "down")}'
+            f'<div class="chart-subtitle">Above 100% = buyers paid over asking. Below 100% = sold at a discount. The stat card above shows this as a +/- delta from asking for easier reading.</div>{c}</div>'
         )
         js.append(j)
     else:
@@ -1204,8 +1350,12 @@ new Chart(document.getElementById('chartInv'), {{
     # ── Oxford County ZHVI section ──
     zhvi_section = ""
     if zillow_data.get("dates") and zillow_data.get("zhvi"):
-        zd = zillow_data["dates"]
-        zv = zillow_data["zhvi"]
+        zd_full = zillow_data["dates"]
+        zv_full = zillow_data["zhvi"]
+        # Trim ZHVI to 18 months
+        ztrim = max(0, len(zd_full) - CHART_MONTHS)
+        zd = zd_full[ztrim:]
+        zv = zv_full[ztrim:]
         zv_ma = moving_average(zv, 3)
         zhvi_datasets = [
             {"label": "Oxford County ZHVI", "data": zv, "borderColor": "#c9883a",
@@ -1226,7 +1376,7 @@ new Chart(document.getElementById('chartZHVI'), {{
 <div class="section-header">Oxford County ZHVI (Zillow Home Value Index)</div>
 <div class="chart-panel full">
   <div class="chart-title">Oxford County, ME — Median Home Value</div>
-  <div class="chart-subtitle">Smoothed, seasonally adjusted · Middle tier · {zillow_data.get('region_name','')} · {len(zd)} months</div>
+  <div class="chart-subtitle">Smoothed, seasonally adjusted · Middle tier · last 18 months</div>
   {canvas('chartZHVI')}
   {'<div class="source-note">Note: ' + note + '</div>' if note else ''}
   <div class="source-note">Source: Zillow Research ({zillow_data.get('source','')})</div>
@@ -1236,31 +1386,86 @@ new Chart(document.getElementById('chartZHVI'), {{
 <div class="section-header">Oxford County ZHVI</div>
 {unavailable(f"Zillow ZHVI data unavailable — {zillow_data.get('error','check source')}")}"""
 
-    # ── Forecast section ──
+    # ── Forecast section — integrated chart ──
     forecast_section = ""
     if forecast:
-        t = forecast["trend_monthly"]
-        trend_str = f"${abs(t):,}/month {'rising' if t > 0 else 'falling'}" if t else "flat"
-        d60 = forecast["day60"]
-        d90 = forecast["day90"]
+        ft = forecast["trend_monthly"]
+        trend_str = f"${abs(ft):,}/month {'rising' if ft > 0 else 'falling'}" if ft else "flat"
+        d90  = forecast["day90"]
+        d180 = forecast["day180"]
+        d270 = forecast["day270"]
+
+        # Build chart: last 18 months of ZHVI history + 4 projected points (now, +90d, +180d, +270d)
+        if zillow_data.get("dates") and zillow_data.get("zhvi"):
+            hist_dates = zd  # already trimmed to 18mo above
+            hist_vals = zv
+        else:
+            hist_dates = t(dates)
+            hist_vals = t(redfin_data.get("median_price", []))
+
+        last_hist_val = next((v for v in reversed(hist_vals) if v is not None), None)
+        proj_dates = [hist_dates[-1] if hist_dates else "", d90["date"], d180["date"], d270["date"]]
+        proj_vals  = [last_hist_val, d90["predicted"],  d180["predicted"],  d270["predicted"]]
+        proj_low   = [last_hist_val, d90["low"],        d180["low"],        d270["low"]]
+        proj_high  = [last_hist_val, d90["high"],       d180["high"],       d270["high"]]
+
+        n_hist = len(hist_vals)
+        all_labels  = list(hist_dates) + proj_dates[1:]
+        hist_padded = list(hist_vals) + [None, None, None]
+        proj_padded = [None] * (n_hist - 1) + proj_vals
+        low_padded  = [None] * (n_hist - 1) + proj_low
+        high_padded = [None] * (n_hist - 1) + proj_high
+
+        fc_datasets = [
+            {"label": "Historical", "data": hist_padded,
+             "borderColor": "#c9883a", "backgroundColor": "rgba(201,136,58,0.08)",
+             "tension": 0.3, "fill": True, "pointRadius": 2, "borderWidth": 2},
+            {"label": "Projected", "data": proj_padded,
+             "borderColor": "#5aaa82", "borderDash": [6, 4],
+             "backgroundColor": "rgba(90,170,130,0.0)",
+             "tension": 0.3, "fill": False, "pointRadius": 5, "borderWidth": 2,
+             "pointStyle": "circle", "pointBackgroundColor": "#5aaa82"},
+            {"label": "Confidence band (low)", "data": low_padded,
+             "borderColor": "rgba(90,170,130,0.2)", "borderDash": [2, 4],
+             "backgroundColor": "rgba(90,170,130,0.12)",
+             "tension": 0.3, "fill": "+1", "pointRadius": 0, "borderWidth": 1},
+            {"label": "Confidence band (high)", "data": high_padded,
+             "borderColor": "rgba(90,170,130,0.2)", "borderDash": [2, 4],
+             "backgroundColor": "rgba(90,170,130,0.12)",
+             "tension": 0.3, "fill": False, "pointRadius": 0, "borderWidth": 1},
+        ]
+
+        fc_js = f"""
+new Chart(document.getElementById('chartForecast'), {{
+  type: 'line',
+  data: {{ labels: {json.dumps(all_labels)}, datasets: {json.dumps(fc_datasets)} }},
+  options: baseOpts({json.dumps(all_labels)}, 'Home Value ($)', fmtDollar)
+}});"""
+        js.append(fc_js)
+
         forecast_section = f"""
-<div class="section-header">Price Forecast (Linear Regression on {forecast['source']})</div>
+<div class="section-header">Price Outlook — Where Is This Headed?</div>
 <div class="chart-panel full">
-  <div class="chart-title">60 &amp; 90-Day Outlook</div>
-  <div class="chart-subtitle">Where prices are likely headed based on the last 5 years of data. The shaded band is the range of likely outcomes — not a guarantee.</div>
-  <div class="forecast-grid">
+  <div class="chart-title">18-Month History + 90-Day Projection</div>
+  <div class="chart-subtitle">Solid line = actual history. Dashed green = projected trend. Shaded band = range of likely outcomes. Trend: {trend_str}. Not a financial prediction.</div>
+  <div class="chart-container" style="height:280px;"><canvas id="chartForecast"></canvas></div>
+  <div class="forecast-grid" style="margin-top:14px;grid-template-columns:1fr 1fr 1fr;">
     <div class="forecast-card">
-      <div class="forecast-horizon">60-Day Trend Estimate &nbsp; {d60['date']}</div>
-      <div class="forecast-price">{fmt_price(d60['predicted'])}</div>
-      <div class="forecast-range">where prices are likely heading if the market stays on its current path</div>
+      <div class="forecast-horizon">3-Month Estimate &nbsp; {d90['date']}</div>
+      <div class="forecast-price">{fmt_compact(d90['predicted'])}</div>
+      <div class="forecast-range">Range: {fmt_compact(d90['low'])} – {fmt_compact(d90['high'])}</div>
     </div>
     <div class="forecast-card">
-      <div class="forecast-horizon">90-Day Trend Estimate &nbsp; {d90['date']}</div>
-      <div class="forecast-price">{fmt_price(d90['predicted'])}</div>
-      <div class="forecast-range">where prices are likely heading if the market stays on its current path</div>
+      <div class="forecast-horizon">6-Month Estimate &nbsp; {d180['date']}</div>
+      <div class="forecast-price">{fmt_compact(d180['predicted'])}</div>
+      <div class="forecast-range">Range: {fmt_compact(d180['low'])} – {fmt_compact(d180['high'])}</div>
+    </div>
+    <div class="forecast-card">
+      <div class="forecast-horizon">9-Month Estimate &nbsp; {d270['date']}</div>
+      <div class="forecast-price">{fmt_compact(d270['predicted'])}</div>
+      <div class="forecast-range">Range: {fmt_compact(d270['low'])} – {fmt_compact(d270['high'])}</div>
     </div>
   </div>
-  <div class="source-note">Monthly trend: {trend_str}</div>
 </div>"""
 
     # ── Mortgage section ──

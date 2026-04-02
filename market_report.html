@@ -44,13 +44,13 @@ header { background: var(--navy); border-bottom: 2px solid var(--green-dim); pad
 
 /* Stat grid */
 .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; margin-bottom: 28px; }
-.stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px 20px; }
+.stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px 20px; display: flex; flex-direction: column; }
 .stat-label { font-family: 'JetBrains Mono', monospace; font-size: 0.70rem; text-transform: uppercase; letter-spacing: 0.10em; color: var(--text-muted); margin-bottom: 6px; }
 .stat-value { font-family: 'Playfair Display', serif; font-size: 1.75rem; font-weight: 600; color: var(--text); line-height: 1.1; }
 .stat-value.green { color: var(--green-light); }
 .stat-value.amber { color: var(--amber-light); }
 .stat-value.red { color: var(--red-light); }
-.stat-sub { font-size: 0.80rem; color: var(--text-muted); margin-top: 4px; }
+.stat-sub { font-family: 'Lora', serif; font-size: 0.78rem; color: var(--text-muted); margin-top: auto; padding-top: 10px; border-top: 1px solid var(--border); }
 
 /* Score bar */
 .score-bar-wrap { background: var(--surface2); border-radius: 4px; height: 8px; margin: 10px 0 6px; position: relative; }
@@ -62,8 +62,14 @@ header { background: var(--navy); border-bottom: 2px solid var(--green-dim); pad
 @media (max-width: 860px) { .chart-grid { grid-template-columns: 1fr; } }
 .chart-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px; }
 .chart-panel.full { grid-column: 1 / -1; }
-.chart-title { font-family: 'Playfair Display', serif; font-size: 1.0rem; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.chart-title { font-family: 'Playfair Display', serif; font-size: 1.0rem; font-weight: 600; color: var(--text); margin-bottom: 6px; }
 .chart-subtitle { font-size: 0.79rem; color: var(--text-muted); margin-bottom: 14px; font-style: italic; }
+.trend-tag { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; margin-bottom: 8px; }
+.trend-tag.up-good   { background: rgba(90,170,130,0.15); color: #5aaa82; border: 1px solid rgba(90,170,130,0.35); }
+.trend-tag.up-bad    { background: rgba(201,136,58,0.15);  color: #c9883a; border: 1px solid rgba(201,136,58,0.35); }
+.trend-tag.down-good { background: rgba(90,170,130,0.15); color: #5aaa82; border: 1px solid rgba(90,170,130,0.35); }
+.trend-tag.down-bad  { background: rgba(201,136,58,0.15);  color: #c9883a; border: 1px solid rgba(201,136,58,0.35); }
+.trend-tag.flat      { background: rgba(136,153,170,0.12); color: #8899aa; border: 1px solid rgba(136,153,170,0.25); }
 .chart-container { position: relative; height: 240px; }
 
 /* Unavailable state */
@@ -131,7 +137,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
         <div class="header-subtitle">Oxford County / Bethel area &nbsp;·&nbsp; 25-minute primary radius</div>
       </div>
       <div class="header-meta">
-        <div class="updated">Updated April 02, 2026 at 11:00 AM</div>
+        <div class="updated">Updated April 02, 2026 at 08:51 AM</div>
         <div>Search started January 1, 2026</div>
         <div>Data: Redfin · Zillow · FRED</div>
       </div>
@@ -151,45 +157,50 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
 <div class="container">
   <div class="pulse-card">
     <div class="pulse-label">&#9670; Market Pulse — Oxford County / Bethel, ME</div>
-    <div class="pulse-text">Oxford County median home value is $308,373, up 0.8% over the past 6 months. Current conditions favor buyers — Buyer's Advantage (composite score 44/100). Maine homes are spending 65 days on market on median (slow-moving inventory). Mortgage rate data unavailable — set FRED_API_KEY in your environment to enable.</div>
+    <div class="pulse-text">Supply is holding steady at 4.5 months — plenty of inventory right now. Oxford County home values are up 0.8% over 6 months ($308,373 today). Your $420K ceiling still has room. You have a slight edge as a buyer (44/100) — there's negotiating room but don't dawdle on good listings.</div>
   </div>
-  <div class="stat-grid"><div class="stat-card"><div class="stat-label">Oxford County ZHVI</div><div class="stat-value amber">$308,373</div><div class="stat-sub">Zillow Home Value Index</div></div><div class="stat-card"><div class="stat-label">Maine Median Sale Price</div><div class="stat-value ">$372,300</div><div class="stat-sub">Redfin S3 (state level)</div></div><div class="stat-card"><div class="stat-label">Days on Market</div><div class="stat-value amber">65 days</div><div class="stat-sub">Maine median — Redfin</div></div><div class="stat-card"><div class="stat-label">Sale-to-List Ratio</div><div class="stat-value ">0.967</div><div class="stat-sub">below asking</div></div><div class="stat-card"><div class="stat-label">Active Inventory</div><div class="stat-value ">4122</div><div class="stat-sub">homes listed — Maine</div></div><div class="stat-card"><div class="stat-label">Market Condition</div><div class="stat-value" style="font-size:1.1rem;color:var(--amber-light);">Buyer's Advantage</div><div style="position:relative;margin-top:10px;"><div class="score-bar-wrap"><div class="score-bar"></div><div class="score-marker" style="left:44%;"></div></div></div><div class="stat-sub">Composite 44/100</div></div><div class="stat-card"><div class="stat-label">30-yr Mortgage Rate</div><div class="stat-value ">N/A</div><div class="stat-sub">~$N/A/mo on $350K (20% down)</div></div></div>
+  <div class="stat-grid"><div class="stat-card"><div class="stat-label">Typical Home Value — Oxford County</div><div class="stat-value amber">$308.4K<span style="font-size:1.0rem;color:#c9883a;margin-left:8px;font-family:'JetBrains Mono',monospace;">↑0.5%</span></div><div style="font-size:0.82rem;font-weight:600;color:#5aaa82;margin-top:6px;letter-spacing:0.02em;">Comfortable — budget has headroom</div><div class="stat-sub">Use this as your price anchor. Listings well above this need justification.</div></div><div class="stat-card"><div class="stat-label">What Homes Are Actually Selling For</div><div class="stat-value ">$372.3K<span style="font-size:1.0rem;color:#5aaa82;margin-left:8px;font-family:'JetBrains Mono',monospace;">↓2.8%</span></div><div style="font-size:0.82rem;font-weight:600;color:#c9883a;margin-top:6px;letter-spacing:0.02em;">Getting close to your ceiling</div><div class="stat-sub">Real closing prices — not asking prices. When this moves, the market moved.</div></div><div class="stat-card"><div class="stat-label">Days on Market</div><div class="stat-value amber">65d<span style="font-size:1.0rem;color:#5aaa82;margin-left:8px;font-family:'JetBrains Mono',monospace;">↑8.3%</span></div><div style="font-size:0.82rem;font-weight:600;color:#5aaa82;margin-top:6px;letter-spacing:0.02em;">Very slow — take your time and negotiate</div><div class="stat-sub">How long homes sit before going under contract. Under 20d = competing offers. Over 60d = you have time.</div></div><div class="stat-card"><div class="stat-label">Are Buyers Paying Over or Under Asking?</div><div class="stat-value green">-3.3%</div><div style="font-size:0.82rem;font-weight:600;color:#5aaa82;margin-top:6px;letter-spacing:0.02em;">Buyers getting solid discounts</div><div class="stat-sub">Shown as % above or below asking price. Negative = buyers got a discount. Positive = buyers paid over asking.</div></div><div class="stat-card"><div class="stat-label">Active Inventory</div><div class="stat-value ">4.1K<span style="font-size:1.0rem;color:#c9883a;margin-left:8px;font-family:'JetBrains Mono',monospace;">↓6.9%</span></div><div style="font-size:0.82rem;font-weight:600;color:#c9883a;margin-top:6px;letter-spacing:0.02em;">Inventory shrinking — market tightening</div><div class="stat-sub">Homes for sale right now. More = more choices, less pressure. Watch for a sudden drop.</div></div><div class="stat-card"><div class="stat-label">Who Has the Upper Hand Right Now?</div><div class="stat-value" style="font-size:1.1rem;color:var(--amber-light);">Buyer's Advantage</div><div style="font-size:0.82rem;font-weight:600;color:#5aaa82;margin-top:6px;">You have the edge — don't be afraid to negotiate</div><div style="position:relative;margin-top:10px;"><div class="score-bar-wrap"><div class="score-bar"></div><div class="score-marker" style="left:44%;"></div></div></div><div class="stat-sub" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);">44/100 — below 50 favors you. Above 50 means sellers are in control.</div></div><div class="stat-card"><div class="stat-label">What Borrowing Costs Right Now</div><div class="stat-value ">N/A</div><div class="stat-sub">~$N/A/mo on $350K (20% down) — every 1% up adds ~$175/mo</div></div></div>
   <div class="legend">
     <span class="legend-item"><span class="legend-solid"></span>Search start Jan 1, 2026</span>
     <span class="legend-item"><span class="legend-dashed"></span>Moving average</span>
     <span class="legend-item"><span class="legend-shaded"></span>Spring/Fall seasonal bands</span>
   </div>
-  <div class="chart-grid"><div class="chart-panel"><div class="chart-title">Maine Median Sale Price</div><div class="chart-subtitle">Monthly (Redfin state-level) — with 3-mo and 9-mo moving averages</div><div class="chart-container"><canvas id="chartPrice"></canvas></div></div>
-<div class="chart-panel"><div class="chart-title">Days on Market</div><div class="chart-subtitle">Monthly median — lower = faster-moving inventory</div><div class="chart-container"><canvas id="chartDOM"></canvas></div></div>
-<div class="chart-panel"><div class="chart-title">Sale-to-List Ratio</div><div class="chart-subtitle">Above 1.0 = buyers paying over asking price</div><div class="chart-container"><canvas id="chartS2L"></canvas></div></div>
-<div class="chart-panel"><div class="chart-title">Months of Supply</div><div class="chart-subtitle">&lt;3 months = strong seller market · &gt;6 = buyer market</div><div class="chart-container"><canvas id="chartMoS"></canvas></div></div></div>
+  <div class="chart-grid"><div class="chart-panel"><div class="chart-title">Months of Supply</div><span class="trend-tag up-good">↑ rising fast</span><div class="chart-subtitle">How long it would take to sell every home currently listed. Under 3 months = sellers win. Over 6 months = you win.</div><div class="chart-container"><canvas id="chartMoS"></canvas></div></div>
+<div class="chart-panel"><div class="chart-title">Maine Median Sale Price</div><span class="trend-tag down-good">↓ trending down</span><div class="chart-subtitle">The thick line is the monthly sale price. The smoother lines show the trend — ignore the month-to-month noise and watch those instead.</div><div class="chart-container"><canvas id="chartPrice"></canvas></div></div>
+<div class="chart-panel"><div class="chart-title">Days on Market</div><span class="trend-tag up-good">↑ rising fast</span><div class="chart-subtitle">When this drops, buyers are moving fast and you'll have less time to decide. When it rises, you have breathing room.</div><div class="chart-container"><canvas id="chartDOM"></canvas></div></div>
+<div class="chart-panel"><div class="chart-title">Sale-to-List Ratio</div><span class="trend-tag flat">↓ holding steady</span><div class="chart-subtitle">Above 100% = buyers paid over asking. Below 100% = sold at a discount. The stat card above shows this as a +/- delta from asking for easier reading.</div><div class="chart-container"><canvas id="chartS2L"></canvas></div></div></div>
   
 <div class="section-header">Oxford County ZHVI (Zillow Home Value Index)</div>
 <div class="chart-panel full">
   <div class="chart-title">Oxford County, ME — Median Home Value</div>
-  <div class="chart-subtitle">Smoothed, seasonally adjusted · Middle tier · Oxford County · 59 months</div>
+  <div class="chart-subtitle">Smoothed, seasonally adjusted · Middle tier · last 18 months</div>
   <div class="chart-container"><canvas id="chartZHVI"></canvas></div>
   
   <div class="source-note">Source: Zillow Research (zillow_zhvi_oxford_county)</div>
 </div>
   
-<div class="section-header">Price Forecast (Linear Regression on Oxford County ZHVI)</div>
+<div class="section-header">Price Outlook — Where Is This Headed?</div>
 <div class="chart-panel full">
-  <div class="chart-title">60 &amp; 90-Day Outlook</div>
-  <div class="chart-subtitle">OLS linear trend · 95% confidence interval · 59 months of data · Not a financial prediction</div>
-  <div class="forecast-grid">
+  <div class="chart-title">18-Month History + 90-Day Projection</div>
+  <div class="chart-subtitle">Solid line = actual history. Dashed green = projected trend. Shaded band = range of likely outcomes. Trend: $1,309/month rising. Not a financial prediction.</div>
+  <div class="chart-container" style="height:280px;"><canvas id="chartForecast"></canvas></div>
+  <div class="forecast-grid" style="margin-top:14px;grid-template-columns:1fr 1fr 1fr;">
     <div class="forecast-card">
-      <div class="forecast-horizon">60-day outlook &nbsp; April 29, 2026</div>
-      <div class="forecast-price">$325,355</div>
-      <div class="forecast-range">Range: $307,132 – $343,578</div>
+      <div class="forecast-horizon">3-Month Estimate &nbsp; May 29, 2026</div>
+      <div class="forecast-price">$326.7K</div>
+      <div class="forecast-range">Range: $308.4K – $344.9K</div>
     </div>
     <div class="forecast-card">
-      <div class="forecast-horizon">90-day outlook &nbsp; May 29, 2026</div>
-      <div class="forecast-price">$326,664</div>
-      <div class="forecast-range">Range: $308,441 – $344,887</div>
+      <div class="forecast-horizon">6-Month Estimate &nbsp; August 27, 2026</div>
+      <div class="forecast-price">$330.6K</div>
+      <div class="forecast-range">Range: $312.4K – $348.8K</div>
+    </div>
+    <div class="forecast-card">
+      <div class="forecast-horizon">9-Month Estimate &nbsp; November 25, 2026</div>
+      <div class="forecast-price">$334.5K</div>
+      <div class="forecast-range">Range: $316.3K – $352.7K</div>
     </div>
   </div>
-  <div class="source-note">Monthly trend: $1,309/month rising</div>
 </div>
   
   
@@ -218,12 +229,12 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
   <div class="city-drive">&#128663; This is home base</div>
   <div class="city-metrics">
     <div>
-      <div class="city-metric-label">County Median Value</div>
-      <div class="city-metric-value">$308,373</div>
+      <div class="city-metric-label">Typical Home Price</div>
+      <div class="city-metric-value">$308.4K</div>
     </div>
     <div>
-      <div class="city-metric-label">6-Month Trend</div>
-      <div class="city-metric-value">+0.8% (6mo)</div>
+      <div class="city-metric-label">Price Direction</div>
+      <div class="city-metric-value">+0.8% over 6 months</div>
     </div>
   </div>
   <div class="source-note">County: Oxford County</div>
@@ -231,7 +242,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
   <span class="broadband-badge bb-mixed">Broadband: mixed</span>
   <div class="source-note" style="margin-top:3px;">Bethel village has decent fiber; rural surrounds are spotty. Verify at the address level.</div>
   <div class="fit-bar-wrap">
-    <div class="fit-bar-label"><span>Profile fit</span><span>10/10</span></div>
+    <div class="fit-bar-label"><span>Fits Our Search</span><span>10/10</span></div>
     <div class="fit-bar-track"><div class="fit-bar-fill" style="width:100%"></div></div>
   </div>
   <div class="city-notes">The goal. Oxford County. Wooded, private, four seasons, Sunday River access, small-town character, growing creative community.</div>
@@ -243,12 +254,12 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
   <div class="city-drive">&#128663; ~1.5 hrs via Rt 4 / Rt 17</div>
   <div class="city-metrics">
     <div>
-      <div class="city-metric-label">County Median Value</div>
-      <div class="city-metric-value">$273,693</div>
+      <div class="city-metric-label">Typical Home Price</div>
+      <div class="city-metric-value">$273.7K</div>
     </div>
     <div>
-      <div class="city-metric-label">6-Month Trend</div>
-      <div class="city-metric-value">+0.0% (6mo)</div>
+      <div class="city-metric-label">Price Direction</div>
+      <div class="city-metric-value">+0.0% over 6 months</div>
     </div>
   </div>
   <div class="source-note">County: Franklin County</div>
@@ -256,7 +267,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
   <span class="broadband-badge bb-limited">Broadband: limited</span>
   <div class="source-note" style="margin-top:3px;">Rural; fiber expanding slowly via ReachME. Verify at FCC broadband map.</div>
   <div class="fit-bar-wrap">
-    <div class="fit-bar-label"><span>Profile fit</span><span>8/10</span></div>
+    <div class="fit-bar-label"><span>Fits Our Search</span><span>8/10</span></div>
     <div class="fit-bar-track"><div class="fit-bar-fill" style="width:80%"></div></div>
   </div>
   <div class="city-notes">Lakes, mountains, outdoor culture. Thin inventory, minimal tourist infrastructure, not ski-resort inflated. Strong sense of place. Very aligned with the profile.</div>
@@ -268,12 +279,12 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
   <div class="city-drive">&#128663; ~1.25 hrs via Rt 2</div>
   <div class="city-metrics">
     <div>
-      <div class="city-metric-label">County Median Value</div>
-      <div class="city-metric-value">$273,693</div>
+      <div class="city-metric-label">Typical Home Price</div>
+      <div class="city-metric-value">$273.7K</div>
     </div>
     <div>
-      <div class="city-metric-label">6-Month Trend</div>
-      <div class="city-metric-value">+0.0% (6mo)</div>
+      <div class="city-metric-label">Price Direction</div>
+      <div class="city-metric-value">+0.0% over 6 months</div>
     </div>
   </div>
   <div class="source-note">County: Franklin County</div>
@@ -281,7 +292,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
   <span class="broadband-badge bb-mixed">Broadband: mixed</span>
   <div class="source-note" style="margin-top:3px;">Farmington village has fiber; rural surrounds are mixed. Better than Rangeley.</div>
   <div class="fit-bar-wrap">
-    <div class="fit-bar-label"><span>Profile fit</span><span>7/10</span></div>
+    <div class="fit-bar-label"><span>Fits Our Search</span><span>7/10</span></div>
     <div class="fit-bar-track"><div class="fit-bar-fill" style="width:70%"></div></div>
   </div>
   <div class="city-notes">UMaine Farmington gives it an arts/literary slant. Good services, real bookstores, coffee culture. Affordable. Less dramatic landscape than Rangeley but very livable.</div>
@@ -293,12 +304,12 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
   <div class="city-drive">&#128663; ~30 min via Rt 2</div>
   <div class="city-metrics">
     <div>
-      <div class="city-metric-label">County Median Value</div>
-      <div class="city-metric-value">$308,373</div>
+      <div class="city-metric-label">Typical Home Price</div>
+      <div class="city-metric-value">$308.4K</div>
     </div>
     <div>
-      <div class="city-metric-label">6-Month Trend</div>
-      <div class="city-metric-value">+0.8% (6mo)</div>
+      <div class="city-metric-label">Price Direction</div>
+      <div class="city-metric-value">+0.8% over 6 months</div>
     </div>
   </div>
   <div class="source-note">County: Oxford County</div>
@@ -306,7 +317,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
   <span class="broadband-badge bb-mixed">Broadband: mixed</span>
   <div class="source-note" style="margin-top:3px;">Some fiber via RVRS Connect; coverage spotty outside town center.</div>
   <div class="fit-bar-wrap">
-    <div class="fit-bar-label"><span>Profile fit</span><span>5/10</span></div>
+    <div class="fit-bar-label"><span>Fits Our Search</span><span>5/10</span></div>
     <div class="fit-bar-track"><div class="fit-bar-fill" style="width:50%"></div></div>
   </div>
   <div class="city-notes">Mill town with real affordability. Same Oxford County data as Bethel. Functional but lacks the small creative scene. Good proximity to Bethel for day trips.</div>
@@ -318,12 +329,12 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
   <div class="city-drive">&#128663; ~1 hr via Rt 302</div>
   <div class="city-metrics">
     <div>
-      <div class="city-metric-label">County Median Value</div>
-      <div class="city-metric-value">$482,852</div>
+      <div class="city-metric-label">Typical Home Price</div>
+      <div class="city-metric-value">$482.9K</div>
     </div>
     <div>
-      <div class="city-metric-label">6-Month Trend</div>
-      <div class="city-metric-value">+1.7% (6mo)</div>
+      <div class="city-metric-label">Price Direction</div>
+      <div class="city-metric-value">+1.7% over 6 months</div>
     </div>
   </div>
   <div class="source-note">County: Carroll County</div>
@@ -331,7 +342,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
   <span class="broadband-badge bb-good">Broadband: good</span>
   <div class="source-note" style="margin-top:3px;">Metro Fiber and Consolidated offer good coverage in most of the valley.</div>
   <div class="fit-bar-wrap">
-    <div class="fit-bar-label"><span>Profile fit</span><span>5/10</span></div>
+    <div class="fit-bar-label"><span>Fits Our Search</span><span>5/10</span></div>
     <div class="fit-bar-track"><div class="fit-bar-fill" style="width:50%"></div></div>
   </div>
   <div class="city-notes">Mt Washington Valley has the outdoor culture but outlet malls and ski-resort pricing dilute the quiet/private feel. Some artsy spots but tourist density is high.</div>
@@ -343,12 +354,12 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
   <div class="city-drive">&#128663; ~1.5 hrs via I-93 / Rt 302</div>
   <div class="city-metrics">
     <div>
-      <div class="city-metric-label">County Median Value</div>
-      <div class="city-metric-value">$413,783</div>
+      <div class="city-metric-label">Typical Home Price</div>
+      <div class="city-metric-value">$413.8K</div>
     </div>
     <div>
-      <div class="city-metric-label">6-Month Trend</div>
-      <div class="city-metric-value">+2.5% (6mo)</div>
+      <div class="city-metric-label">Price Direction</div>
+      <div class="city-metric-value">+2.5% over 6 months</div>
     </div>
   </div>
   <div class="source-note">County: Grafton County</div>
@@ -356,7 +367,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
   <span class="broadband-badge bb-mixed">Broadband: mixed</span>
   <div class="source-note" style="margin-top:3px;">Littleton has better coverage; rural Franconia/Easton are spotty.</div>
   <div class="fit-bar-wrap">
-    <div class="fit-bar-label"><span>Profile fit</span><span>8/10</span></div>
+    <div class="fit-bar-label"><span>Fits Our Search</span><span>8/10</span></div>
     <div class="fit-bar-track"><div class="fit-bar-fill" style="width:80%"></div></div>
   </div>
   <div class="city-notes">Littleton punches above its weight for a small NH town: Art Deco theater, good coffee, local bookshop, indie music scene. Grafton County prices are lower than the ski corridor. Very livable.</div>
@@ -368,12 +379,12 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
   <div class="city-drive">&#128663; ~2.5 hrs via I-91 / I-89</div>
   <div class="city-metrics">
     <div>
-      <div class="city-metric-label">County Median Value</div>
-      <div class="city-metric-value">$378,530</div>
+      <div class="city-metric-label">Typical Home Price</div>
+      <div class="city-metric-value">$378.5K</div>
     </div>
     <div>
-      <div class="city-metric-label">6-Month Trend</div>
-      <div class="city-metric-value">+0.4% (6mo)</div>
+      <div class="city-metric-label">Price Direction</div>
+      <div class="city-metric-value">+0.4% over 6 months</div>
     </div>
   </div>
   <div class="source-note">County: Washington County</div>
@@ -381,7 +392,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
   <span class="broadband-badge bb-good">Broadband: good</span>
   <div class="source-note" style="margin-top:3px;">ECFiber expanding across central VT. Good coverage in Montpelier.</div>
   <div class="fit-bar-wrap">
-    <div class="fit-bar-label"><span>Profile fit</span><span>8/10</span></div>
+    <div class="fit-bar-label"><span>Fits Our Search</span><span>8/10</span></div>
     <div class="fit-bar-track"><div class="fit-bar-fill" style="width:80%"></div></div>
   </div>
   <div class="city-notes">Montpelier is the quintessential creative small capital: bookstores, good coffee, indie cinema, strong arts scene. Barre is scrappier and cheaper. Washington County prices are still manageable. Serious winters. Furthest from Bethel.</div>
@@ -393,12 +404,12 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
   <div class="city-drive">&#128663; ~3 hrs via I-91</div>
   <div class="city-metrics">
     <div>
-      <div class="city-metric-label">County Median Value</div>
-      <div class="city-metric-value">$357,078</div>
+      <div class="city-metric-label">Typical Home Price</div>
+      <div class="city-metric-value">$357.1K</div>
     </div>
     <div>
-      <div class="city-metric-label">6-Month Trend</div>
-      <div class="city-metric-value">-0.3% (6mo)</div>
+      <div class="city-metric-label">Price Direction</div>
+      <div class="city-metric-value">-0.3% over 6 months</div>
     </div>
   </div>
   <div class="source-note">County: Windham County</div>
@@ -406,7 +417,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
   <span class="broadband-badge bb-mixed">Broadband: mixed</span>
   <div class="source-note" style="margin-top:3px;">ECFiber has some coverage; rural areas still limited.</div>
   <div class="fit-bar-wrap">
-    <div class="fit-bar-label"><span>Profile fit</span><span>9/10</span></div>
+    <div class="fit-bar-label"><span>Fits Our Search</span><span>9/10</span></div>
     <div class="fit-bar-track"><div class="fit-bar-fill" style="width:90%"></div></div>
   </div>
   <div class="city-notes">One of the most culturally rich small towns in New England: Brattleboro Museum & Art Center, independent bookstores, record shops, a working arts community that isn't just for weekenders. Windham County prices are reasonable. Milder winters than Bethel.</div>
@@ -418,12 +429,12 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
   <div class="city-drive">&#128663; ~3 hrs via I-91</div>
   <div class="city-metrics">
     <div>
-      <div class="city-metric-label">County Median Value</div>
-      <div class="city-metric-value">$355,341</div>
+      <div class="city-metric-label">Typical Home Price</div>
+      <div class="city-metric-value">$355.3K</div>
     </div>
     <div>
-      <div class="city-metric-label">6-Month Trend</div>
-      <div class="city-metric-value">+0.4% (6mo)</div>
+      <div class="city-metric-label">Price Direction</div>
+      <div class="city-metric-value">+0.4% over 6 months</div>
     </div>
   </div>
   <div class="source-note">County: Franklin County</div>
@@ -431,7 +442,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
   <span class="broadband-badge bb-mixed">Broadband: mixed</span>
   <div class="source-note" style="margin-top:3px;">Rural MA; WiredWest fiber cooperative coverage is expanding but incomplete.</div>
   <div class="fit-bar-wrap">
-    <div class="fit-bar-label"><span>Profile fit</span><span>7/10</span></div>
+    <div class="fit-bar-label"><span>Fits Our Search</span><span>7/10</span></div>
     <div class="fit-bar-track"><div class="fit-bar-fill" style="width:70%"></div></div>
   </div>
   <div class="city-notes">Shelburne Falls is beloved in the artsy-New England-small-town world: Bridge of Flowers, potters, working artists, strong community character. The wider Franklin County is affordable. Closest to the 'record store town' archetype in this list.</div>
@@ -443,7 +454,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
 
 <footer>
   <div>Oxford County / Bethel Area Market Tracker &nbsp;·&nbsp; Redfin S3 · Zillow Research · FRED</div>
-  <div style="margin-top:4px;">Generated April 02, 2026 at 11:00 AM &nbsp;·&nbsp; Not financial advice — verify all data before acting</div>
+  <div style="margin-top:4px;">Generated April 02, 2026 at 08:51 AM &nbsp;·&nbsp; Not financial advice — verify all data before acting</div>
 </footer>
 
 <script>
@@ -504,49 +515,61 @@ function baseOpts(labels, yLabel, fmtFn, extraOpts = {}) {
       annotation: { annotations: { ...searchStartAnnotation(labels), ...seasonBands(labels) } }
     },
     scales: {
-      x: { ticks:{ maxTicksLimit:12, maxRotation:45, color:'#556677' }, grid:{ color:'#1c2330' } },
+      x: { ticks:{ maxTicksLimit:12, maxRotation:45, color:'#556677', callback: function(val, idx) { return fmtDateLabel(labels[idx]); } }, grid:{ color:'#1c2330' } },
       y: { title:{ display:true, text:yLabel, color:'#556677', font:{size:10} },
            ticks:{ callback: fmtFn, color:'#556677' }, grid:{ color:'#1c2330' } }
     }
   }, extraOpts);
 }
 
-const fmtDollar = v => v == null ? '' : '$' + Math.round(v).toLocaleString();
+const fmtDollar = v => v == null ? '' : '$' + (Math.abs(v) >= 1000 ? (v/1000).toFixed(0) + 'K' : Math.round(v).toLocaleString());
 const fmtDays   = v => v == null ? '' : Math.round(v) + 'd';
 const fmtPct    = v => v == null ? '' : (v < 10 ? (v*100).toFixed(1) : v.toFixed(1)) + '%';
-const fmtNum    = v => v == null ? '' : Math.round(v).toLocaleString();
+const fmtNum    = v => v == null ? '' : (Math.abs(v) >= 1000 ? (v/1000).toFixed(1) + 'K' : Math.round(v).toLocaleString());
 const fmtRate   = v => v == null ? '' : v.toFixed(2) + '%';
 const fmtMos    = v => v == null ? '' : v.toFixed(1) + ' mo';
+const MONTHS    = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function fmtDateLabel(d) {
+  if (!d) return '';
+  const parts = d.slice(0,7).split('-');
+  return MONTHS[parseInt(parts[1])-1] + " '" + parts[0].slice(2);
+}
 
+
+new Chart(document.getElementById('chartMoS'), {
+  type: 'line',
+  data: { labels: ["2024-09-01", "2024-10-01", "2024-11-01", "2024-12-01", "2025-01-01", "2025-02-01", "2025-03-01", "2025-04-01", "2025-05-01", "2025-06-01", "2025-07-01", "2025-08-01", "2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01"], datasets: [{"label": "Months of Supply", "data": [2.7, 2.6, 2.7, 2.4, 3.0, 3.4, 3.1, 3.2, 3.0, 3.1, 3.1, 3.0, 3.2, 2.9, 3.8, 2.8, 4.6, 4.5], "borderColor": "#5aaa82", "backgroundColor": "rgba(90,170,130,0.08)", "tension": 0.4, "fill": true, "pointRadius": 3, "borderWidth": 2}, {"label": "3-mo MA", "data": [2.63, 2.63, 2.67, 2.57, 2.7, 2.93, 3.17, 3.23, 3.1, 3.1, 3.07, 3.07, 3.1, 3.03, 3.3, 3.17, 3.73, 3.97], "borderColor": "#c9883a", "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4}] },
+  options: baseOpts(["2024-09-01", "2024-10-01", "2024-11-01", "2024-12-01", "2025-01-01", "2025-02-01", "2025-03-01", "2025-04-01", "2025-05-01", "2025-06-01", "2025-07-01", "2025-08-01", "2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01"], 'Months', fmtMos)
+});
 
 new Chart(document.getElementById('chartPrice'), {
   type: 'line',
-  data: { labels: ["2021-05-01", "2021-06-01", "2021-07-01", "2021-08-01", "2021-09-01", "2021-10-01", "2021-11-01", "2021-12-01", "2022-01-01", "2022-02-01", "2022-03-01", "2022-04-01", "2022-05-01", "2022-06-01", "2022-07-01", "2022-08-01", "2022-09-01", "2022-10-01", "2022-11-01", "2022-12-01", "2023-01-01", "2023-02-01", "2023-03-01", "2023-04-01", "2023-05-01", "2023-06-01", "2023-07-01", "2023-08-01", "2023-09-01", "2023-10-01", "2023-11-01", "2023-12-01", "2024-01-01", "2024-02-01", "2024-03-01", "2024-04-01", "2024-05-01", "2024-06-01", "2024-07-01", "2024-08-01", "2024-09-01", "2024-10-01", "2024-11-01", "2024-12-01", "2025-01-01", "2025-02-01", "2025-03-01", "2025-04-01", "2025-05-01", "2025-06-01", "2025-07-01", "2025-08-01", "2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01"], datasets: [{"label": "Median Price (ME state)", "data": [303800.0, 310200.0, 305100.0, 304700.0, 308900.0, 311200.0, 297000.0, 296300.0, 298700.0, 295600.0, 318100.0, 335000.0, 343500.0, 363700.0, 339900.0, 341000.0, 334100.0, 333100.0, 313300.0, 318900.0, 317400.0, 324600.0, 327600.0, 368100.0, 360200.0, 373300.0, 371000.0, 368900.0, 372400.0, 380600.0, 358000.0, 349200.0, 359300.0, 343900.0, 378000.0, 370800.0, 393100.0, 407000.0, 404700.0, 396400.0, 396800.0, 390900.0, 377200.0, 391400.0, 391600.0, 367400.0, 363900.0, 402400.0, 402900.0, 416500.0, 416700.0, 418300.0, 396000.0, 426800.0, 397100.0, 387500.0, 382900.0, 372300.0], "borderColor": "#c9883a", "backgroundColor": "rgba(201,136,58,0.1)", "tension": 0.4, "fill": true, "pointRadius": 3, "borderWidth": 2}, {"label": "3-mo MA", "data": [303800.0, 307000.0, 306366.67, 306666.67, 306233.33, 308266.67, 305700.0, 301500.0, 297333.33, 296866.67, 304133.33, 316233.33, 332200.0, 347400.0, 349033.33, 348200.0, 338333.33, 336066.67, 326833.33, 321766.67, 316533.33, 320300.0, 323200.0, 340100.0, 351966.67, 367200.0, 368166.67, 371066.67, 370766.67, 373966.67, 370333.33, 362600.0, 355500.0, 350800.0, 360400.0, 364233.33, 380633.33, 390300.0, 401600.0, 402700.0, 399300.0, 394700.0, 388300.0, 386500.0, 386733.33, 383466.67, 374300.0, 377900.0, 389733.33, 407266.67, 412033.33, 417166.67, 410333.33, 413700.0, 406633.33, 403800.0, 389166.67, 380900.0], "borderColor": "#5aaa82", "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4}, {"label": "9-mo MA", "data": [303800.0, 307000.0, 306366.67, 305950.0, 306540.0, 307316.67, 305842.86, 304650.0, 303988.89, 303077.78, 303955.56, 307277.78, 311588.89, 317677.78, 320866.67, 325755.56, 329955.56, 333777.78, 335744.44, 335833.33, 333877.78, 331777.78, 327766.67, 330900.0, 333033.33, 337388.89, 341600.0, 347777.78, 353722.22, 360744.44, 364455.56, 366855.56, 365877.78, 364066.67, 364588.89, 364566.67, 367255.56, 371100.0, 373777.78, 378044.44, 383333.33, 386844.44, 390544.44, 392033.33, 394344.44, 391488.89, 386700.0, 386444.44, 387166.67, 389355.56, 392222.22, 396788.89, 397300.0, 401211.11, 404511.11, 407133.33, 404966.67, 401566.67], "borderColor": "#3d7a5a", "borderDash": [2, 3], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4}] },
-  options: baseOpts(["2021-05-01", "2021-06-01", "2021-07-01", "2021-08-01", "2021-09-01", "2021-10-01", "2021-11-01", "2021-12-01", "2022-01-01", "2022-02-01", "2022-03-01", "2022-04-01", "2022-05-01", "2022-06-01", "2022-07-01", "2022-08-01", "2022-09-01", "2022-10-01", "2022-11-01", "2022-12-01", "2023-01-01", "2023-02-01", "2023-03-01", "2023-04-01", "2023-05-01", "2023-06-01", "2023-07-01", "2023-08-01", "2023-09-01", "2023-10-01", "2023-11-01", "2023-12-01", "2024-01-01", "2024-02-01", "2024-03-01", "2024-04-01", "2024-05-01", "2024-06-01", "2024-07-01", "2024-08-01", "2024-09-01", "2024-10-01", "2024-11-01", "2024-12-01", "2025-01-01", "2025-02-01", "2025-03-01", "2025-04-01", "2025-05-01", "2025-06-01", "2025-07-01", "2025-08-01", "2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01"], 'Price ($)', fmtDollar)
+  data: { labels: ["2024-09-01", "2024-10-01", "2024-11-01", "2024-12-01", "2025-01-01", "2025-02-01", "2025-03-01", "2025-04-01", "2025-05-01", "2025-06-01", "2025-07-01", "2025-08-01", "2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01"], datasets: [{"label": "Median Price (ME state)", "data": [396800.0, 390900.0, 377200.0, 391400.0, 391600.0, 367400.0, 363900.0, 402400.0, 402900.0, 416500.0, 416700.0, 418300.0, 396000.0, 426800.0, 397100.0, 387500.0, 382900.0, 372300.0], "borderColor": "#c9883a", "backgroundColor": "rgba(201,136,58,0.1)", "tension": 0.4, "fill": true, "pointRadius": 3, "borderWidth": 2}, {"label": "3-mo MA", "data": [399300.0, 394700.0, 388300.0, 386500.0, 386733.33, 383466.67, 374300.0, 377900.0, 389733.33, 407266.67, 412033.33, 417166.67, 410333.33, 413700.0, 406633.33, 403800.0, 389166.67, 380900.0], "borderColor": "#5aaa82", "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4}, {"label": "9-mo MA", "data": [383333.33, 386844.44, 390544.44, 392033.33, 394344.44, 391488.89, 386700.0, 386444.44, 387166.67, 389355.56, 392222.22, 396788.89, 397300.0, 401211.11, 404511.11, 407133.33, 404966.67, 401566.67], "borderColor": "#3d7a5a", "borderDash": [2, 3], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4}] },
+  options: baseOpts(["2024-09-01", "2024-10-01", "2024-11-01", "2024-12-01", "2025-01-01", "2025-02-01", "2025-03-01", "2025-04-01", "2025-05-01", "2025-06-01", "2025-07-01", "2025-08-01", "2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01"], 'Price ($)', fmtDollar)
 });
 
 new Chart(document.getElementById('chartDOM'), {
   type: 'line',
-  data: { labels: ["2021-05-01", "2021-06-01", "2021-07-01", "2021-08-01", "2021-09-01", "2021-10-01", "2021-11-01", "2021-12-01", "2022-01-01", "2022-02-01", "2022-03-01", "2022-04-01", "2022-05-01", "2022-06-01", "2022-07-01", "2022-08-01", "2022-09-01", "2022-10-01", "2022-11-01", "2022-12-01", "2023-01-01", "2023-02-01", "2023-03-01", "2023-04-01", "2023-05-01", "2023-06-01", "2023-07-01", "2023-08-01", "2023-09-01", "2023-10-01", "2023-11-01", "2023-12-01", "2024-01-01", "2024-02-01", "2024-03-01", "2024-04-01", "2024-05-01", "2024-06-01", "2024-07-01", "2024-08-01", "2024-09-01", "2024-10-01", "2024-11-01", "2024-12-01", "2025-01-01", "2025-02-01", "2025-03-01", "2025-04-01", "2025-05-01", "2025-06-01", "2025-07-01", "2025-08-01", "2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01"], datasets: [{"label": "Median DOM", "data": [12.0, 10.0, 9.0, 9.0, 12.0, 14.0, 15.0, 16.0, 17.0, 19.0, 16.0, 11.0, 10.0, 10.0, 16.0, 21.0, 28.0, 31.0, 34.0, 33.0, 42.0, 43.0, 36.0, 27.0, 25.0, 19.0, 20.0, 23.0, 27.0, 30.0, 30.0, 39.0, 50.0, 52.0, 36.0, 34.0, 31.0, 26.0, 29.0, 33.0, 36.0, 39.0, 42.0, 46.0, 61.0, 60.0, 48.0, 46.0, 31.0, 31.0, 36.0, 40.0, 42.0, 47.0, 50.0, 54.0, 60.0, 65.0], "borderColor": "#5aaa82", "backgroundColor": "rgba(90,170,130,0.08)", "tension": 0.4, "fill": true, "pointRadius": 3, "borderWidth": 2}, {"label": "3-mo MA", "data": [12.0, 11.0, 10.33, 9.33, 10.0, 11.67, 13.67, 15.0, 16.0, 17.33, 17.33, 15.33, 12.33, 10.33, 12.0, 15.67, 21.67, 26.67, 31.0, 32.67, 36.33, 39.33, 40.33, 35.33, 29.33, 23.67, 21.33, 20.67, 23.33, 26.67, 29.0, 33.0, 39.67, 47.0, 46.0, 40.67, 33.67, 30.33, 28.67, 29.33, 32.67, 36.0, 39.0, 42.33, 49.67, 55.67, 56.33, 51.33, 41.67, 36.0, 32.67, 35.67, 39.33, 43.0, 46.33, 50.33, 54.67, 59.67], "borderColor": "#c9883a", "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4}] },
-  options: baseOpts(["2021-05-01", "2021-06-01", "2021-07-01", "2021-08-01", "2021-09-01", "2021-10-01", "2021-11-01", "2021-12-01", "2022-01-01", "2022-02-01", "2022-03-01", "2022-04-01", "2022-05-01", "2022-06-01", "2022-07-01", "2022-08-01", "2022-09-01", "2022-10-01", "2022-11-01", "2022-12-01", "2023-01-01", "2023-02-01", "2023-03-01", "2023-04-01", "2023-05-01", "2023-06-01", "2023-07-01", "2023-08-01", "2023-09-01", "2023-10-01", "2023-11-01", "2023-12-01", "2024-01-01", "2024-02-01", "2024-03-01", "2024-04-01", "2024-05-01", "2024-06-01", "2024-07-01", "2024-08-01", "2024-09-01", "2024-10-01", "2024-11-01", "2024-12-01", "2025-01-01", "2025-02-01", "2025-03-01", "2025-04-01", "2025-05-01", "2025-06-01", "2025-07-01", "2025-08-01", "2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01"], 'Days', fmtDays)
+  data: { labels: ["2024-09-01", "2024-10-01", "2024-11-01", "2024-12-01", "2025-01-01", "2025-02-01", "2025-03-01", "2025-04-01", "2025-05-01", "2025-06-01", "2025-07-01", "2025-08-01", "2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01"], datasets: [{"label": "Median DOM", "data": [36.0, 39.0, 42.0, 46.0, 61.0, 60.0, 48.0, 46.0, 31.0, 31.0, 36.0, 40.0, 42.0, 47.0, 50.0, 54.0, 60.0, 65.0], "borderColor": "#5aaa82", "backgroundColor": "rgba(90,170,130,0.08)", "tension": 0.4, "fill": true, "pointRadius": 3, "borderWidth": 2}, {"label": "3-mo MA", "data": [32.67, 36.0, 39.0, 42.33, 49.67, 55.67, 56.33, 51.33, 41.67, 36.0, 32.67, 35.67, 39.33, 43.0, 46.33, 50.33, 54.67, 59.67], "borderColor": "#c9883a", "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4}] },
+  options: baseOpts(["2024-09-01", "2024-10-01", "2024-11-01", "2024-12-01", "2025-01-01", "2025-02-01", "2025-03-01", "2025-04-01", "2025-05-01", "2025-06-01", "2025-07-01", "2025-08-01", "2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01"], 'Days', fmtDays)
 });
 
 new Chart(document.getElementById('chartS2L'), {
   type: 'line',
-  data: { labels: ["2021-05-01", "2021-06-01", "2021-07-01", "2021-08-01", "2021-09-01", "2021-10-01", "2021-11-01", "2021-12-01", "2022-01-01", "2022-02-01", "2022-03-01", "2022-04-01", "2022-05-01", "2022-06-01", "2022-07-01", "2022-08-01", "2022-09-01", "2022-10-01", "2022-11-01", "2022-12-01", "2023-01-01", "2023-02-01", "2023-03-01", "2023-04-01", "2023-05-01", "2023-06-01", "2023-07-01", "2023-08-01", "2023-09-01", "2023-10-01", "2023-11-01", "2023-12-01", "2024-01-01", "2024-02-01", "2024-03-01", "2024-04-01", "2024-05-01", "2024-06-01", "2024-07-01", "2024-08-01", "2024-09-01", "2024-10-01", "2024-11-01", "2024-12-01", "2025-01-01", "2025-02-01", "2025-03-01", "2025-04-01", "2025-05-01", "2025-06-01", "2025-07-01", "2025-08-01", "2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01"], datasets: [{"label": "Sale/List Ratio", "data": [1.022454407, 1.0300812, 1.026339353, 1.017572357, 1.005333906, 1.00397895, 1.001620052, 0.9996112247, 0.999781226, 1.002339111, 1.024683765, 1.0341462, 1.040309437, 1.037885122, 1.024020107, 1.008629195, 0.9971999786, 0.9891610453, 0.9835392573, 0.9809963519, 0.9778713651, 0.9843930379, 0.9918926545, 1.003961939, 1.015332065, 1.019840495, 1.01688235, 1.007503075, 0.9992913864, 0.9917958448, 0.9933144328, 0.9851978493, 0.9778751792, 0.9828211284, 0.9907462478, 0.9932818451, 0.9986622468, 1.004270728, 0.996271708, 0.9897643828, 0.9851546311, 0.9808902736, 0.9802391933, 0.9764913844, 0.9710981308, 0.9747983308, 0.9811202691, 0.9884515983, 0.9942502199, 0.9923200597, 0.9896953113, 0.982717409, 0.9787283293, 0.9784587016, 0.9770601498, 0.9724323872, 0.9698592641, 0.9667889354], "borderColor": "#5aaa82", "backgroundColor": "rgba(90,170,130,0.08)", "tension": 0.4, "fill": true, "pointRadius": 3, "borderWidth": 2}, {"label": "3-mo MA", "data": [1.02, 1.03, 1.03, 1.02, 1.02, 1.01, 1.0, 1.0, 1.0, 1.0, 1.01, 1.02, 1.03, 1.04, 1.03, 1.02, 1.01, 1.0, 0.99, 0.98, 0.98, 0.98, 0.98, 0.99, 1.0, 1.01, 1.02, 1.01, 1.01, 1.0, 0.99, 0.99, 0.99, 0.98, 0.98, 0.99, 0.99, 1.0, 1.0, 1.0, 0.99, 0.99, 0.98, 0.98, 0.98, 0.97, 0.98, 0.98, 0.99, 0.99, 0.99, 0.99, 0.98, 0.98, 0.98, 0.98, 0.97, 0.97], "borderColor": "#c9883a", "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4}] },
-  options: baseOpts(["2021-05-01", "2021-06-01", "2021-07-01", "2021-08-01", "2021-09-01", "2021-10-01", "2021-11-01", "2021-12-01", "2022-01-01", "2022-02-01", "2022-03-01", "2022-04-01", "2022-05-01", "2022-06-01", "2022-07-01", "2022-08-01", "2022-09-01", "2022-10-01", "2022-11-01", "2022-12-01", "2023-01-01", "2023-02-01", "2023-03-01", "2023-04-01", "2023-05-01", "2023-06-01", "2023-07-01", "2023-08-01", "2023-09-01", "2023-10-01", "2023-11-01", "2023-12-01", "2024-01-01", "2024-02-01", "2024-03-01", "2024-04-01", "2024-05-01", "2024-06-01", "2024-07-01", "2024-08-01", "2024-09-01", "2024-10-01", "2024-11-01", "2024-12-01", "2025-01-01", "2025-02-01", "2025-03-01", "2025-04-01", "2025-05-01", "2025-06-01", "2025-07-01", "2025-08-01", "2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01"], 'Ratio', fmtPct)
-});
-
-new Chart(document.getElementById('chartMoS'), {
-  type: 'line',
-  data: { labels: ["2021-05-01", "2021-06-01", "2021-07-01", "2021-08-01", "2021-09-01", "2021-10-01", "2021-11-01", "2021-12-01", "2022-01-01", "2022-02-01", "2022-03-01", "2022-04-01", "2022-05-01", "2022-06-01", "2022-07-01", "2022-08-01", "2022-09-01", "2022-10-01", "2022-11-01", "2022-12-01", "2023-01-01", "2023-02-01", "2023-03-01", "2023-04-01", "2023-05-01", "2023-06-01", "2023-07-01", "2023-08-01", "2023-09-01", "2023-10-01", "2023-11-01", "2023-12-01", "2024-01-01", "2024-02-01", "2024-03-01", "2024-04-01", "2024-05-01", "2024-06-01", "2024-07-01", "2024-08-01", "2024-09-01", "2024-10-01", "2024-11-01", "2024-12-01", "2025-01-01", "2025-02-01", "2025-03-01", "2025-04-01", "2025-05-01", "2025-06-01", "2025-07-01", "2025-08-01", "2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01"], datasets: [{"label": "Months of Supply", "data": [1.4, 1.4, 1.5, 1.5, 1.4, 1.2, 1.2, 1.0, 1.3, 1.6, 1.4, 1.5, 1.7, 1.8, 2.1, 1.9, 1.8, 1.9, 2.0, 2.0, 2.5, 2.5, 2.1, 2.3, 2.0, 1.7, 2.1, 2.0, 2.2, 2.1, 2.2, 2.3, 2.9, 2.7, 2.4, 2.5, 2.4, 2.6, 2.6, 2.6, 2.7, 2.6, 2.7, 2.4, 3.0, 3.4, 3.1, 3.2, 3.0, 3.1, 3.1, 3.0, 3.2, 2.9, 3.8, 2.8, 4.6, 4.5], "borderColor": "#5aaa82", "backgroundColor": "rgba(90,170,130,0.08)", "tension": 0.4, "fill": true, "pointRadius": 3, "borderWidth": 2}, {"label": "3-mo MA", "data": [1.4, 1.4, 1.43, 1.47, 1.47, 1.37, 1.27, 1.13, 1.17, 1.3, 1.43, 1.5, 1.53, 1.67, 1.87, 1.93, 1.93, 1.87, 1.9, 1.97, 2.17, 2.33, 2.37, 2.3, 2.13, 2.0, 1.93, 1.93, 2.1, 2.1, 2.17, 2.2, 2.47, 2.63, 2.67, 2.53, 2.43, 2.5, 2.53, 2.6, 2.63, 2.63, 2.67, 2.57, 2.7, 2.93, 3.17, 3.23, 3.1, 3.1, 3.07, 3.07, 3.1, 3.03, 3.3, 3.17, 3.73, 3.97], "borderColor": "#c9883a", "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4}] },
-  options: baseOpts(["2021-05-01", "2021-06-01", "2021-07-01", "2021-08-01", "2021-09-01", "2021-10-01", "2021-11-01", "2021-12-01", "2022-01-01", "2022-02-01", "2022-03-01", "2022-04-01", "2022-05-01", "2022-06-01", "2022-07-01", "2022-08-01", "2022-09-01", "2022-10-01", "2022-11-01", "2022-12-01", "2023-01-01", "2023-02-01", "2023-03-01", "2023-04-01", "2023-05-01", "2023-06-01", "2023-07-01", "2023-08-01", "2023-09-01", "2023-10-01", "2023-11-01", "2023-12-01", "2024-01-01", "2024-02-01", "2024-03-01", "2024-04-01", "2024-05-01", "2024-06-01", "2024-07-01", "2024-08-01", "2024-09-01", "2024-10-01", "2024-11-01", "2024-12-01", "2025-01-01", "2025-02-01", "2025-03-01", "2025-04-01", "2025-05-01", "2025-06-01", "2025-07-01", "2025-08-01", "2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01"], 'Months', fmtMos)
+  data: { labels: ["2024-09-01", "2024-10-01", "2024-11-01", "2024-12-01", "2025-01-01", "2025-02-01", "2025-03-01", "2025-04-01", "2025-05-01", "2025-06-01", "2025-07-01", "2025-08-01", "2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01"], datasets: [{"label": "Sale/List Ratio", "data": [0.9851546311, 0.9808902736, 0.9802391933, 0.9764913844, 0.9710981308, 0.9747983308, 0.9811202691, 0.9884515983, 0.9942502199, 0.9923200597, 0.9896953113, 0.982717409, 0.9787283293, 0.9784587016, 0.9770601498, 0.9724323872, 0.9698592641, 0.9667889354], "borderColor": "#5aaa82", "backgroundColor": "rgba(90,170,130,0.08)", "tension": 0.4, "fill": true, "pointRadius": 3, "borderWidth": 2}, {"label": "3-mo MA", "data": [0.99, 0.99, 0.98, 0.98, 0.98, 0.97, 0.98, 0.98, 0.99, 0.99, 0.99, 0.99, 0.98, 0.98, 0.98, 0.98, 0.97, 0.97], "borderColor": "#c9883a", "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4}] },
+  options: baseOpts(["2024-09-01", "2024-10-01", "2024-11-01", "2024-12-01", "2025-01-01", "2025-02-01", "2025-03-01", "2025-04-01", "2025-05-01", "2025-06-01", "2025-07-01", "2025-08-01", "2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01"], '% of Asking Price', fmtPct)
 });
 
 new Chart(document.getElementById('chartZHVI'), {
   type: 'line',
-  data: { labels: ["2021-04-30", "2021-05-31", "2021-06-30", "2021-07-31", "2021-08-31", "2021-09-30", "2021-10-31", "2021-11-30", "2021-12-31", "2022-01-31", "2022-02-28", "2022-03-31", "2022-04-30", "2022-05-31", "2022-06-30", "2022-07-31", "2022-08-31", "2022-09-30", "2022-10-31", "2022-11-30", "2022-12-31", "2023-01-31", "2023-02-28", "2023-03-31", "2023-04-30", "2023-05-31", "2023-06-30", "2023-07-31", "2023-08-31", "2023-09-30", "2023-10-31", "2023-11-30", "2023-12-31", "2024-01-31", "2024-02-29", "2024-03-31", "2024-04-30", "2024-05-31", "2024-06-30", "2024-07-31", "2024-08-31", "2024-09-30", "2024-10-31", "2024-11-30", "2024-12-31", "2025-01-31", "2025-02-28", "2025-03-31", "2025-04-30", "2025-05-31", "2025-06-30", "2025-07-31", "2025-08-31", "2025-09-30", "2025-10-31", "2025-11-30", "2025-12-31", "2026-01-31", "2026-02-28"], datasets: [{"label": "Oxford County ZHVI", "data": [221575.01499269044, 227339.28603941505, 234261.7174515537, 240743.06800975712, 244370.32389964059, 245078.41316899823, 244692.72245714537, 245870.4682117855, 247850.95572063848, 251420.26677569092, 256322.96245503318, 263344.6001952263, 270975.47912950185, 277986.31239456026, 282775.3901741525, 284034.71787115186, 281898.7882493522, 278315.4678419553, 275380.21499877033, 273355.7922212948, 272419.8066334597, 272539.293792442, 273359.01216813456, 274760.5540031097, 276689.5636561671, 279023.3053041818, 282184.0177440027, 284960.2615078992, 287575.3040431352, 289427.97680316545, 291201.874557531, 292805.7666549001, 293989.3058744116, 295040.5162051564, 296896.06840702915, 299636.5068726446, 302675.77428193536, 304670.5559639821, 305285.3683117088, 304957.06292801857, 305342.4464357316, 306370.8960903205, 307968.8787082623, 308563.2900530499, 309122.62181844475, 309429.0749763585, 309937.36919058906, 309848.05725939554, 309590.69283863617, 309498.2102239451, 308860.2216055532, 307458.3345839563, 305856.0682411511, 305104.91849499213, 305145.6007188111, 305369.64526031667, 305884.04298530734, 306940.52100357454, 308373.1254866552], "borderColor": "#c9883a", "backgroundColor": "rgba(201,136,58,0.12)", "tension": 0.4, "fill": true, "pointRadius": 2, "borderWidth": 2}, {"label": "3-mo MA", "data": [221575.01, 224457.15, 227725.34, 234114.69, 239791.7, 243397.27, 244713.82, 245213.87, 246138.05, 248380.56, 251864.73, 257029.28, 263547.68, 270768.8, 277245.73, 281598.81, 282902.97, 281416.32, 278531.49, 275683.83, 273718.6, 272771.63, 272772.7, 273552.95, 274936.38, 276824.47, 279298.96, 282055.86, 284906.53, 287321.18, 289401.72, 291145.21, 292665.65, 293945.2, 295308.63, 297191.03, 299736.12, 302327.61, 304210.57, 304971.0, 305194.96, 305556.8, 306560.74, 307634.35, 308551.6, 309038.33, 309496.36, 309738.17, 309792.04, 309645.65, 309316.37, 308605.59, 307391.54, 306139.77, 305368.86, 305206.72, 305466.43, 306064.74, 307065.9], "borderColor": "#5aaa82", "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4}] },
-  options: baseOpts(["2021-04-30", "2021-05-31", "2021-06-30", "2021-07-31", "2021-08-31", "2021-09-30", "2021-10-31", "2021-11-30", "2021-12-31", "2022-01-31", "2022-02-28", "2022-03-31", "2022-04-30", "2022-05-31", "2022-06-30", "2022-07-31", "2022-08-31", "2022-09-30", "2022-10-31", "2022-11-30", "2022-12-31", "2023-01-31", "2023-02-28", "2023-03-31", "2023-04-30", "2023-05-31", "2023-06-30", "2023-07-31", "2023-08-31", "2023-09-30", "2023-10-31", "2023-11-30", "2023-12-31", "2024-01-31", "2024-02-29", "2024-03-31", "2024-04-30", "2024-05-31", "2024-06-30", "2024-07-31", "2024-08-31", "2024-09-30", "2024-10-31", "2024-11-30", "2024-12-31", "2025-01-31", "2025-02-28", "2025-03-31", "2025-04-30", "2025-05-31", "2025-06-30", "2025-07-31", "2025-08-31", "2025-09-30", "2025-10-31", "2025-11-30", "2025-12-31", "2026-01-31", "2026-02-28"], 'Home Value ($)', fmtDollar)
+  data: { labels: ["2024-09-30", "2024-10-31", "2024-11-30", "2024-12-31", "2025-01-31", "2025-02-28", "2025-03-31", "2025-04-30", "2025-05-31", "2025-06-30", "2025-07-31", "2025-08-31", "2025-09-30", "2025-10-31", "2025-11-30", "2025-12-31", "2026-01-31", "2026-02-28"], datasets: [{"label": "Oxford County ZHVI", "data": [306370.8960903205, 307968.8787082623, 308563.2900530499, 309122.62181844475, 309429.0749763585, 309937.36919058906, 309848.05725939554, 309590.69283863617, 309498.2102239451, 308860.2216055532, 307458.3345839563, 305856.0682411511, 305104.91849499213, 305145.6007188111, 305369.64526031667, 305884.04298530734, 306940.52100357454, 308373.1254866552], "borderColor": "#c9883a", "backgroundColor": "rgba(201,136,58,0.12)", "tension": 0.4, "fill": true, "pointRadius": 2, "borderWidth": 2}, {"label": "3-mo MA", "data": [306370.9, 307169.89, 307634.35, 308551.6, 309038.33, 309496.36, 309738.17, 309792.04, 309645.65, 309316.37, 308605.59, 307391.54, 306139.77, 305368.86, 305206.72, 305466.43, 306064.74, 307065.9], "borderColor": "#5aaa82", "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4}] },
+  options: baseOpts(["2024-09-30", "2024-10-31", "2024-11-30", "2024-12-31", "2025-01-31", "2025-02-28", "2025-03-31", "2025-04-30", "2025-05-31", "2025-06-30", "2025-07-31", "2025-08-31", "2025-09-30", "2025-10-31", "2025-11-30", "2025-12-31", "2026-01-31", "2026-02-28"], 'Home Value ($)', fmtDollar)
+});
+
+new Chart(document.getElementById('chartForecast'), {
+  type: 'line',
+  data: { labels: ["2024-09-30", "2024-10-31", "2024-11-30", "2024-12-31", "2025-01-31", "2025-02-28", "2025-03-31", "2025-04-30", "2025-05-31", "2025-06-30", "2025-07-31", "2025-08-31", "2025-09-30", "2025-10-31", "2025-11-30", "2025-12-31", "2026-01-31", "2026-02-28", "May 29, 2026", "August 27, 2026", "November 25, 2026"], datasets: [{"label": "Historical", "data": [306370.8960903205, 307968.8787082623, 308563.2900530499, 309122.62181844475, 309429.0749763585, 309937.36919058906, 309848.05725939554, 309590.69283863617, 309498.2102239451, 308860.2216055532, 307458.3345839563, 305856.0682411511, 305104.91849499213, 305145.6007188111, 305369.64526031667, 305884.04298530734, 306940.52100357454, 308373.1254866552, null, null, null], "borderColor": "#c9883a", "backgroundColor": "rgba(201,136,58,0.08)", "tension": 0.3, "fill": true, "pointRadius": 2, "borderWidth": 2}, {"label": "Projected", "data": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 308373.1254866552, 326664, 330590, 334516], "borderColor": "#5aaa82", "borderDash": [6, 4], "backgroundColor": "rgba(90,170,130,0.0)", "tension": 0.3, "fill": false, "pointRadius": 5, "borderWidth": 2, "pointStyle": "circle", "pointBackgroundColor": "#5aaa82"}, {"label": "Confidence band (low)", "data": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 308373.1254866552, 308441, 312367, 316293], "borderColor": "rgba(90,170,130,0.2)", "borderDash": [2, 4], "backgroundColor": "rgba(90,170,130,0.12)", "tension": 0.3, "fill": "+1", "pointRadius": 0, "borderWidth": 1}, {"label": "Confidence band (high)", "data": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 308373.1254866552, 344887, 348813, 352739], "borderColor": "rgba(90,170,130,0.2)", "borderDash": [2, 4], "backgroundColor": "rgba(90,170,130,0.12)", "tension": 0.3, "fill": false, "pointRadius": 0, "borderWidth": 1}] },
+  options: baseOpts(["2024-09-30", "2024-10-31", "2024-11-30", "2024-12-31", "2025-01-31", "2025-02-28", "2025-03-31", "2025-04-30", "2025-05-31", "2025-06-30", "2025-07-31", "2025-08-31", "2025-09-30", "2025-10-31", "2025-11-30", "2025-12-31", "2026-01-31", "2026-02-28", "May 29, 2026", "August 27, 2026", "November 25, 2026"], 'Home Value ($)', fmtDollar)
 });
 </script>
 </body>
