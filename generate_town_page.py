@@ -79,37 +79,90 @@ def vibe_bar_html(key, label, desc, score):
 
 
 PLACE_CATEGORIES = [
-    ("coffee_shops", "Coffee Shops"),
-    ("bookstores", "Bookstores"),
-    ("record_stores", "Record Stores"),
-    ("music_venues", "Music Venues"),
-    ("vet_clinics", "Vet Clinics"),
-    ("dog_parks", "Dog Parks"),
-    ("farmers_markets", "Farmers Markets"),
-    ("libraries", "Libraries"),
+    # Creative Culture
+    ("bookstores",          "Bookstores",             "creative_culture"),
+    ("record_stores",       "Record Stores",           "creative_culture"),
+    ("music_venues",        "Music Venues",            "creative_culture"),
+    ("art_galleries",       "Art Galleries",           "creative_culture"),
+    ("indie_cinema",        "Independent Cinemas",     "creative_culture"),
+    # Nature Access
+    ("outdoor_outfitters",  "Outdoor Outfitters",      "nature_access"),
+    ("kayak_canoe_rental",  "Kayak / Canoe Rentals",   "nature_access"),
+    ("ski_areas",           "Ski Areas",               "nature_access"),
+    # Food & Drink
+    ("coffee_shops",        "Coffee Shops",            "food_drink"),
+    ("restaurants",         "Restaurants",             "food_drink"),
+    ("farmers_markets",     "Farmers Markets",         "food_drink"),
+    ("breweries",           "Breweries / Taprooms",    "food_drink"),
+    # Community Fit
+    ("libraries",           "Libraries",               "community_fit"),
+    ("yoga_studios",        "Yoga Studios",            "community_fit"),
+    ("coworking_spaces",    "Coworking Spaces",        "community_fit"),
+    # Pet Friendly
+    ("vet_clinics",         "Vet Clinics",             "pet_friendly"),
+    ("pet_grooming",        "Pet Groomers",            "pet_friendly"),
+    ("pet_boarding",        "Pet Boarding / Kennels",   "pet_friendly"),
+    ("pet_supply",          "Pet Supply Stores",        "pet_friendly"),
+    ("animal_shelters",     "Animal Shelters",          "pet_friendly"),
+    # Practical
+    ("grocery_stores",      "Grocery Stores",           "practical"),
+    ("hardware_stores",     "Hardware Stores",          "practical"),
+    ("farm_supply",         "Farm & Feed Supply",       "practical"),
+    ("urgent_care",         "Urgent Care / Medical",    "practical"),
 ]
 
 
+VIBE_GROUP_LABELS = {
+    "creative_culture": "Creative Culture",
+    "nature_access": "Nature Access",
+    "food_drink": "Food & Drink",
+    "community_fit": "Community Fit",
+    "pet_friendly": "Pet Friendly",
+    "practical": "Practical",
+}
+
+VIBE_GROUP_ORDER = ["creative_culture", "nature_access", "food_drink",
+                    "community_fit", "pet_friendly", "practical"]
+
+
 def places_html(places):
-    """Render named places with sources for verification."""
+    """Render named places with sources, grouped by vibe dimension."""
     if not places:
         return '<div class="places-empty">No place data yet.</div>'
-    sections = []
-    for key, heading in PLACE_CATEGORIES:
-        items = places.get(key, [])
-        count = len(items)
-        cls = "cat-present" if count > 0 else "cat-absent"
-        header = f'<div class="cat-header {cls}"><span class="cat-name">{heading}</span><span class="cat-count">{count}</span></div>'
-        if items:
-            rows = ""
-            for p in items:
-                source = p.get("source", "")
-                source_html = f'<span class="place-source">source: {source}</span>' if source else ""
-                rows += f'<div class="place-row"><span class="place-name">{p["name"]}</span>{source_html}</div>'
-            sections.append(f'<div class="cat-block">{header}{rows}</div>')
-        else:
-            sections.append(f'<div class="cat-block">{header}<div class="place-row place-none">None found</div></div>')
-    return f'<div class="places-list">{"".join(sections)}</div>'
+
+    # Group categories by vibe dimension
+    groups = {v: [] for v in VIBE_GROUP_ORDER}
+    for key, heading, vibe_dim in PLACE_CATEGORIES:
+        groups.setdefault(vibe_dim, []).append((key, heading))
+
+    html_parts = []
+    for vibe_dim in VIBE_GROUP_ORDER:
+        cats = groups.get(vibe_dim, [])
+        if not cats:
+            continue
+        group_label = VIBE_GROUP_LABELS.get(vibe_dim, vibe_dim)
+        cat_blocks = []
+        for key, heading in cats:
+            items = places.get(key, [])
+            count = len(items)
+            cls = "cat-present" if count > 0 else "cat-absent"
+            header = f'<div class="cat-header {cls}"><span class="cat-name">{heading}</span><span class="cat-count">{count}</span></div>'
+            if items:
+                rows = ""
+                for p in items:
+                    source = p.get("source", "")
+                    source_html = f'<span class="place-source">source: {source}</span>' if source else ""
+                    rows += f'<div class="place-row"><span class="place-name">{p["name"]}</span>{source_html}</div>'
+                cat_blocks.append(f'<div class="cat-block">{header}{rows}</div>')
+            else:
+                cat_blocks.append(f'<div class="cat-block">{header}<div class="place-row place-none">None found</div></div>')
+        html_parts.append(
+            f'<div class="places-group">'
+            f'<div class="places-group-label">{group_label}</div>'
+            f'{"".join(cat_blocks)}'
+            f'</div>'
+        )
+    return f'<div class="places-list">{"".join(html_parts)}</div>'
 
 
 def market_section_html(market, county):
@@ -230,7 +283,9 @@ header {{ background: var(--navy); border-bottom: 2px solid var(--green-dim); pa
 .vibe-desc {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 0.72rem; color: var(--text-dim); margin-top: 3px; }}
 
 /* Places list — verifiable names + sources */
-.places-list {{ display: grid; grid-template-columns: 1fr 1fr; gap: 4px 24px; }}
+.places-list {{ display: grid; grid-template-columns: 1fr 1fr; gap: 8px 24px; }}
+.places-group {{ margin-bottom: 8px; }}
+.places-group-label {{ font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--green-light); margin-bottom: 6px; }}
 .cat-block {{ margin-bottom: 14px; }}
 .cat-header {{ display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-bottom: 1px solid var(--border); margin-bottom: 4px; }}
 .cat-name {{ font-family: 'Inter', sans-serif; font-size: 0.82rem; font-weight: 600; color: var(--text); }}

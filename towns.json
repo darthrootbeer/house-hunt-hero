@@ -22,23 +22,95 @@
       "practical": 7
     },
     "places": {
-      "coffee_shops": [
-        {"name": "Gemini Coffee Shop", "source": "Google Maps"}
-      ],
       "bookstores": [],
       "record_stores": [],
       "music_venues": [
-        {"name": "Sunday River Brewing Company (live music)", "source": "Google Maps"}
+        {"name": "The Gem Theater (live performances via BAAM)", "source": "thegemtheater.com"},
+        {"name": "Suds Pub at The Bethel Inn (live music nights)", "source": "bethelmaine.com"},
+        {"name": "Foggy Goggle at Sunday River (live bands, après-ski)", "source": "visitsundayriver.com"},
+        {"name": "Steam Mill Brewing (live events)", "source": "steammillbrew.com"}
       ],
-      "vet_clinics": [
-        {"name": "Bethel Animal Hospital", "source": "Google Maps"}
+      "art_galleries": [
+        {"name": "Maine Mineral & Gem Museum (four galleries)", "source": "mainemineralmuseum.org"},
+        {"name": "Bethel Area Arts & Music / BAAM (rotating exhibits, mural project)", "source": "bethelareaartsandmusic.com"}
       ],
-      "dog_parks": [],
+      "indie_cinema": [
+        {"name": "The Gem Theater (indie + first-run films)", "source": "thegemtheater.com"}
+      ],
+      "outdoor_outfitters": [
+        {"name": "True North Adventureware", "source": "truenorthadventureware.com"},
+        {"name": "Sport Thoma (ski/snowboard/kayak sales & rentals)", "source": "sportthoma.com"},
+        {"name": "Carter's XC Ski Center & Shop", "source": "cartersxcski.com"},
+        {"name": "Mahoosuc Guide Service (guided wilderness trips)", "source": "mahoosuc.com"}
+      ],
+      "kayak_canoe_rental": [
+        {"name": "Bethel Outdoor Adventure (canoe/kayak/tubing on Androscoggin)", "source": "betheloutdooradventure.com"},
+        {"name": "Sport Thoma (kayak/canoe/paddleboard rentals)", "source": "sportthoma.com"}
+      ],
+      "ski_areas": [
+        {"name": "Sunday River Ski Resort (8 peaks, Newry)", "source": "visitsundayriver.com"},
+        {"name": "Carter's XC Ski Center (55km groomed Nordic)", "source": "cartersxcski.com"}
+      ],
+      "coffee_shops": [
+        {"name": "Gemini Cafe & Bakery (96 Main St)", "source": "thegeminicafe.com"},
+        {"name": "DiCocoa's (125 Main St — reopened weekends)", "source": "Yelp, sunjournal.com"}
+      ],
+      "restaurants": [
+        {"name": "Cho Sun Sushi Bar & Grill", "source": "chosun207.com"},
+        {"name": "Sunday River Brewing Company", "source": "Yelp, Tripadvisor"},
+        {"name": "Steam Mill Brewing", "source": "steammillbrew.com"},
+        {"name": "The Millbrook Tavern at Bethel Inn", "source": "OpenTable"},
+        {"name": "Good Food Store & Catering (natural/organic)", "source": "goodfoodbethel.com"}
+      ],
       "farmers_markets": [
-        {"name": "Bethel Farmers Market (seasonal)", "source": "bethelmainefarmersmarket.com"}
+        {"name": "Bethel Farmers' Market (Sat 9am–12:30pm, May–Oct)", "source": "bethelfarmersmarket.org"}
+      ],
+      "breweries": [
+        {"name": "Sunday River Brewing Company", "source": "Yelp, Tripadvisor"},
+        {"name": "Steam Mill Brewing", "source": "steammillbrew.com"},
+        {"name": "Suds Pub at Bethel Inn (29 craft taps, not a brewery)", "source": "bethelmaine.com"}
       ],
       "libraries": [
-        {"name": "Bethel Library Association", "source": "Google Maps"}
+        {"name": "Bethel Library Association (5 Broad St, est. 1879)", "source": "bethellibraryassociation.org"}
+      ],
+      "yoga_studios": [
+        {"name": "Chillosophy Yoga (32 Parkway Rd)", "source": "yogachillosophy.com"},
+        {"name": "Yogamoto (75 Main St — verify current status)", "source": "Yelp, Facebook"}
+      ],
+      "coworking_spaces": [
+        {"name": "The Gem Coworking Space (48 Cross St)", "source": "bethelmaine.com"}
+      ],
+      "vet_clinics": [
+        {"name": "Bethel Animal Hospital (179 Walkers Mills Rd)", "source": "bethelanimalhospital.com"}
+      ],
+      "pet_grooming": [
+        {"name": "Barker Brook Kennels (120 Sunday River Rd)", "source": "barkerbrookkennels.com"}
+      ],
+      "pet_boarding": [
+        {"name": "Barker Brook Kennels (boarding 365 days/yr, daycare 7 days/wk)", "source": "barkerbrookkennels.com"},
+        {"name": "Auntie Tori's Place LLC (in-home doggy daycare)", "source": "Facebook"}
+      ],
+      "pet_supply": [
+        {"name": "Peterson's Pet Stop (186 Main St)", "source": "Yelp"}
+      ],
+      "animal_shelters": [
+        {"name": "Harvest Hills Animal Shelter (Fryeburg, ~35 min — no-kill)", "source": "harvesthills.org"},
+        {"name": "Responsible Pet Care of Oxford Hills (South Paris, ~25 min — no-kill cat shelter)", "source": "responsiblepetcare.org"}
+      ],
+      "grocery_stores": [
+        {"name": "Mainely Provisions (72 Main St — full-service grocery)", "source": "mainelyprovisions.com"},
+        {"name": "Good Food Store (212 Mayville Rd — natural/organic)", "source": "goodfoodbethel.com"}
+      ],
+      "hardware_stores": [
+        {"name": "Brooks Brothers True Value (Main St — 90+ years)", "source": "bethelmaine.com"}
+      ],
+      "farm_supply": [
+        {"name": "Tractor Supply Co. (Oxford, ~30 min — closest TSC)", "source": "tractorsupply.com"}
+      ],
+      "urgent_care": [
+        {"name": "Bethel Family Health Center (HealthReach network)", "source": "healthreach.org"},
+        {"name": "Stephens Memorial Hospital (Norway, ~25 min — 24/7 ER)", "source": "mainehealth.org"},
+        {"name": "Rumford Hospital (Rumford, ~30 min — 24/7 ER)", "source": "cmhc.org"}
       ]
     },
     "market": {
