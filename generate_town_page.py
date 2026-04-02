@@ -11,25 +11,36 @@ from pathlib import Path
 ROOT = Path(__file__).parent
 
 # ── Vibe dimensions ──────────────────────────────────────────────────────────
-# Each dimension: (key, label, color, description)
+# Each dimension: (key, label, description)
 VIBE_DIMENSIONS = [
-    ("creative_culture", "Creative Culture", "#a855f7",
+    ("creative_culture", "Creative Culture",
      "Bookstores, record shops, music venues, indie cinema, arts scene"),
-    ("nature_access", "Nature Access", "#22c55e",
+    ("nature_access", "Nature Access",
      "Trails, mountains, water, skiing, state parks within 20 min"),
-    ("food_drink", "Food & Drink", "#f59e0b",
+    ("food_drink", "Food & Drink",
      "Coffee shops, restaurants, farmers markets, local food culture"),
-    ("walkability", "Walkability", "#3b82f6",
+    ("walkability", "Walkability",
      "Can you walk to a coffee shop, post office, grocery?"),
-    ("quiet_privacy", "Quiet & Privacy", "#6366f1",
+    ("quiet_privacy", "Quiet & Privacy",
      "Low density, wooded lots, no HOA culture, dark skies"),
-    ("community_fit", "Community Fit", "#ec4899",
+    ("community_fit", "Community Fit",
      "People like us — creative, progressive-leaning, dog people, not flashy"),
-    ("pet_friendly", "Pet Friendly", "#14b8a6",
+    ("pet_friendly", "Pet Friendly",
      "Vet clinics, dog parks, pet-friendly trails and businesses"),
-    ("practical", "Practical", "#8b5cf6",
+    ("practical", "Practical",
      "Groceries, medical, hardware, gas — can you live here without driving 45 min?"),
 ]
+
+
+def score_color(score):
+    """Return a heat-map color from red (0) through amber (5) to green (10)."""
+    if score <= 3:
+        return "#e74c3c"  # red
+    if score <= 5:
+        return "#c9883a"  # amber
+    if score <= 7:
+        return "#e8a84e"  # amber-light
+    return "#5aaa82"      # green
 
 TIER_LABELS = {
     "T1": "0–30 min from Bethel",
@@ -49,20 +60,19 @@ def fmt_compact(val):
     return f"${val:,.0f}"
 
 
-def vibe_bar_html(key, label, color, desc, score):
-    """Render one RPG-style vibe bar."""
+def vibe_bar_html(key, label, desc, score):
+    """Render one RPG-style vibe bar with heat-map color."""
     if score is None:
         score = 0
     pct = score * 10
-    # Color intensity based on score
-    fill_opacity = 0.8 if score >= 7 else 0.6 if score >= 4 else 0.4
+    color = score_color(score)
     return f"""<div class="vibe-row">
   <div class="vibe-label">
     <span class="vibe-name">{label}</span>
     <span class="vibe-score">{score}/10</span>
   </div>
   <div class="vibe-track">
-    <div class="vibe-fill" style="width:{pct}%;background:{color};opacity:{fill_opacity};"></div>
+    <div class="vibe-fill" style="width:{pct}%;background:{color};"></div>
   </div>
   <div class="vibe-desc">{desc}</div>
 </div>"""
@@ -150,8 +160,6 @@ def generate_page(town):
     pop = town.get("population")
     tier = town.get("distance_tier", "")
     drive = town.get("drive_note", "")
-    bb = town.get("broadband", "mixed")
-    bb_note = town.get("broadband_note", "")
     notes = town.get("notes", "")
     vibe = town.get("vibe", {})
     sources = town.get("vibe_sources", {})
@@ -164,9 +172,9 @@ def generate_page(town):
 
     # Vibe bars
     bars_html = ""
-    for key, label, color, desc in VIBE_DIMENSIONS:
+    for key, label, desc in VIBE_DIMENSIONS:
         score = vibe.get(key, 0)
-        bars_html += vibe_bar_html(key, label, color, desc, score)
+        bars_html += vibe_bar_html(key, label, desc, score)
 
     tier_label = TIER_LABELS.get(tier, tier)
     pop_display = f"{pop:,}" if pop else "—"
@@ -209,16 +217,15 @@ header {{ background: var(--navy); border-bottom: 2px solid var(--green-dim); pa
 /* Section labels */
 .section-label {{ font-family: 'Inter', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--text); margin: 32px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }}
 
-/* Vibe bars — RPG style */
-.vibe-section {{ margin-bottom: 32px; }}
-.vibe-row {{ margin-bottom: 16px; }}
+/* Vibe bars — RPG style, two-column grid */
+.vibe-section {{ margin-bottom: 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 4px 24px; }}
+.vibe-row {{ margin-bottom: 12px; }}
 .vibe-label {{ display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }}
 .vibe-name {{ font-family: 'Inter', sans-serif; font-size: 0.88rem; font-weight: 600; color: var(--text); }}
 .vibe-score {{ font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--text-muted); }}
 .vibe-track {{ background: var(--surface2); border-radius: 4px; height: 10px; overflow: hidden; position: relative; }}
 .vibe-fill {{ height: 100%; border-radius: 4px; transition: width 0.6s ease; }}
 .vibe-desc {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 0.72rem; color: var(--text-dim); margin-top: 3px; }}
-.vibe-avg {{ font-family: 'JetBrains Mono', monospace; font-size: 0.80rem; color: var(--amber-light); margin-top: 12px; padding: 10px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; display: inline-block; }}
 
 /* Amenity source pills */
 .source-grid {{ display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }}
@@ -236,12 +243,6 @@ header {{ background: var(--navy); border-bottom: 2px solid var(--green-dim); pa
 .delta.up {{ color: var(--amber-light); }}
 .delta.down {{ color: var(--green-light); }}
 .unavailable {{ background: var(--surface); border: 1px dashed var(--border); border-radius: 8px; padding: 20px; text-align: center; color: var(--text-muted); font-style: italic; font-size: 0.88rem; }}
-
-/* Broadband badge */
-.bb-badge {{ display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 0.70rem; padding: 3px 10px; border-radius: 12px; text-transform: uppercase; letter-spacing: 0.06em; }}
-.bb-good {{ background: rgba(61,122,90,0.25); color: var(--green-light); }}
-.bb-mixed {{ background: rgba(201,136,58,0.20); color: var(--amber-light); }}
-.bb-limited {{ background: rgba(192,57,43,0.18); color: var(--red-light); }}
 
 /* Hard fails */
 .hard-fail-box {{ background: rgba(192,57,43,0.08); border: 1px solid rgba(192,57,43,0.3); border-radius: 8px; padding: 16px 20px; margin-bottom: 24px; }}
@@ -264,6 +265,7 @@ footer {{ background: var(--surface); border-top: 1px solid var(--border); paddi
   .header-meta {{ text-align: left; }}
   .quick-stats {{ flex-direction: column; }}
   .mkt-grid {{ grid-template-columns: 1fr 1fr; }}
+  .vibe-section {{ grid-template-columns: 1fr; }}
 }}
 </style>
 </head>
@@ -290,7 +292,6 @@ footer {{ background: var(--surface); border-top: 1px solid var(--border); paddi
   <div class="quick-stats">
     <div class="qs"><div class="qs-label">Vibe Score</div><div class="qs-value">{avg_vibe:.1f}/10</div></div>
     <div class="qs"><div class="qs-label">Distance</div><div class="qs-value">{tier}</div></div>
-    <div class="qs"><div class="qs-label">Broadband</div><div class="qs-value"><span class="bb-badge bb-{bb}">{bb}</span></div></div>
     <div class="qs"><div class="qs-label">Population</div><div class="qs-value">{pop_display}</div></div>
   </div>
 
@@ -301,15 +302,10 @@ footer {{ background: var(--surface); border-top: 1px solid var(--border); paddi
   <div class="section-label">Soulplace Profile</div>
   <div class="vibe-section">
     {bars_html}
-    <div class="vibe-avg">Overall: {avg_vibe:.1f} / 10</div>
   </div>
 
   <div class="section-label">What's There</div>
   {vibe_sources_html(sources)}
-  <div style="margin-top:8px;">
-    <span class="bb-badge bb-{bb}">Broadband: {bb}</span>
-    <span style="font-size:0.78rem;color:var(--text-dim);margin-left:8px;">{bb_note}</span>
-  </div>
 
   {market_section_html(market, county)}
 

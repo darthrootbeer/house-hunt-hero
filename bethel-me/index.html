@@ -36,16 +36,15 @@ header { background: var(--navy); border-bottom: 2px solid var(--green-dim); pad
 /* Section labels */
 .section-label { font-family: 'Inter', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--text); margin: 32px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
 
-/* Vibe bars — RPG style */
-.vibe-section { margin-bottom: 32px; }
-.vibe-row { margin-bottom: 16px; }
+/* Vibe bars — RPG style, two-column grid */
+.vibe-section { margin-bottom: 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 4px 24px; }
+.vibe-row { margin-bottom: 12px; }
 .vibe-label { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
 .vibe-name { font-family: 'Inter', sans-serif; font-size: 0.88rem; font-weight: 600; color: var(--text); }
 .vibe-score { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--text-muted); }
 .vibe-track { background: var(--surface2); border-radius: 4px; height: 10px; overflow: hidden; position: relative; }
 .vibe-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
 .vibe-desc { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 0.72rem; color: var(--text-dim); margin-top: 3px; }
-.vibe-avg { font-family: 'JetBrains Mono', monospace; font-size: 0.80rem; color: var(--amber-light); margin-top: 12px; padding: 10px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; display: inline-block; }
 
 /* Amenity source pills */
 .source-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
@@ -63,12 +62,6 @@ header { background: var(--navy); border-bottom: 2px solid var(--green-dim); pad
 .delta.up { color: var(--amber-light); }
 .delta.down { color: var(--green-light); }
 .unavailable { background: var(--surface); border: 1px dashed var(--border); border-radius: 8px; padding: 20px; text-align: center; color: var(--text-muted); font-style: italic; font-size: 0.88rem; }
-
-/* Broadband badge */
-.bb-badge { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 0.70rem; padding: 3px 10px; border-radius: 12px; text-transform: uppercase; letter-spacing: 0.06em; }
-.bb-good { background: rgba(61,122,90,0.25); color: var(--green-light); }
-.bb-mixed { background: rgba(201,136,58,0.20); color: var(--amber-light); }
-.bb-limited { background: rgba(192,57,43,0.18); color: var(--red-light); }
 
 /* Hard fails */
 .hard-fail-box { background: rgba(192,57,43,0.08); border: 1px solid rgba(192,57,43,0.3); border-radius: 8px; padding: 16px 20px; margin-bottom: 24px; }
@@ -91,6 +84,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
   .header-meta { text-align: left; }
   .quick-stats { flex-direction: column; }
   .mkt-grid { grid-template-columns: 1fr 1fr; }
+  .vibe-section { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -117,7 +111,6 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
   <div class="quick-stats">
     <div class="qs"><div class="qs-label">Vibe Score</div><div class="qs-value">6.2/10</div></div>
     <div class="qs"><div class="qs-label">Distance</div><div class="qs-value">T1</div></div>
-    <div class="qs"><div class="qs-label">Broadband</div><div class="qs-value"><span class="bb-badge bb-mixed">mixed</span></div></div>
     <div class="qs"><div class="qs-label">Population</div><div class="qs-value">2,607</div></div>
   </div>
 
@@ -133,7 +126,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
     <span class="vibe-score">5/10</span>
   </div>
   <div class="vibe-track">
-    <div class="vibe-fill" style="width:50%;background:#a855f7;opacity:0.6;"></div>
+    <div class="vibe-fill" style="width:50%;background:#c9883a;"></div>
   </div>
   <div class="vibe-desc">Bookstores, record shops, music venues, indie cinema, arts scene</div>
 </div><div class="vibe-row">
@@ -142,7 +135,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
     <span class="vibe-score">9/10</span>
   </div>
   <div class="vibe-track">
-    <div class="vibe-fill" style="width:90%;background:#22c55e;opacity:0.8;"></div>
+    <div class="vibe-fill" style="width:90%;background:#5aaa82;"></div>
   </div>
   <div class="vibe-desc">Trails, mountains, water, skiing, state parks within 20 min</div>
 </div><div class="vibe-row">
@@ -151,7 +144,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
     <span class="vibe-score">4/10</span>
   </div>
   <div class="vibe-track">
-    <div class="vibe-fill" style="width:40%;background:#f59e0b;opacity:0.6;"></div>
+    <div class="vibe-fill" style="width:40%;background:#c9883a;"></div>
   </div>
   <div class="vibe-desc">Coffee shops, restaurants, farmers markets, local food culture</div>
 </div><div class="vibe-row">
@@ -160,7 +153,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
     <span class="vibe-score">4/10</span>
   </div>
   <div class="vibe-track">
-    <div class="vibe-fill" style="width:40%;background:#3b82f6;opacity:0.6;"></div>
+    <div class="vibe-fill" style="width:40%;background:#c9883a;"></div>
   </div>
   <div class="vibe-desc">Can you walk to a coffee shop, post office, grocery?</div>
 </div><div class="vibe-row">
@@ -169,7 +162,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
     <span class="vibe-score">8/10</span>
   </div>
   <div class="vibe-track">
-    <div class="vibe-fill" style="width:80%;background:#6366f1;opacity:0.8;"></div>
+    <div class="vibe-fill" style="width:80%;background:#5aaa82;"></div>
   </div>
   <div class="vibe-desc">Low density, wooded lots, no HOA culture, dark skies</div>
 </div><div class="vibe-row">
@@ -178,7 +171,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
     <span class="vibe-score">7/10</span>
   </div>
   <div class="vibe-track">
-    <div class="vibe-fill" style="width:70%;background:#ec4899;opacity:0.8;"></div>
+    <div class="vibe-fill" style="width:70%;background:#e8a84e;"></div>
   </div>
   <div class="vibe-desc">People like us — creative, progressive-leaning, dog people, not flashy</div>
 </div><div class="vibe-row">
@@ -187,7 +180,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
     <span class="vibe-score">6/10</span>
   </div>
   <div class="vibe-track">
-    <div class="vibe-fill" style="width:60%;background:#14b8a6;opacity:0.6;"></div>
+    <div class="vibe-fill" style="width:60%;background:#e8a84e;"></div>
   </div>
   <div class="vibe-desc">Vet clinics, dog parks, pet-friendly trails and businesses</div>
 </div><div class="vibe-row">
@@ -196,19 +189,14 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
     <span class="vibe-score">7/10</span>
   </div>
   <div class="vibe-track">
-    <div class="vibe-fill" style="width:70%;background:#8b5cf6;opacity:0.8;"></div>
+    <div class="vibe-fill" style="width:70%;background:#e8a84e;"></div>
   </div>
   <div class="vibe-desc">Groceries, medical, hardware, gas — can you live here without driving 45 min?</div>
 </div>
-    <div class="vibe-avg">Overall: 6.2 / 10</div>
   </div>
 
   <div class="section-label">What's There</div>
   <div class="source-grid"><span class="source-pill source-present">☕ Coffee <b>2</b></span><span class="source-pill source-absent">📚 Books <b>0</b></span><span class="source-pill source-absent">🎵 Records <b>0</b></span><span class="source-pill source-present">🎶 Music <b>1</b></span><span class="source-pill source-present">🏥 Vet <b>1</b></span><span class="source-pill source-absent">🐾 Dog Park <b>0</b></span><span class="source-pill source-present">🌽 Market <b>1</b></span><span class="source-pill source-present">📖 Library <b>1</b></span></div>
-  <div style="margin-top:8px;">
-    <span class="bb-badge bb-mixed">Broadband: mixed</span>
-    <span style="font-size:0.78rem;color:var(--text-dim);margin-left:8px;">Spectrum in town; rural areas limited</span>
-  </div>
 
   <div class="market-section">
   <div class="section-label">Market — Oxford County</div>
