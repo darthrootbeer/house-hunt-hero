@@ -1,0 +1,45 @@
+[
+  {
+    "slug": "bethel-me",
+    "name": "Bethel",
+    "state": "ME",
+    "county": "Oxford County",
+    "county_fips_state": "23",
+    "county_fips_county": "017",
+    "distance_tier": "T1",
+    "drive_minutes": 0,
+    "drive_note": "Home base",
+    "population": 2607,
+    "hard_fails": [],
+    "vibe": {
+      "creative_culture": 5,
+      "nature_access": 9,
+      "food_drink": 4,
+      "walkability": 4,
+      "quiet_privacy": 8,
+      "community_fit": 7,
+      "pet_friendly": 6,
+      "practical": 7
+    },
+    "vibe_sources": {
+      "coffee_shops": 2,
+      "bookstores": 0,
+      "record_stores": 0,
+      "music_venues": 1,
+      "vet_clinics": 1,
+      "dog_parks": 0,
+      "farmers_markets": 1,
+      "libraries": 1
+    },
+    "market": {
+      "zhvi_latest": null,
+      "zhvi_6m_change_pct": null,
+      "median_sale_price": null,
+      "dom": null,
+      "inventory": null
+    },
+    "broadband": "mixed",
+    "broadband_note": "Spectrum in town; rural areas limited",
+    "notes": "Home base. Maegan's family nearby. Tourist town with ski resort (Sunday River). Small but real downtown."
+  }
+]
