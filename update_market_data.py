@@ -953,6 +953,24 @@ def fmt_price(v):
     return f"${v:,.0f}" if v else "N/A"
 
 
+def fmt_compact(v):
+    """Format a number compactly: 308373 → $308.4K, 4122 → 4.1K."""
+    if v is None:
+        return "N/A"
+    if v >= 1000:
+        return f"${v/1000:.1f}K"
+    return f"${v:.0f}"
+
+
+def fmt_count(v):
+    """Format inventory count: 4122 → 4.1K."""
+    if v is None:
+        return "N/A"
+    if v >= 1000:
+        return f"{v/1000:.1f}K"
+    return f"{v:.0f}"
+
+
 def build_html(redfin_data, zillow_data, fred_data, backup_cities, city_data):
     updated = datetime.now().strftime("%B %d, %Y at %I:%M %p")
     score, score_label = compute_market_score(redfin_data, zillow_data)
@@ -967,49 +985,48 @@ def build_html(redfin_data, zillow_data, fred_data, backup_cities, city_data):
     rate_val = last_valid(fred_data.get("rates", []))
     zhvi_val = last_valid(zillow_data.get("zhvi", []))
 
-    # S2L display
+    # S2L display — show as % above/below asking for instant readability
     s2l_display = "N/A"
     s2l_note = "data unavailable"
     if s2l_val:
-        if s2l_val < 10:
-            s2l_display = f"{s2l_val:.3f}"
-            s2l_note = "over asking" if s2l_val >= 1.0 else "below asking"
-        else:
-            s2l_display = f"{s2l_val:.1f}%"
-            s2l_note = "of list price"
+        pct = s2l_val if s2l_val < 10 else s2l_val / 100
+        delta = (pct - 1.0) * 100
+        sign = "+" if delta >= 0 else ""
+        s2l_display = f"{sign}{delta:.1f}%"
+        s2l_note = "over asking" if delta >= 0 else "below asking"
 
     payment = f"{mortgage_payment(350000, rate_val):,.0f}" if rate_val else "N/A"
     pulse = generate_market_pulse(redfin_data, zillow_data, fred_data, score, score_label or "unknown")
 
     # ── Stat cards ──
     stats_html = ""
-    stats_html += stat_card("Oxford County ZHVI", fmt_price(zhvi_val), "amber",
-                             "Zillow Home Value Index")
-    stats_html += stat_card("Maine Median Sale Price", fmt_price(median_price), "",
-                             "Redfin S3 (state level)")
-    stats_html += stat_card("Days on Market", f"{dom_val:.0f} days" if dom_val else "N/A",
+    stats_html += stat_card("Typical Home Value — Oxford County", fmt_compact(zhvi_val), "amber",
+                             "Use this as your price anchor. Listings well above this need justification.")
+    stats_html += stat_card("What Homes Are Actually Selling For", fmt_compact(median_price), "",
+                             "Real closing prices — not asking prices. When this moves, the market moved.")
+    stats_html += stat_card("Days on Market", f"{dom_val:.0f}d" if dom_val else "N/A",
                              "green" if (dom_val and dom_val < 40) else "amber" if dom_val else "",
-                             "Maine median — Redfin")
-    stats_html += stat_card("Sale-to-List Ratio", s2l_display,
-                             "amber" if s2l_val and (s2l_val >= 1.0 or s2l_val >= 100) else "",
-                             s2l_note)
-    stats_html += stat_card("Active Inventory", f"{inv_val:.0f}" if inv_val else "N/A", "",
-                             "homes listed — Maine")
+                             "How long homes sit before going under contract. Under 20d = competing offers. Over 60d = you have time.")
+    stats_html += stat_card("Are Buyers Paying Over or Under Asking?", s2l_display,
+                             "amber" if s2l_val and s2l_note == "over asking" else "green" if s2l_val else "",
+                             s2l_note + " — below 0% means you have negotiating room. Above 0% means bidding wars.")
+    stats_html += stat_card("Active Inventory", fmt_count(inv_val), "",
+                             "Homes for sale right now. More = more choices, less pressure. Watch for a sudden drop.")
 
     score_html = (
-        f'<div class="stat-card"><div class="stat-label">Market Condition</div>'
+        f'<div class="stat-card"><div class="stat-label">Who Has the Upper Hand Right Now?</div>'
         f'<div class="stat-value" style="font-size:1.1rem;color:var(--amber-light);">'
         f'{score_label or "N/A"}</div>'
         f'<div style="position:relative;margin-top:10px;">'
         f'<div class="score-bar-wrap"><div class="score-bar"></div>'
         f'<div class="score-marker" style="left:{score or 50}%;"></div></div></div>'
-        f'<div class="stat-sub">Composite {score or "N/A"}/100</div></div>'
+        f'<div class="stat-sub">{score or "N/A"}/100 — below 50 favors you. Above 50 means sellers are in control.</div></div>'
     )
     stats_html += score_html
-    stats_html += stat_card("30-yr Mortgage Rate",
-                             f"{rate_val:.2f}%" if rate_val else "N/A",
+    stats_html += stat_card("What Borrowing Costs Right Now",
+                             f"{rate_val:.1f}%" if rate_val else "N/A",
                              "amber" if rate_val else "",
-                             f"~${payment}/mo on $350K (20% down)")
+                             f"~${payment}/mo on $350K (20% down) — every 1% up adds ~$175/mo")
 
     # ── Chart JS accumulator ──
     js = []
@@ -1046,7 +1063,7 @@ new Chart(document.getElementById('{cid}'), {{
         c, j = make_line_chart("chartPrice", datasets, "Price ($)", "fmtDollar")
         charts_html.append(
             f'<div class="chart-panel"><div class="chart-title">Maine Median Sale Price</div>'
-            f'<div class="chart-subtitle">Monthly (Redfin state-level) — with 3-mo and 9-mo moving averages</div>{c}</div>'
+            f'<div class="chart-subtitle">The thick line is the monthly sale price. The smoother lines show the trend — ignore the month-to-month noise and watch those instead.</div>{c}</div>'
         )
         js.append(j)
     else:
@@ -1067,7 +1084,7 @@ new Chart(document.getElementById('{cid}'), {{
         c, j = make_line_chart("chartDOM", datasets, "Days", "fmtDays")
         charts_html.append(
             f'<div class="chart-panel"><div class="chart-title">Days on Market</div>'
-            f'<div class="chart-subtitle">Monthly median — lower = faster-moving inventory</div>{c}</div>'
+            f'<div class="chart-subtitle">When this drops, buyers are moving fast and you\'ll have less time to decide. When it rises, you have breathing room.</div>{c}</div>'
         )
         js.append(j)
     else:
@@ -1088,7 +1105,7 @@ new Chart(document.getElementById('{cid}'), {{
         c, j = make_line_chart("chartS2L", datasets, "Ratio", "fmtPct")
         charts_html.append(
             f'<div class="chart-panel"><div class="chart-title">Sale-to-List Ratio</div>'
-            f'<div class="chart-subtitle">Above 1.0 = buyers paying over asking price</div>{c}</div>'
+            f'<div class="chart-subtitle">Above 0% means buyers are paying over asking — expect competition. Below 0% means you have room to negotiate.</div>{c}</div>'
         )
         js.append(j)
     else:
@@ -1110,7 +1127,7 @@ new Chart(document.getElementById('{cid}'), {{
         c, j = make_line_chart("chartMoS", datasets, "Months", "fmtMos")
         charts_html.append(
             f'<div class="chart-panel"><div class="chart-title">Months of Supply</div>'
-            f'<div class="chart-subtitle">&lt;3 months = strong seller market · &gt;6 = buyer market</div>{c}</div>'
+            f'<div class="chart-subtitle">How long it would take to sell every home currently listed. Under 3 months = sellers win. Over 6 months = you win.</div>{c}</div>'
         )
         js.append(j)
     elif dates and any(v for v in invs if v):
@@ -1183,17 +1200,17 @@ new Chart(document.getElementById('chartZHVI'), {{
 <div class="section-header">Price Forecast (Linear Regression on {forecast['source']})</div>
 <div class="chart-panel full">
   <div class="chart-title">60 &amp; 90-Day Outlook</div>
-  <div class="chart-subtitle">OLS linear trend · 95% confidence interval · {forecast['n_months']} months of data · Not a financial prediction</div>
+  <div class="chart-subtitle">Where prices are likely headed based on the last 5 years of data. The shaded band is the range of likely outcomes — not a guarantee.</div>
   <div class="forecast-grid">
     <div class="forecast-card">
-      <div class="forecast-horizon">60-day outlook &nbsp; {d60['date']}</div>
+      <div class="forecast-horizon">60-Day Trend Estimate &nbsp; {d60['date']}</div>
       <div class="forecast-price">{fmt_price(d60['predicted'])}</div>
-      <div class="forecast-range">Range: {fmt_price(d60['low'])} – {fmt_price(d60['high'])}</div>
+      <div class="forecast-range">where prices are likely heading if the market stays on its current path</div>
     </div>
     <div class="forecast-card">
-      <div class="forecast-horizon">90-day outlook &nbsp; {d90['date']}</div>
+      <div class="forecast-horizon">90-Day Trend Estimate &nbsp; {d90['date']}</div>
       <div class="forecast-price">{fmt_price(d90['predicted'])}</div>
-      <div class="forecast-range">Range: {fmt_price(d90['low'])} – {fmt_price(d90['high'])}</div>
+      <div class="forecast-range">where prices are likely heading if the market stays on its current path</div>
     </div>
   </div>
   <div class="source-note">Monthly trend: {trend_str}</div>
@@ -1269,8 +1286,8 @@ new Chart(document.getElementById('chartRate'), {{
         is_primary = city.get("id") == "bethel_me"
         card_class = "city-card primary" if is_primary else "city-card"
 
-        price_disp = fmt_price(zhvi_latest) if zhvi_latest else "N/A"
-        trend_disp = f"{change:+.1f}% (6mo)" if change is not None else "—"
+        price_disp = fmt_compact(zhvi_latest) if zhvi_latest else "N/A"
+        trend_disp = f"{change:+.1f}% over 6 months" if change is not None else "—"
 
         city_cards += f"""
 <div class="{card_class}">
@@ -1279,11 +1296,11 @@ new Chart(document.getElementById('chartRate'), {{
   <div class="city-drive">&#128663; {city.get('drive_note','')}</div>
   <div class="city-metrics">
     <div>
-      <div class="city-metric-label">County Median Value</div>
+      <div class="city-metric-label">Typical Home Price</div>
       <div class="city-metric-value">{price_disp}</div>
     </div>
     <div>
-      <div class="city-metric-label">6-Month Trend</div>
+      <div class="city-metric-label">Price Direction</div>
       <div class="city-metric-value">{trend_disp}</div>
     </div>
   </div>
@@ -1292,7 +1309,7 @@ new Chart(document.getElementById('chartRate'), {{
   <span class="broadband-badge bb-{bb}">Broadband: {bb}</span>
   <div class="source-note" style="margin-top:3px;">{city.get('broadband_note','')}</div>
   <div class="fit-bar-wrap">
-    <div class="fit-bar-label"><span>Profile fit</span><span>{fit}/10</span></div>
+    <div class="fit-bar-label"><span>Fits Our Search</span><span>{fit}/10</span></div>
     <div class="fit-bar-track"><div class="fit-bar-fill" style="width:{fit*10}%"></div></div>
   </div>
   <div class="city-notes">{city.get('fit_notes','')}</div>

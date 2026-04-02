@@ -845,17 +845,17 @@ class TestCoverageGaps(unittest.TestCase):
             finally:
                 umd.ROOT = orig_root
 
-    # s2l > 10 branch (percentage display)
+    # s2l > 10 branch (percentage input, normalized to delta display)
     def test_build_html_s2l_as_percentage(self):
-        """Test the branch where s2l_val > 10 (already a percentage)."""
-        rd = make_redfin_data(s2l=98.5)  # > 10, treated as percentage
+        """Test the branch where s2l_val > 10 (already a percentage, e.g. 98.5 → -1.5%)."""
+        rd = make_redfin_data(s2l=98.5)  # > 10, treated as percentage → delta = -1.5%
         zd = make_zillow_data()
         fd = make_fred_data()
         cities = umd.BACKUP_CITIES_DEFAULT[:1]
         city_data = {cities[0]["id"]: {"zhvi_latest": 300000, "zhvi_6m_ago": 295000,
                                         "change_pct": 1.7, "county_name": "Test"}}
         html = umd.build_html(rd, zd, fd, cities, city_data)
-        self.assertIn("98.5%", html)
+        self.assertIn("-1.5%", html)
 
     # Inventory-only fallback in build_html (months_of_supply empty but inv present)
     def test_build_html_inventory_fallback(self):
