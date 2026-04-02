@@ -93,6 +93,28 @@ def last_valid(lst, count=3):
     return vals[-1] if vals else None
 
 
+def mom_delta(lst):
+    """Return (current, previous, pct_change) using the last two valid values."""
+    vals = [(i, v) for i, v in enumerate(lst) if v is not None]
+    if len(vals) < 2:
+        return None, None, None
+    _, cur = vals[-1]
+    _, prev = vals[-2]
+    pct = (cur - prev) / prev * 100 if prev else None
+    return cur, prev, pct
+
+
+def delta_badge(pct, good_direction="up"):
+    """Return an HTML delta badge. good_direction: 'up' or 'down'."""
+    if pct is None:
+        return ""
+    arrow = "↑" if pct > 0 else "↓"
+    positive = pct > 0
+    good = (positive and good_direction == "up") or (not positive and good_direction == "down")
+    color = "#5aaa82" if good else "#c9883a"
+    return f'<span style="font-size:0.78rem;color:{color};margin-left:6px;">{arrow}{abs(pct):.1f}%</span>'
+
+
 # ── Data Sources ─────────────────────────────────────────────────────────────
 
 def fetch_redfin_data():
@@ -400,50 +422,58 @@ def mortgage_payment(price, rate_pct, down_pct=0.20, term_years=30):
 
 
 def generate_market_pulse(redfin_data, zillow_data, fred_data, score, score_label):
-    parts = []
+    sentences = []
 
-    zhvi = last_valid(zillow_data.get("zhvi", []))
-    if zhvi:
-        zhvi_list = zillow_data.get("zhvi", [])
+    # Inventory / supply trend — most important signal
+    moss = redfin_data.get("months_of_supply", [])
+    mos_cur, mos_prev, mos_pct = mom_delta(moss)
+    if mos_cur is not None:
+        if mos_pct is not None and abs(mos_pct) >= 5:
+            direction = "up" if mos_pct > 0 else "down"
+            implication = "more homes are hitting the market — you have more choices and more time." if mos_pct > 0 else "inventory is tightening — good listings will move faster."
+            sentences.append(
+                f"Supply is {direction} {abs(mos_pct):.0f}% from last month at {mos_cur:.1f} months: {implication}"
+            )
+        else:
+            level = "plenty of inventory" if mos_cur >= 4 else "moderate inventory" if mos_cur >= 2.5 else "tight inventory"
+            sentences.append(f"Supply is holding steady at {mos_cur:.1f} months — {level} right now.")
+
+    # Price trend
+    zhvi_list = zillow_data.get("zhvi", [])
+    zhvi_cur, _, _ = mom_delta(zhvi_list)
+    if zhvi_cur:
         zhvi_6m = last_valid(zhvi_list[:-6] if len(zhvi_list) > 6 else zhvi_list)
-        trend_str = ""
-        if zhvi_6m and zhvi_6m != zhvi:
-            chg = zhvi - zhvi_6m
-            pct = chg / zhvi_6m * 100
-            trend_str = f", up {pct:.1f}% over the past 6 months" if chg > 0 else f", down {abs(pct):.1f}% over the past 6 months"
-        parts.append(f"Oxford County median home value is ${zhvi:,.0f}{trend_str}.")
+        if zhvi_6m and zhvi_6m != zhvi_cur:
+            pct_6m = (zhvi_cur - zhvi_6m) / zhvi_6m * 100
+            trend_str = f"up {pct_6m:.1f}%" if pct_6m > 0 else f"down {abs(pct_6m):.1f}%"
+            budget_note = " Your $420K ceiling still has room." if zhvi_cur < 380000 else " Watch your $420K ceiling — prices are getting close."
+            sentences.append(f"Oxford County home values are {trend_str} over 6 months (${zhvi_cur:,.0f} today).{budget_note}")
 
-    elif redfin_data.get("median_price"):
-        price = last_valid(redfin_data["median_price"])
-        if price:
-            parts.append(f"Maine median sale price is ${price:,.0f} (county-specific data unavailable in free tier).")
-
+    # Market score
     if score is not None:
-        favor = "sellers" if score >= 55 else "buyers" if score < 45 else "neither buyers nor sellers heavily"
-        parts.append(
-            f"Current conditions favor {favor} — {score_label} (composite score {score}/100)."
-        )
+        if score < 40:
+            sentences.append(f"Conditions strongly favor you as a buyer right now ({score}/100) — negotiate confidently.")
+        elif score < 50:
+            sentences.append(f"You have a slight edge as a buyer ({score}/100) — there's negotiating room but don't dawdle on good listings.")
+        elif score < 60:
+            sentences.append(f"It's a balanced market ({score}/100) — neither side has a clear advantage.")
+        else:
+            sentences.append(f"Sellers have the upper hand ({score}/100) — expect less room to negotiate and faster decisions needed.")
 
-    dom = last_valid(redfin_data.get("dom", []))
-    if dom:
-        speed = "fast-moving" if dom < 35 else "moderate" if dom < 60 else "slow-moving"
-        parts.append(f"Maine homes are spending {dom:.0f} days on market on median ({speed} inventory).")
-
+    # Rate context
     rate = last_valid(fred_data.get("rates", []))
     if rate:
         pmt = mortgage_payment(350000, rate)
-        parts.append(
-            f"At today's {rate:.2f}% 30-year rate, a $350K home with 20% down runs ${pmt:,.0f}/month (P+I)."
-        )
-    else:
-        parts.append(
-            "Mortgage rate data unavailable — set FRED_API_KEY in your environment to enable."
-        )
+        _, _, rate_pct = mom_delta(fred_data.get("rates", []))
+        rate_move = ""
+        if rate_pct is not None and abs(rate_pct) >= 1:
+            rate_move = f" ({"up" if rate_pct > 0 else "down"} slightly from last month)"
+        sentences.append(f"Rates are at {rate:.1f}%{rate_move} — that's ${pmt:,.0f}/mo on $350K with 20% down.")
 
-    if not parts:
-        return "Market data could not be retrieved from any source. Check connectivity and run the updater again."
+    if not sentences:
+        return "Market data could not be retrieved. Check connectivity and run the updater again."
 
-    return " ".join(parts)
+    return " ".join(sentences)
 
 
 # ── Backup Cities ─────────────────────────────────────────────────────────────
@@ -943,9 +973,9 @@ def unavailable(msg="Data unavailable — check source"):
     return f'<div class="unavailable"><div class="icon">&#9888;</div><div>{msg}</div></div>'
 
 
-def stat_card(label, value, color="", sub=""):
+def stat_card(label, value, color="", sub="", badge=""):
     return (f'<div class="stat-card"><div class="stat-label">{label}</div>'
-            f'<div class="stat-value {color}">{value}</div>'
+            f'<div class="stat-value {color}">{value}{badge}</div>'
             f'<div class="stat-sub">{sub}</div></div>')
 
 
@@ -998,20 +1028,31 @@ def build_html(redfin_data, zillow_data, fred_data, backup_cities, city_data):
     payment = f"{mortgage_payment(350000, rate_val):,.0f}" if rate_val else "N/A"
     pulse = generate_market_pulse(redfin_data, zillow_data, fred_data, score, score_label or "unknown")
 
+    # ── Month-over-month deltas ──
+    _, _, zhvi_pct = mom_delta(zillow_data.get("zhvi", []))
+    _, _, price_pct = mom_delta(redfin_data.get("median_price", []))
+    _, _, dom_pct = mom_delta(redfin_data.get("dom", []))
+    _, _, inv_pct = mom_delta(redfin_data.get("inventory", []))
+    _, _, rate_pct = mom_delta(fred_data.get("rates", []))
+
     # ── Stat cards ──
     stats_html = ""
     stats_html += stat_card("Typical Home Value — Oxford County", fmt_compact(zhvi_val), "amber",
-                             "Use this as your price anchor. Listings well above this need justification.")
+                             "Use this as your price anchor. Listings well above this need justification.",
+                             delta_badge(zhvi_pct, "down"))
     stats_html += stat_card("What Homes Are Actually Selling For", fmt_compact(median_price), "",
-                             "Real closing prices — not asking prices. When this moves, the market moved.")
+                             "Real closing prices — not asking prices. When this moves, the market moved.",
+                             delta_badge(price_pct, "down"))
     stats_html += stat_card("Days on Market", f"{dom_val:.0f}d" if dom_val else "N/A",
                              "green" if (dom_val and dom_val < 40) else "amber" if dom_val else "",
-                             "How long homes sit before going under contract. Under 20d = competing offers. Over 60d = you have time.")
+                             "How long homes sit before going under contract. Under 20d = competing offers. Over 60d = you have time.",
+                             delta_badge(dom_pct, "up"))
     stats_html += stat_card("Are Buyers Paying Over or Under Asking?", s2l_display,
                              "amber" if s2l_val and s2l_note == "over asking" else "green" if s2l_val else "",
                              s2l_note + " — below 0% means you have negotiating room. Above 0% means bidding wars.")
     stats_html += stat_card("Active Inventory", fmt_count(inv_val), "",
-                             "Homes for sale right now. More = more choices, less pressure. Watch for a sudden drop.")
+                             "Homes for sale right now. More = more choices, less pressure. Watch for a sudden drop.",
+                             delta_badge(inv_pct, "up"))
 
     score_html = (
         f'<div class="stat-card"><div class="stat-label">Who Has the Upper Hand Right Now?</div>'
@@ -1026,7 +1067,8 @@ def build_html(redfin_data, zillow_data, fred_data, backup_cities, city_data):
     stats_html += stat_card("What Borrowing Costs Right Now",
                              f"{rate_val:.1f}%" if rate_val else "N/A",
                              "amber" if rate_val else "",
-                             f"~${payment}/mo on $350K (20% down) — every 1% up adds ~$175/mo")
+                             f"~${payment}/mo on $350K (20% down) — every 1% up adds ~$175/mo",
+                             delta_badge(rate_pct, "down"))
 
     # ── Chart JS accumulator ──
     js = []
@@ -1061,14 +1103,61 @@ new Chart(document.getElementById('{cid}'), {{
              "borderDash": [2, 3], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4},
         ]
         c, j = make_line_chart("chartPrice", datasets, "Price ($)", "fmtDollar")
-        charts_html.append(
+        price_chart_html = (
             f'<div class="chart-panel"><div class="chart-title">Maine Median Sale Price</div>'
             f'<div class="chart-subtitle">The thick line is the monthly sale price. The smoother lines show the trend — ignore the month-to-month noise and watch those instead.</div>{c}</div>'
         )
+        price_chart_js = j
+    else:
+        price_chart_html = f'<div class="chart-panel">{unavailable("Redfin price data unavailable")}</div>'
+        price_chart_js = None
+
+    # Months of supply chart — chart #1 (most important signal)
+    moss = redfin_data.get("months_of_supply", [])
+    invs = redfin_data.get("inventory", [])
+    if dates and any(v for v in moss if v):
+        mos_ma = moving_average(moss, 3)
+        datasets = [
+            {"label": "Months of Supply", "data": moss, "borderColor": "#5aaa82",
+             "backgroundColor": "rgba(90,170,130,0.08)", "tension": 0.4, "fill": True,
+             "pointRadius": 3, "borderWidth": 2},
+            {"label": "3-mo MA", "data": mos_ma, "borderColor": "#c9883a",
+             "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4},
+        ]
+        c, j = make_line_chart("chartMoS", datasets, "Months", "fmtMos")
+        charts_html.append(
+            f'<div class="chart-panel"><div class="chart-title">Months of Supply</div>'
+            f'<div class="chart-subtitle">How long it would take to sell every home currently listed. Under 3 months = sellers win. Over 6 months = you win.</div>{c}</div>'
+        )
         js.append(j)
+    elif dates and any(v for v in invs if v):
+        inv_ma = moving_average(invs, 3)
+        datasets = [
+            {"label": "Active Listings", "data": invs, "backgroundColor": "rgba(61,122,90,0.45)",
+             "borderColor": "#3d7a5a", "borderWidth": 1},
+            {"label": "3-mo MA", "data": inv_ma, "type": "line", "borderColor": "#c9883a",
+             "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4},
+        ]
+        inv_html = f'<div class="chart-container"><canvas id="chartInv"></canvas></div>'
+        inv_js = f"""
+new Chart(document.getElementById('chartInv'), {{
+  type: 'bar',
+  data: {{ labels: {json.dumps(dates)}, datasets: {json.dumps(datasets)} }},
+  options: baseOpts({json.dumps(dates)}, 'Listings', fmtNum)
+}});"""
+        charts_html.append(
+            f'<div class="chart-panel"><div class="chart-title">Active Inventory</div>'
+            f'<div class="chart-subtitle">Homes for sale right now. More = more choices, less pressure. Watch for a sudden drop.</div>{inv_html}</div>'
+        )
+        js.append(inv_js)
     else:
         charts_html.append(
-            f'<div class="chart-panel">{unavailable("Redfin price data unavailable")}</div>')
+            f'<div class="chart-panel">{unavailable("Inventory data unavailable")}</div>')
+
+    # Price chart — chart #2
+    charts_html.append(price_chart_html)
+    if price_chart_js:
+        js.append(price_chart_js)
 
     # DOM chart
     doms = redfin_data.get("dom", [])
@@ -1111,48 +1200,6 @@ new Chart(document.getElementById('{cid}'), {{
     else:
         charts_html.append(
             f'<div class="chart-panel">{unavailable("Sale-to-list data unavailable")}</div>')
-
-    # Months of supply chart
-    moss = redfin_data.get("months_of_supply", [])
-    invs = redfin_data.get("inventory", [])
-    if dates and any(v for v in moss if v):
-        mos_ma = moving_average(moss, 3)
-        datasets = [
-            {"label": "Months of Supply", "data": moss, "borderColor": "#5aaa82",
-             "backgroundColor": "rgba(90,170,130,0.08)", "tension": 0.4, "fill": True,
-             "pointRadius": 3, "borderWidth": 2},
-            {"label": "3-mo MA", "data": mos_ma, "borderColor": "#c9883a",
-             "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4},
-        ]
-        c, j = make_line_chart("chartMoS", datasets, "Months", "fmtMos")
-        charts_html.append(
-            f'<div class="chart-panel"><div class="chart-title">Months of Supply</div>'
-            f'<div class="chart-subtitle">How long it would take to sell every home currently listed. Under 3 months = sellers win. Over 6 months = you win.</div>{c}</div>'
-        )
-        js.append(j)
-    elif dates and any(v for v in invs if v):
-        inv_ma = moving_average(invs, 3)
-        datasets = [
-            {"label": "Active Listings", "data": invs, "backgroundColor": "rgba(61,122,90,0.45)",
-             "borderColor": "#3d7a5a", "borderWidth": 1},
-            {"label": "3-mo MA", "data": inv_ma, "type": "line", "borderColor": "#c9883a",
-             "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4},
-        ]
-        inv_html = f'<div class="chart-container"><canvas id="chartInv"></canvas></div>'
-        inv_js = f"""
-new Chart(document.getElementById('chartInv'), {{
-  type: 'bar',
-  data: {{ labels: {json.dumps(dates)}, datasets: {json.dumps(datasets)} }},
-  options: baseOpts({json.dumps(dates)}, 'Listings', fmtNum)
-}});"""
-        charts_html.append(
-            f'<div class="chart-panel"><div class="chart-title">Active Inventory</div>'
-            f'<div class="chart-subtitle">Homes listed — seasonal pattern visible</div>{inv_html}</div>'
-        )
-        js.append(inv_js)
-    else:
-        charts_html.append(
-            f'<div class="chart-panel">{unavailable("Inventory data unavailable")}</div>')
 
     # ── Oxford County ZHVI section ──
     zhvi_section = ""

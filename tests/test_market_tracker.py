@@ -344,16 +344,16 @@ class TestGenerateMarketPulse(unittest.TestCase):
             make_redfin_data(), make_zillow_data(start=308000), make_fred_data(), 60, "Seller's Advantage")
         self.assertIn("$", result)
 
-    def test_mentions_dom(self):
+    def test_mentions_supply(self):
         result = umd.generate_market_pulse(
             make_redfin_data(dom=65), make_zillow_data(),
             {"dates": [], "rates": [], "source": "unavailable", "error": None}, 50, "Balanced")
-        self.assertIn("65", result)
+        self.assertIn("months", result)
 
     def test_mentions_rate(self):
         result = umd.generate_market_pulse(
             make_redfin_data(), make_zillow_data(), {"dates": ["2024-01-04"], "rates": [6.75], "source": "test", "error": None}, 50, "Balanced")
-        self.assertIn("6.75", result)
+        self.assertIn("6.8", result)  # rate displayed at 1 decimal place
 
     def test_no_data_fallback(self):
         empty = {"median_price": [], "dom": [], "sale_to_list": [], "inventory": [],
