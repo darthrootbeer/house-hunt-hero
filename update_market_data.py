@@ -150,65 +150,66 @@ def trend_tag(series, good_direction="up"):
     return f'<span class="trend-tag {cls}">{arrow} {label}</span>'
 
 
-def signal_tag(text, good=True):
-    """Return a styled at-a-glance signal tag."""
-    color = "#5aaa82" if good else "#c9883a"
-    return f'<div style="font-size:0.82rem;font-weight:600;color:{color};margin-top:6px;letter-spacing:0.02em;">{text}</div>'
+def signal_pill(pill, detail="", good=True):
+    """Return a pill label + optional detail line below it."""
+    cls = "good" if good else "bad"
+    detail_html = f'<div class="signal-detail">{detail}</div>' if detail else ""
+    return f'<div><span class="signal-pill {cls}">{pill}</span>{detail_html}</div>'
 
 
 def dom_signal(dom):
     if dom is None: return ""
-    if dom < 20: return signal_tag("Move fast — homes are flying off the market", good=False)
-    if dom < 40: return signal_tag("Moderate pace — stay alert but no panic", good=True)
-    if dom < 65: return signal_tag("Slow market — you have breathing room", good=True)
-    return signal_tag("Very slow — take your time and negotiate", good=True)
+    if dom < 20: return signal_pill("Moving fast", "Homes are gone quickly — have your offer ready before you tour", good=False)
+    if dom < 40: return signal_pill("Moderate pace", "Stay alert but no need to panic — you have a few days", good=True)
+    if dom < 65: return signal_pill("Slow market", "Sellers are waiting — take your time", good=True)
+    return signal_pill("Very slow", "Take your time and negotiate — buyer's advantage", good=True)
 
 
 def mos_signal(mos):
     if mos is None: return ""
-    if mos < 2: return signal_tag("Seller's market — very tight inventory", good=False)
-    if mos < 3: return signal_tag("Leaning seller — less room to negotiate", good=False)
-    if mos < 5: return signal_tag("Balanced — neither side has a clear edge", good=True)
-    if mos < 7: return signal_tag("Leaning buyer — you have leverage", good=True)
-    return signal_tag("Buyer's market — strong negotiating position", good=True)
+    if mos < 2: return signal_pill("Seller's market", "Tight inventory — less room to push back on price", good=False)
+    if mos < 3: return signal_pill("Leaning seller", "Still somewhat competitive — don't lowball", good=False)
+    if mos < 5: return signal_pill("Balanced", "Neither side has a clear edge right now", good=True)
+    if mos < 7: return signal_pill("Leaning buyer", "You have leverage — ask for concessions", good=True)
+    return signal_pill("Buyer's market", "Strong negotiating position — don't be afraid to push", good=True)
 
 
 def price_signal(zhvi, budget=420000):
     if zhvi is None: return ""
     pct_of_budget = zhvi / budget * 100
-    if pct_of_budget < 70: return signal_tag("Well within budget — plenty of room", good=True)
-    if pct_of_budget < 85: return signal_tag("Comfortable — budget has headroom", good=True)
-    if pct_of_budget < 95: return signal_tag("Getting close to your ceiling", good=False)
-    return signal_tag("At or above your hard max — watch closely", good=False)
+    if pct_of_budget < 70: return signal_pill("Well within budget", "Plenty of headroom — focus on quality over compromise", good=True)
+    if pct_of_budget < 85: return signal_pill("Comfortable", "Budget has headroom — you're in a good spot", good=True)
+    if pct_of_budget < 95: return signal_pill("Getting close", "Approaching your ceiling — factor in renovation costs", good=False)
+    return signal_pill("At your limit", "At or above your hard max — watch this closely", good=False)
 
 
 def s2l_signal(delta_pct):
     if delta_pct is None: return ""
-    if delta_pct >= 3: return signal_tag("Bidding wars — expect to pay over asking", good=False)
-    if delta_pct >= 0: return signal_tag("Near asking — limited negotiating room", good=False)
-    if delta_pct >= -3: return signal_tag("Slight discount available — room to negotiate", good=True)
-    return signal_tag("Buyers getting solid discounts", good=True)
+    if delta_pct >= 3: return signal_pill("Bidding wars", "Buyers paying well over asking — expect competition", good=False)
+    if delta_pct >= 0: return signal_pill("Near asking", "Limited negotiating room — don't lowball", good=False)
+    if delta_pct >= -3: return signal_pill("Buyer discounts", "Room to negotiate — offers below asking are landing", good=True)
+    return signal_pill("Strong discounts", "Buyers getting solid deals below asking — push on price", good=True)
 
 
 def inv_signal(inv, prev_inv):
     if inv is None: return ""
     if prev_inv and prev_inv > 0:
         chg = (inv - prev_inv) / prev_inv * 100
-        if chg >= 10: return signal_tag("Inventory rising fast — more choices coming", good=True)
-        if chg >= 3: return signal_tag("Inventory growing — trend is in your favor", good=True)
-        if chg <= -10: return signal_tag("Inventory dropping fast — act on good listings", good=False)
-        if chg <= -3: return signal_tag("Inventory shrinking — market tightening", good=False)
-    if inv > 5000: return signal_tag("Plenty of homes listed — healthy supply", good=True)
-    if inv > 2000: return signal_tag("Moderate supply — enough to be selective", good=True)
-    return signal_tag("Limited supply — good listings will move fast", good=False)
+        if chg >= 10: return signal_pill("Rising fast", "More choices coming — don't rush", good=True)
+        if chg >= 3: return signal_pill("Growing", "Trend is in your favor — inventory expanding", good=True)
+        if chg <= -10: return signal_pill("Dropping fast", "Act on good listings — supply shrinking quickly", good=False)
+        if chg <= -3: return signal_pill("Tightening", "Market is tightening — fewer options ahead", good=False)
+    if inv > 5000: return signal_pill("Plenty listed", "Healthy supply — you have choices", good=True)
+    if inv > 2000: return signal_pill("Moderate supply", "Enough to be selective — not too thin", good=True)
+    return signal_pill("Limited supply", "Good listings will move fast — stay sharp", good=False)
 
 
 def rate_signal(rate):
     if rate is None: return ""
-    if rate < 5.5: return signal_tag("Historically low — great time to lock in", good=True)
-    if rate < 6.5: return signal_tag("Manageable — near recent norms", good=True)
-    if rate < 7.5: return signal_tag("Elevated — adds ~$175/mo vs 6% rate", good=False)
-    return signal_tag("High — significantly impacts monthly payment", good=False)
+    if rate < 5.5: return signal_pill("Historically low", "Great time to lock in — rates may not stay here", good=True)
+    if rate < 6.5: return signal_pill("Manageable", "Near recent norms — not ideal but workable", good=True)
+    if rate < 7.5: return signal_pill("Elevated", "Adds ~$175/mo vs a 6% rate on $350K", good=False)
+    return signal_pill("High", "Significantly impacts your monthly payment — factor carefully", good=False)
 
 
 # ── Data Sources ─────────────────────────────────────────────────────────────
@@ -836,14 +837,20 @@ header { background: var(--navy); border-bottom: 2px solid var(--green-dim); pad
 .pulse-text { font-size: 1.02rem; line-height: 1.75; color: var(--text); }
 
 /* Stat grid */
-.stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; margin-bottom: 28px; }
-.stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px 20px; display: flex; flex-direction: column; }
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; margin-bottom: 28px; align-items: stretch; }
+.stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px 20px; display: flex; flex-direction: column; min-height: 200px; }
 .stat-label { font-family: 'JetBrains Mono', monospace; font-size: 0.70rem; text-transform: uppercase; letter-spacing: 0.10em; color: var(--text-muted); margin-bottom: 6px; }
 .stat-value { font-family: 'Playfair Display', serif; font-size: 1.75rem; font-weight: 600; color: var(--text); line-height: 1.1; }
 .stat-value.green { color: var(--green-light); }
 .stat-value.amber { color: var(--amber-light); }
 .stat-value.red { color: var(--red-light); }
-.stat-sub { font-family: 'Lora', serif; font-size: 0.78rem; color: var(--text-muted); margin-top: auto; padding-top: 10px; border-top: 1px solid var(--border); }
+/* Signal pill — replaces signal_tag inline style */
+.signal-pill { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 0.67rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; margin-top: 8px; }
+.signal-pill.good { background: rgba(90,170,130,0.15); color: #5aaa82; border: 1px solid rgba(90,170,130,0.35); }
+.signal-pill.bad  { background: rgba(201,136,58,0.15);  color: #c9883a; border: 1px solid rgba(201,136,58,0.35); }
+.signal-detail { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 0.73rem; color: var(--text-muted); margin-top: 5px; line-height: 1.4; }
+.stat-body { flex: 1; }
+.stat-sub { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 0.72rem; color: var(--text-dim); margin-top: auto; padding-top: 10px; border-top: 1px solid var(--border); line-height: 1.45; }
 
 /* Score bar */
 .score-bar-wrap { background: var(--surface2); border-radius: 4px; height: 8px; margin: 10px 0 6px; position: relative; }
@@ -1123,8 +1130,10 @@ def unavailable(msg="Data unavailable — check source"):
 
 def stat_card(label, value, color="", sub="", badge="", signal=""):
     return (f'<div class="stat-card"><div class="stat-label">{label}</div>'
+            f'<div class="stat-body">'
             f'<div class="stat-value {color}">{value}{badge}</div>'
             f'{signal}'
+            f'</div>'
             f'<div class="stat-sub">{sub}</div></div>')
 
 
@@ -1210,24 +1219,33 @@ def build_html(redfin_data, zillow_data, fred_data, backup_cities, city_data):
                              delta_badge(inv_pct, "up"),
                              inv_signal(inv_val, inv_prev))
 
-    score_signal_text = (
-        "Strong buyer advantage — negotiate confidently" if (score or 50) < 35 else
-        "You have the edge — don't be afraid to negotiate" if (score or 50) < 45 else
-        "Balanced — neither side dominates" if (score or 50) < 55 else
-        "Sellers have the edge — move on good listings" if (score or 50) < 70 else
-        "Strong seller's market — expect competition"
-    )
-    score_signal_good = (score or 50) < 50
-    score_signal_color = "#5aaa82" if score_signal_good else "#c9883a"
+    _score_val = score or 50
+    if _score_val < 35:
+        score_pill, score_detail = "Strong buyer edge", "Negotiate confidently — sellers need you more than you need them"
+        score_signal_good = True
+    elif _score_val < 45:
+        score_pill, score_detail = "Buyer advantage", "You have the edge — don't be afraid to negotiate"
+        score_signal_good = True
+    elif _score_val < 55:
+        score_pill, score_detail = "Balanced", "Neither side dominates — fair offers work"
+        score_signal_good = True
+    elif _score_val < 70:
+        score_pill, score_detail = "Seller's edge", "Move on good listings — don't wait too long"
+        score_signal_good = False
+    else:
+        score_pill, score_detail = "Seller's market", "Expect competition — be ready to move fast"
+        score_signal_good = False
     score_html = (
         f'<div class="stat-card"><div class="stat-label">Who Has the Upper Hand Right Now?</div>'
+        f'<div class="stat-body">'
         f'<div class="stat-value" style="font-size:1.1rem;color:var(--amber-light);">'
         f'{score_label or "N/A"}</div>'
-        f'<div style="font-size:0.82rem;font-weight:600;color:{score_signal_color};margin-top:6px;">{score_signal_text}</div>'
+        f'{signal_pill(score_pill, score_detail, good=score_signal_good)}'
         f'<div style="position:relative;margin-top:10px;">'
         f'<div class="score-bar-wrap"><div class="score-bar"></div>'
-        f'<div class="score-marker" style="left:{score or 50}%;"></div></div></div>'
-        f'<div class="stat-sub" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);">{score or "N/A"}/100 — below 50 favors you. Above 50 means sellers are in control.</div></div>'
+        f'<div class="score-marker" style="left:{_score_val}%;"></div></div></div>'
+        f'</div>'
+        f'<div class="stat-sub">{_score_val}/100 — below 50 favors you. Above 50 means sellers are in control.</div></div>'
     )
     stats_html += score_html
     stats_html += stat_card("What Borrowing Costs Right Now",
@@ -1521,35 +1539,41 @@ new Chart(document.getElementById('chartInv'), {{
 
     # ── Oxford County ZHVI section ──
     zhvi_section = ""
+    zd = []  # used below in forecast section
+    zv = []
     if zillow_data.get("dates") and zillow_data.get("zhvi"):
         zd_full = zillow_data["dates"]
         zv_full = zillow_data["zhvi"]
-        # Trim ZHVI to 18 months
+
+        def zhvi_datasets_fn(n):
+            zd_s = trim_to(zd_full, n)
+            zv_s = trim_to(zv_full, n)
+            zv_ma_s = moving_average(zv_s, 3)
+            return [
+                {"label": "Oxford County ZHVI", "data": zv_s, "borderColor": "#c9883a",
+                 "backgroundColor": "rgba(201,136,58,0.12)", "tension": 0.4, "fill": True,
+                 "pointRadius": 2, "borderWidth": 2},
+                {"label": "3-mo MA", "data": zv_ma_s, "borderColor": "#5aaa82",
+                 "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4},
+            ]
+
+        zhvi_c, zhvi_j, zhvi_zbtn = make_zoom_chart(
+            "chartZHVI", zhvi_datasets_fn, "Home Value ($)", "fmtDollar",
+            zd_full, proj_series=zv_full, proj_good_dir="down"
+        )
+        # Keep 18mo trimmed slices for the forecast section below
         ztrim = max(0, len(zd_full) - CHART_MONTHS)
         zd = zd_full[ztrim:]
         zv = zv_full[ztrim:]
-        zv_ma = moving_average(zv, 3)
-        zhvi_datasets = [
-            {"label": "Oxford County ZHVI", "data": zv, "borderColor": "#c9883a",
-             "backgroundColor": "rgba(201,136,58,0.12)", "tension": 0.4, "fill": True,
-             "pointRadius": 2, "borderWidth": 2},
-            {"label": "3-mo MA", "data": zv_ma, "borderColor": "#5aaa82",
-             "borderDash": [5, 4], "borderWidth": 1.5, "pointRadius": 0, "tension": 0.4},
-        ]
-        zhvi_js = f"""
-new Chart(document.getElementById('chartZHVI'), {{
-  type: 'line',
-  data: {{ labels: {json.dumps(zd)}, datasets: {json.dumps(zhvi_datasets)} }},
-  options: baseOpts({json.dumps(zd)}, 'Home Value ($)', fmtDollar)
-}});"""
-        js.append(zhvi_js)
+
+        js.append(zhvi_j)
         note = zillow_data.get("note", "")
         zhvi_section = f"""
 <div class="section-header">Oxford County ZHVI (Zillow Home Value Index)</div>
 <div class="chart-panel full">
-  <div class="chart-title">Oxford County, ME — Median Home Value</div>
-  <div class="chart-subtitle">Smoothed, seasonally adjusted · Middle tier · last 18 months</div>
-  {canvas('chartZHVI')}
+  <div class="chart-header"><div class="chart-title">Oxford County, ME — Median Home Value</div>{zhvi_zbtn}</div>
+  <div class="chart-subtitle">Smoothed, seasonally adjusted · Middle tier. Default: 6 months.</div>
+  {zhvi_c}
   {'<div class="source-note">Note: ' + note + '</div>' if note else ''}
   <div class="source-note">Source: Zillow Research ({zillow_data.get('source','')})</div>
 </div>"""
