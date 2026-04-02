@@ -839,8 +839,8 @@ header { background: var(--navy); border-bottom: 2px solid var(--green-dim); pad
 /* Stat grid */
 .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; margin-bottom: 28px; align-items: stretch; }
 .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px 20px; display: flex; flex-direction: column; min-height: 200px; }
-.stat-label { font-family: 'Inter', -apple-system, sans-serif; font-size: 0.70rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 6px; }
-.stat-value { font-family: 'Playfair Display', serif; font-size: 1.75rem; font-weight: 600; color: var(--text); line-height: 1.1; }
+.stat-label { font-family: 'Inter', -apple-system, sans-serif; font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: 8px; }
+.stat-value { font-family: 'Playfair Display', serif; font-size: 2.1rem; font-weight: 700; color: var(--text); line-height: 1.05; }
 .stat-value.green { color: var(--green-light); }
 .stat-value.amber { color: var(--amber-light); }
 .stat-value.red { color: var(--red-light); }
@@ -1209,26 +1209,26 @@ def build_html(redfin_data, zillow_data, fred_data, backup_cities, city_data):
 
     # ── Stat cards ──
     stats_html = ""
-    stats_html += stat_card("Typical Home Value — Oxford County", fmt_compact(zhvi_val), "amber",
-                             "Use this as your price anchor. Listings well above this need justification.",
+    stats_html += stat_card("Home Values", fmt_compact(zhvi_val), "amber",
+                             "Is a listing priced fairly? Compare it to this.",
                              delta_badge(zhvi_pct, "down"),
                              price_signal(zhvi_val))
-    stats_html += stat_card("What Homes Are Actually Selling For", fmt_compact(median_price), "",
-                             "Real closing prices — not asking prices. When this moves, the market moved.",
+    stats_html += stat_card("Closing Prices", fmt_compact(median_price), "",
+                             "What people actually paid — not what was listed.",
                              delta_badge(price_pct, "down"),
                              price_signal(median_price))
-    stats_html += stat_card("Days on Market", f"{dom_val:.0f}d" if dom_val else "N/A",
+    stats_html += stat_card("Time to Sell", f"{dom_val:.0f}d" if dom_val else "N/A",
                              "green" if (dom_val and dom_val < 40) else "amber" if dom_val else "",
-                             "How long homes sit before going under contract. Under 20d = competing offers. Over 60d = you have time.",
+                             "Slow = you have time to decide. Fast = be ready.",
                              delta_badge(dom_pct, "up"),
                              dom_signal(dom_val))
-    stats_html += stat_card("Are Buyers Paying Over or Under Asking?", s2l_display,
+    stats_html += stat_card("Discounts?", s2l_display,
                              "amber" if s2l_val and s2l_note == "over asking" else "green" if s2l_val else "",
-                             "Shown as % above or below asking price. Negative = buyers got a discount. Positive = buyers paid over asking.",
+                             "Negative = buyers got a discount. Positive = paid over asking.",
                              "",
                              s2l_signal(s2l_delta))
-    stats_html += stat_card("Active Inventory", fmt_count(inv_val), "",
-                             "Homes for sale right now. More = more choices, less pressure. Watch for a sudden drop.",
+    stats_html += stat_card("Listing Count", fmt_count(inv_val), "",
+                             "More homes = more options and less pressure on you.",
                              delta_badge(inv_pct, "up"),
                              inv_signal(inv_val, inv_prev))
 
@@ -1249,22 +1249,22 @@ def build_html(redfin_data, zillow_data, fred_data, backup_cities, city_data):
         score_pill, score_detail = "Seller's market", "Expect competition — be ready to move fast"
         score_signal_good = False
     score_html = (
-        f'<div class="stat-card"><div class="stat-label">Who Has the Upper Hand Right Now?</div>'
+        f'<div class="stat-card"><div class="stat-label">Buyer vs. Seller?</div>'
         f'<div class="stat-body">'
-        f'<div class="stat-value" style="font-size:1.1rem;color:var(--amber-light);">'
+        f'<div class="stat-value" style="font-size:1.6rem;color:var(--amber-light);">'
         f'{score_label or "N/A"}</div>'
         f'{signal_pill(score_pill, score_detail, good=score_signal_good)}'
         f'<div style="position:relative;margin-top:10px;">'
         f'<div class="score-bar-wrap"><div class="score-bar"></div>'
         f'<div class="score-marker" style="left:{_score_val}%;"></div></div></div>'
         f'</div>'
-        f'<div class="stat-sub">{_score_val}/100 — below 50 favors you. Above 50 means sellers are in control.</div></div>'
+        f'<div class="stat-sub">Below 50 = you have leverage. Above 50 = sellers win.</div></div>'
     )
     stats_html += score_html
-    stats_html += stat_card("What Borrowing Costs Right Now",
+    stats_html += stat_card("Mortgage Rate",
                              f"{rate_val:.1f}%" if rate_val else "N/A",
                              "amber" if rate_val else "",
-                             f"~${payment}/mo on $350K (20% down) — every 1% up adds ~$175/mo",
+                             f"That's ~${payment}/mo on $350K with 20% down.",
                              delta_badge(rate_pct, "down"),
                              rate_signal(rate_val))
 
