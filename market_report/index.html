@@ -66,8 +66,22 @@ header { background: var(--navy); border-bottom: 2px solid var(--green-dim); pad
 /* Chart panels */
 .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 20px; }
 @media (max-width: 860px) { .chart-grid { grid-template-columns: 1fr; } }
-.chart-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px; }
+.chart-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px;
+  border-left-width: 2px; border-left-color: var(--panel-accent, var(--border)); }
 .chart-panel.full { grid-column: 1 / -1; }
+/* Per-panel accent colors — subtle tints */
+.chart-panel[data-panel="mos"]    { --panel-accent: #3d7a5a; }
+.chart-panel[data-panel="price"]  { --panel-accent: #7a5020; }
+.chart-panel[data-panel="dom"]    { --panel-accent: #2a4a7a; }
+.chart-panel[data-panel="s2l"]    { --panel-accent: #6a3a6a; }
+.chart-panel[data-panel="zhvi"]   { --panel-accent: #5a6a2a; }
+.chart-panel[data-panel="flow"]   { --panel-accent: #3a6a7a; }
+.chart-panel[data-panel="forecast"] { --panel-accent: #4a4a7a; }
+/* Accent underline on chart title — drawn via border-bottom using the panel accent */
+.chart-panel[data-panel] .chart-title {
+  display: inline-block; border-bottom: 2px solid var(--panel-accent, transparent);
+  padding-bottom: 2px; margin-bottom: 8px;
+}
 .chart-header { display: -webkit-box; display: flex; -webkit-box-pack: justify; justify-content: space-between; -webkit-box-align: start; align-items: flex-start; margin-bottom: 6px; gap: 8px; }
 .chart-title { font-family: 'Inter', -apple-system, sans-serif; font-size: 1.0rem; font-weight: 600; color: var(--text); letter-spacing: -0.01em; }
 .chart-subtitle { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 0.79rem; color: var(--text-muted); margin-bottom: 14px; font-style: italic; }
@@ -89,11 +103,21 @@ header { background: var(--navy); border-bottom: 2px solid var(--green-dim); pad
 @media (max-width: 480px) {
   .zoom-btn { padding: 5px 12px; min-height: 36px; font-size: 0.72rem; }
   .chart-container { height: 200px; }
-  .stat-grid { grid-template-columns: 1fr 1fr; }
   .container { padding: 0 14px; }
   .tab-btn { padding: 12px 16px; font-size: 0.85rem; }
   .header-title { font-size: 1.4rem; }
   .header-meta { text-align: left; }
+  /* Stat cards: full-width horizontal bars on mobile */
+  .stat-grid { grid-template-columns: 1fr; gap: 10px; }
+  .stat-card { min-height: 0; flex-direction: row; align-items: center; flex-wrap: wrap; padding: 14px 16px; gap: 0 14px; }
+  .stat-label { width: 100%; margin-bottom: 4px; }
+  .stat-body { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
+  .stat-value { font-size: 1.6rem; white-space: nowrap; }
+  .signal-pill { margin-top: 0; }
+  .signal-detail { display: none; }
+  .stat-sub { width: 100%; margin-top: 10px; padding-top: 8px; font-size: 0.68rem; }
+  /* Hide chart dots on mobile — too small to tap */
+  .chart-container canvas { --point-radius: 0; }
 }
 
 /* Unavailable state */
@@ -161,7 +185,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
         <div class="header-subtitle">Oxford County / Bethel area &nbsp;·&nbsp; 25-minute primary radius</div>
       </div>
       <div class="header-meta">
-        <div class="updated">Updated April 02, 2026 at 09:34 AM</div>
+        <div class="updated">Updated April 02, 2026 at 09:54 AM</div>
         <div>Search started January 1, 2026</div>
         <div>Data: Redfin · Zillow · FRED</div>
       </div>
@@ -172,7 +196,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
 <div class="tabs">
   <ul class="tab-list" role="tablist">
     <li><button class="tab-btn active" onclick="showTab('market',this)">Market Tracker</button></li>
-    <li><button class="tab-btn" onclick="showTab('backup',this)">Backup Cities</button></li>
+    <li><button class="tab-btn" onclick="showTab('backup',this)" style="opacity:0.4;cursor:not-allowed;pointer-events:none;">Backup Cities</button></li>
   </ul>
 </div>
 
@@ -189,13 +213,13 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
     <span class="legend-item"><span class="legend-dashed"></span>Moving average</span>
     <span class="legend-item"><span class="legend-shaded"></span>Spring/Fall seasonal bands</span>
   </div>
-  <div class="chart-grid"><div class="chart-panel"><div class="chart-header"><div class="chart-title">Months of Supply</div><div class="zoom-btns"><button class="zoom-btn active" onclick="setChartZoom('chartMoS','6mo',this)">6mo</button><button class="zoom-btn" onclick="setChartZoom('chartMoS','2yr',this)">2yr</button></div></div><span class="trend-tag up-good">↑ rising fast</span><div class="chart-subtitle">How long it would take to sell every home currently listed. Under 3 months = sellers win. Over 6 months = you win.</div><div class="chart-container"><canvas id="chartMoS"></canvas></div></div>
-<div class="chart-panel"><div class="chart-header"><div class="chart-title">Maine Median Sale Price</div><div class="zoom-btns"><button class="zoom-btn active" onclick="setChartZoom('chartPrice','6mo',this)">6mo</button><button class="zoom-btn" onclick="setChartZoom('chartPrice','2yr',this)">2yr</button></div></div><span class="trend-tag down-good">↓ trending down</span><div class="chart-subtitle">The thick line is the monthly sale price. The smoother lines show the trend — ignore the month-to-month noise and watch those instead.</div><div class="chart-container"><canvas id="chartPrice"></canvas></div></div>
-<div class="chart-panel"><div class="chart-header"><div class="chart-title">Days on Market</div><div class="zoom-btns"><button class="zoom-btn active" onclick="setChartZoom('chartDOM','6mo',this)">6mo</button><button class="zoom-btn" onclick="setChartZoom('chartDOM','2yr',this)">2yr</button></div></div><span class="trend-tag up-good">↑ rising fast</span><div class="chart-subtitle">When this drops, buyers are moving fast and you'll have less time to decide. When it rises, you have breathing room.</div><div class="chart-container"><canvas id="chartDOM"></canvas></div></div>
-<div class="chart-panel"><div class="chart-header"><div class="chart-title">Sale-to-List Ratio</div><div class="zoom-btns"><button class="zoom-btn active" onclick="setChartZoom('chartS2L','6mo',this)">6mo</button><button class="zoom-btn" onclick="setChartZoom('chartS2L','2yr',this)">2yr</button></div></div><span class="trend-tag flat">↓ holding steady</span><div class="chart-subtitle">Above 100% = buyers paid over asking. Below 100% = sold at a discount. The stat card above shows this as a +/- delta from asking for easier reading.</div><div class="chart-container"><canvas id="chartS2L"></canvas></div></div></div>
+  <div class="chart-grid"><div class="chart-panel" data-panel="mos"><div class="chart-header"><div class="chart-title">Months of Supply</div><div class="zoom-btns"><button class="zoom-btn active" onclick="setChartZoom('chartMoS','6mo',this)">6mo</button><button class="zoom-btn" onclick="setChartZoom('chartMoS','2yr',this)">2yr</button></div></div><span class="trend-tag up-good">↑ rising fast</span><div class="chart-subtitle">How long it would take to sell every home currently listed. Under 3 months = sellers win. Over 6 months = you win.</div><div class="chart-container"><canvas id="chartMoS"></canvas></div></div>
+<div class="chart-panel" data-panel="price"><div class="chart-header"><div class="chart-title">Maine Median Sale Price</div><div class="zoom-btns"><button class="zoom-btn active" onclick="setChartZoom('chartPrice','6mo',this)">6mo</button><button class="zoom-btn" onclick="setChartZoom('chartPrice','2yr',this)">2yr</button></div></div><span class="trend-tag down-good">↓ trending down</span><div class="chart-subtitle">The thick line is the monthly sale price. The smoother lines show the trend — ignore the month-to-month noise and watch those instead.</div><div class="chart-container"><canvas id="chartPrice"></canvas></div></div>
+<div class="chart-panel" data-panel="dom"><div class="chart-header"><div class="chart-title">Days on Market</div><div class="zoom-btns"><button class="zoom-btn active" onclick="setChartZoom('chartDOM','6mo',this)">6mo</button><button class="zoom-btn" onclick="setChartZoom('chartDOM','2yr',this)">2yr</button></div></div><span class="trend-tag up-good">↑ rising fast</span><div class="chart-subtitle">When this drops, buyers are moving fast and you'll have less time to decide. When it rises, you have breathing room.</div><div class="chart-container"><canvas id="chartDOM"></canvas></div></div>
+<div class="chart-panel" data-panel="s2l"><div class="chart-header"><div class="chart-title">Sale-to-List Ratio</div><div class="zoom-btns"><button class="zoom-btn active" onclick="setChartZoom('chartS2L','6mo',this)">6mo</button><button class="zoom-btn" onclick="setChartZoom('chartS2L','2yr',this)">2yr</button></div></div><span class="trend-tag flat">↓ holding steady</span><div class="chart-subtitle">Above 100% = buyers paid over asking. Below 100% = sold at a discount. The stat card above shows this as a +/- delta from asking for easier reading.</div><div class="chart-container"><canvas id="chartS2L"></canvas></div></div></div>
   
 <div class="section-header">Oxford County ZHVI (Zillow Home Value Index)</div>
-<div class="chart-panel full">
+<div class="chart-panel full" data-panel="zhvi">
   <div class="chart-header"><div class="chart-title">Oxford County, ME — Median Home Value</div><div class="zoom-btns"><button class="zoom-btn active" onclick="setChartZoom('chartZHVI','6mo',this)">6mo</button><button class="zoom-btn" onclick="setChartZoom('chartZHVI','2yr',this)">2yr</button></div></div>
   <div class="chart-subtitle">Smoothed, seasonally adjusted · Middle tier. Default: 6 months.</div>
   <div class="chart-container"><canvas id="chartZHVI"></canvas></div>
@@ -203,8 +227,21 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
   <div class="source-note">Source: Zillow Research (zillow_zhvi_oxford_county)</div>
 </div>
   
+<div class="section-header">Oxford County — Market Activity</div>
+<div class="chart-panel full" data-panel="flow">
+  <div class="chart-header">
+    <div>
+      <div class="chart-title">New Listings vs. Homes Sold</div>
+      <div class="chart-subtitle">When listings outnumber sales, supply builds and you gain leverage. When sold outpaces new, competition is rising.</div>
+    </div>
+    <div class="zoom-btns"><button class="zoom-btn active" onclick="setChartZoom('chartFlow','6mo',this)">6mo</button><button class="zoom-btn" onclick="setChartZoom('chartFlow','12mo',this)">12mo</button></div>
+  </div>
+  <div class="chart-container" style="height:260px;"><canvas id="chartFlow"></canvas></div>
+  <div class="source-note">Source: Redfin county tracker · Oxford County, ME · All residential</div>
+</div>
+  
 <div class="section-header">Price Outlook — Where Is This Headed?</div>
-<div class="chart-panel full">
+<div class="chart-panel full" data-panel="forecast">
   <div class="chart-title">18-Month History + 90-Day Projection</div>
   <div class="chart-subtitle">Solid line = actual history. Dashed green = projected trend. Shaded band = range of likely outcomes. Trend: $1,309/month rising. Not a financial prediction.</div>
   <div class="chart-container" style="height:280px;"><canvas id="chartForecast"></canvas></div>
@@ -478,7 +515,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
 
 <footer>
   <div>Oxford County / Bethel Area Market Tracker &nbsp;·&nbsp; Redfin S3 · Zillow Research · FRED</div>
-  <div style="margin-top:4px;">Generated April 02, 2026 at 09:34 AM &nbsp;·&nbsp; Not financial advice — verify all data before acting</div>
+  <div style="margin-top:4px;">Generated April 02, 2026 at 09:54 AM &nbsp;·&nbsp; Not financial advice — verify all data before acting</div>
 </footer>
 
 <script>
@@ -493,6 +530,11 @@ Chart.defaults.color = '#8899aa';
 Chart.defaults.borderColor = '#2d3748';
 Chart.defaults.font.family = "'JetBrains Mono', monospace";
 Chart.defaults.font.size = 11;
+// Hide point dots on mobile — too small to tap usefully
+if (window.innerWidth <= 480) {
+  Chart.defaults.elements.point.radius = 0;
+  Chart.defaults.elements.point.hoverRadius = 4;
+}
 
 const SEARCH_START_DATE = '2026-01-01';
 
@@ -664,6 +706,24 @@ new Chart(document.getElementById('chartForecast'), {
   data: { labels: ["2024-09-30", "2024-10-31", "2024-11-30", "2024-12-31", "2025-01-31", "2025-02-28", "2025-03-31", "2025-04-30", "2025-05-31", "2025-06-30", "2025-07-31", "2025-08-31", "2025-09-30", "2025-10-31", "2025-11-30", "2025-12-31", "2026-01-31", "2026-02-28", "May 29, 2026", "August 27, 2026", "November 25, 2026"], datasets: [{"label": "Historical", "data": [306370.8960903205, 307968.8787082623, 308563.2900530499, 309122.62181844475, 309429.0749763585, 309937.36919058906, 309848.05725939554, 309590.69283863617, 309498.2102239451, 308860.2216055532, 307458.3345839563, 305856.0682411511, 305104.91849499213, 305145.6007188111, 305369.64526031667, 305884.04298530734, 306940.52100357454, 308373.1254866552, null, null, null], "borderColor": "#c9883a", "backgroundColor": "rgba(201,136,58,0.08)", "tension": 0.3, "fill": true, "pointRadius": 2, "borderWidth": 2}, {"label": "Projected", "data": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 308373.1254866552, 326664, 330590, 334516], "borderColor": "#5aaa82", "borderDash": [6, 4], "backgroundColor": "rgba(90,170,130,0.0)", "tension": 0.3, "fill": false, "pointRadius": 5, "borderWidth": 2, "pointStyle": "circle", "pointBackgroundColor": "#5aaa82"}, {"label": "Confidence band (low)", "data": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 308373.1254866552, 308441, 312367, 316293], "borderColor": "rgba(90,170,130,0.2)", "borderDash": [2, 4], "backgroundColor": "rgba(90,170,130,0.12)", "tension": 0.3, "fill": "+1", "pointRadius": 0, "borderWidth": 1}, {"label": "Confidence band (high)", "data": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 308373.1254866552, 344887, 348813, 352739], "borderColor": "rgba(90,170,130,0.2)", "borderDash": [2, 4], "backgroundColor": "rgba(90,170,130,0.12)", "tension": 0.3, "fill": false, "pointRadius": 0, "borderWidth": 1}] },
   options: baseOpts(["2024-09-30", "2024-10-31", "2024-11-30", "2024-12-31", "2025-01-31", "2025-02-28", "2025-03-31", "2025-04-30", "2025-05-31", "2025-06-30", "2025-07-31", "2025-08-31", "2025-09-30", "2025-10-31", "2025-11-30", "2025-12-31", "2026-01-31", "2026-02-28", "May 29, 2026", "August 27, 2026", "November 25, 2026"], 'Home Value ($)', fmtDollar)
 });
+
+(function() {
+  _registerZoom('chartFlow', {
+    '6mo': { labels: ["2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01"],  datasets: [[119.0, 134.0, 79.0, 89.0, 73.0, 79.0], [96.0, 102.0, 72.0, 69.0, 67.0, 48.0]] },
+    '12mo': { labels: ["2025-03-01", "2025-04-01", "2025-05-01", "2025-06-01", "2025-07-01", "2025-08-01", "2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01"], datasets: [[80.0, 121.0, 121.0, 138.0, 115.0, 138.0, 119.0, 134.0, 79.0, 89.0, 73.0, 79.0], [59.0, 68.0, 67.0, 78.0, 85.0, 92.0, 96.0, 102.0, 72.0, 69.0, 67.0, 48.0]] }
+  });
+  var chart = new Chart(document.getElementById('chartFlow'), {
+    type: 'bar',
+    data: { labels: ["2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01"], datasets: [{"label": "New Listings", "data": [119.0, 134.0, 79.0, 89.0, 73.0, 79.0], "backgroundColor": "rgba(201,136,58,0.65)", "borderColor": "#c9883a", "borderWidth": 1, "borderRadius": 3}, {"label": "Homes Sold", "data": [96.0, 102.0, 72.0, 69.0, 67.0, 48.0], "backgroundColor": "rgba(90,170,130,0.65)", "borderColor": "#5aaa82", "borderWidth": 1, "borderRadius": 3}] },
+    options: (function() {
+      var o = baseOpts(["2025-09-01", "2025-10-01", "2025-11-01", "2025-12-01", "2026-01-01", "2026-02-01"], 'Homes', fmtNum);
+      o.scales.x.stacked = false;
+      o.scales.y.stacked = false;
+      return o;
+    })()
+  });
+  _storeChart('chartFlow', chart);
+})();
 </script>
 </body>
 </html>

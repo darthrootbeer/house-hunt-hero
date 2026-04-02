@@ -34,6 +34,12 @@ REDFIN_STATE_URL = (
     "/redfin_market_tracker/state_market_tracker.tsv000.gz"
 )
 
+# Redfin S3 — county-level tracker (larger; used for Oxford County flow data)
+REDFIN_COUNTY_URL = (
+    "https://redfin-public-data.s3.us-west-2.amazonaws.com"
+    "/redfin_market_tracker/county_market_tracker.tsv000.gz"
+)
+
 # Zillow county ZHVI (middle tier, smoothed, seasonally adjusted)
 ZILLOW_COUNTY_URL = (
     "https://files.zillowstatic.com/research/public_csvs/zhvi/"
@@ -285,6 +291,56 @@ def fetch_redfin_data():
     except Exception as e:
         result["error"] = str(e)
         print(f"  Redfin parse error: {e}")
+        return result
+
+
+def fetch_oxford_county_flow():
+    """
+    Pull Oxford County monthly new listings and homes sold from Redfin county tracker.
+    Returns last 24 months of data for zoom support.
+    """
+    print("Fetching Oxford County flow data (Redfin county tracker)...")
+    result = {"dates": [], "new_listings": [], "homes_sold": [], "source": "unavailable", "error": None}
+
+    text = fetch_url(REDFIN_COUNTY_URL, decompress_gzip=True)
+    if not text:
+        result["error"] = "Redfin county market tracker download failed"
+        return result
+
+    try:
+        rows = parse_tsv(text)
+        county_rows = [
+            r for r in rows
+            if "Oxford" in r.get("REGION", "") and "ME" in r.get("REGION", "")
+            and r.get("PROPERTY_TYPE", "").strip() == "All Residential"
+            and r.get("IS_SEASONALLY_ADJUSTED", "").strip() in ("0", "false", "False")
+            and r.get("PERIOD_DURATION", "").strip() in ("1", "30")
+        ]
+        county_rows.sort(key=lambda r: r.get("PERIOD_BEGIN", ""))
+
+        cutoff = (datetime.now() - timedelta(days=365 * 2)).strftime("%Y-%m-%d")
+        county_rows = [r for r in county_rows if r.get("PERIOD_BEGIN", "") >= cutoff]
+
+        if not county_rows:
+            result["error"] = "No Oxford County rows found in Redfin county data"
+            return result
+
+        dates, new_listings, homes_sold = [], [], []
+        for r in county_rows:
+            dates.append(r["PERIOD_BEGIN"][:10])
+            new_listings.append(safe_float(r.get("NEW_LISTINGS")))
+            homes_sold.append(safe_float(r.get("HOMES_SOLD")))
+
+        result.update({
+            "dates": dates, "new_listings": new_listings, "homes_sold": homes_sold,
+            "source": "redfin_oxford_county",
+        })
+        print(f"  Oxford County flow: {len(dates)} months ({dates[0]} to {dates[-1]})")
+        return result
+
+    except Exception as e:
+        result["error"] = str(e)
+        print(f"  Oxford County flow parse error: {e}")
         return result
 
 
@@ -860,8 +916,22 @@ header { background: var(--navy); border-bottom: 2px solid var(--green-dim); pad
 /* Chart panels */
 .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 20px; }
 @media (max-width: 860px) { .chart-grid { grid-template-columns: 1fr; } }
-.chart-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px; }
+.chart-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px;
+  border-left-width: 2px; border-left-color: var(--panel-accent, var(--border)); }
 .chart-panel.full { grid-column: 1 / -1; }
+/* Per-panel accent colors — subtle tints */
+.chart-panel[data-panel="mos"]    { --panel-accent: #3d7a5a; }
+.chart-panel[data-panel="price"]  { --panel-accent: #7a5020; }
+.chart-panel[data-panel="dom"]    { --panel-accent: #2a4a7a; }
+.chart-panel[data-panel="s2l"]    { --panel-accent: #6a3a6a; }
+.chart-panel[data-panel="zhvi"]   { --panel-accent: #5a6a2a; }
+.chart-panel[data-panel="flow"]   { --panel-accent: #3a6a7a; }
+.chart-panel[data-panel="forecast"] { --panel-accent: #4a4a7a; }
+/* Accent underline on chart title — drawn via border-bottom using the panel accent */
+.chart-panel[data-panel] .chart-title {
+  display: inline-block; border-bottom: 2px solid var(--panel-accent, transparent);
+  padding-bottom: 2px; margin-bottom: 8px;
+}
 .chart-header { display: -webkit-box; display: flex; -webkit-box-pack: justify; justify-content: space-between; -webkit-box-align: start; align-items: flex-start; margin-bottom: 6px; gap: 8px; }
 .chart-title { font-family: 'Inter', -apple-system, sans-serif; font-size: 1.0rem; font-weight: 600; color: var(--text); letter-spacing: -0.01em; }
 .chart-subtitle { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 0.79rem; color: var(--text-muted); margin-bottom: 14px; font-style: italic; }
@@ -883,11 +953,21 @@ header { background: var(--navy); border-bottom: 2px solid var(--green-dim); pad
 @media (max-width: 480px) {
   .zoom-btn { padding: 5px 12px; min-height: 36px; font-size: 0.72rem; }
   .chart-container { height: 200px; }
-  .stat-grid { grid-template-columns: 1fr 1fr; }
   .container { padding: 0 14px; }
   .tab-btn { padding: 12px 16px; font-size: 0.85rem; }
   .header-title { font-size: 1.4rem; }
   .header-meta { text-align: left; }
+  /* Stat cards: full-width horizontal bars on mobile */
+  .stat-grid { grid-template-columns: 1fr; gap: 10px; }
+  .stat-card { min-height: 0; flex-direction: row; align-items: center; flex-wrap: wrap; padding: 14px 16px; gap: 0 14px; }
+  .stat-label { width: 100%; margin-bottom: 4px; }
+  .stat-body { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
+  .stat-value { font-size: 1.6rem; white-space: nowrap; }
+  .signal-pill { margin-top: 0; }
+  .signal-detail { display: none; }
+  .stat-sub { width: 100%; margin-top: 10px; padding-top: 8px; font-size: 0.68rem; }
+  /* Hide chart dots on mobile — too small to tap */
+  .chart-container canvas { --point-radius: 0; }
 }
 
 /* Unavailable state */
@@ -966,7 +1046,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
 <div class="tabs">
   <ul class="tab-list" role="tablist">
     <li><button class="tab-btn active" onclick="showTab('market',this)">Market Tracker</button></li>
-    <li><button class="tab-btn" onclick="showTab('backup',this)">Backup Cities</button></li>
+    <li><button class="tab-btn" onclick="showTab('backup',this)" style="opacity:0.4;cursor:not-allowed;pointer-events:none;">Backup Cities</button></li>
   </ul>
 </div>
 
@@ -985,6 +1065,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
   </div>
   <div class="chart-grid">__CHARTS__</div>
   __ZHVI_SECTION__
+  __FLOW_SECTION__
   __FORECAST_SECTION__
   __MORTGAGE_SECTION__
   __RATE_SECTION__
@@ -1026,6 +1107,11 @@ Chart.defaults.color = '#8899aa';
 Chart.defaults.borderColor = '#2d3748';
 Chart.defaults.font.family = "'JetBrains Mono', monospace";
 Chart.defaults.font.size = 11;
+// Hide point dots on mobile — too small to tap usefully
+if (window.innerWidth <= 480) {
+  Chart.defaults.elements.point.radius = 0;
+  Chart.defaults.elements.point.hoverRadius = 4;
+}
 
 const SEARCH_START_DATE = '2026-01-01';
 
@@ -1172,7 +1258,7 @@ def fmt_count(v):
     return f"{v:.0f}"
 
 
-def build_html(redfin_data, zillow_data, fred_data, backup_cities, city_data):
+def build_html(redfin_data, zillow_data, fred_data, backup_cities, city_data, flow_data=None):
     updated = datetime.now().strftime("%B %d, %Y at %I:%M %p")
     score, score_label = compute_market_score(redfin_data, zillow_data)
     forecast = price_forecast(redfin_data, zillow_data)
@@ -1433,7 +1519,7 @@ new Chart(document.getElementById('{cid}'), {{
         c, j, zbtn = make_zoom_chart("chartPrice", price_datasets, "Price ($)", "fmtDollar",
                                      dates, proj_series=prices, proj_good_dir="down")
         price_chart_html = (
-            f'<div class="chart-panel">'
+            f'<div class="chart-panel" data-panel="price">'
             f'<div class="chart-header"><div class="chart-title">Maine Median Sale Price</div>{zbtn}</div>'
             f'{trend_tag(prices, "down")}'
             f'<div class="chart-subtitle">The thick line is the monthly sale price. The smoother lines show the trend — ignore the month-to-month noise and watch those instead.</div>{c}</div>'
@@ -1461,7 +1547,7 @@ new Chart(document.getElementById('{cid}'), {{
         c, j, zbtn = make_zoom_chart("chartMoS", mos_datasets, "Months", "fmtMos",
                                      dates, proj_series=moss, proj_good_dir="up")
         charts_html.append(
-            f'<div class="chart-panel">'
+            f'<div class="chart-panel" data-panel="mos">'
             f'<div class="chart-header"><div class="chart-title">Months of Supply</div>{zbtn}</div>'
             f'{trend_tag(moss, "up")}'
             f'<div class="chart-subtitle">How long it would take to sell every home currently listed. Under 3 months = sellers win. Over 6 months = you win.</div>{c}</div>'
@@ -1513,7 +1599,7 @@ new Chart(document.getElementById('chartInv'), {{
         c, j, zbtn = make_zoom_chart("chartDOM", dom_datasets, "Days", "fmtDays",
                                      dates, proj_series=doms, proj_good_dir="up")
         charts_html.append(
-            f'<div class="chart-panel">'
+            f'<div class="chart-panel" data-panel="dom">'
             f'<div class="chart-header"><div class="chart-title">Days on Market</div>{zbtn}</div>'
             f'{trend_tag(doms, "up")}'
             f'<div class="chart-subtitle">When this drops, buyers are moving fast and you\'ll have less time to decide. When it rises, you have breathing room.</div>{c}</div>'
@@ -1540,7 +1626,7 @@ new Chart(document.getElementById('chartInv'), {{
         c, j, zbtn = make_zoom_chart("chartS2L", s2l_datasets, "% of Asking Price", "fmtPct",
                                      dates, proj_series=s2ls, proj_good_dir="down")
         charts_html.append(
-            f'<div class="chart-panel">'
+            f'<div class="chart-panel" data-panel="s2l">'
             f'<div class="chart-header"><div class="chart-title">Sale-to-List Ratio</div>{zbtn}</div>'
             f'{trend_tag(s2ls, "down")}'
             f'<div class="chart-subtitle">Above 100% = buyers paid over asking. Below 100% = sold at a discount. The stat card above shows this as a +/- delta from asking for easier reading.</div>{c}</div>'
@@ -1583,7 +1669,7 @@ new Chart(document.getElementById('chartInv'), {{
         note = zillow_data.get("note", "")
         zhvi_section = f"""
 <div class="section-header">Oxford County ZHVI (Zillow Home Value Index)</div>
-<div class="chart-panel full">
+<div class="chart-panel full" data-panel="zhvi">
   <div class="chart-header"><div class="chart-title">Oxford County, ME — Median Home Value</div>{zhvi_zbtn}</div>
   <div class="chart-subtitle">Smoothed, seasonally adjusted · Middle tier. Default: 6 months.</div>
   {zhvi_c}
@@ -1654,7 +1740,7 @@ new Chart(document.getElementById('chartForecast'), {{
 
         forecast_section = f"""
 <div class="section-header">Price Outlook — Where Is This Headed?</div>
-<div class="chart-panel full">
+<div class="chart-panel full" data-panel="forecast">
   <div class="chart-title">18-Month History + 90-Day Projection</div>
   <div class="chart-subtitle">Solid line = actual history. Dashed green = projected trend. Shaded band = range of likely outcomes. Trend: {trend_str}. Not a financial prediction.</div>
   <div class="chart-container" style="height:280px;"><canvas id="chartForecast"></canvas></div>
@@ -1777,6 +1863,77 @@ new Chart(document.getElementById('chartRate'), {{
   {'<div class="city-user-note">' + city.get("notes","") + '</div>' if city.get("notes") else ''}
 </div>"""
 
+    # ── Market Flow section — Oxford County new listings vs sold ──
+    flow_section = ""
+    fd = flow_data or {}
+    if fd.get("dates") and any(v for v in fd.get("new_listings", []) if v):
+        fl_dates = fd["dates"]
+        fl_new   = fd["new_listings"]
+        fl_sold  = fd["homes_sold"]
+
+        def flow_datasets(n):
+            return [
+                {"label": "New Listings", "data": trim_to(fl_new, n),
+                 "backgroundColor": "rgba(201,136,58,0.65)", "borderColor": "#c9883a",
+                 "borderWidth": 1, "borderRadius": 3},
+                {"label": "Homes Sold", "data": trim_to(fl_sold, n),
+                 "backgroundColor": "rgba(90,170,130,0.65)", "borderColor": "#5aaa82",
+                 "borderWidth": 1, "borderRadius": 3},
+            ]
+
+        fl_dates_6  = trim_to(fl_dates, 6)
+        fl_dates_12 = trim_to(fl_dates, 12)
+        fl_ds_6     = flow_datasets(6)
+        fl_ds_12    = flow_datasets(12)
+
+        fl_ds_6_data  = json.dumps([d["data"] for d in fl_ds_6])
+        fl_ds_12_data = json.dumps([d["data"] for d in fl_ds_12])
+
+        flow_js = f"""
+(function() {{
+  _registerZoom('chartFlow', {{
+    '6mo': {{ labels: {json.dumps(fl_dates_6)},  datasets: {fl_ds_6_data} }},
+    '12mo': {{ labels: {json.dumps(fl_dates_12)}, datasets: {fl_ds_12_data} }}
+  }});
+  var chart = new Chart(document.getElementById('chartFlow'), {{
+    type: 'bar',
+    data: {{ labels: {json.dumps(fl_dates_6)}, datasets: {json.dumps(fl_ds_6)} }},
+    options: (function() {{
+      var o = baseOpts({json.dumps(fl_dates_6)}, 'Homes', fmtNum);
+      o.scales.x.stacked = false;
+      o.scales.y.stacked = false;
+      return o;
+    }})()
+  }});
+  _storeChart('chartFlow', chart);
+}})();"""
+        js.append(flow_js)
+
+        flow_zbtn = (
+            '<div class="zoom-btns">'
+            '<button class="zoom-btn active" onclick="setChartZoom(\'chartFlow\',\'6mo\',this)">6mo</button>'
+            '<button class="zoom-btn" onclick="setChartZoom(\'chartFlow\',\'12mo\',this)">12mo</button>'
+            '</div>'
+        )
+        flow_section = f"""
+<div class="section-header">Oxford County — Market Activity</div>
+<div class="chart-panel full" data-panel="flow">
+  <div class="chart-header">
+    <div>
+      <div class="chart-title">New Listings vs. Homes Sold</div>
+      <div class="chart-subtitle">When listings outnumber sales, supply builds and you gain leverage. When sold outpaces new, competition is rising.</div>
+    </div>
+    {flow_zbtn}
+  </div>
+  <div class="chart-container" style="height:260px;"><canvas id="chartFlow"></canvas></div>
+  <div class="source-note">Source: Redfin county tracker · Oxford County, ME · All residential</div>
+</div>"""
+    else:
+        err = fd.get("error", "data unavailable")
+        flow_section = f"""
+<div class="section-header">Oxford County — Market Activity</div>
+{unavailable(f"New listings / sold data unavailable — {err}")}"""
+
     # Assemble HTML
     html = HTML_TEMPLATE
     html = html.replace("__UPDATED__", updated)
@@ -1784,6 +1941,7 @@ new Chart(document.getElementById('chartRate'), {{
     html = html.replace("__STATS__", stats_html)
     html = html.replace("__CHARTS__", "\n".join(charts_html))
     html = html.replace("__ZHVI_SECTION__", zhvi_section)
+    html = html.replace("__FLOW_SECTION__", flow_section)
     html = html.replace("__FORECAST_SECTION__", forecast_section)
     html = html.replace("__MORTGAGE_SECTION__", mortgage_section)
     html = html.replace("__RATE_SECTION__", rate_section)
@@ -1803,6 +1961,7 @@ def main():
     redfin_data = fetch_redfin_data()
     zillow_data, county_csv = fetch_zillow_oxford_county()
     fred_data = fetch_fred_mortgage_rate()
+    flow_data = fetch_oxford_county_flow()
     backup_cities = load_backup_cities()
     city_data = fetch_city_county_zhvi(backup_cities, county_csv_text=county_csv)
 
@@ -1812,13 +1971,14 @@ def main():
         "redfin": {k: v for k, v in redfin_data.items() if k not in ("error",)},
         "zillow_oxford": {k: v for k, v in zillow_data.items() if k not in ("error",)},
         "fred": {k: v for k, v in fred_data.items() if k not in ("error",)},
+        "flow": {k: v for k, v in flow_data.items() if k not in ("error",)},
         "city_data": city_data,
     }
     with open(DATA_DIR / "snapshot.json", "w") as f:
         json.dump(snapshot, f, indent=2, default=str)
 
     print("\nGenerating HTML report...")
-    html = build_html(redfin_data, zillow_data, fred_data, backup_cities, city_data)
+    html = build_html(redfin_data, zillow_data, fred_data, backup_cities, city_data, flow_data)
     out_dir = ROOT / "market_report"
     out_dir.mkdir(exist_ok=True)
     out = out_dir / "index.html"
@@ -1830,6 +1990,7 @@ def main():
     print(f"  Redfin:   {redfin_data.get('source','unavailable')} — {len(redfin_data.get('dates',[]))} months")
     print(f"  Zillow:   {zillow_data.get('source','unavailable')} — {len(zillow_data.get('dates',[]))} months")
     print(f"  FRED:     {fred_data.get('source','unavailable')} — {len(fred_data.get('dates',[]))} observations")
+    print(f"  Flow:     {flow_data.get('source','unavailable')} — {len(flow_data.get('dates',[]))} months")
     resolved = sum(1 for c in city_data.values() if "zhvi_latest" in c)
     print(f"  Cities:   {resolved}/{len(backup_cities)} resolved")
     if redfin_data.get("error"):
@@ -1838,6 +1999,8 @@ def main():
         print(f"  ! Zillow: {zillow_data['error']}")
     if fred_data.get("error"):
         print(f"  ! FRED:   {fred_data['error']}")
+    if flow_data.get("error"):
+        print(f"  ! Flow:   {flow_data['error']}")
 
     if redfin_data["source"] == "unavailable" and zillow_data["source"] == "unavailable":
         print("\nFATAL: All primary data sources failed. Report not reliable.")
