@@ -302,5 +302,287 @@
       "inventory": null
     },
     "notes": "Punches above its weight: Art Deco cinema, great coffee, bookshop, indie music scene, 5 breweries. Walkable Main St. Grafton County prices lower than ski corridor."
+  },
+  {
+    "slug": "rangeley-me",
+    "name": "Rangeley",
+    "state": "ME",
+    "county": "Franklin County",
+    "county_fips_state": "23",
+    "county_fips_county": "007",
+    "distance_tier": "T3",
+    "drive_minutes": 90,
+    "drive_note": "~1.5 hrs via Rt 4 / Rt 17",
+    "population": 1168,
+    "hard_fails": [],
+    "vibe": {
+      "creative_culture": 5,
+      "nature_access": 10,
+      "food_drink": 6,
+      "walkability": 4,
+      "quiet_privacy": 9,
+      "community_fit": 6,
+      "pet_friendly": 6,
+      "practical": 4
+    },
+    "places": {
+      "bookstores": [
+        {"name": "Books, Lines & Thinkers (2513 Main St — also Birds of a Feather Gallery)", "source": "Yelp"}
+      ],
+      "record_stores": [],
+      "music_venues": [
+        {"name": "Moose Alley / Spirits Cafe (2520 Main St — bowling, bar, entertainment)", "source": "moosealley.me"},
+        {"name": "Farmhouse Inn / Lakeview Tavern (2057 Main St — open-mic Thu, live music)", "source": "rangeley-maine.com"},
+        {"name": "The Nest at Saddleback (live DJ series — ski season only)", "source": "saddlebackmaine.com"}
+      ],
+      "art_galleries": [
+        {"name": "Books, Lines & Thinkers / Birds of a Feather Gallery (fine art, fabric art)", "source": "rangeley-maine.com"},
+        {"name": "The Gallery at Stony Batter Station (Oquossoc — seasonal)", "source": "rangeley-maine.com"},
+        {"name": "Sugarwood Gallery (local photographers — verify status)", "source": "rangeley-maine.com"}
+      ],
+      "indie_cinema": [
+        {"name": "RFA Lakeside Theater (2493 Main St — indie films, community theater)", "source": "Yelp"}
+      ],
+      "outdoor_outfitters": [
+        {"name": "Rangeley Adventure Company (7 Pond St — gear, rentals, AT shuttle)", "source": "rangeleyadventureco.com"},
+        {"name": "River's Edge Sports (Oquossoc — largest sporting goods in Franklin Co.)", "source": "riversedgesports.com"},
+        {"name": "Rangeley Region Sport Shop (fly fishing gear, since 1945)", "source": "rangeleyflyshop.com"},
+        {"name": "Ecopelagicon Nature Store (7 Pond St — nature books, kayak rentals)", "source": "Yelp"}
+      ],
+      "kayak_canoe_rental": [
+        {"name": "Rangeley Adventure Company (kayak/canoe/SUP)", "source": "rangeleyadventureco.com"},
+        {"name": "River's Edge Sports (large fleet, dockside launch, delivery)", "source": "riversedgesports.com"},
+        {"name": "Ecopelagicon Nature Store (kayak rentals — seasonal)", "source": "etravelmaine.com"},
+        {"name": "Dockside Sports Center & Marina (canoe/kayak rentals)", "source": "rangeley-maine.com"}
+      ],
+      "ski_areas": [
+        {"name": "Saddleback Maine (66 trails, 2000 ft vert, 7 mi from town)", "source": "saddlebackmaine.com"}
+      ],
+      "coffee_shops": [
+        {"name": "The Rangeley Hideaway (2419 Main St — espresso, wifi, coworking)", "source": "therangeleyhideaway.com"},
+        {"name": "Classic Provisions (2455 Main St — coffee, pastries, breakfast/lunch)", "source": "classicprovisionsrangeley.com"},
+        {"name": "Spirits Cafe at Moose Alley (2520 Main St — espresso, lattes)", "source": "Facebook"}
+      ],
+      "restaurants": [
+        {"name": "Parkside & Main (#1 TripAdvisor — pub classics, lake deck)", "source": "Tripadvisor"},
+        {"name": "The Black Pearl (2511 Main St — pizza, seafood, cocktails)", "source": "blackpearlrangeley.com"},
+        {"name": "Furbish BrewHouse & Eats (brick oven pizza, wings, 1912 tavern)", "source": "mainebrewersguild.org"},
+        {"name": "Portage Tap House (74 Carry Rd, Oquossoc — wood-fired, craft beer)", "source": "portagetaphouse.com"},
+        {"name": "Moose Alley / Spirits Cafe (breakfast/lunch/dinner, bowling)", "source": "moosealley.me"},
+        {"name": "Classic Provisions (breakfast/lunch, weekend dinners)", "source": "classicprovisionsrangeley.com"},
+        {"name": "Farmhouse Inn & Restaurant (Mexican nights, sushi nights)", "source": "rangeley-maine.com"},
+        {"name": "The Rangeley Inn (breakfast daily, historic dining room)", "source": "rangeley-maine.com"},
+        {"name": "Loon Lodge Inn / Pickford Pub (fine dining + pub, lake views)", "source": "loonlodgeme.com"},
+        {"name": "The Hungry Trout (Oquossoc — hearty dinner, daily specials)", "source": "rangeley-maine.com"},
+        {"name": "Sarge's Pub & Grub (2454 Main St — pub food, seafood)", "source": "Yelp"},
+        {"name": "Country Club Inn (breakfast & dinner)", "source": "rangeley-maine.com"}
+      ],
+      "farmers_markets": [
+        {"name": "Downtown Rangeley Farmers' Market (Thu 10am-2pm, May-Oct)", "source": "mainefarmersmarkets.org"},
+        {"name": "Sandy River Farmers' Market (Tue 10am-2pm, May-Oct)", "source": "mainefarmersmarkets.org"}
+      ],
+      "breweries": [
+        {"name": "Furbish BrewHouse (Rangeley's first brewery, 1912 building)", "source": "mainebrewersguild.org"},
+        {"name": "Portage Tap House (74 Carry Rd, Oquossoc)", "source": "portagetaphouse.com"}
+      ],
+      "libraries": [
+        {"name": "Rangeley Public Library (7 Lake St — 1909 Romanesque Revival, Nat'l Register)", "source": "rangeleylibrary.org"}
+      ],
+      "yoga_studios": [
+        {"name": "Rangeley Health and Wellness (25 Dallas Hill Rd — yoga, pool, fitness)", "source": "rrhwp.org"}
+      ],
+      "coworking_spaces": [
+        {"name": "The Rangeley Hideaway (2419 Main St — cafe + wifi, informal coworking)", "source": "therangeleyhideaway.com"},
+        {"name": "Greater Franklin CoWorks — Rangeley node (call for details)", "source": "greaterfranklin.org"}
+      ],
+      "vet_clinics": [
+        {"name": "Vet At Your Door (mobile house-call vet — no brick-and-mortar in town)", "source": "vetatyourdoor.com"},
+        {"name": "Mountain Greenery (3706 Main St — hosts periodic on-site vet clinics)", "source": "rangeley-maine.com"}
+      ],
+      "pet_grooming": [
+        {"name": "The Paw Spaw (2512 Main St — opened 2025, by appointment Mon-Thu)", "source": "Yelp"},
+        {"name": "High Peaks Pet Sitting (grooming + sitting, 20yr vet tech)", "source": "rangeley-maine.com"},
+        {"name": "Mountain Greenery (3706 Main St — grooming, daycare, supplies)", "source": "rangeley-maine.com"}
+      ],
+      "pet_boarding": [
+        {"name": "Spruce Meadow Kennel (boarding + gun dog training, since 1980s)", "source": "rangeley-maine.com"},
+        {"name": "High Peaks Pet Sitting (daycare, house sitting, dog walking)", "source": "rangeley-maine.com"}
+      ],
+      "pet_supply": [
+        {"name": "Mountain Greenery (3706 Main St — pet food, bird seed, toys)", "source": "rangeley-maine.com"}
+      ],
+      "animal_shelters": [
+        {"name": "Franklin County Animal Shelter (Farmington, ~45 min — no-kill)", "source": "fcanimalshelter.org"}
+      ],
+      "grocery_stores": [
+        {"name": "Rangeley IGA (2185 Main St — full grocery, deli, bakery)", "source": "rangeley.iga.com"},
+        {"name": "Oquossoc Grocery (75 Carry Rd — deli, pizza, seafood, wine)", "source": "Facebook"}
+      ],
+      "hardware_stores": [
+        {"name": "Rangeley Lakes Builders Supply (2742 Main St — ACE affiliate)", "source": "rangeleybuilderssupply.com"}
+      ],
+      "farm_supply": [
+        {"name": "Mountain Greenery (3706 Main St — garden/bird/pet supplies)", "source": "rangeley-maine.com"}
+      ],
+      "urgent_care": [
+        {"name": "Rangeley Family Medicine (42 Dallas Hill Rd — HealthReach, no ER in town)", "source": "healthreach.org"}
+      ]
+    },
+    "market": {
+      "zhvi_latest": null,
+      "zhvi_6m_change_pct": null,
+      "median_sale_price": null,
+      "dom": null,
+      "inventory": null
+    },
+    "notes": "Lakes, mountains, Saddleback ski. Very remote — thin inventory, minimal services. Strong sense of place. Beautiful but isolated."
+  },
+  {
+    "slug": "farmington-me",
+    "name": "Farmington",
+    "state": "ME",
+    "county": "Franklin County",
+    "county_fips_state": "23",
+    "county_fips_county": "007",
+    "distance_tier": "T3",
+    "drive_minutes": 75,
+    "drive_note": "~1.25 hrs via Rt 2",
+    "population": 7760,
+    "hard_fails": [],
+    "vibe": {
+      "creative_culture": 8,
+      "nature_access": 7,
+      "food_drink": 7,
+      "walkability": 6,
+      "quiet_privacy": 6,
+      "community_fit": 8,
+      "pet_friendly": 7,
+      "practical": 8
+    },
+    "places": {
+      "bookstores": [
+        {"name": "Devaney, Doak & Garrett Booksellers (193 Broadway — since 1991)", "source": "Yelp"},
+        {"name": "Twice Sold Tales (155 Main St — used books)", "source": "twicesoldtalesmaine.com"}
+      ],
+      "record_stores": [
+        {"name": "Everyday Music (205 Broadway — since 1973, CDs, vinyl, instruments)", "source": "dailybulldog.com"}
+      ],
+      "music_venues": [
+        {"name": "Narrow Gauge Cinemas (15 Front St — indoor stage + cinema)", "source": "narrowgaugecinema.net"},
+        {"name": "The Homestead Kitchen, Bar & Bakery (186 Broadway — live music)", "source": "UMaine Undiscovered Maine"},
+        {"name": "White Fox Taverna (108 Narrow Gauge Sq — Mediterranean, live music)", "source": "UMaine Undiscovered Maine"},
+        {"name": "Arts Farmington / Nordica Auditorium (concert series, since 1971)", "source": "artsfarmington.org"}
+      ],
+      "art_galleries": [
+        {"name": "UMF Art Gallery (246 Main St — free admission, Maine artists)", "source": "artgalleryumf.org"},
+        {"name": "Tom Veilleux Gallery (30 Broadway)", "source": "artunion.us"},
+        {"name": "Emery Community Arts Center (UMF campus)", "source": "UMF website"}
+      ],
+      "indie_cinema": [
+        {"name": "Narrow Gauge Cinemas (15 Front St — indie + seasonal drive-in)", "source": "narrowgaugecinema.net"}
+      ],
+      "outdoor_outfitters": [
+        {"name": "Northern Lights Hearth & Sports (639 Wilton Rd — ski, hockey, fishing)", "source": "Yelp"}
+      ],
+      "kayak_canoe_rental": [],
+      "ski_areas": [
+        {"name": "Titcomb Mountain (79 Ski Lodge Ln — 16 trails, Nordic open; alpine closed 25/26)", "source": "titcombmountain.com"},
+        {"name": "Sugarloaf (~45 min — 4,237 ft summit, major resort)", "source": "greaterfranklin.org"},
+        {"name": "Saddleback Mountain (~45 min — reopened 2020)", "source": "greaterfranklin.org"},
+        {"name": "Spruce Mountain (Jay, ~20 min — community ski area)", "source": "greaterfranklin.org"}
+      ],
+      "coffee_shops": [
+        {"name": "The Orange Cat Cafe (147 Pleasant St — breakfast/lunch)", "source": "orangecatcafe.com"},
+        {"name": "The Downtown Press (paninis, wraps, coffee)", "source": "thedowntownpress.com"},
+        {"name": "Java Joe's Corner Cafe (42 Main St — local roasts)", "source": "Yelp"},
+        {"name": "Bittersweet Cafe (handcrafted drinks, house-made syrups)", "source": "bittersweetfresh.com"},
+        {"name": "Up Front & Pleasant Gourmet (157 Front St — specialty food/cafe)", "source": "Yelp"}
+      ],
+      "restaurants": [
+        {"name": "The Homestead Kitchen, Bar & Bakery (186 Broadway — upscale pub)", "source": "restaurantji.com"},
+        {"name": "Tuck's Ale House (160 Main St)", "source": "Yelp"},
+        {"name": "White Fox Taverna (108 Narrow Gauge Sq — Mediterranean)", "source": "UMaine Undiscovered Maine"},
+        {"name": "The Roost — Pub & Wingery (187 Main St)", "source": "Yelp"},
+        {"name": "Sabaidee Thai (168 Front St)", "source": "Yelp"},
+        {"name": "Thai Smile & Sushi (186 Front St)", "source": "UMaine Undiscovered Maine"},
+        {"name": "Uno Mas Mexican Grill & Tap House (103 Narrow Gauge Sq)", "source": "menupix.com"},
+        {"name": "GrantLee's Tavern & Grill (BBQ, smoked meats)", "source": "menupix.com"},
+        {"name": "The Outpost BBQ (food truck)", "source": "theoutpostbbqfarmington.com"},
+        {"name": "The Dugout Bar and Grill (118 Broadway — sports bar, pizza)", "source": "Yelp"},
+        {"name": "Farmington D (367 Wilton Rd — diner)", "source": "Yelp"},
+        {"name": "Brickyard Cafe (breakfast/lunch)", "source": "Yelp"},
+        {"name": "Lotus Blossom (605 Wilton Rd — Chinese)", "source": "menupix.com"},
+        {"name": "Legend Asian Restaurant (Chinese)", "source": "legendasianrestaurantme.com"},
+        {"name": "Basil's Pizza (248 Wilton Rd)", "source": "UMaine Undiscovered Maine"},
+        {"name": "Farmington House of Pizza", "source": "menupix.com"},
+        {"name": "Tumbledown Brewing (805 Farmington Falls Rd — brewery + food)", "source": "tumbledownbrewing.com"}
+      ],
+      "farmers_markets": [
+        {"name": "Farmington Farmers' Market — Friday (15 Front St, 9am-2pm, May-Oct)", "source": "downtownfarmington.com"},
+        {"name": "Farmington Farmers' Market — Saturday (130 Quebec St, year-round)", "source": "mainefarmersmarkets.org"}
+      ],
+      "breweries": [
+        {"name": "Tumbledown Brewing (805 Farmington Falls Rd — since 2014)", "source": "tumbledownbrewing.com"},
+        {"name": "Farmington Brewing Company", "source": "fbcbrewing.com"},
+        {"name": "FarmTown Brewing Company (132 Cedar Ln — opened Oct 2024)", "source": "mainebrewersguild.org"},
+        {"name": "The Farmhouse Beer Garden (rotating Maine taps, pizza)", "source": "thefarmhousebeergarden.com"}
+      ],
+      "libraries": [
+        {"name": "Cutler Memorial Library (117 Academy St — historic 1901 building)", "source": "farmington.lib.me.us"},
+        {"name": "UMF Mantor Library (academic, some public access)", "source": "maine.gov"}
+      ],
+      "yoga_studios": [
+        {"name": "Bodhi Yoga (FAR infrared panels)", "source": "bodhiyogafarmington.com"},
+        {"name": "Collective Wellness (yoga, massage, reflexology)", "source": "collectivewellnessme.com"},
+        {"name": "Sat Manav Yoga Ashram (243 Greenwood Brook Rd)", "source": "Tripadvisor"}
+      ],
+      "coworking_spaces": [
+        {"name": "Greater Franklin CoWorks (165 Front St, Suite 1)", "source": "greaterfranklin.org"},
+        {"name": "Franklin County Co-Working (186 Main St — opened Nov 2025, music studio)", "source": "sunjournal.com"}
+      ],
+      "vet_clinics": [
+        {"name": "Falls Road Veterinary Clinic (475 Farmington Falls Rd)", "source": "fallsroadvetclinic.com"},
+        {"name": "Farmington Veterinary Clinic (246 High St)", "source": "Yelp"}
+      ],
+      "pet_grooming": [
+        {"name": "A House of Stillwater Pet Grooming (15+ years, all breeds)", "source": "ahouseofstillwaterpetgrooming.com"}
+      ],
+      "pet_boarding": [
+        {"name": "Northern Exposure Kennel (115 Elm St)", "source": "pet.nears.me"},
+        {"name": "Pawsitive Dog Kennel (274 Red Schoolhouse Rd — home-based)", "source": "Facebook"},
+        {"name": "Bopp Farm Doggy Daycare & Boarding (Strong, ~10 min)", "source": "boppfarm.com"}
+      ],
+      "pet_supply": [
+        {"name": "J D Allen's Pets N Supplies (646 Wilton Rd)", "source": "yellowpages.com"},
+        {"name": "Mount Blue Agway (Wilton, ~10 min — feed, farm, pet)", "source": "Yelp"}
+      ],
+      "animal_shelters": [
+        {"name": "Franklin County Animal Shelter (550 Industry Rd — no-kill, since 1974)", "source": "fcanimalshelter.org"}
+      ],
+      "grocery_stores": [
+        {"name": "Hannaford Supermarket (131 Hannaford Dr — full grocery + pharmacy)", "source": "hannaford.com"},
+        {"name": "Food City (180 Main St — employee-owned)", "source": "Facebook"},
+        {"name": "Farmington Food Co-op (181 Front St — opened April 2026, natural/local)", "source": "farmingtonfoodcoop.com"}
+      ],
+      "hardware_stores": [
+        {"name": "Aubuchon Ace Hardware (528 Wilton Rd)", "source": "Yelp"}
+      ],
+      "farm_supply": [
+        {"name": "Tractor Supply Co. (Wilton, ~10 min)", "source": "tractorsupply.com"},
+        {"name": "Mount Blue Agway (Wilton, ~10 min — feed, farm supplies)", "source": "Yelp"}
+      ],
+      "urgent_care": [
+        {"name": "MaineHealth Franklin Hospital (131 Franklin Health Commons — 24/7 ER)", "source": "mainehealth.org"},
+        {"name": "ConvenientMD Urgent Care (108 Knowlton Corner Rd — opened Nov 2025, daily 8am-8pm)", "source": "convenientmd.com"}
+      ]
+    },
+    "market": {
+      "zhvi_latest": null,
+      "zhvi_6m_change_pct": null,
+      "median_sale_price": null,
+      "dom": null,
+      "inventory": null
+    },
+    "notes": "College town (UMaine Farmington). Real bookstores, record store, coffee culture. Good services. Less dramatic landscape than Rangeley but very livable. Affordable."
   }
 ]
