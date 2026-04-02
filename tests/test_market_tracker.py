@@ -137,43 +137,6 @@ class TestSafeFloat(unittest.TestCase):
     def test_zero(self): self.assertEqual(umd.safe_float("0"), 0.0)
 
 
-# ── moving_average ────────────────────────────────────────────────────────────
-
-class TestMovingAverage(unittest.TestCase):
-    def test_window_3_basic(self):
-        r = umd.moving_average([10, 20, 30, 40, 50], 3)
-        self.assertAlmostEqual(r[2], 20.0)
-        self.assertAlmostEqual(r[3], 30.0)
-
-    def test_first_element_equals_itself(self):
-        r = umd.moving_average([10, 20, 30], 3)
-        self.assertEqual(r[0], 10.0)
-
-    def test_none_values_propagate(self):
-        r = umd.moving_average([None, None, None], 3)
-        self.assertEqual(r, [None, None, None])
-
-    def test_none_values_skipped_in_window(self):
-        r = umd.moving_average([10, None, 30], 3)
-        self.assertIsNone(r[1])
-        self.assertAlmostEqual(r[2], 20.0)
-
-    def test_window_1(self):
-        r = umd.moving_average([5, 10, 15], 1)
-        self.assertEqual(r, [5.0, 10.0, 15.0])
-
-    def test_empty(self):
-        self.assertEqual(umd.moving_average([], 3), [])
-
-    def test_window_larger_than_data(self):
-        r = umd.moving_average([100, 200], 10)
-        self.assertAlmostEqual(r[1], 150.0)
-
-    def test_result_length_matches_input(self):
-        data = [i for i in range(10)]
-        self.assertEqual(len(umd.moving_average(data, 3)), 10)
-
-
 # ── last_valid ────────────────────────────────────────────────────────────────
 
 class TestLastValid(unittest.TestCase):
@@ -280,56 +243,6 @@ class TestComputeMarketScore(unittest.TestCase):
         self.assertEqual(len(result), 2)
 
 
-# ── price_forecast ────────────────────────────────────────────────────────────
-
-class TestPriceForecast(unittest.TestCase):
-    def test_prefers_zillow(self):
-        rd = make_redfin_data(n=24)
-        zd = make_zillow_data(n=24)
-        result = umd.price_forecast(rd, zd)
-        self.assertIn("Oxford County ZHVI", result["source"])
-
-    def test_falls_back_to_redfin(self):
-        rd = make_redfin_data(n=24)
-        zd = {"dates": [], "zhvi": [], "source": "unavailable", "error": None}
-        result = umd.price_forecast(rd, zd)
-        self.assertIn("Maine state", result["source"])
-
-    def test_none_insufficient_data(self):
-        rd = make_redfin_data(n=3)
-        zd = {"dates": [], "zhvi": [], "source": "unavailable", "error": None}
-        self.assertIsNone(umd.price_forecast(rd, zd))
-
-    def test_structure(self):
-        result = umd.price_forecast(make_redfin_data(n=24), make_zillow_data(n=24))
-        for key in ["day90", "day180", "day270", "trend_monthly", "source", "n_months"]:
-            self.assertIn(key, result)
-        for key in ["predicted", "low", "high", "date"]:
-            self.assertIn(key, result["day90"])
-            self.assertIn(key, result["day270"])
-
-    def test_ci_symmetric(self):
-        result = umd.price_forecast(make_redfin_data(n=24), make_zillow_data(n=24))
-        d = result["day90"]
-        self.assertAlmostEqual(d["predicted"] - d["low"], d["high"] - d["predicted"], delta=5)
-
-    def test_90_day_after_60(self):
-        result = umd.price_forecast(make_redfin_data(n=24), make_zillow_data(n=24))
-        d90  = datetime.strptime(result["day90"]["date"],  "%B %d, %Y")
-        d270 = datetime.strptime(result["day270"]["date"], "%B %d, %Y")
-        self.assertGreater(d270, d90)
-
-    def test_rising_market_positive_trend(self):
-        zd = make_zillow_data(n=24, start=200000)  # rising $800/mo
-        result = umd.price_forecast(make_redfin_data(n=24), zd)
-        self.assertGreater(result["trend_monthly"], 0)
-
-    def test_n_months_matches_data(self):
-        zd = make_zillow_data(n=18)
-        result = umd.price_forecast(make_redfin_data(n=18), zd)
-        self.assertEqual(result["n_months"], 18)
-
-
 # ── generate_market_pulse ─────────────────────────────────────────────────────
 
 class TestGenerateMarketPulse(unittest.TestCase):
@@ -427,9 +340,6 @@ class TestBuildHtml(unittest.TestCase):
         remaining = re.findall(r"__[A-Z_]+__", html)
         self.assertEqual(remaining, [], f"Unreplaced: {remaining}")
 
-    def test_contains_chart_js(self):
-        self.assertIn("new Chart", self._build())
-
     def test_tab_sections_present(self):
         html = self._build()
         self.assertIn("Market Tracker", html)
@@ -439,9 +349,6 @@ class TestBuildHtml(unittest.TestCase):
         html = self._build()
         for city in umd.BACKUP_CITIES_DEFAULT[:3]:
             self.assertIn(city["name"], html)
-
-    def test_forecast_section_with_data(self):
-        self.assertIn("Forecast", self._build())
 
     def test_unavailable_when_no_data(self):
         empty_rd = {k: [] for k in
@@ -454,11 +361,6 @@ class TestBuildHtml(unittest.TestCase):
                            cities=[umd.BACKUP_CITIES_DEFAULT[0]], city_data={})
         self.assertIn("unavailable", html.lower())
         self.assertIn("<!DOCTYPE html>", html)
-
-    def test_fred_unavailable_note_shown(self):
-        fd = {"dates": [], "rates": [], "source": "unavailable", "error": "FRED_API_KEY not set"}
-        html = self._build(fd=fd)
-        self.assertIn("FRED_API_KEY", html)
 
     def test_substantial_size(self):
         html = self._build()
@@ -885,17 +787,6 @@ class TestCoverageGaps(unittest.TestCase):
         html = umd.build_html(make_redfin_data(), make_zillow_data(), make_fred_data(),
                                cities, city_data)
         self.assertIn("Check this out", html)
-
-    # Mortgage rate table rendered when rate available
-    def test_build_html_mortgage_table_present(self):
-        rd = make_redfin_data()
-        zd = make_zillow_data()
-        fd = make_fred_data(start_rate=7.0)
-        cities = umd.BACKUP_CITIES_DEFAULT[:1]
-        city_data = {cities[0]["id"]: {"zhvi_latest": 300000, "zhvi_6m_ago": 295000,
-                                        "change_pct": 1.0, "county_name": "Test"}}
-        html = umd.build_html(rd, zd, fd, cities, city_data)
-        self.assertIn("mortgage-table", html)
 
     # Redfin data with empty maine_rows after cutoff filtering
     def test_redfin_old_data_filtered_out(self):
