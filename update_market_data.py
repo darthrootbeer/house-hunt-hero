@@ -1806,7 +1806,9 @@ def main():
 
     print("\nGenerating HTML report...")
     html = build_html(redfin_data, zillow_data, fred_data, backup_cities, city_data)
-    out = ROOT / "market_report.html"
+    out_dir = ROOT / "market_report"
+    out_dir.mkdir(exist_ok=True)
+    out = out_dir / "index.html"
     with open(out, "w") as f:
         f.write(html)
 

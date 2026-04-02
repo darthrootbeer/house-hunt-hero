@@ -302,22 +302,22 @@ class TestPriceForecast(unittest.TestCase):
 
     def test_structure(self):
         result = umd.price_forecast(make_redfin_data(n=24), make_zillow_data(n=24))
-        for key in ["day60", "day90", "trend_monthly", "source", "n_months"]:
+        for key in ["day90", "day180", "day270", "trend_monthly", "source", "n_months"]:
             self.assertIn(key, result)
         for key in ["predicted", "low", "high", "date"]:
-            self.assertIn(key, result["day60"])
             self.assertIn(key, result["day90"])
+            self.assertIn(key, result["day270"])
 
     def test_ci_symmetric(self):
         result = umd.price_forecast(make_redfin_data(n=24), make_zillow_data(n=24))
-        d = result["day60"]
+        d = result["day90"]
         self.assertAlmostEqual(d["predicted"] - d["low"], d["high"] - d["predicted"], delta=5)
 
     def test_90_day_after_60(self):
         result = umd.price_forecast(make_redfin_data(n=24), make_zillow_data(n=24))
-        d60 = datetime.strptime(result["day60"]["date"], "%B %d, %Y")
-        d90 = datetime.strptime(result["day90"]["date"], "%B %d, %Y")
-        self.assertGreater(d90, d60)
+        d90  = datetime.strptime(result["day90"]["date"],  "%B %d, %Y")
+        d270 = datetime.strptime(result["day270"]["date"], "%B %d, %Y")
+        self.assertGreater(d270, d90)
 
     def test_rising_market_positive_trend(self):
         zd = make_zillow_data(n=24, start=200000)  # rising $800/mo
