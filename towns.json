@@ -1356,5 +1356,147 @@
       "zhvi_latest": null, "zhvi_6m_change_pct": null, "median_sale_price": null, "dom": null, "inventory": null
     },
     "notes": "Gateway to Mt. Washington. Great Glen Trails, Wildcat ski. Small but scrappy Main St. Thin on services — no cinema, no record store, Walmart is the only supermarket. Strong nature access."
+  },
+  {
+    "slug": "montpelier-vt",
+    "name": "Montpelier",
+    "state": "VT",
+    "county": "Washington County",
+    "county_fips_state": "50",
+    "county_fips_county": "023",
+    "distance_tier": "T4",
+    "drive_minutes": 150,
+    "drive_note": "~2.5 hrs via I-91 / I-89",
+    "population": 8074,
+    "hard_fails": [],
+    "vibe": {
+      "creative_culture": 9,
+      "nature_access": 8,
+      "food_drink": 9,
+      "walkability": 9,
+      "quiet_privacy": 5,
+      "community_fit": 9,
+      "pet_friendly": 8,
+      "practical": 7
+    },
+    "places": {
+      "bookstores": [
+        {"name": "Bear Pond Books (77 Main St — beloved independent)", "source": "bearpondbooks.com"},
+        {"name": "The Book Garden (50 State St)", "source": "Facebook"}
+      ],
+      "record_stores": [
+        {"name": "Buch Spieler Records (27 Langdon St)", "source": "buchspielerrecords.com"}
+      ],
+      "music_venues": [
+        {"name": "Charlie O's (70 Main St — live music, billiards, karaoke)", "source": "montpelieralive.com"},
+        {"name": "Three Penny Taproom (108 Main St — live music, nationally recognized beer bar)", "source": "threepennytaproom.com"},
+        {"name": "Hepcat (6A State St — intimate vinyl listening bar)", "source": "montpelieralive.com"},
+        {"name": "Lost Nation Theater (community theater)", "source": "lostnationtheater.org"},
+        {"name": "Capital City Concerts (classical series at Unitarian Church)", "source": "capitalcityconcerts.org"}
+      ],
+      "art_galleries": [
+        {"name": "T.W. Wood Gallery (VCFA campus — VT's oldest art museum, free)", "source": "twwoodgallery.org"},
+        {"name": "The Front (artist-run cooperative gallery)", "source": "thefrontvt.com"},
+        {"name": "Artisans Hand Craft Gallery (89 Main St — handmade local work)", "source": "artisanshand.com"},
+        {"name": "Hexum Gallery (above Capital Kitchen, State St)", "source": "onmontpelier.com"}
+      ],
+      "indie_cinema": [
+        {"name": "The Savoy Theater (26 Main St — art-house, craft beer & wine)", "source": "savoytheater.com"},
+        {"name": "Capitol Theater (93 State St)", "source": "fandango.com"}
+      ],
+      "outdoor_outfitters": [
+        {"name": "Onion River Outdoors (89 Main St — bike shop, ski/snowshoe/skate rentals)", "source": "onionriver.com"}
+      ],
+      "kayak_canoe_rental": [
+        {"name": "Peacock Outfitters (Marshfield — shuttle-based kayak/canoe)", "source": "peacockoutfitters.com"}
+      ],
+      "ski_areas": [
+        {"name": "Bolton Valley (~25 min — 71 trails, highest base in NE)", "source": "boltonvalley.com"},
+        {"name": "Mad River Glen (~30 min — skier-owned co-op, expert terrain)", "source": "madriverglen.com"},
+        {"name": "Sugarbush (~35 min — large family resort)", "source": "sugarbush.com"},
+        {"name": "Stowe (~45 min — iconic VT destination)", "source": "stowe.com"}
+      ],
+      "coffee_shops": [
+        {"name": "Capitol Grounds Cafe (27 State St — house-roasted 802 Coffee)", "source": "capitolgrounds.com"},
+        {"name": "Birchgrove Baking (279 Elm St — bakery-cafe, 4.9 rating)", "source": "Yelp"},
+        {"name": "Cafe Noa (8 Putnam St — 4.8 rating)", "source": "Yelp"},
+        {"name": "Red Hen Baking Co. (artisan bakery with cafe)", "source": "Yelp"}
+      ],
+      "restaurants": [
+        {"name": "Sarducci's (3 Main St — Italian, overlooks Winooski River)", "source": "sarduccis.com"},
+        {"name": "Three Penny Taproom (108 Main St — award-winning beer bar, pub food)", "source": "threepennytaproom.com"},
+        {"name": "Oakes & Evelyn (52 State St — modern farm-to-table, small plates)", "source": "oakesandevelyn.com"},
+        {"name": "Kismet (Barre St — fine dining, Chef Crystal Maderia)", "source": "eathealthy365.com"},
+        {"name": "J. Morgan's Steakhouse (100 State St — local institution)", "source": "Yelp"},
+        {"name": "Positive Pie (22 State St — pizza, reopened after 2023 flood)", "source": "Yelp"},
+        {"name": "The Mad Taco (72 Main St — modern Mexican street food)", "source": "themadtaco.com"},
+        {"name": "The Skinny Pancake (89 Main St — sweet/savory crepes)", "source": "skinnypancake.com"},
+        {"name": "Wayside Restaurant (1873 US-302 — diner since 1918, ice cream)", "source": "Tripadvisor"},
+        {"name": "Hugo's Bar and Grill (118 Main St — piano bar, live jazz)", "source": "montpelieralive.com"},
+        {"name": "Langdon Street Tavern (14 Langdon St)", "source": "Yelp"},
+        {"name": "Pho Capital (107 State St — Vietnamese)", "source": "menupix.com"},
+        {"name": "Bear Naked Growler (44 taps, outdoor river deck, pub food)", "source": "bearnakedgrowler.com"},
+        {"name": "Charlie O's (70 Main St — bar & grill, live music)", "source": "restaurantji.com"}
+      ],
+      "farmers_markets": [
+        {"name": "Capital City Farmers Market (133 State St — Sat 9am-1pm, year-round, 50+ vendors)", "source": "capitalcityfarmersmarket.com"}
+      ],
+      "breweries": [
+        {"name": "Good Measure Pub & Brewery (Northfield, ~15 min — 10-barrel brewpub)", "source": "goodmeasurebrewing.com"},
+        {"name": "Three Penny Taproom (108 Main St — nationally recognized tap bar)", "source": "threepennytaproom.com"},
+        {"name": "Bear Naked Growler (44 taps, growler fills)", "source": "bearnakedgrowler.com"}
+      ],
+      "libraries": [
+        {"name": "Kellogg-Hubbard Library (135 Main St — free nonprofit, 70,000+ items)", "source": "kellogghubbard.org"}
+      ],
+      "yoga_studios": [
+        {"name": "Grateful Yoga (15 State St)", "source": "gratefulyogavt.com"},
+        {"name": "Blossom Wellness Center (7 Main St — yoga, meditation, dance, two studios)", "source": "blossomwellness.center"}
+      ],
+      "coworking_spaces": [
+        {"name": "Local 64 (43 State St — private offices, library, VT passport network)", "source": "local64.com"},
+        {"name": "The Loft (64 Main St — calm professional environment)", "source": "workattheloft.com"}
+      ],
+      "vet_clinics": [
+        {"name": "Montpelier Veterinary Hospital (403 Barre St — dogs, cats, horses, cattle)", "source": "montpelierveterinaryhospital.com"},
+        {"name": "Onion River Animal Hospital (Berlin — AAHA accredited, Fear Free, 35+ years)", "source": "onionriveranimalhospital.com"},
+        {"name": "Stonecliff Veterinary Surgical Center (58 State St — surgical specialist)", "source": "stonecliffvet.com"}
+      ],
+      "pet_grooming": [
+        {"name": "Country Pampered Paws (East Montpelier — full grooming + boarding)", "source": "petgroominginfo.com"},
+        {"name": "Sit Pretty Grooming Salon (self-groom option available)", "source": "bestpetspas.com"}
+      ],
+      "pet_boarding": [
+        {"name": "Country Pampered Paws (East Montpelier — boarding + grooming)", "source": "petgroominginfo.com"},
+        {"name": "Four Paws Inn (504 Mekkelsen Rd, Barre — daycare + boarding)", "source": "fourpawsinnvt.com"}
+      ],
+      "pet_supply": [
+        {"name": "The Quirky Pet (first catnip dispensary in the US!)", "source": "quirkypet.com"},
+        {"name": "Guy's Farm & Yard (19 Barre St — family-owned since 1960)", "source": "guysfarmandyard.com"}
+      ],
+      "animal_shelters": [
+        {"name": "Central Vermont Humane Society (E. Montpelier — 1,000+ animals/yr)", "source": "centralvermonthumane.org"}
+      ],
+      "grocery_stores": [
+        {"name": "Hunger Mountain Co-op (623 Stone Cutters Way — member-owned since 1972, 1,700+ local products)", "source": "hungermountain.coop"},
+        {"name": "Shaw's Supermarket (2 Main St)", "source": "shaws.com"}
+      ],
+      "hardware_stores": [
+        {"name": "Aubuchon Ace Hardware (40 Main St — family-owned chain since 1908)", "source": "acehardware.com"}
+      ],
+      "farm_supply": [
+        {"name": "Montpelier Agway (190 E Montpelier Rd)", "source": "montpelieragway.com"},
+        {"name": "Guy's Farm & Yard (19 Barre St — since 1960)", "source": "guysfarmandyard.com"},
+        {"name": "Tractor Supply Co. (352 River St)", "source": "tractorsupply.com"}
+      ],
+      "urgent_care": [
+        {"name": "CVMC ExpressCare (Berlin — walk-in, UVM Health Network)", "source": "cvmc.org"},
+        {"name": "Central Vermont Medical Center (Berlin — 24/7 ER)", "source": "cvmc.org"}
+      ]
+    },
+    "market": {
+      "zhvi_latest": null, "zhvi_6m_change_pct": null, "median_sale_price": null, "dom": null, "inventory": null
+    },
+    "notes": "Smallest state capital in the US. Quintessential creative small town: Bear Pond Books, Savoy art-house cinema, vinyl listening bar, food co-op, Mad River Glen ski co-op. Walkable. Rebuilt strong after 2023 flood."
   }
 ]
