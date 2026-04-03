@@ -66,7 +66,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
     <div class="header-inner">
       <div>
         <div class="header-title">Soulplace Seeker</div>
-        <div class="header-subtitle">Where should we live? Comparing 9 towns across 8 vibe dimensions.</div>
+        <div class="header-subtitle">Where should we live? Comparing 10 towns across 8 vibe dimensions.</div>
       </div>
       <div class="header-meta">
         <a href="market_report/" class="header-link">Oxford County Market Report &rarr;</a>
@@ -134,6 +134,20 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
   <div class="card-pills"><span class="card-pill book">Bookstore</span></div>
   <div class="card-notes">Lakes region town. Bookstore, two art galleries, indie cinema + drive-in, year-round farmers market. Pleasant Mountain ski. No brewery (Bear Bones closed 2026). Solid middle option.</div>
 </a>
+<a href="gorham-nh/" class="town-card">
+  <div class="card-top">
+    <div>
+      <div class="card-name">Gorham, NH</div>
+      <div class="card-meta">T2 &middot; ~45 min via Rt 2 &middot; Pop. 2,606</div>
+    </div>
+    <div class="card-score">5.8</div>
+  </div>
+  <div class="card-radar"><canvas id="radar_4" width="160" height="160"></canvas></div>
+  <div class="card-strengths">Top: Nature Access, Quiet & Privacy, Food & Drink</div>
+  <div class="card-stats">38 places verified</div>
+  <div class="card-pills"><span class="card-pill book">Bookstore</span></div>
+  <div class="card-notes">Gateway to Mt. Washington. Great Glen Trails, Wildcat ski. Small but scrappy Main St. Thin on services — no cinema, no record store, Walmart is the only supermarket. Strong nature access.</div>
+</a>
 <a href="fryeburg-me/" class="town-card">
   <div class="card-top">
     <div>
@@ -142,7 +156,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
     </div>
     <div class="card-score">5.4</div>
   </div>
-  <div class="card-radar"><canvas id="radar_4" width="160" height="160"></canvas></div>
+  <div class="card-radar"><canvas id="radar_5" width="160" height="160"></canvas></div>
   <div class="card-strengths">Top: Nature Access, Quiet & Privacy, Pet Friendly</div>
   <div class="card-stats">33 places verified</div>
   <div class="card-pills"></div>
@@ -156,7 +170,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
     </div>
     <div class="card-score">8.0</div>
   </div>
-  <div class="card-radar"><canvas id="radar_5" width="160" height="160"></canvas></div>
+  <div class="card-radar"><canvas id="radar_6" width="160" height="160"></canvas></div>
   <div class="card-strengths">Top: Nature Access, Food & Drink, Creative Culture</div>
   <div class="card-stats">76 places verified</div>
   <div class="card-pills"><span class="card-pill book">Bookstore</span></div>
@@ -170,7 +184,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
     </div>
     <div class="card-score">7.1</div>
   </div>
-  <div class="card-radar"><canvas id="radar_6" width="160" height="160"></canvas></div>
+  <div class="card-radar"><canvas id="radar_7" width="160" height="160"></canvas></div>
   <div class="card-strengths">Top: Creative Culture, Community Fit, Practical</div>
   <div class="card-stats">68 places verified</div>
   <div class="card-pills"><span class="card-pill record">Record Store</span> <span class="card-pill book">Bookstore</span></div>
@@ -184,7 +198,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
     </div>
     <div class="card-score">6.2</div>
   </div>
-  <div class="card-radar"><canvas id="radar_7" width="160" height="160"></canvas></div>
+  <div class="card-radar"><canvas id="radar_8" width="160" height="160"></canvas></div>
   <div class="card-strengths">Top: Nature Access, Quiet & Privacy, Food & Drink</div>
   <div class="card-stats">54 places verified</div>
   <div class="card-pills"><span class="card-pill book">Bookstore</span></div>
@@ -198,7 +212,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
     </div>
     <div class="card-score">6.2</div>
   </div>
-  <div class="card-radar"><canvas id="radar_8" width="160" height="160"></canvas></div>
+  <div class="card-radar"><canvas id="radar_9" width="160" height="160"></canvas></div>
   <div class="card-strengths">Top: Practical, Pet Friendly, Creative Culture</div>
   <div class="card-stats">59 places verified</div>
   <div class="card-pills"><span class="card-pill record">Record Store</span> <span class="card-pill book">Bookstore</span></div>
@@ -332,7 +346,7 @@ new Chart(document.getElementById('radar_4'), {
   data: {
     labels: ["Creative Culture", "Nature Access", "Food & Drink", "Walkability", "Quiet & Privacy", "Community Fit", "Pet Friendly", "Practical"],
     datasets: [{
-      data: [4, 8, 5, 3, 8, 5, 6, 4],
+      data: [4, 10, 6, 4, 8, 5, 4, 5],
       backgroundColor: 'rgba(90,170,130,0.15)',
       borderColor: '#5aaa82',
       borderWidth: 1.5,
@@ -360,7 +374,7 @@ new Chart(document.getElementById('radar_5'), {
   data: {
     labels: ["Creative Culture", "Nature Access", "Food & Drink", "Walkability", "Quiet & Privacy", "Community Fit", "Pet Friendly", "Practical"],
     datasets: [{
-      data: [8, 9, 9, 8, 6, 8, 8, 8],
+      data: [4, 8, 5, 3, 8, 5, 6, 4],
       backgroundColor: 'rgba(90,170,130,0.15)',
       borderColor: '#5aaa82',
       borderWidth: 1.5,
@@ -388,7 +402,7 @@ new Chart(document.getElementById('radar_6'), {
   data: {
     labels: ["Creative Culture", "Nature Access", "Food & Drink", "Walkability", "Quiet & Privacy", "Community Fit", "Pet Friendly", "Practical"],
     datasets: [{
-      data: [8, 7, 7, 6, 6, 8, 7, 8],
+      data: [8, 9, 9, 8, 6, 8, 8, 8],
       backgroundColor: 'rgba(90,170,130,0.15)',
       borderColor: '#5aaa82',
       borderWidth: 1.5,
@@ -416,7 +430,7 @@ new Chart(document.getElementById('radar_7'), {
   data: {
     labels: ["Creative Culture", "Nature Access", "Food & Drink", "Walkability", "Quiet & Privacy", "Community Fit", "Pet Friendly", "Practical"],
     datasets: [{
-      data: [5, 10, 6, 4, 9, 6, 6, 4],
+      data: [8, 7, 7, 6, 6, 8, 7, 8],
       backgroundColor: 'rgba(90,170,130,0.15)',
       borderColor: '#5aaa82',
       borderWidth: 1.5,
@@ -440,6 +454,34 @@ new Chart(document.getElementById('radar_7'), {
 });
 
 new Chart(document.getElementById('radar_8'), {
+  type: 'radar',
+  data: {
+    labels: ["Creative Culture", "Nature Access", "Food & Drink", "Walkability", "Quiet & Privacy", "Community Fit", "Pet Friendly", "Practical"],
+    datasets: [{
+      data: [5, 10, 6, 4, 9, 6, 6, 4],
+      backgroundColor: 'rgba(90,170,130,0.15)',
+      borderColor: '#5aaa82',
+      borderWidth: 1.5,
+      pointRadius: 2,
+      pointBackgroundColor: '#5aaa82'
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: false } },
+    scales: {
+      r: {
+        min: 0, max: 10,
+        ticks: { display: false, stepSize: 2 },
+        grid: { color: '#2d3748' },
+        angleLines: { color: '#2d3748' },
+        pointLabels: { color: '#8899aa', font: { size: 9, family: "'JetBrains Mono', monospace" } }
+      }
+    }
+  }
+});
+
+new Chart(document.getElementById('radar_9'), {
   type: 'radar',
   data: {
     labels: ["Creative Culture", "Nature Access", "Food & Drink", "Walkability", "Quiet & Privacy", "Community Fit", "Pet Friendly", "Practical"],

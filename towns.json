@@ -1244,5 +1244,117 @@
       "zhvi_latest": null, "zhvi_6m_change_pct": null, "median_sale_price": null, "dom": null, "inventory": null
     },
     "notes": "Revitalizing twin cities. 2 record stores (NerdCore underground!), Franco Center, Baxter Brewing, diverse food scene (Somali, Indian, Italian, French). Affordable but urban — lowest quiet/privacy score."
+  },
+  {
+    "slug": "gorham-nh",
+    "name": "Gorham",
+    "state": "NH",
+    "county": "Coos County",
+    "county_fips_state": "33",
+    "county_fips_county": "007",
+    "distance_tier": "T2",
+    "drive_minutes": 45,
+    "drive_note": "~45 min via Rt 2",
+    "population": 2606,
+    "hard_fails": [],
+    "vibe": {
+      "creative_culture": 4,
+      "nature_access": 10,
+      "food_drink": 6,
+      "walkability": 4,
+      "quiet_privacy": 8,
+      "community_fit": 5,
+      "pet_friendly": 4,
+      "practical": 5
+    },
+    "places": {
+      "bookstores": [
+        {"name": "White Mountain Cafe & Bookstore (212 Main St — cafe + books)", "source": "whitemountaincafe.com"}
+      ],
+      "record_stores": [],
+      "music_venues": [
+        {"name": "Medallion Opera House (20 Park St — 224-seat performing arts center)", "source": "medallionoperahouse.org"},
+        {"name": "Big Day Brewing (20 Glen Rd — live music, beer garden, disc golf)", "source": "bigdaybrewing.com"}
+      ],
+      "art_galleries": [
+        {"name": "Three Sisters Gallery (36 Exchange St — ~20 local artists, classes)", "source": "the3sistersgallery.com"}
+      ],
+      "indie_cinema": [],
+      "outdoor_outfitters": [
+        {"name": "Great Glen Trails Outdoor Center (1 Mt. Washington Auto Rd — gear, rentals)", "source": "greatglentrails.com"},
+        {"name": "Gorham Hardware & Sports Center (96 Main St — hiking/camping, AT resupply)", "source": "nhhockeyshop.com"}
+      ],
+      "kayak_canoe_rental": [
+        {"name": "Great Glen Trails (guided kayak tours on Androscoggin)", "source": "greatglentrails.com"},
+        {"name": "Dan's Scenic Tours (196 Main St — kayak/canoe rentals)", "source": "dansscenictours.com"}
+      ],
+      "ski_areas": [
+        {"name": "Wildcat Mountain (Pinkham Notch, ~10 min — 2,100+ ft vert)", "source": "skiwildcat.com"},
+        {"name": "Great Glen Trails (Nordic/snowshoe/fat bike at base of Mt. Washington)", "source": "greatglentrails.com"},
+        {"name": "Black Mountain (Jackson, ~20 min — family-friendly)", "source": "skiblackmountain.com"},
+        {"name": "Attitash (Bartlett, ~30 min — 76 trails)", "source": "attitash.com"}
+      ],
+      "coffee_shops": [
+        {"name": "White Mountain Cafe & Bookstore (212 Main St — specialty coffee, nitro)", "source": "Yelp"}
+      ],
+      "restaurants": [
+        {"name": "Nonna's Kitchen (19 Exchange St — fresh-pasta Italian)", "source": "nonnasgorham.com"},
+        {"name": "J's Corner Restaurant & Lounge (277 Main St — seafood, steaks, since 2002)", "source": "jscornernh.com"},
+        {"name": "Road Hawg BBQ (195 Main St — award-winning BBQ, Cajun)", "source": "roadhawgbbq.com"},
+        {"name": "The Public House Eatery (245 Main St — comfort food, pizza)", "source": "Facebook"},
+        {"name": "Eastern Depot Restaurant (443 Main St — family diner)", "source": "easterndepotrestaurant.com"},
+        {"name": "The Bear Taphouse & Cafe (115 Main St — breakfast, taproom)", "source": "giftly.com"},
+        {"name": "Big Day Brewing (20 Glen Rd — brewpub food)", "source": "bigdaybrewing.com"},
+        {"name": "Zhang's Asian Buffet (197 Main St — Chinese)", "source": "zhangsasianbuffet.com"},
+        {"name": "Gorham House of Pizza (12 Lancaster Rd)", "source": "gorhamnewhampshire.com"},
+        {"name": "The Notch Grille at Glen House (979 NH-16 — North Country comfort, Mt. Washington views)", "source": "theglenhouse.com"}
+      ],
+      "farmers_markets": [
+        {"name": "Gorham Farmers Market (Town Common — Thu 3-6pm, Jun-Oct)", "source": "gorhamnhrec.org"}
+      ],
+      "breweries": [
+        {"name": "Big Day Brewing (20 Glen Rd — founded 2021, hazy IPAs, disc golf)", "source": "bigdaybrewing.com"}
+      ],
+      "libraries": [
+        {"name": "Gorham Public Library (35 Railroad St)", "source": "gorhamlibrary.org"}
+      ],
+      "yoga_studios": [
+        {"name": "Village Yoga Gorham (34 School St — multiple formats, drop-ins welcome)", "source": "villageyogagorham.com"}
+      ],
+      "coworking_spaces": [],
+      "vet_clinics": [
+        {"name": "North Country Animal Hospital — Gorham (232 Main St — appointment only)", "source": "northcountryanimalhospital.com"}
+      ],
+      "pet_grooming": [
+        {"name": "Fuzzy Kid Kare (20 Glen Rd, Suite 4 — grooming + training)", "source": "androscogginvalleychamber.com"}
+      ],
+      "pet_boarding": [
+        {"name": "Cherry Mountain Kennel (Whitefield, ~30 min — 50+ acres, since 1996)", "source": "cherrymountainkennel.com"}
+      ],
+      "pet_supply": [
+        {"name": "Tractor Supply Co. (491 Main St)", "source": "tractorsupply.com"}
+      ],
+      "animal_shelters": [
+        {"name": "Above the Notch Humane Society (Sugar Hill — serves Coos County)", "source": "atnhs.org"}
+      ],
+      "grocery_stores": [
+        {"name": "Vashaw's Variety (302 Main St — indie, deli, 40+ years)", "source": "Yelp"},
+        {"name": "Walmart Supercenter (561 Main St — only full supermarket)", "source": "walmart.com"}
+      ],
+      "hardware_stores": [
+        {"name": "Gorham Hardware & Sports Center (96 Main St — hardware + sporting goods, 1858 building)", "source": "nhhockeyshop.com"}
+      ],
+      "farm_supply": [
+        {"name": "Tractor Supply Co. (491 Main St)", "source": "tractorsupply.com"}
+      ],
+      "urgent_care": [
+        {"name": "CCFHS HealthCare Express (167 Main St — walk-in urgent care)", "source": "coosfamilyhealth.org"},
+        {"name": "Androscoggin Valley Hospital (Berlin, ~6 mi — 24/7 ER)", "source": "avhnh.org"}
+      ]
+    },
+    "market": {
+      "zhvi_latest": null, "zhvi_6m_change_pct": null, "median_sale_price": null, "dom": null, "inventory": null
+    },
+    "notes": "Gateway to Mt. Washington. Great Glen Trails, Wildcat ski. Small but scrappy Main St. Thin on services — no cinema, no record store, Walmart is the only supermarket. Strong nature access."
   }
 ]
