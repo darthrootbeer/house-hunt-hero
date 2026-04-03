@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Keene, NH — Soulplace Profile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d1117; --surface: #161b22; --surface2: #1c2330; --border: #2d3748;
+  --navy: #1a2744; --green: #3d7a5a; --green-light: #5aaa82; --green-dim: #2a5240;
+  --amber: #c9883a; --amber-light: #e8a84e; --amber-dim: #7a5020;
+  --text: #e2e8f0; --text-muted: #8899aa; --text-dim: #4a5568;
+  --red: #c0392b; --red-light: #e74c3c;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Lora', Georgia, serif; font-size: 16px; line-height: 1.6; }
+.container { max-width: 800px; margin: 0 auto; padding: 0 24px; }
+
+/* Header */
+header { background: var(--navy); border-bottom: 2px solid var(--green-dim); padding: 28px 0 20px; }
+.header-inner { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 12px; }
+.header-title { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 700; color: var(--text); letter-spacing: -0.01em; }
+.header-subtitle { font-family: 'Lora', serif; font-style: italic; color: var(--text-muted); font-size: 0.95rem; margin-top: 4px; }
+.header-meta { text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--text-muted); line-height: 1.7; }
+.back-link { font-family: 'Inter', sans-serif; font-size: 0.82rem; color: var(--green-light); text-decoration: none; }
+.back-link:hover { text-decoration: underline; }
+
+/* Quick stats bar */
+.quick-stats { display: flex; flex-wrap: wrap; gap: 12px; margin: 24px 0 28px; }
+.qs { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px 16px; flex: 1; min-width: 120px; }
+.qs-label { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-dim); }
+.qs-value { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 600; color: var(--text); margin-top: 2px; }
+
+/* Section labels */
+.section-label { font-family: 'Inter', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--text); margin: 32px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+
+/* Vibe bars — RPG style, two-column grid */
+.vibe-section { margin-bottom: 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 4px 24px; }
+.vibe-row { margin-bottom: 12px; }
+.vibe-label { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
+.vibe-name { font-family: 'Inter', sans-serif; font-size: 0.88rem; font-weight: 600; color: var(--text); }
+.vibe-score { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--text-muted); }
+.vibe-track { background: var(--surface2); border-radius: 4px; height: 10px; overflow: hidden; position: relative; }
+.vibe-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+.vibe-desc { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 0.72rem; color: var(--text-dim); margin-top: 3px; }
+
+/* Places list — verifiable names + sources */
+.places-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 24px; }
+.places-group { margin-bottom: 8px; }
+.places-group-label { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--green-light); margin-bottom: 6px; }
+.cat-block { margin-bottom: 4px; }
+.cat-block[open] { margin-bottom: 10px; }
+.cat-header { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); cursor: pointer; list-style: none; }
+.cat-header::-webkit-details-marker { display: none; }
+.cat-header::before { content: "▶"; font-size: 0.55rem; color: var(--text-dim); margin-right: 6px; transition: transform 0.15s; }
+.cat-block[open] > .cat-header::before { transform: rotate(90deg); }
+.cat-name { font-family: 'Inter', sans-serif; font-size: 0.82rem; font-weight: 600; color: var(--text); }
+.cat-count { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--text-muted); }
+.cat-header.cat-absent .cat-name { color: var(--text-dim); }
+.cat-header.cat-absent .cat-count { color: var(--text-dim); }
+.place-row { padding: 3px 0 3px 8px; font-size: 0.82rem; line-height: 1.5; }
+.place-name { color: var(--text); }
+.place-source { font-family: 'JetBrains Mono', monospace; font-size: 0.66rem; color: var(--text-dim); margin-left: 8px; }
+.place-none { color: var(--text-dim); font-style: italic; font-size: 0.78rem; }
+.places-empty { color: var(--text-dim); font-style: italic; }
+
+/* Market stats */
+.market-section { margin-bottom: 32px; }
+.mkt-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+.mkt-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.mkt-label { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-dim); margin-bottom: 4px; }
+.mkt-value { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--text); }
+.delta { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; margin-top: 4px; display: block; }
+.delta.up { color: var(--amber-light); }
+.delta.down { color: var(--green-light); }
+.unavailable { background: var(--surface); border: 1px dashed var(--border); border-radius: 8px; padding: 20px; text-align: center; color: var(--text-muted); font-style: italic; font-size: 0.88rem; }
+
+/* Hard fails */
+.hard-fail-box { background: rgba(192,57,43,0.08); border: 1px solid rgba(192,57,43,0.3); border-radius: 8px; padding: 16px 20px; margin-bottom: 24px; }
+.hard-fail-title { font-family: 'Inter', sans-serif; font-size: 0.88rem; font-weight: 600; color: var(--red-light); margin-bottom: 8px; }
+.hard-fail-list { list-style: none; padding: 0; }
+.hard-fail-list li { font-size: 0.85rem; color: var(--red-light); padding: 2px 0; }
+.hard-fail-list li::before { content: "✖ "; }
+
+/* Notes */
+.notes-box { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--amber); border-radius: 8px; padding: 16px 20px; margin-bottom: 24px; font-size: 0.88rem; color: var(--amber-light); line-height: 1.6; }
+
+/* Info row */
+.info-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 12px 0 20px; }
+
+footer { background: var(--surface); border-top: 1px solid var(--border); padding: 20px 0; margin-top: 48px; text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 0.73rem; color: var(--text-dim); }
+
+@media (max-width: 480px) {
+  .container { padding: 0 14px; }
+  .header-title { font-size: 1.6rem; }
+  .header-meta { text-align: left; }
+  .quick-stats { flex-direction: column; }
+  .mkt-grid { grid-template-columns: 1fr 1fr; }
+  .vibe-section { grid-template-columns: 1fr; }
+  .places-list { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <div class="header-inner">
+      <div>
+        <a href="../market_report/" class="back-link">&larr; Market Report</a>
+        <div class="header-title">Keene, NH</div>
+        <div class="header-subtitle">Cheshire County &nbsp;&middot;&nbsp; 90–120 min</div>
+      </div>
+      <div class="header-meta">
+        <div>~2.5 hrs via I-91 / NH-9</div>
+        <div>Pop. 23,000</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="quick-stats">
+    <div class="qs"><div class="qs-label">Vibe Score</div><div class="qs-value">7.0/10</div></div>
+    <div class="qs"><div class="qs-label">Distance</div><div class="qs-value">T4</div></div>
+    <div class="qs"><div class="qs-label">Population</div><div class="qs-value">23,000</div></div>
+  </div>
+
+  
+
+  <div class="notes-box">College town (Keene State). Colonial Theatre, Toadstool Bookshop, record store, speakeasy restaurant (Sole's), cabaret bar (Madame Sherri's). 4 vets, food co-op, 3 breweries. Solid practical services.</div>
+
+  <div class="section-label">Soulplace Profile</div>
+  <div class="vibe-section">
+    <div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Creative Culture</span>
+    <span class="vibe-score">7/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:70%;background:#a855f7;opacity:0.85;"></div>
+  </div>
+  <div class="vibe-desc">Bookstores, record shops, music venues, indie cinema, arts scene</div>
+</div><div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Nature Access</span>
+    <span class="vibe-score">6/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:60%;background:#22c55e;opacity:0.65;"></div>
+  </div>
+  <div class="vibe-desc">Trails, mountains, water, skiing, state parks within 20 min</div>
+</div><div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Food & Drink</span>
+    <span class="vibe-score">8/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:80%;background:#f59e0b;opacity:0.85;"></div>
+  </div>
+  <div class="vibe-desc">Coffee shops, restaurants, farmers markets, local food culture</div>
+</div><div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Walkability</span>
+    <span class="vibe-score">7/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:70%;background:#3b82f6;opacity:0.85;"></div>
+  </div>
+  <div class="vibe-desc">Can you walk to a coffee shop, post office, grocery?</div>
+</div><div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Quiet & Privacy</span>
+    <span class="vibe-score">5/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:50%;background:#6366f1;opacity:0.65;"></div>
+  </div>
+  <div class="vibe-desc">Low density, wooded lots, no HOA culture, dark skies</div>
+</div><div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Community Fit</span>
+    <span class="vibe-score">7/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:70%;background:#ec4899;opacity:0.85;"></div>
+  </div>
+  <div class="vibe-desc">People like us — creative, progressive-leaning, dog people, not flashy</div>
+</div><div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Pet Friendly</span>
+    <span class="vibe-score">8/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:80%;background:#14b8a6;opacity:0.85;"></div>
+  </div>
+  <div class="vibe-desc">Vet clinics, dog parks, pet-friendly trails and businesses</div>
+</div><div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Practical</span>
+    <span class="vibe-score">8/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:80%;background:#8b5cf6;opacity:0.85;"></div>
+  </div>
+  <div class="vibe-desc">Groceries, medical, hardware, gas — can you live here without driving 45 min?</div>
+</div>
+  </div>
+
+  <div class="section-label">What's There</div>
+  <div class="places-list"><div class="places-group"><div class="places-group-label">Creative Culture</div><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Bookstores</span><span class="cat-count">1</span></summary><div class="place-row"><span class="place-name">The Toadstool Bookshop (12 Emerald St — long-established indie, cafe)</span><span class="place-source">source: toadbooks.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Record Stores</span><span class="cat-count">1</span></summary><div class="place-row"><span class="place-name">Keene on Vinyl (48 Emerald St — new/used vinyl, buys LPs)</span><span class="place-source">source: keeneonvinyl.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Music Venues</span><span class="cat-count">5</span></summary><div class="place-row"><span class="place-name">The Colonial Theatre (95 Main St — performing arts + music)</span><span class="place-source">source: thecolonial.org</span></div><div class="place-row"><span class="place-name">Elm City Brewing (222 West St, Colony Mill — live music)</span><span class="place-source">source: elmcitybrewing.com</span></div><div class="place-row"><span class="place-name">Branch and Blade Brewing (17 Bradco St — live music events)</span><span class="place-source">source: babbrewing.com</span></div><div class="place-row"><span class="place-name">Machina / The Hive (25 Roxbury St — monthly Live at the Hive)</span><span class="place-source">source: machinaarts.org</span></div><div class="place-row"><span class="place-name">Terra Nova Coffee (48 Emerald St — cafe + music venue)</span><span class="place-source">source: terranovacoffee.net</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Art Galleries</span><span class="cat-count">5</span></summary><div class="place-row"><span class="place-name">Thorne-Sagendorph Art Gallery (Keene State — free)</span><span class="place-source">source: keene.edu</span></div><div class="place-row"><span class="place-name">Monadnock Fine Art Gallery (50 Central Sq)</span><span class="place-source">source: Yelp</span></div><div class="place-row"><span class="place-name">Carroll House Gallery (229 Main St)</span><span class="place-source">source: Yelp</span></div><div class="place-row"><span class="place-name">MAAA Gallery at Syd's (25+ artists, 100+ works)</span><span class="place-source">source: monadnockareaartists.org</span></div><div class="place-row"><span class="place-name">Machina Kitchen & ArtBar Gallery (9 Court St)</span><span class="place-source">source: machinaarts.org</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Independent Cinemas</span><span class="cat-count">2</span></summary><div class="place-row"><span class="place-name">The Colonial Theatre (95 Main St — indie/arts programming)</span><span class="place-source">source: thecolonial.org</span></div><div class="place-row"><span class="place-name">Keene Cinemas (121 Key Rd — 6-screen, locally operated)</span><span class="place-source">source: keenecinemas6.com</span></div></details></div><div class="places-group"><div class="places-group-label">Nature Access</div><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Outdoor Outfitters</span><span class="cat-count">1</span></summary><div class="place-row"><span class="place-name">Sam's Outdoor Outfitters (74 Monadnock Hwy, N. Swanzey)</span><span class="place-source">source: samsoutfitters.com</span></div></details><details class="cat-block"><summary class="cat-header cat-absent"><span class="cat-name">Kayak / Canoe Rentals</span><span class="cat-count">0</span></summary><div class="place-row place-none">None found</div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Ski Areas</span><span class="cat-count">3</span></summary><div class="place-row"><span class="place-name">Granite Gorge (341 NH-9, Roxbury — 5 mi from Keene, reopened)</span><span class="place-source">source: granitegorge.com</span></div><div class="place-row"><span class="place-name">Crotched Mountain (Bennington, ~40 min)</span><span class="place-source">source: crotchedmtn.com</span></div><div class="place-row"><span class="place-name">Mount Sunapee (Newbury, ~50 min — 66 trails)</span><span class="place-source">source: mountsunapee.com</span></div></details></div><div class="places-group"><div class="places-group-label">Food & Drink</div><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Coffee Shops</span><span class="cat-count">5</span></summary><div class="place-row"><span class="place-name">Brewbakers Cafe (48 Emerald St — specialty coffee, scratch bakery)</span><span class="place-source">source: brewbakerskeene.com</span></div><div class="place-row"><span class="place-name">Terra Nova Organic Coffee (48 Emerald St — roastery + espresso bar)</span><span class="place-source">source: terranovacoffee.net</span></div><div class="place-row"><span class="place-name">Prime Roast Coffee (downtown — roasts on-site)</span><span class="place-source">source: primeroastcoffee.com</span></div><div class="place-row"><span class="place-name">Fresh Day Cafe (23 Ralston St — European-themed)</span><span class="place-source">source: keenesentinel.com</span></div><div class="place-row"><span class="place-name">The Works Cafe (120 Main St)</span><span class="place-source">source: Yelp</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Restaurants</span><span class="cat-count">12</span></summary><div class="place-row"><span class="place-name">Sole's (8 Winter St — speakeasy bar, top-rated)</span><span class="place-source">source: Yelp</span></div><div class="place-row"><span class="place-name">Noble Ramen House (21 Davis St — scratch-made, highest-reviewed)</span><span class="place-source">source: nobleramenhouse.com</span></div><div class="place-row"><span class="place-name">Granita Enoteca (Italian fine dining, seasonal local)</span><span class="place-source">source: granitakeene.com</span></div><div class="place-row"><span class="place-name">The Stage Restaurant (30 Central Sq)</span><span class="place-source">source: thestagerestaurant.com</span></div><div class="place-row"><span class="place-name">Guerrilla Grill (176 Main St — BBQ)</span><span class="place-source">source: guerrillagrill.com</span></div><div class="place-row"><span class="place-name">Madame Sherri's (82 Main St — cabaret-style bar/restaurant)</span><span class="place-source">source: madamesherris.com</span></div><div class="place-row"><span class="place-name">Otto's Food and Drink (9 Court St — global-inspired)</span><span class="place-source">source: ottoseats.com</span></div><div class="place-row"><span class="place-name">Local Burger (82 Main St)</span><span class="place-source">source: localkeene.com</span></div><div class="place-row"><span class="place-name">Thai Garden (118 Main St)</span><span class="place-source">source: restaurantji.com</span></div><div class="place-row"><span class="place-name">Kurama Omakase (14 Cypress St — Japanese/sushi)</span><span class="place-source">source: menuguide.com</span></div><div class="place-row"><span class="place-name">Lindy's Diner (19 Gilbo Ave — classic breakfast diner)</span><span class="place-source">source: evendo.com</span></div><div class="place-row"><span class="place-name">Elm City Brewing (222 West St — brewpub, Keene's first, 1995)</span><span class="place-source">source: elmcitybrewing.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Farmers Markets</span><span class="cat-count">1</span></summary><div class="place-row"><span class="place-name">Farmers' Market of Keene (Commercial St — Sat 9am-1pm, Apr-Oct)</span><span class="place-source">source: keenefarmersmarket.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Breweries / Taprooms</span><span class="cat-count">3</span></summary><div class="place-row"><span class="place-name">Elm City Brewing (222 West St, Colony Mill — since 1995)</span><span class="place-source">source: elmcitybrewing.com</span></div><div class="place-row"><span class="place-name">Branch and Blade Brewing (17 Bradco St)</span><span class="place-source">source: babbrewing.com</span></div><div class="place-row"><span class="place-name">Frogg Brewing (Swanzey, just outside Keene)</span><span class="place-source">source: froggbrewing.com</span></div></details></div><div class="places-group"><div class="places-group-label">Community Fit</div><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Libraries</span><span class="cat-count">2</span></summary><div class="place-row"><span class="place-name">Keene Public Library (60 Winter St — Kingsbury Makerspace)</span><span class="place-source">source: keenenh.gov</span></div><div class="place-row"><span class="place-name">Mason Library at Keene State (some community access)</span><span class="place-source">source: ksclib.keene.edu</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Yoga Studios</span><span class="cat-count">2</span></summary><div class="place-row"><span class="place-name">Soleil Studio (149 Emerald St — hot yoga, pilates, barre, HIIT)</span><span class="place-source">source: soleilstudionh.com</span></div><div class="place-row"><span class="place-name">Sterling Studios (7 Main St — yoga, healing arts)</span><span class="place-source">source: Yelp</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Coworking Spaces</span><span class="cat-count">2</span></summary><div class="place-row"><span class="place-name">The HIVE at Hannah Grimes Center (25 Roxbury St — entrepreneurship incubator)</span><span class="place-source">source: hannahgrimes.com</span></div><div class="place-row"><span class="place-name">The Shared Space (441 Main St — affordable downtown coworking)</span><span class="place-source">source: coworkingcafe.com</span></div></details></div><div class="places-group"><div class="places-group-label">Pet Friendly</div><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Vet Clinics</span><span class="cat-count">4</span></summary><div class="place-row"><span class="place-name">Cheshire Animal Hospital (505 Winchester St)</span><span class="place-source">source: cheshireanimalhospital.com</span></div><div class="place-row"><span class="place-name">Park Place Veterinary Hospital (92 Old Homestead Hwy)</span><span class="place-source">source: parkplacevet.com</span></div><div class="place-row"><span class="place-name">Court Street Veterinary Hospital (686 Court St — since 1984)</span><span class="place-source">source: courtstvet.com</span></div><div class="place-row"><span class="place-name">Westside Animal Hospital (670 Park Ave — AAHA accredited)</span><span class="place-source">source: westside-vet.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Pet Groomers</span><span class="cat-count">2</span></summary><div class="place-row"><span class="place-name">Doggone Beautiful (70 Court St — 39+ years, #1 rated 2025)</span><span class="place-source">source: Yelp</span></div><div class="place-row"><span class="place-name">Glad Wags (700 Marlboro St — dog/cat, mobile grooming, daycare)</span><span class="place-source">source: Yelp</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Pet Boarding / Kennels</span><span class="cat-count">1</span></summary><div class="place-row"><span class="place-name">Mukota Kennel (119 Matthews Rd, Swanzey — 30 acres, since 2002)</span><span class="place-source">source: mukotakennel.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Pet Supply Stores</span><span class="cat-count">1</span></summary><div class="place-row"><span class="place-name">One Stop Country Pet Supply (26 Ash Brook Rd — indie, holistic/raw)</span><span class="place-source">source: onestopcountrypetsupply.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Animal Shelters</span><span class="cat-count">1</span></summary><div class="place-row"><span class="place-name">Monadnock Humane Society (101 W Swanzey Rd — 43 communities, 1,600+ animals/yr)</span><span class="place-source">source: monadnockhumanesociety.org</span></div></details></div><div class="places-group"><div class="places-group-label">Practical</div><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Grocery Stores</span><span class="cat-count">3</span></summary><div class="place-row"><span class="place-name">Monadnock Food Co-op (34 Cypress St — community-owned, natural/local)</span><span class="place-source">source: monadnockfood.coop</span></div><div class="place-row"><span class="place-name">Hannaford (481 West St — full grocery + pharmacy)</span><span class="place-source">source: hannaford.com</span></div><div class="place-row"><span class="place-name">ALDI (478 West St)</span><span class="place-source">source: aldi.us</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Hardware Stores</span><span class="cat-count">2</span></summary><div class="place-row"><span class="place-name">Jack's Hardware / True Value (37 Park Ave — indie, old-fashioned)</span><span class="place-source">source: Yelp</span></div><div class="place-row"><span class="place-name">Hamshaw Lumber / Ace Hardware (3 Bradco St)</span><span class="place-source">source: acehardware.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Farm & Feed Supply</span><span class="cat-count">3</span></summary><div class="place-row"><span class="place-name">Keene Agway / Achille Agway (80 Martell Ct)</span><span class="place-source">source: cmac.ws</span></div><div class="place-row"><span class="place-name">The Cheshire Horse (8 Whittemore Farm Rd, Swanzey — horse, pet, farm)</span><span class="place-source">source: cheshirehorse.com</span></div><div class="place-row"><span class="place-name">Stonewall Farm Store (242 Chesterfield Rd — working farm)</span><span class="place-source">source: stonewallfarm.org</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Urgent Care / Medical</span><span class="cat-count">2</span></summary><div class="place-row"><span class="place-name">ConvenientMD (351 Winchester St — 7 days, 8am-8pm)</span><span class="place-source">source: convenientmd.com</span></div><div class="place-row"><span class="place-name">Cheshire Medical Center / Dartmouth-Hitchcock (580 Court St — full hospital)</span><span class="place-source">source: cheshiremed.org</span></div></details></div></div>
+
+  <div class="market-section">
+  <div class="section-label">Market — Cheshire County</div>
+  <div class="unavailable">Market data not yet loaded. Run update_market_data.py to populate.</div>
+</div>
+
+</div>
+
+<footer>
+  <div>Soulplace Seeker &nbsp;&middot;&nbsp; House Hunt Hero</div>
+</footer>
+
+</body>
+</html>

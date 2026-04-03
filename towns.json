@@ -4768,5 +4768,734 @@
       "inventory": null
     },
     "notes": "Bridge of Flowers village. Working artists, potters, galleries, Salmon Falls Gallery (35 yrs). Hawks & Reed music venue. 4 bookstores, 2 record stores, 4 breweries. Closest to the 'record store town' archetype."
+  },
+  {
+    "slug": "keene-nh",
+    "name": "Keene",
+    "state": "NH",
+    "county": "Cheshire County",
+    "county_fips_state": "33",
+    "county_fips_county": "005",
+    "distance_tier": "T4",
+    "drive_minutes": 150,
+    "drive_note": "~2.5 hrs via I-91 / NH-9",
+    "population": 23000,
+    "hard_fails": [],
+    "vibe": {
+      "creative_culture": 7,
+      "nature_access": 6,
+      "food_drink": 8,
+      "walkability": 7,
+      "quiet_privacy": 5,
+      "community_fit": 7,
+      "pet_friendly": 8,
+      "practical": 8
+    },
+    "places": {
+      "bookstores": [
+        {
+          "name": "The Toadstool Bookshop (12 Emerald St \u2014 long-established indie, cafe)",
+          "source": "toadbooks.com"
+        }
+      ],
+      "record_stores": [
+        {
+          "name": "Keene on Vinyl (48 Emerald St \u2014 new/used vinyl, buys LPs)",
+          "source": "keeneonvinyl.com"
+        }
+      ],
+      "music_venues": [
+        {
+          "name": "The Colonial Theatre (95 Main St \u2014 performing arts + music)",
+          "source": "thecolonial.org"
+        },
+        {
+          "name": "Elm City Brewing (222 West St, Colony Mill \u2014 live music)",
+          "source": "elmcitybrewing.com"
+        },
+        {
+          "name": "Branch and Blade Brewing (17 Bradco St \u2014 live music events)",
+          "source": "babbrewing.com"
+        },
+        {
+          "name": "Machina / The Hive (25 Roxbury St \u2014 monthly Live at the Hive)",
+          "source": "machinaarts.org"
+        },
+        {
+          "name": "Terra Nova Coffee (48 Emerald St \u2014 cafe + music venue)",
+          "source": "terranovacoffee.net"
+        }
+      ],
+      "art_galleries": [
+        {
+          "name": "Thorne-Sagendorph Art Gallery (Keene State \u2014 free)",
+          "source": "keene.edu"
+        },
+        {
+          "name": "Monadnock Fine Art Gallery (50 Central Sq)",
+          "source": "Yelp"
+        },
+        {
+          "name": "Carroll House Gallery (229 Main St)",
+          "source": "Yelp"
+        },
+        {
+          "name": "MAAA Gallery at Syd's (25+ artists, 100+ works)",
+          "source": "monadnockareaartists.org"
+        },
+        {
+          "name": "Machina Kitchen & ArtBar Gallery (9 Court St)",
+          "source": "machinaarts.org"
+        }
+      ],
+      "indie_cinema": [
+        {
+          "name": "The Colonial Theatre (95 Main St \u2014 indie/arts programming)",
+          "source": "thecolonial.org"
+        },
+        {
+          "name": "Keene Cinemas (121 Key Rd \u2014 6-screen, locally operated)",
+          "source": "keenecinemas6.com"
+        }
+      ],
+      "outdoor_outfitters": [
+        {
+          "name": "Sam's Outdoor Outfitters (74 Monadnock Hwy, N. Swanzey)",
+          "source": "samsoutfitters.com"
+        }
+      ],
+      "kayak_canoe_rental": [],
+      "ski_areas": [
+        {
+          "name": "Granite Gorge (341 NH-9, Roxbury \u2014 5 mi from Keene, reopened)",
+          "source": "granitegorge.com"
+        },
+        {
+          "name": "Crotched Mountain (Bennington, ~40 min)",
+          "source": "crotchedmtn.com"
+        },
+        {
+          "name": "Mount Sunapee (Newbury, ~50 min \u2014 66 trails)",
+          "source": "mountsunapee.com"
+        }
+      ],
+      "coffee_shops": [
+        {
+          "name": "Brewbakers Cafe (48 Emerald St \u2014 specialty coffee, scratch bakery)",
+          "source": "brewbakerskeene.com"
+        },
+        {
+          "name": "Terra Nova Organic Coffee (48 Emerald St \u2014 roastery + espresso bar)",
+          "source": "terranovacoffee.net"
+        },
+        {
+          "name": "Prime Roast Coffee (downtown \u2014 roasts on-site)",
+          "source": "primeroastcoffee.com"
+        },
+        {
+          "name": "Fresh Day Cafe (23 Ralston St \u2014 European-themed)",
+          "source": "keenesentinel.com"
+        },
+        {
+          "name": "The Works Cafe (120 Main St)",
+          "source": "Yelp"
+        }
+      ],
+      "restaurants": [
+        {
+          "name": "Sole's (8 Winter St \u2014 speakeasy bar, top-rated)",
+          "source": "Yelp"
+        },
+        {
+          "name": "Noble Ramen House (21 Davis St \u2014 scratch-made, highest-reviewed)",
+          "source": "nobleramenhouse.com"
+        },
+        {
+          "name": "Granita Enoteca (Italian fine dining, seasonal local)",
+          "source": "granitakeene.com"
+        },
+        {
+          "name": "The Stage Restaurant (30 Central Sq)",
+          "source": "thestagerestaurant.com"
+        },
+        {
+          "name": "Guerrilla Grill (176 Main St \u2014 BBQ)",
+          "source": "guerrillagrill.com"
+        },
+        {
+          "name": "Madame Sherri's (82 Main St \u2014 cabaret-style bar/restaurant)",
+          "source": "madamesherris.com"
+        },
+        {
+          "name": "Otto's Food and Drink (9 Court St \u2014 global-inspired)",
+          "source": "ottoseats.com"
+        },
+        {
+          "name": "Local Burger (82 Main St)",
+          "source": "localkeene.com"
+        },
+        {
+          "name": "Thai Garden (118 Main St)",
+          "source": "restaurantji.com"
+        },
+        {
+          "name": "Kurama Omakase (14 Cypress St \u2014 Japanese/sushi)",
+          "source": "menuguide.com"
+        },
+        {
+          "name": "Lindy's Diner (19 Gilbo Ave \u2014 classic breakfast diner)",
+          "source": "evendo.com"
+        },
+        {
+          "name": "Elm City Brewing (222 West St \u2014 brewpub, Keene's first, 1995)",
+          "source": "elmcitybrewing.com"
+        }
+      ],
+      "farmers_markets": [
+        {
+          "name": "Farmers' Market of Keene (Commercial St \u2014 Sat 9am-1pm, Apr-Oct)",
+          "source": "keenefarmersmarket.com"
+        }
+      ],
+      "breweries": [
+        {
+          "name": "Elm City Brewing (222 West St, Colony Mill \u2014 since 1995)",
+          "source": "elmcitybrewing.com"
+        },
+        {
+          "name": "Branch and Blade Brewing (17 Bradco St)",
+          "source": "babbrewing.com"
+        },
+        {
+          "name": "Frogg Brewing (Swanzey, just outside Keene)",
+          "source": "froggbrewing.com"
+        }
+      ],
+      "libraries": [
+        {
+          "name": "Keene Public Library (60 Winter St \u2014 Kingsbury Makerspace)",
+          "source": "keenenh.gov"
+        },
+        {
+          "name": "Mason Library at Keene State (some community access)",
+          "source": "ksclib.keene.edu"
+        }
+      ],
+      "yoga_studios": [
+        {
+          "name": "Soleil Studio (149 Emerald St \u2014 hot yoga, pilates, barre, HIIT)",
+          "source": "soleilstudionh.com"
+        },
+        {
+          "name": "Sterling Studios (7 Main St \u2014 yoga, healing arts)",
+          "source": "Yelp"
+        }
+      ],
+      "coworking_spaces": [
+        {
+          "name": "The HIVE at Hannah Grimes Center (25 Roxbury St \u2014 entrepreneurship incubator)",
+          "source": "hannahgrimes.com"
+        },
+        {
+          "name": "The Shared Space (441 Main St \u2014 affordable downtown coworking)",
+          "source": "coworkingcafe.com"
+        }
+      ],
+      "vet_clinics": [
+        {
+          "name": "Cheshire Animal Hospital (505 Winchester St)",
+          "source": "cheshireanimalhospital.com"
+        },
+        {
+          "name": "Park Place Veterinary Hospital (92 Old Homestead Hwy)",
+          "source": "parkplacevet.com"
+        },
+        {
+          "name": "Court Street Veterinary Hospital (686 Court St \u2014 since 1984)",
+          "source": "courtstvet.com"
+        },
+        {
+          "name": "Westside Animal Hospital (670 Park Ave \u2014 AAHA accredited)",
+          "source": "westside-vet.com"
+        }
+      ],
+      "pet_grooming": [
+        {
+          "name": "Doggone Beautiful (70 Court St \u2014 39+ years, #1 rated 2025)",
+          "source": "Yelp"
+        },
+        {
+          "name": "Glad Wags (700 Marlboro St \u2014 dog/cat, mobile grooming, daycare)",
+          "source": "Yelp"
+        }
+      ],
+      "pet_boarding": [
+        {
+          "name": "Mukota Kennel (119 Matthews Rd, Swanzey \u2014 30 acres, since 2002)",
+          "source": "mukotakennel.com"
+        }
+      ],
+      "pet_supply": [
+        {
+          "name": "One Stop Country Pet Supply (26 Ash Brook Rd \u2014 indie, holistic/raw)",
+          "source": "onestopcountrypetsupply.com"
+        }
+      ],
+      "animal_shelters": [
+        {
+          "name": "Monadnock Humane Society (101 W Swanzey Rd \u2014 43 communities, 1,600+ animals/yr)",
+          "source": "monadnockhumanesociety.org"
+        }
+      ],
+      "grocery_stores": [
+        {
+          "name": "Monadnock Food Co-op (34 Cypress St \u2014 community-owned, natural/local)",
+          "source": "monadnockfood.coop"
+        },
+        {
+          "name": "Hannaford (481 West St \u2014 full grocery + pharmacy)",
+          "source": "hannaford.com"
+        },
+        {
+          "name": "ALDI (478 West St)",
+          "source": "aldi.us"
+        }
+      ],
+      "hardware_stores": [
+        {
+          "name": "Jack's Hardware / True Value (37 Park Ave \u2014 indie, old-fashioned)",
+          "source": "Yelp"
+        },
+        {
+          "name": "Hamshaw Lumber / Ace Hardware (3 Bradco St)",
+          "source": "acehardware.com"
+        }
+      ],
+      "farm_supply": [
+        {
+          "name": "Keene Agway / Achille Agway (80 Martell Ct)",
+          "source": "cmac.ws"
+        },
+        {
+          "name": "The Cheshire Horse (8 Whittemore Farm Rd, Swanzey \u2014 horse, pet, farm)",
+          "source": "cheshirehorse.com"
+        },
+        {
+          "name": "Stonewall Farm Store (242 Chesterfield Rd \u2014 working farm)",
+          "source": "stonewallfarm.org"
+        }
+      ],
+      "urgent_care": [
+        {
+          "name": "ConvenientMD (351 Winchester St \u2014 7 days, 8am-8pm)",
+          "source": "convenientmd.com"
+        },
+        {
+          "name": "Cheshire Medical Center / Dartmouth-Hitchcock (580 Court St \u2014 full hospital)",
+          "source": "cheshiremed.org"
+        }
+      ]
+    },
+    "market": {
+      "zhvi_latest": null,
+      "zhvi_6m_change_pct": null,
+      "median_sale_price": null,
+      "dom": null,
+      "inventory": null
+    },
+    "notes": "College town (Keene State). Colonial Theatre, Toadstool Bookshop, record store, speakeasy restaurant (Sole's), cabaret bar (Madame Sherri's). 4 vets, food co-op, 3 breweries. Solid practical services."
+  },
+  {
+    "slug": "portland-me",
+    "name": "Portland",
+    "state": "ME",
+    "county": "Cumberland County",
+    "county_fips_state": "23",
+    "county_fips_county": "005",
+    "distance_tier": "T4",
+    "drive_minutes": 150,
+    "drive_note": "~2.5 hrs via ME Tpke",
+    "population": 68000,
+    "hard_fails": [],
+    "vibe": {
+      "creative_culture": 10,
+      "nature_access": 6,
+      "food_drink": 10,
+      "walkability": 9,
+      "quiet_privacy": 2,
+      "community_fit": 8,
+      "pet_friendly": 8,
+      "practical": 10
+    },
+    "places": {
+      "bookstores": [
+        {
+          "name": "Longfellow Books (1 Monument Way \u2014 flagship indie)",
+          "source": "longfellowbooks.com"
+        },
+        {
+          "name": "Green Hand Bookshop (661 Congress St \u2014 used, sci-fi/horror/occult)",
+          "source": "theculturetrip.com"
+        },
+        {
+          "name": "Sherman's Books (49 Exchange St \u2014 ME's oldest chain, since 1886)",
+          "source": "portlandoldport.com"
+        },
+        {
+          "name": "Back Cove Books (651 Forest Ave \u2014 opened 2022)",
+          "source": "backcovebooks.com"
+        },
+        {
+          "name": "Print: A Bookstore (273 Congress St \u2014 East End indie)",
+          "source": "visitmaine.com"
+        }
+      ],
+      "record_stores": [
+        {
+          "name": "Electric Buddhas (556 Congress St \u2014 vinyl, vintage boomboxes, retro games)",
+          "source": "travelportland.com"
+        },
+        {
+          "name": "Moody Lords Vinyl (Congress St)",
+          "source": "pressherald.com"
+        },
+        {
+          "name": "Strange Maine (Congress St \u2014 chaotic metal vibe, VHS, records)",
+          "source": "travelportland.com"
+        },
+        {
+          "name": "Enterprise Records (Congress St \u2014 owner-run, well-curated)",
+          "source": "travelportland.com"
+        },
+        {
+          "name": "Bull Moose (151 Middle St \u2014 Maine chain)",
+          "source": "portlandoldport.com"
+        }
+      ],
+      "music_venues": [
+        {
+          "name": "State Theatre (609 Congress St \u2014 1,350-seat, major touring acts)",
+          "source": "statetheatreportland.com"
+        },
+        {
+          "name": "Thompson's Point (outdoor waterfront amphitheater)",
+          "source": "thompsonspoint.com"
+        },
+        {
+          "name": "SPACE Gallery (538 Congress St \u2014 nonprofit, indie music/film/art)",
+          "source": "space538.org"
+        },
+        {
+          "name": "One Longfellow Square (181 State St \u2014 intimate listening room)",
+          "source": "onelongfellowsquare.com"
+        },
+        {
+          "name": "Geno's Rock Club (625 Congress St \u2014 longtime dive/rock)",
+          "source": "Yelp"
+        },
+        {
+          "name": "Aura (121 Center St \u2014 club/concert venue)",
+          "source": "hillytown.com"
+        }
+      ],
+      "art_galleries": [
+        {
+          "name": "Portland Museum of Art (7 Congress Sq \u2014 I.M. Pei, Homer/Wyeth/Hopper)",
+          "source": "portlandmuseum.org"
+        },
+        {
+          "name": "Greenhut Galleries (146 Middle St \u2014 since 1977, voted best)",
+          "source": "greenhutgalleries.com"
+        },
+        {
+          "name": "Portland Art Gallery (154 Middle St \u2014 55+ Maine artists)",
+          "source": "portlandartgallery.com"
+        },
+        {
+          "name": "Cove Street Arts (East Bayside \u2014 8,000+ sq ft, studios, bookstore)",
+          "source": "wanderlog.com"
+        },
+        {
+          "name": "Abacus Gallery (44 Exchange St \u2014 Old Port, art + fine craft)",
+          "source": "art-collecting.com"
+        }
+      ],
+      "indie_cinema": [
+        {
+          "name": "Nickelodeon Cinemas (1 Temple St \u2014 art house + indie)",
+          "source": "patriotcinemas.com"
+        },
+        {
+          "name": "SPACE Gallery (538 Congress St \u2014 documentary, experimental film)",
+          "source": "space538.org"
+        }
+      ],
+      "outdoor_outfitters": [
+        {
+          "name": "EMS (Old Port)",
+          "source": "portlandoldport.com"
+        },
+        {
+          "name": "REI (Westbrook, ~10 min \u2014 opened Jan 2025, 24,000 sq ft)",
+          "source": "rei.com"
+        }
+      ],
+      "kayak_canoe_rental": [
+        {
+          "name": "Portland Paddle (East End Beach \u2014 sea kayak/SUP on Casco Bay, seasonal)",
+          "source": "portlandpaddle.net"
+        }
+      ],
+      "ski_areas": [
+        {
+          "name": "Pleasant Mountain (Bridgton, ~1.25 hrs \u2014 ME's oldest, night skiing)",
+          "source": "pleasantmountain.com"
+        },
+        {
+          "name": "Sunday River (~1.75 hrs \u2014 133 trails, major resort)",
+          "source": "sundayriver.com"
+        }
+      ],
+      "coffee_shops": [
+        {
+          "name": "Tandem Coffee Roasters (742 Congress St \u2014 Food & Wine 'Best in ME', converted gas station)",
+          "source": "boxofmaine.com"
+        },
+        {
+          "name": "Bard Coffee (185 Middle St \u2014 2025 Best of Awards winner)",
+          "source": "portlandoldport.com"
+        },
+        {
+          "name": "Speckled Ax (567 Congress St + 2 more \u2014 wood-fired roasting)",
+          "source": "speckledax.com"
+        },
+        {
+          "name": "Coffee By Design (multiple locations \u2014 2024 Best of Awards)",
+          "source": "boxofmaine.com"
+        },
+        {
+          "name": "Burundi Star (authentic African coffee, community-rooted)",
+          "source": "justinpluslauren.com"
+        }
+      ],
+      "restaurants": [
+        {
+          "name": "Eventide Oyster Co. (86 Middle St \u2014 iconic oyster bar, brown butter lobster roll)",
+          "source": "eventideoysterco.com"
+        },
+        {
+          "name": "Duckfat (43 Middle St \u2014 Belgian frites in duck fat)",
+          "source": "duckfat.com"
+        },
+        {
+          "name": "Mr. Tuna (83 Middle St \u2014 Food & Wine Best New Chefs 2025, NYT top dish 2024)",
+          "source": "mrtunamaine.com"
+        },
+        {
+          "name": "Oun Lido's (30 Market St \u2014 Cambodian, Esquire Best New 2024)",
+          "source": "Yelp"
+        },
+        {
+          "name": "Luncheonette (Cumberland Ave \u2014 Eater Best New 2025)",
+          "source": "portlandfoodmap.com"
+        },
+        {
+          "name": "Miyake (468 Fore St \u2014 omakase, farm-to-table Japanese)",
+          "source": "miyakerestaurants.com"
+        },
+        {
+          "name": "Pai Men Miyake (188 State St \u2014 ramen/izakaya)",
+          "source": "miyakerestaurants.com"
+        },
+        {
+          "name": "Boda (671 Congress St \u2014 Thai street food, 16+ years)",
+          "source": "pressherald.com"
+        },
+        {
+          "name": "Hugo's (88 Middle St \u2014 tasting-menu fine dining)",
+          "source": "bigtreehospitality.com"
+        },
+        {
+          "name": "The Honey Paw (78 Middle St \u2014 noodle-focused, global flavors)",
+          "source": "bigtreehospitality.com"
+        },
+        {
+          "name": "ZuBakery (James Beard Outstanding Bakery 2024)",
+          "source": "pressherald.com"
+        },
+        {
+          "name": "Cantina Calafia (Mexican-leaning)",
+          "source": "pressherald.com"
+        }
+      ],
+      "farmers_markets": [
+        {
+          "name": "Portland Farmers' Market (Deering Oaks \u2014 Sat, year-round, 30+ farmers)",
+          "source": "portlandmainefarmersmarket.org"
+        }
+      ],
+      "breweries": [
+        {
+          "name": "Allagash Brewing (50 Industrial Way \u2014 Belgian-style pioneer, since 1995)",
+          "source": "allagash.com"
+        },
+        {
+          "name": "Bissell Brothers (38 Resurgam Pl \u2014 hazy IPAs, Chamber Biz of Year 2023)",
+          "source": "bissellbrothers.com"
+        },
+        {
+          "name": "Rising Tide (103 Fox St \u2014 family-owned, large beer garden)",
+          "source": "hopculture.com"
+        },
+        {
+          "name": "Oxbow Blending & Bottling (49 Washington Ave \u2014 farmhouse ales)",
+          "source": "oxbowbeer.com"
+        },
+        {
+          "name": "Belleflower (66 Cove St \u2014 female-owned, Hop Culture Best 2023)",
+          "source": "belleflowerbrewing.com"
+        },
+        {
+          "name": "Lone Pine (219 Anderson St \u2014 IPAs, hop-forward)",
+          "source": "lonepinebrewery.com"
+        },
+        {
+          "name": "Battery Steele (1 Industrial Way \u2014 lagers and IPAs)",
+          "source": "batterysteele.com"
+        },
+        {
+          "name": "Maine Beer Company (Freeport, ~20 min \u2014 cult Lunch IPA)",
+          "source": "mainebeercompany.com"
+        }
+      ],
+      "libraries": [
+        {
+          "name": "Portland Public Library (5 Monument Sq \u2014 since 1867, galleries, 4 branches)",
+          "source": "portlandlibrary.org"
+        }
+      ],
+      "yoga_studios": [
+        {
+          "name": "Portland Yoga Collective (98 Cross St N \u2014 2022 Best of Award)",
+          "source": "portlandyogacollective.com"
+        },
+        {
+          "name": "Hustle and Flow (155 Brackett St \u2014 West End, yoga/pole/dance)",
+          "source": "hustleflowstudio.com"
+        },
+        {
+          "name": "Creating Space Yoga (1717 Congress St \u2014 heated/non-heated)",
+          "source": "creatingspaceyoga.com"
+        }
+      ],
+      "coworking_spaces": [
+        {
+          "name": "Cloudport Coworking (16 Middle St \u2014 expanded Jan 2025, e-bikes)",
+          "source": "cloudportme.com"
+        },
+        {
+          "name": "Think Tank Coworking (dog-friendly, free beer)",
+          "source": "thinktankcoworking.com"
+        },
+        {
+          "name": "coworkHERS (voted Best Co-working 2023, women + marginalized focus)",
+          "source": "coworkhers.com"
+        }
+      ],
+      "vet_clinics": [
+        {
+          "name": "Back Cove Animal Hospital (highest rated, separate cat/dog rooms)",
+          "source": "backcoveanimalhospital.com"
+        },
+        {
+          "name": "Brackett Street Veterinary Clinic (West End)",
+          "source": "brackettstveterinaryclinic.com"
+        },
+        {
+          "name": "PetMedic Urgent Care (same-day online appts)",
+          "source": "petmedicurgentcare.com"
+        }
+      ],
+      "pet_grooming": [
+        {
+          "name": "Rebel Pet (295 Forest Ave \u2014 salon)",
+          "source": "rebelpetmaine.com"
+        },
+        {
+          "name": "SoPo Paws (South Portland \u2014 2025 Best of 207 winner)",
+          "source": "sopopaws.com"
+        }
+      ],
+      "pet_boarding": [
+        {
+          "name": "Happy Tails (119 Bishop St + 130 Saint John St \u2014 2 locations, structured playgroups)",
+          "source": "happytailsportland.com"
+        }
+      ],
+      "pet_supply": [
+        {
+          "name": "Fish & Bone (Old Port \u2014 award-winning indie, natural food, treats)",
+          "source": "thefishandbone.com"
+        },
+        {
+          "name": "Uncommon Paws (21 Exchange St \u2014 handcrafted Maine collars/leashes)",
+          "source": "portlandoldport.com"
+        }
+      ],
+      "animal_shelters": [
+        {
+          "name": "Animal Refuge League of Greater Portland (217 Landing Rd, Westbrook \u2014 4,000+ animals/yr)",
+          "source": "arlgp.org"
+        }
+      ],
+      "grocery_stores": [
+        {
+          "name": "Rosemont Market & Bakery (multiple locations \u2014 60%+ Maine-sourced, beloved)",
+          "source": "rosemontmarket.com"
+        },
+        {
+          "name": "Portland Food Co-op (290 Congress St \u2014 member-owned)",
+          "source": "portlandfood.coop"
+        },
+        {
+          "name": "Whole Foods (2 Somerset St \u2014 ME's only location)",
+          "source": "wholefoodsmarket.com"
+        },
+        {
+          "name": "Trader Joe's (87 Marginal Way)",
+          "source": "traderjoes.com"
+        }
+      ],
+      "hardware_stores": [
+        {
+          "name": "Maine Hardware / Ace (274 Saint John St \u2014 locally owned)",
+          "source": "acehardware.com"
+        }
+      ],
+      "farm_supply": [
+        {
+          "name": "Tractor Supply Co. (South Portland)",
+          "source": "tractorsupply.com"
+        }
+      ],
+      "urgent_care": [
+        {
+          "name": "ConvenientMD (191 Marginal Way \u2014 7 days, 8am-8pm)",
+          "source": "convenientmd.com"
+        },
+        {
+          "name": "AFC Urgent Care (South Portland \u2014 avg wait <15 min)",
+          "source": "afcurgentcare.com"
+        }
+      ]
+    },
+    "market": {
+      "zhvi_latest": null,
+      "zhvi_6m_change_pct": null,
+      "median_sale_price": null,
+      "dom": null,
+      "inventory": null
+    },
+    "notes": "Maine's city. 5 bookstores, 5 record stores, Portland Museum of Art, State Theatre, 8 breweries (Allagash!), nationally awarded restaurants (Eventide, Mr. Tuna, ZuBakery). Lowest quiet/privacy (2). Most expensive option."
   }
 ]

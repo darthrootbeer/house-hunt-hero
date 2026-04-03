@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portland, ME — Soulplace Profile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d1117; --surface: #161b22; --surface2: #1c2330; --border: #2d3748;
+  --navy: #1a2744; --green: #3d7a5a; --green-light: #5aaa82; --green-dim: #2a5240;
+  --amber: #c9883a; --amber-light: #e8a84e; --amber-dim: #7a5020;
+  --text: #e2e8f0; --text-muted: #8899aa; --text-dim: #4a5568;
+  --red: #c0392b; --red-light: #e74c3c;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Lora', Georgia, serif; font-size: 16px; line-height: 1.6; }
+.container { max-width: 800px; margin: 0 auto; padding: 0 24px; }
+
+/* Header */
+header { background: var(--navy); border-bottom: 2px solid var(--green-dim); padding: 28px 0 20px; }
+.header-inner { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 12px; }
+.header-title { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 700; color: var(--text); letter-spacing: -0.01em; }
+.header-subtitle { font-family: 'Lora', serif; font-style: italic; color: var(--text-muted); font-size: 0.95rem; margin-top: 4px; }
+.header-meta { text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--text-muted); line-height: 1.7; }
+.back-link { font-family: 'Inter', sans-serif; font-size: 0.82rem; color: var(--green-light); text-decoration: none; }
+.back-link:hover { text-decoration: underline; }
+
+/* Quick stats bar */
+.quick-stats { display: flex; flex-wrap: wrap; gap: 12px; margin: 24px 0 28px; }
+.qs { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px 16px; flex: 1; min-width: 120px; }
+.qs-label { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-dim); }
+.qs-value { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 600; color: var(--text); margin-top: 2px; }
+
+/* Section labels */
+.section-label { font-family: 'Inter', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--text); margin: 32px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+
+/* Vibe bars — RPG style, two-column grid */
+.vibe-section { margin-bottom: 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 4px 24px; }
+.vibe-row { margin-bottom: 12px; }
+.vibe-label { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
+.vibe-name { font-family: 'Inter', sans-serif; font-size: 0.88rem; font-weight: 600; color: var(--text); }
+.vibe-score { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--text-muted); }
+.vibe-track { background: var(--surface2); border-radius: 4px; height: 10px; overflow: hidden; position: relative; }
+.vibe-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+.vibe-desc { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 0.72rem; color: var(--text-dim); margin-top: 3px; }
+
+/* Places list — verifiable names + sources */
+.places-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 24px; }
+.places-group { margin-bottom: 8px; }
+.places-group-label { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--green-light); margin-bottom: 6px; }
+.cat-block { margin-bottom: 4px; }
+.cat-block[open] { margin-bottom: 10px; }
+.cat-header { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); cursor: pointer; list-style: none; }
+.cat-header::-webkit-details-marker { display: none; }
+.cat-header::before { content: "▶"; font-size: 0.55rem; color: var(--text-dim); margin-right: 6px; transition: transform 0.15s; }
+.cat-block[open] > .cat-header::before { transform: rotate(90deg); }
+.cat-name { font-family: 'Inter', sans-serif; font-size: 0.82rem; font-weight: 600; color: var(--text); }
+.cat-count { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--text-muted); }
+.cat-header.cat-absent .cat-name { color: var(--text-dim); }
+.cat-header.cat-absent .cat-count { color: var(--text-dim); }
+.place-row { padding: 3px 0 3px 8px; font-size: 0.82rem; line-height: 1.5; }
+.place-name { color: var(--text); }
+.place-source { font-family: 'JetBrains Mono', monospace; font-size: 0.66rem; color: var(--text-dim); margin-left: 8px; }
+.place-none { color: var(--text-dim); font-style: italic; font-size: 0.78rem; }
+.places-empty { color: var(--text-dim); font-style: italic; }
+
+/* Market stats */
+.market-section { margin-bottom: 32px; }
+.mkt-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+.mkt-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.mkt-label { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-dim); margin-bottom: 4px; }
+.mkt-value { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--text); }
+.delta { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; margin-top: 4px; display: block; }
+.delta.up { color: var(--amber-light); }
+.delta.down { color: var(--green-light); }
+.unavailable { background: var(--surface); border: 1px dashed var(--border); border-radius: 8px; padding: 20px; text-align: center; color: var(--text-muted); font-style: italic; font-size: 0.88rem; }
+
+/* Hard fails */
+.hard-fail-box { background: rgba(192,57,43,0.08); border: 1px solid rgba(192,57,43,0.3); border-radius: 8px; padding: 16px 20px; margin-bottom: 24px; }
+.hard-fail-title { font-family: 'Inter', sans-serif; font-size: 0.88rem; font-weight: 600; color: var(--red-light); margin-bottom: 8px; }
+.hard-fail-list { list-style: none; padding: 0; }
+.hard-fail-list li { font-size: 0.85rem; color: var(--red-light); padding: 2px 0; }
+.hard-fail-list li::before { content: "✖ "; }
+
+/* Notes */
+.notes-box { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--amber); border-radius: 8px; padding: 16px 20px; margin-bottom: 24px; font-size: 0.88rem; color: var(--amber-light); line-height: 1.6; }
+
+/* Info row */
+.info-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 12px 0 20px; }
+
+footer { background: var(--surface); border-top: 1px solid var(--border); padding: 20px 0; margin-top: 48px; text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 0.73rem; color: var(--text-dim); }
+
+@media (max-width: 480px) {
+  .container { padding: 0 14px; }
+  .header-title { font-size: 1.6rem; }
+  .header-meta { text-align: left; }
+  .quick-stats { flex-direction: column; }
+  .mkt-grid { grid-template-columns: 1fr 1fr; }
+  .vibe-section { grid-template-columns: 1fr; }
+  .places-list { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <div class="header-inner">
+      <div>
+        <a href="../market_report/" class="back-link">&larr; Market Report</a>
+        <div class="header-title">Portland, ME</div>
+        <div class="header-subtitle">Cumberland County &nbsp;&middot;&nbsp; 90–120 min</div>
+      </div>
+      <div class="header-meta">
+        <div>~2.5 hrs via ME Tpke</div>
+        <div>Pop. 68,000</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="quick-stats">
+    <div class="qs"><div class="qs-label">Vibe Score</div><div class="qs-value">7.9/10</div></div>
+    <div class="qs"><div class="qs-label">Distance</div><div class="qs-value">T4</div></div>
+    <div class="qs"><div class="qs-label">Population</div><div class="qs-value">68,000</div></div>
+  </div>
+
+  
+
+  <div class="notes-box">Maine's city. 5 bookstores, 5 record stores, Portland Museum of Art, State Theatre, 8 breweries (Allagash!), nationally awarded restaurants (Eventide, Mr. Tuna, ZuBakery). Lowest quiet/privacy (2). Most expensive option.</div>
+
+  <div class="section-label">Soulplace Profile</div>
+  <div class="vibe-section">
+    <div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Creative Culture</span>
+    <span class="vibe-score">10/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:100%;background:#a855f7;opacity:0.85;"></div>
+  </div>
+  <div class="vibe-desc">Bookstores, record shops, music venues, indie cinema, arts scene</div>
+</div><div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Nature Access</span>
+    <span class="vibe-score">6/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:60%;background:#22c55e;opacity:0.65;"></div>
+  </div>
+  <div class="vibe-desc">Trails, mountains, water, skiing, state parks within 20 min</div>
+</div><div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Food & Drink</span>
+    <span class="vibe-score">10/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:100%;background:#f59e0b;opacity:0.85;"></div>
+  </div>
+  <div class="vibe-desc">Coffee shops, restaurants, farmers markets, local food culture</div>
+</div><div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Walkability</span>
+    <span class="vibe-score">9/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:90%;background:#3b82f6;opacity:0.85;"></div>
+  </div>
+  <div class="vibe-desc">Can you walk to a coffee shop, post office, grocery?</div>
+</div><div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Quiet & Privacy</span>
+    <span class="vibe-score">2/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:20%;background:#6366f1;opacity:0.4;"></div>
+  </div>
+  <div class="vibe-desc">Low density, wooded lots, no HOA culture, dark skies</div>
+</div><div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Community Fit</span>
+    <span class="vibe-score">8/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:80%;background:#ec4899;opacity:0.85;"></div>
+  </div>
+  <div class="vibe-desc">People like us — creative, progressive-leaning, dog people, not flashy</div>
+</div><div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Pet Friendly</span>
+    <span class="vibe-score">8/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:80%;background:#14b8a6;opacity:0.85;"></div>
+  </div>
+  <div class="vibe-desc">Vet clinics, dog parks, pet-friendly trails and businesses</div>
+</div><div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Practical</span>
+    <span class="vibe-score">10/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:100%;background:#8b5cf6;opacity:0.85;"></div>
+  </div>
+  <div class="vibe-desc">Groceries, medical, hardware, gas — can you live here without driving 45 min?</div>
+</div>
+  </div>
+
+  <div class="section-label">What's There</div>
+  <div class="places-list"><div class="places-group"><div class="places-group-label">Creative Culture</div><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Bookstores</span><span class="cat-count">5</span></summary><div class="place-row"><span class="place-name">Longfellow Books (1 Monument Way — flagship indie)</span><span class="place-source">source: longfellowbooks.com</span></div><div class="place-row"><span class="place-name">Green Hand Bookshop (661 Congress St — used, sci-fi/horror/occult)</span><span class="place-source">source: theculturetrip.com</span></div><div class="place-row"><span class="place-name">Sherman's Books (49 Exchange St — ME's oldest chain, since 1886)</span><span class="place-source">source: portlandoldport.com</span></div><div class="place-row"><span class="place-name">Back Cove Books (651 Forest Ave — opened 2022)</span><span class="place-source">source: backcovebooks.com</span></div><div class="place-row"><span class="place-name">Print: A Bookstore (273 Congress St — East End indie)</span><span class="place-source">source: visitmaine.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Record Stores</span><span class="cat-count">5</span></summary><div class="place-row"><span class="place-name">Electric Buddhas (556 Congress St — vinyl, vintage boomboxes, retro games)</span><span class="place-source">source: travelportland.com</span></div><div class="place-row"><span class="place-name">Moody Lords Vinyl (Congress St)</span><span class="place-source">source: pressherald.com</span></div><div class="place-row"><span class="place-name">Strange Maine (Congress St — chaotic metal vibe, VHS, records)</span><span class="place-source">source: travelportland.com</span></div><div class="place-row"><span class="place-name">Enterprise Records (Congress St — owner-run, well-curated)</span><span class="place-source">source: travelportland.com</span></div><div class="place-row"><span class="place-name">Bull Moose (151 Middle St — Maine chain)</span><span class="place-source">source: portlandoldport.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Music Venues</span><span class="cat-count">6</span></summary><div class="place-row"><span class="place-name">State Theatre (609 Congress St — 1,350-seat, major touring acts)</span><span class="place-source">source: statetheatreportland.com</span></div><div class="place-row"><span class="place-name">Thompson's Point (outdoor waterfront amphitheater)</span><span class="place-source">source: thompsonspoint.com</span></div><div class="place-row"><span class="place-name">SPACE Gallery (538 Congress St — nonprofit, indie music/film/art)</span><span class="place-source">source: space538.org</span></div><div class="place-row"><span class="place-name">One Longfellow Square (181 State St — intimate listening room)</span><span class="place-source">source: onelongfellowsquare.com</span></div><div class="place-row"><span class="place-name">Geno's Rock Club (625 Congress St — longtime dive/rock)</span><span class="place-source">source: Yelp</span></div><div class="place-row"><span class="place-name">Aura (121 Center St — club/concert venue)</span><span class="place-source">source: hillytown.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Art Galleries</span><span class="cat-count">5</span></summary><div class="place-row"><span class="place-name">Portland Museum of Art (7 Congress Sq — I.M. Pei, Homer/Wyeth/Hopper)</span><span class="place-source">source: portlandmuseum.org</span></div><div class="place-row"><span class="place-name">Greenhut Galleries (146 Middle St — since 1977, voted best)</span><span class="place-source">source: greenhutgalleries.com</span></div><div class="place-row"><span class="place-name">Portland Art Gallery (154 Middle St — 55+ Maine artists)</span><span class="place-source">source: portlandartgallery.com</span></div><div class="place-row"><span class="place-name">Cove Street Arts (East Bayside — 8,000+ sq ft, studios, bookstore)</span><span class="place-source">source: wanderlog.com</span></div><div class="place-row"><span class="place-name">Abacus Gallery (44 Exchange St — Old Port, art + fine craft)</span><span class="place-source">source: art-collecting.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Independent Cinemas</span><span class="cat-count">2</span></summary><div class="place-row"><span class="place-name">Nickelodeon Cinemas (1 Temple St — art house + indie)</span><span class="place-source">source: patriotcinemas.com</span></div><div class="place-row"><span class="place-name">SPACE Gallery (538 Congress St — documentary, experimental film)</span><span class="place-source">source: space538.org</span></div></details></div><div class="places-group"><div class="places-group-label">Nature Access</div><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Outdoor Outfitters</span><span class="cat-count">2</span></summary><div class="place-row"><span class="place-name">EMS (Old Port)</span><span class="place-source">source: portlandoldport.com</span></div><div class="place-row"><span class="place-name">REI (Westbrook, ~10 min — opened Jan 2025, 24,000 sq ft)</span><span class="place-source">source: rei.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Kayak / Canoe Rentals</span><span class="cat-count">1</span></summary><div class="place-row"><span class="place-name">Portland Paddle (East End Beach — sea kayak/SUP on Casco Bay, seasonal)</span><span class="place-source">source: portlandpaddle.net</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Ski Areas</span><span class="cat-count">2</span></summary><div class="place-row"><span class="place-name">Pleasant Mountain (Bridgton, ~1.25 hrs — ME's oldest, night skiing)</span><span class="place-source">source: pleasantmountain.com</span></div><div class="place-row"><span class="place-name">Sunday River (~1.75 hrs — 133 trails, major resort)</span><span class="place-source">source: sundayriver.com</span></div></details></div><div class="places-group"><div class="places-group-label">Food & Drink</div><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Coffee Shops</span><span class="cat-count">5</span></summary><div class="place-row"><span class="place-name">Tandem Coffee Roasters (742 Congress St — Food & Wine 'Best in ME', converted gas station)</span><span class="place-source">source: boxofmaine.com</span></div><div class="place-row"><span class="place-name">Bard Coffee (185 Middle St — 2025 Best of Awards winner)</span><span class="place-source">source: portlandoldport.com</span></div><div class="place-row"><span class="place-name">Speckled Ax (567 Congress St + 2 more — wood-fired roasting)</span><span class="place-source">source: speckledax.com</span></div><div class="place-row"><span class="place-name">Coffee By Design (multiple locations — 2024 Best of Awards)</span><span class="place-source">source: boxofmaine.com</span></div><div class="place-row"><span class="place-name">Burundi Star (authentic African coffee, community-rooted)</span><span class="place-source">source: justinpluslauren.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Restaurants</span><span class="cat-count">12</span></summary><div class="place-row"><span class="place-name">Eventide Oyster Co. (86 Middle St — iconic oyster bar, brown butter lobster roll)</span><span class="place-source">source: eventideoysterco.com</span></div><div class="place-row"><span class="place-name">Duckfat (43 Middle St — Belgian frites in duck fat)</span><span class="place-source">source: duckfat.com</span></div><div class="place-row"><span class="place-name">Mr. Tuna (83 Middle St — Food & Wine Best New Chefs 2025, NYT top dish 2024)</span><span class="place-source">source: mrtunamaine.com</span></div><div class="place-row"><span class="place-name">Oun Lido's (30 Market St — Cambodian, Esquire Best New 2024)</span><span class="place-source">source: Yelp</span></div><div class="place-row"><span class="place-name">Luncheonette (Cumberland Ave — Eater Best New 2025)</span><span class="place-source">source: portlandfoodmap.com</span></div><div class="place-row"><span class="place-name">Miyake (468 Fore St — omakase, farm-to-table Japanese)</span><span class="place-source">source: miyakerestaurants.com</span></div><div class="place-row"><span class="place-name">Pai Men Miyake (188 State St — ramen/izakaya)</span><span class="place-source">source: miyakerestaurants.com</span></div><div class="place-row"><span class="place-name">Boda (671 Congress St — Thai street food, 16+ years)</span><span class="place-source">source: pressherald.com</span></div><div class="place-row"><span class="place-name">Hugo's (88 Middle St — tasting-menu fine dining)</span><span class="place-source">source: bigtreehospitality.com</span></div><div class="place-row"><span class="place-name">The Honey Paw (78 Middle St — noodle-focused, global flavors)</span><span class="place-source">source: bigtreehospitality.com</span></div><div class="place-row"><span class="place-name">ZuBakery (James Beard Outstanding Bakery 2024)</span><span class="place-source">source: pressherald.com</span></div><div class="place-row"><span class="place-name">Cantina Calafia (Mexican-leaning)</span><span class="place-source">source: pressherald.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Farmers Markets</span><span class="cat-count">1</span></summary><div class="place-row"><span class="place-name">Portland Farmers' Market (Deering Oaks — Sat, year-round, 30+ farmers)</span><span class="place-source">source: portlandmainefarmersmarket.org</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Breweries / Taprooms</span><span class="cat-count">8</span></summary><div class="place-row"><span class="place-name">Allagash Brewing (50 Industrial Way — Belgian-style pioneer, since 1995)</span><span class="place-source">source: allagash.com</span></div><div class="place-row"><span class="place-name">Bissell Brothers (38 Resurgam Pl — hazy IPAs, Chamber Biz of Year 2023)</span><span class="place-source">source: bissellbrothers.com</span></div><div class="place-row"><span class="place-name">Rising Tide (103 Fox St — family-owned, large beer garden)</span><span class="place-source">source: hopculture.com</span></div><div class="place-row"><span class="place-name">Oxbow Blending & Bottling (49 Washington Ave — farmhouse ales)</span><span class="place-source">source: oxbowbeer.com</span></div><div class="place-row"><span class="place-name">Belleflower (66 Cove St — female-owned, Hop Culture Best 2023)</span><span class="place-source">source: belleflowerbrewing.com</span></div><div class="place-row"><span class="place-name">Lone Pine (219 Anderson St — IPAs, hop-forward)</span><span class="place-source">source: lonepinebrewery.com</span></div><div class="place-row"><span class="place-name">Battery Steele (1 Industrial Way — lagers and IPAs)</span><span class="place-source">source: batterysteele.com</span></div><div class="place-row"><span class="place-name">Maine Beer Company (Freeport, ~20 min — cult Lunch IPA)</span><span class="place-source">source: mainebeercompany.com</span></div></details></div><div class="places-group"><div class="places-group-label">Community Fit</div><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Libraries</span><span class="cat-count">1</span></summary><div class="place-row"><span class="place-name">Portland Public Library (5 Monument Sq — since 1867, galleries, 4 branches)</span><span class="place-source">source: portlandlibrary.org</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Yoga Studios</span><span class="cat-count">3</span></summary><div class="place-row"><span class="place-name">Portland Yoga Collective (98 Cross St N — 2022 Best of Award)</span><span class="place-source">source: portlandyogacollective.com</span></div><div class="place-row"><span class="place-name">Hustle and Flow (155 Brackett St — West End, yoga/pole/dance)</span><span class="place-source">source: hustleflowstudio.com</span></div><div class="place-row"><span class="place-name">Creating Space Yoga (1717 Congress St — heated/non-heated)</span><span class="place-source">source: creatingspaceyoga.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Coworking Spaces</span><span class="cat-count">3</span></summary><div class="place-row"><span class="place-name">Cloudport Coworking (16 Middle St — expanded Jan 2025, e-bikes)</span><span class="place-source">source: cloudportme.com</span></div><div class="place-row"><span class="place-name">Think Tank Coworking (dog-friendly, free beer)</span><span class="place-source">source: thinktankcoworking.com</span></div><div class="place-row"><span class="place-name">coworkHERS (voted Best Co-working 2023, women + marginalized focus)</span><span class="place-source">source: coworkhers.com</span></div></details></div><div class="places-group"><div class="places-group-label">Pet Friendly</div><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Vet Clinics</span><span class="cat-count">3</span></summary><div class="place-row"><span class="place-name">Back Cove Animal Hospital (highest rated, separate cat/dog rooms)</span><span class="place-source">source: backcoveanimalhospital.com</span></div><div class="place-row"><span class="place-name">Brackett Street Veterinary Clinic (West End)</span><span class="place-source">source: brackettstveterinaryclinic.com</span></div><div class="place-row"><span class="place-name">PetMedic Urgent Care (same-day online appts)</span><span class="place-source">source: petmedicurgentcare.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Pet Groomers</span><span class="cat-count">2</span></summary><div class="place-row"><span class="place-name">Rebel Pet (295 Forest Ave — salon)</span><span class="place-source">source: rebelpetmaine.com</span></div><div class="place-row"><span class="place-name">SoPo Paws (South Portland — 2025 Best of 207 winner)</span><span class="place-source">source: sopopaws.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Pet Boarding / Kennels</span><span class="cat-count">1</span></summary><div class="place-row"><span class="place-name">Happy Tails (119 Bishop St + 130 Saint John St — 2 locations, structured playgroups)</span><span class="place-source">source: happytailsportland.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Pet Supply Stores</span><span class="cat-count">2</span></summary><div class="place-row"><span class="place-name">Fish & Bone (Old Port — award-winning indie, natural food, treats)</span><span class="place-source">source: thefishandbone.com</span></div><div class="place-row"><span class="place-name">Uncommon Paws (21 Exchange St — handcrafted Maine collars/leashes)</span><span class="place-source">source: portlandoldport.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Animal Shelters</span><span class="cat-count">1</span></summary><div class="place-row"><span class="place-name">Animal Refuge League of Greater Portland (217 Landing Rd, Westbrook — 4,000+ animals/yr)</span><span class="place-source">source: arlgp.org</span></div></details></div><div class="places-group"><div class="places-group-label">Practical</div><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Grocery Stores</span><span class="cat-count">4</span></summary><div class="place-row"><span class="place-name">Rosemont Market & Bakery (multiple locations — 60%+ Maine-sourced, beloved)</span><span class="place-source">source: rosemontmarket.com</span></div><div class="place-row"><span class="place-name">Portland Food Co-op (290 Congress St — member-owned)</span><span class="place-source">source: portlandfood.coop</span></div><div class="place-row"><span class="place-name">Whole Foods (2 Somerset St — ME's only location)</span><span class="place-source">source: wholefoodsmarket.com</span></div><div class="place-row"><span class="place-name">Trader Joe's (87 Marginal Way)</span><span class="place-source">source: traderjoes.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Hardware Stores</span><span class="cat-count">1</span></summary><div class="place-row"><span class="place-name">Maine Hardware / Ace (274 Saint John St — locally owned)</span><span class="place-source">source: acehardware.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Farm & Feed Supply</span><span class="cat-count">1</span></summary><div class="place-row"><span class="place-name">Tractor Supply Co. (South Portland)</span><span class="place-source">source: tractorsupply.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Urgent Care / Medical</span><span class="cat-count">2</span></summary><div class="place-row"><span class="place-name">ConvenientMD (191 Marginal Way — 7 days, 8am-8pm)</span><span class="place-source">source: convenientmd.com</span></div><div class="place-row"><span class="place-name">AFC Urgent Care (South Portland — avg wait <15 min)</span><span class="place-source">source: afcurgentcare.com</span></div></details></div></div>
+
+  <div class="market-section">
+  <div class="section-label">Market — Cumberland County</div>
+  <div class="unavailable">Market data not yet loaded. Run update_market_data.py to populate.</div>
+</div>
+
+</div>
+
+<footer>
+  <div>Soulplace Seeker &nbsp;&middot;&nbsp; House Hunt Hero</div>
+</footer>
+
+</body>
+</html>
