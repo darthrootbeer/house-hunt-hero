@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brattleboro, VT — Soulplace Profile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d1117; --surface: #161b22; --surface2: #1c2330; --border: #2d3748;
+  --navy: #1a2744; --green: #3d7a5a; --green-light: #5aaa82; --green-dim: #2a5240;
+  --amber: #c9883a; --amber-light: #e8a84e; --amber-dim: #7a5020;
+  --text: #e2e8f0; --text-muted: #8899aa; --text-dim: #4a5568;
+  --red: #c0392b; --red-light: #e74c3c;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Lora', Georgia, serif; font-size: 16px; line-height: 1.6; }
+.container { max-width: 800px; margin: 0 auto; padding: 0 24px; }
+
+/* Header */
+header { background: var(--navy); border-bottom: 2px solid var(--green-dim); padding: 28px 0 20px; }
+.header-inner { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 12px; }
+.header-title { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 700; color: var(--text); letter-spacing: -0.01em; }
+.header-subtitle { font-family: 'Lora', serif; font-style: italic; color: var(--text-muted); font-size: 0.95rem; margin-top: 4px; }
+.header-meta { text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--text-muted); line-height: 1.7; }
+.back-link { font-family: 'Inter', sans-serif; font-size: 0.82rem; color: var(--green-light); text-decoration: none; }
+.back-link:hover { text-decoration: underline; }
+
+/* Quick stats bar */
+.quick-stats { display: flex; flex-wrap: wrap; gap: 12px; margin: 24px 0 28px; }
+.qs { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px 16px; flex: 1; min-width: 120px; }
+.qs-label { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-dim); }
+.qs-value { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 600; color: var(--text); margin-top: 2px; }
+
+/* Section labels */
+.section-label { font-family: 'Inter', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--text); margin: 32px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+
+/* Vibe bars — RPG style, two-column grid */
+.vibe-section { margin-bottom: 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 4px 24px; }
+.vibe-row { margin-bottom: 12px; }
+.vibe-label { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
+.vibe-name { font-family: 'Inter', sans-serif; font-size: 0.88rem; font-weight: 600; color: var(--text); }
+.vibe-score { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--text-muted); }
+.vibe-track { background: var(--surface2); border-radius: 4px; height: 10px; overflow: hidden; position: relative; }
+.vibe-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+.vibe-desc { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 0.72rem; color: var(--text-dim); margin-top: 3px; }
+
+/* Places list — verifiable names + sources */
+.places-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 24px; }
+.places-group { margin-bottom: 8px; }
+.places-group-label { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--green-light); margin-bottom: 6px; }
+.cat-block { margin-bottom: 4px; }
+.cat-block[open] { margin-bottom: 10px; }
+.cat-header { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); cursor: pointer; list-style: none; }
+.cat-header::-webkit-details-marker { display: none; }
+.cat-header::before { content: "▶"; font-size: 0.55rem; color: var(--text-dim); margin-right: 6px; transition: transform 0.15s; }
+.cat-block[open] > .cat-header::before { transform: rotate(90deg); }
+.cat-name { font-family: 'Inter', sans-serif; font-size: 0.82rem; font-weight: 600; color: var(--text); }
+.cat-count { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--text-muted); }
+.cat-header.cat-absent .cat-name { color: var(--text-dim); }
+.cat-header.cat-absent .cat-count { color: var(--text-dim); }
+.place-row { padding: 3px 0 3px 8px; font-size: 0.82rem; line-height: 1.5; }
+.place-name { color: var(--text); }
+.place-source { font-family: 'JetBrains Mono', monospace; font-size: 0.66rem; color: var(--text-dim); margin-left: 8px; }
+.place-none { color: var(--text-dim); font-style: italic; font-size: 0.78rem; }
+.places-empty { color: var(--text-dim); font-style: italic; }
+
+/* Market stats */
+.market-section { margin-bottom: 32px; }
+.mkt-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+.mkt-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.mkt-label { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-dim); margin-bottom: 4px; }
+.mkt-value { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--text); }
+.delta { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; margin-top: 4px; display: block; }
+.delta.up { color: var(--amber-light); }
+.delta.down { color: var(--green-light); }
+.unavailable { background: var(--surface); border: 1px dashed var(--border); border-radius: 8px; padding: 20px; text-align: center; color: var(--text-muted); font-style: italic; font-size: 0.88rem; }
+
+/* Hard fails */
+.hard-fail-box { background: rgba(192,57,43,0.08); border: 1px solid rgba(192,57,43,0.3); border-radius: 8px; padding: 16px 20px; margin-bottom: 24px; }
+.hard-fail-title { font-family: 'Inter', sans-serif; font-size: 0.88rem; font-weight: 600; color: var(--red-light); margin-bottom: 8px; }
+.hard-fail-list { list-style: none; padding: 0; }
+.hard-fail-list li { font-size: 0.85rem; color: var(--red-light); padding: 2px 0; }
+.hard-fail-list li::before { content: "✖ "; }
+
+/* Notes */
+.notes-box { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--amber); border-radius: 8px; padding: 16px 20px; margin-bottom: 24px; font-size: 0.88rem; color: var(--amber-light); line-height: 1.6; }
+
+/* Info row */
+.info-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 12px 0 20px; }
+
+footer { background: var(--surface); border-top: 1px solid var(--border); padding: 20px 0; margin-top: 48px; text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 0.73rem; color: var(--text-dim); }
+
+@media (max-width: 480px) {
+  .container { padding: 0 14px; }
+  .header-title { font-size: 1.6rem; }
+  .header-meta { text-align: left; }
+  .quick-stats { flex-direction: column; }
+  .mkt-grid { grid-template-columns: 1fr 1fr; }
+  .vibe-section { grid-template-columns: 1fr; }
+  .places-list { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <div class="header-inner">
+      <div>
+        <a href="../market_report/" class="back-link">&larr; Market Report</a>
+        <div class="header-title">Brattleboro, VT</div>
+        <div class="header-subtitle">Windham County &nbsp;&middot;&nbsp; 90–120 min</div>
+      </div>
+      <div class="header-meta">
+        <div>~3 hrs via I-91</div>
+        <div>Pop. 12,184</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="quick-stats">
+    <div class="qs"><div class="qs-label">Vibe Score</div><div class="qs-value">7.8/10</div></div>
+    <div class="qs"><div class="qs-label">Distance</div><div class="qs-value">T4</div></div>
+    <div class="qs"><div class="qs-label">Population</div><div class="qs-value">12,184</div></div>
+  </div>
+
+  
+
+  <div class="notes-box">One of the most culturally rich small towns in New England. 4 bookstores, record store (Turn It Up!), Stone Church, Latchis Art Deco cinema, 5 art galleries, museum. VT's longest-running farmers market. Milder winters.</div>
+
+  <div class="section-label">Soulplace Profile</div>
+  <div class="vibe-section">
+    <div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Creative Culture</span>
+    <span class="vibe-score">10/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:100%;background:#a855f7;opacity:0.85;"></div>
+  </div>
+  <div class="vibe-desc">Bookstores, record shops, music venues, indie cinema, arts scene</div>
+</div><div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Nature Access</span>
+    <span class="vibe-score">7/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:70%;background:#22c55e;opacity:0.85;"></div>
+  </div>
+  <div class="vibe-desc">Trails, mountains, water, skiing, state parks within 20 min</div>
+</div><div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Food & Drink</span>
+    <span class="vibe-score">9/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:90%;background:#f59e0b;opacity:0.85;"></div>
+  </div>
+  <div class="vibe-desc">Coffee shops, restaurants, farmers markets, local food culture</div>
+</div><div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Walkability</span>
+    <span class="vibe-score">8/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:80%;background:#3b82f6;opacity:0.85;"></div>
+  </div>
+  <div class="vibe-desc">Can you walk to a coffee shop, post office, grocery?</div>
+</div><div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Quiet & Privacy</span>
+    <span class="vibe-score">5/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:50%;background:#6366f1;opacity:0.65;"></div>
+  </div>
+  <div class="vibe-desc">Low density, wooded lots, no HOA culture, dark skies</div>
+</div><div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Community Fit</span>
+    <span class="vibe-score">9/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:90%;background:#ec4899;opacity:0.85;"></div>
+  </div>
+  <div class="vibe-desc">People like us — creative, progressive-leaning, dog people, not flashy</div>
+</div><div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Pet Friendly</span>
+    <span class="vibe-score">7/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:70%;background:#14b8a6;opacity:0.85;"></div>
+  </div>
+  <div class="vibe-desc">Vet clinics, dog parks, pet-friendly trails and businesses</div>
+</div><div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Practical</span>
+    <span class="vibe-score">7/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:70%;background:#8b5cf6;opacity:0.85;"></div>
+  </div>
+  <div class="vibe-desc">Groceries, medical, hardware, gas — can you live here without driving 45 min?</div>
+</div>
+  </div>
+
+  <div class="section-label">What's There</div>
+  <div class="places-list"><div class="places-group"><div class="places-group-label">Creative Culture</div><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Bookstores</span><span class="cat-count">4</span></summary><div class="place-row"><span class="place-name">Brattleboro Books (141 Main St — new/used indie)</span><span class="place-source">source: brattleboro.com</span></div><div class="place-row"><span class="place-name">Antidote Books (15 Putney Rd — poetry, art, small press, antiquarian)</span><span class="place-source">source: Yelp</span></div><div class="place-row"><span class="place-name">ByWay Books & More (399 Canal St)</span><span class="place-source">source: bywaybooks.co</span></div><div class="place-row"><span class="place-name">Baskets Paperback Palace (22 High St — used paperbacks)</span><span class="place-source">source: Yelp</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Record Stores</span><span class="cat-count">1</span></summary><div class="place-row"><span class="place-name">Turn It Up! (85 Main St — new/used vinyl, CDs, listening stations)</span><span class="place-source">source: turnitup.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Music Venues</span><span class="cat-count">6</span></summary><div class="place-row"><span class="place-name">Stone Church (210 Main St — former Unitarian church, cap ~299, full bar)</span><span class="place-source">source: stonechurchvt.com</span></div><div class="place-row"><span class="place-name">Latchis Theatre (50 Main St — 1938 Art Deco, live events + film)</span><span class="place-source">source: latchis.com</span></div><div class="place-row"><span class="place-name">Brattleboro Music Center (15 Academy St — music school + performances)</span><span class="place-source">source: bmcvt.org</span></div><div class="place-row"><span class="place-name">Bar 580 (580 Canal St — Thursday live music, no cover)</span><span class="place-source">source: lmsbratt.com</span></div><div class="place-row"><span class="place-name">Next Stage Arts (Putney, ~15 min — cap 200, music/dance/theater)</span><span class="place-source">source: nextstagearts.org</span></div><div class="place-row"><span class="place-name">Whetstone Beer Co. (36 Bridge St — riverside, live music)</span><span class="place-source">source: vermontbrewers.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Art Galleries</span><span class="cat-count">5</span></summary><div class="place-row"><span class="place-name">Brattleboro Museum & Art Center (10 Vernon St — emerging/contemporary)</span><span class="place-source">source: brattleboromuseum.org</span></div><div class="place-row"><span class="place-name">Vermont Artisan Designs (106 Main St — voted Best Gallery 2025)</span><span class="place-source">source: vtart.com</span></div><div class="place-row"><span class="place-name">Gallery in the Woods (145 Main St — fine craft and art)</span><span class="place-source">source: galleryinthewoods.com</span></div><div class="place-row"><span class="place-name">Mitchell Giddings Fine Arts (183 Main St — contemporary)</span><span class="place-source">source: mitchellgiddingsfinearts.com</span></div><div class="place-row"><span class="place-name">CX Silver Gallery (814 Western Ave — contemporary)</span><span class="place-source">source: cxsilvergallery.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Independent Cinemas</span><span class="cat-count">1</span></summary><div class="place-row"><span class="place-name">Latchis Theatre (50 Main St — 4 screens, 1938 Art Deco, Brattleboro Film Festival)</span><span class="place-source">source: latchis.com</span></div></details></div><div class="places-group"><div class="places-group-label">Nature Access</div><details class="cat-block"><summary class="cat-header cat-absent"><span class="cat-name">Outdoor Outfitters</span><span class="cat-count">0</span></summary><div class="place-row place-none">None found</div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Kayak / Canoe Rentals</span><span class="cat-count">1</span></summary><div class="place-row"><span class="place-name">Vermont Canoe Touring Center (451 Putney Rd — canoe/kayak/SUP, daily)</span><span class="place-source">source: vermontcanoetouringcenter.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Ski Areas</span><span class="cat-count">4</span></summary><div class="place-row"><span class="place-name">Brattleboro Ski Hill (nonprofit community alpine)</span><span class="place-source">source: brattski.org</span></div><div class="place-row"><span class="place-name">Brattleboro Outing Club XC (348 Upper Dummerston Rd — 33km groomed)</span><span class="place-source">source: brattleborooutingclub.org</span></div><div class="place-row"><span class="place-name">Mount Snow (~45 min — largest in southern VT)</span><span class="place-source">source: mountsnow.com</span></div><div class="place-row"><span class="place-name">Stratton (~1 hr — 11 lifts)</span><span class="place-source">source: stratton.com</span></div></details></div><div class="places-group"><div class="places-group-label">Food & Drink</div><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Coffee Shops</span><span class="cat-count">2</span></summary><div class="place-row"><span class="place-name">Mocha Joe's Cafe (82 Main St — house-roasted, 30+ years)</span><span class="place-source">source: mochajoes.com</span></div><div class="place-row"><span class="place-name">Patio Coffee (139 Main St alley — meticulously crafted)</span><span class="place-source">source: brattleboro.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Restaurants</span><span class="cat-count">14</span></summary><div class="place-row"><span class="place-name">T.J. Buckley's (132 Elliot St — 8-table 1925 diner car, fine dining)</span><span class="place-source">source: wanderlog.com</span></div><div class="place-row"><span class="place-name">Peter Havens (32 Elliot St — seafood, 10 tables + The Oyster Bar)</span><span class="place-source">source: peterhavens.com</span></div><div class="place-row"><span class="place-name">Whetstone Beer Co. (36 Bridge St — brewery + pub food, riverside)</span><span class="place-source">source: vermontbrewers.com</span></div><div class="place-row"><span class="place-name">Kipling's Tavern (78 Elliot St — English/Irish pub)</span><span class="place-source">source: kiplingstavern.com</span></div><div class="place-row"><span class="place-name">Superfresh! Organic Cafe (30 Main St — 100% vegetarian/vegan, river views)</span><span class="place-source">source: wanderlog.com</span></div><div class="place-row"><span class="place-name">Shin-La Restaurant (57 Main St — Korean/Japanese, 30+ years)</span><span class="place-source">source: brattleboro.com</span></div><div class="place-row"><span class="place-name">The Marina (28 Spring Tree Rd — waterfront, Sunday jazz brunch)</span><span class="place-source">source: themarinarestaurant.com</span></div><div class="place-row"><span class="place-name">Plated Restaurant & Bar (136 Main St — fine dining, tapas)</span><span class="place-source">source: brattleborochamber.org</span></div><div class="place-row"><span class="place-name">Blue Moose Bistro (Main St — upscale American, farm-fresh)</span><span class="place-source">source: theculturetrip.com</span></div><div class="place-row"><span class="place-name">Top of the Hill Grill (632 Putney Rd — BBQ, Mexican, Cajun)</span><span class="place-source">source: wanderlog.com</span></div><div class="place-row"><span class="place-name">Sarkis Deli & Cafe (50 Elliot St — Lebanese/Middle Eastern)</span><span class="place-source">source: vermontartsliving.com</span></div><div class="place-row"><span class="place-name">Taste of Thai (972 Putney Rd — Thai & Lao)</span><span class="place-source">source: tasteofthaivt.com</span></div><div class="place-row"><span class="place-name">Bar 580 (580 Canal St — American, craft beer, live music Thu)</span><span class="place-source">source: brattleborochamber.org</span></div><div class="place-row"><span class="place-name">Tito's Taqueria (898 Putney Rd — Mexican)</span><span class="place-source">source: Yelp</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Farmers Markets</span><span class="cat-count">2</span></summary><div class="place-row"><span class="place-name">Brattleboro Farmers' Market (570 Western Ave — Sat, 50+ vendors, VT's longest-running)</span><span class="place-source">source: brattleborofarmersmarket.com</span></div><div class="place-row"><span class="place-name">Brattleboro Winter Farmers' Market (Winston Prouty — Sat, Nov-Mar)</span><span class="place-source">source: brattleborowinterfarmersmarket.org</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Breweries / Taprooms</span><span class="cat-count">2</span></summary><div class="place-row"><span class="place-name">Whetstone Beer Co. (36 Bridge St — experimental brewery, riverside)</span><span class="place-source">source: vermontbrewers.com</span></div><div class="place-row"><span class="place-name">North Chair Brewing (river views, craft beer)</span><span class="place-source">source: northchair.com</span></div></details></div><div class="places-group"><div class="places-group-label">Community Fit</div><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Libraries</span><span class="cat-count">1</span></summary><div class="place-row"><span class="place-name">Brooks Memorial Library (224 Main St — southern VT's largest, founded 1887)</span><span class="place-source">source: brookslibraryvt.org</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Yoga Studios</span><span class="cat-count">3</span></summary><div class="place-row"><span class="place-name">Bodhifit (22 High St — hot vinyasa, spin, barre, voted top studio 10 years)</span><span class="place-source">source: bodhifit.net</span></div><div class="place-row"><span class="place-name">Inner Heat Yoga (West River — yoga, Pilates, barre, massage)</span><span class="place-source">source: innerheatyogavt.com</span></div><div class="place-row"><span class="place-name">Core Flow Yoga & Sport (W. Brattleboro — yoga + athletics)</span><span class="place-source">source: coreflowyoga.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Coworking Spaces</span><span class="cat-count">2</span></summary><div class="place-row"><span class="place-name">Vermont Innovation Box / VIB (70 Landmark Hill Dr — on-site bar, 24/7)</span><span class="place-source">source: vtinbox.com</span></div><div class="place-row"><span class="place-name">CoWorking Plus / BDCC (139 Main St — nonprofit, low-cost)</span><span class="place-source">source: brattleborodevelopment.com</span></div></details></div><div class="places-group"><div class="places-group-label">Pet Friendly</div><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Vet Clinics</span><span class="cat-count">2</span></summary><div class="place-row"><span class="place-name">Brattleboro Veterinary Clinic (852 Marlboro Rd — also boarding)</span><span class="place-source">source: brattleborovet.com</span></div><div class="place-row"><span class="place-name">VCA Windham Animal Hospital</span><span class="place-source">source: vcahospitals.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Pet Groomers</span><span class="cat-count">1</span></summary><div class="place-row"><span class="place-name">One Stop Country Pet Supply (648 Putney Rd — grooming in-store)</span><span class="place-source">source: onestopcountrypetsupply.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Pet Boarding / Kennels</span><span class="cat-count">1</span></summary><div class="place-row"><span class="place-name">Brattleboro Veterinary Clinic (852 Marlboro Rd — on-site boarding)</span><span class="place-source">source: brattleborovet.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Pet Supply Stores</span><span class="cat-count">2</span></summary><div class="place-row"><span class="place-name">One Stop Country Pet Supply (648 Putney Rd — largest raw diet selection, holistic)</span><span class="place-source">source: onestopcountrypetsupply.com</span></div><div class="place-row"><span class="place-name">Buddy's A Pet's Store (natural grooming, toys, outdoor gear)</span><span class="place-source">source: buddysapetsstore.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Animal Shelters</span><span class="cat-count">1</span></summary><div class="place-row"><span class="place-name">Windham County Humane Society (916 West River Rd — founded 1887, no-time-limit)</span><span class="place-source">source: windhamcountyhumane.org</span></div></details></div><div class="places-group"><div class="places-group-label">Practical</div><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Grocery Stores</span><span class="cat-count">3</span></summary><div class="place-row"><span class="place-name">Brattleboro Food Co-op (2 Main St — community-owned, 14,580 sq ft)</span><span class="place-source">source: brattleborofoodcoop.coop</span></div><div class="place-row"><span class="place-name">Hannaford (896 Putney Rd)</span><span class="place-source">source: hannaford.com</span></div><div class="place-row"><span class="place-name">ALDI (762 Putney Rd)</span><span class="place-source">source: aldi.us</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Hardware Stores</span><span class="cat-count">1</span></summary><div class="place-row"><span class="place-name">Martin's Fireside True Value (895 Putney Rd — survived Home Depot)</span><span class="place-source">source: truevalue.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Farm & Feed Supply</span><span class="cat-count">1</span></summary><div class="place-row"><span class="place-name">Achille Agway / Blue Seal (1277 Putney Rd — 40+ years, full livestock feed)</span><span class="place-source">source: achilleagway.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Urgent Care / Medical</span><span class="cat-count">2</span></summary><div class="place-row"><span class="place-name">ClearChoiceMD (1154 Putney Rd — Mon-Sat 8am-8pm, on-site lab + X-ray)</span><span class="place-source">source: ccmdcenters.com</span></div><div class="place-row"><span class="place-name">Brattleboro Memorial Hospital (17 Belmont Ave — 61-bed, full ER)</span><span class="place-source">source: bmhvt.org</span></div></details></div></div>
+
+  <div class="market-section">
+  <div class="section-label">Market — Windham County</div>
+  <div class="unavailable">Market data not yet loaded. Run update_market_data.py to populate.</div>
+</div>
+
+</div>
+
+<footer>
+  <div>Soulplace Seeker &nbsp;&middot;&nbsp; House Hunt Hero</div>
+</footer>
+
+</body>
+</html>

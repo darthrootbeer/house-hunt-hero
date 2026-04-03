@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brunswick, ME — Soulplace Profile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d1117; --surface: #161b22; --surface2: #1c2330; --border: #2d3748;
+  --navy: #1a2744; --green: #3d7a5a; --green-light: #5aaa82; --green-dim: #2a5240;
+  --amber: #c9883a; --amber-light: #e8a84e; --amber-dim: #7a5020;
+  --text: #e2e8f0; --text-muted: #8899aa; --text-dim: #4a5568;
+  --red: #c0392b; --red-light: #e74c3c;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Lora', Georgia, serif; font-size: 16px; line-height: 1.6; }
+.container { max-width: 800px; margin: 0 auto; padding: 0 24px; }
+
+/* Header */
+header { background: var(--navy); border-bottom: 2px solid var(--green-dim); padding: 28px 0 20px; }
+.header-inner { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 12px; }
+.header-title { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 700; color: var(--text); letter-spacing: -0.01em; }
+.header-subtitle { font-family: 'Lora', serif; font-style: italic; color: var(--text-muted); font-size: 0.95rem; margin-top: 4px; }
+.header-meta { text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--text-muted); line-height: 1.7; }
+.back-link { font-family: 'Inter', sans-serif; font-size: 0.82rem; color: var(--green-light); text-decoration: none; }
+.back-link:hover { text-decoration: underline; }
+
+/* Quick stats bar */
+.quick-stats { display: flex; flex-wrap: wrap; gap: 12px; margin: 24px 0 28px; }
+.qs { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px 16px; flex: 1; min-width: 120px; }
+.qs-label { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-dim); }
+.qs-value { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 600; color: var(--text); margin-top: 2px; }
+
+/* Section labels */
+.section-label { font-family: 'Inter', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--text); margin: 32px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+
+/* Vibe bars — RPG style, two-column grid */
+.vibe-section { margin-bottom: 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 4px 24px; }
+.vibe-row { margin-bottom: 12px; }
+.vibe-label { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
+.vibe-name { font-family: 'Inter', sans-serif; font-size: 0.88rem; font-weight: 600; color: var(--text); }
+.vibe-score { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--text-muted); }
+.vibe-track { background: var(--surface2); border-radius: 4px; height: 10px; overflow: hidden; position: relative; }
+.vibe-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+.vibe-desc { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 0.72rem; color: var(--text-dim); margin-top: 3px; }
+
+/* Places list — verifiable names + sources */
+.places-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 24px; }
+.places-group { margin-bottom: 8px; }
+.places-group-label { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--green-light); margin-bottom: 6px; }
+.cat-block { margin-bottom: 4px; }
+.cat-block[open] { margin-bottom: 10px; }
+.cat-header { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); cursor: pointer; list-style: none; }
+.cat-header::-webkit-details-marker { display: none; }
+.cat-header::before { content: "▶"; font-size: 0.55rem; color: var(--text-dim); margin-right: 6px; transition: transform 0.15s; }
+.cat-block[open] > .cat-header::before { transform: rotate(90deg); }
+.cat-name { font-family: 'Inter', sans-serif; font-size: 0.82rem; font-weight: 600; color: var(--text); }
+.cat-count { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--text-muted); }
+.cat-header.cat-absent .cat-name { color: var(--text-dim); }
+.cat-header.cat-absent .cat-count { color: var(--text-dim); }
+.place-row { padding: 3px 0 3px 8px; font-size: 0.82rem; line-height: 1.5; }
+.place-name { color: var(--text); }
+.place-source { font-family: 'JetBrains Mono', monospace; font-size: 0.66rem; color: var(--text-dim); margin-left: 8px; }
+.place-none { color: var(--text-dim); font-style: italic; font-size: 0.78rem; }
+.places-empty { color: var(--text-dim); font-style: italic; }
+
+/* Market stats */
+.market-section { margin-bottom: 32px; }
+.mkt-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+.mkt-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.mkt-label { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-dim); margin-bottom: 4px; }
+.mkt-value { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--text); }
+.delta { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; margin-top: 4px; display: block; }
+.delta.up { color: var(--amber-light); }
+.delta.down { color: var(--green-light); }
+.unavailable { background: var(--surface); border: 1px dashed var(--border); border-radius: 8px; padding: 20px; text-align: center; color: var(--text-muted); font-style: italic; font-size: 0.88rem; }
+
+/* Hard fails */
+.hard-fail-box { background: rgba(192,57,43,0.08); border: 1px solid rgba(192,57,43,0.3); border-radius: 8px; padding: 16px 20px; margin-bottom: 24px; }
+.hard-fail-title { font-family: 'Inter', sans-serif; font-size: 0.88rem; font-weight: 600; color: var(--red-light); margin-bottom: 8px; }
+.hard-fail-list { list-style: none; padding: 0; }
+.hard-fail-list li { font-size: 0.85rem; color: var(--red-light); padding: 2px 0; }
+.hard-fail-list li::before { content: "✖ "; }
+
+/* Notes */
+.notes-box { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--amber); border-radius: 8px; padding: 16px 20px; margin-bottom: 24px; font-size: 0.88rem; color: var(--amber-light); line-height: 1.6; }
+
+/* Info row */
+.info-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 12px 0 20px; }
+
+footer { background: var(--surface); border-top: 1px solid var(--border); padding: 20px 0; margin-top: 48px; text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 0.73rem; color: var(--text-dim); }
+
+@media (max-width: 480px) {
+  .container { padding: 0 14px; }
+  .header-title { font-size: 1.6rem; }
+  .header-meta { text-align: left; }
+  .quick-stats { flex-direction: column; }
+  .mkt-grid { grid-template-columns: 1fr 1fr; }
+  .vibe-section { grid-template-columns: 1fr; }
+  .places-list { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <div class="header-inner">
+      <div>
+        <a href="../market_report/" class="back-link">&larr; Market Report</a>
+        <div class="header-title">Brunswick, ME</div>
+        <div class="header-subtitle">Cumberland County &nbsp;&middot;&nbsp; 90–120 min</div>
+      </div>
+      <div class="header-meta">
+        <div>~2 hrs via ME Tpke</div>
+        <div>Pop. 21,000</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="quick-stats">
+    <div class="qs"><div class="qs-label">Vibe Score</div><div class="qs-value">7.9/10</div></div>
+    <div class="qs"><div class="qs-label">Distance</div><div class="qs-value">T4</div></div>
+    <div class="qs"><div class="qs-label">Population</div><div class="qs-value">21,000</div></div>
+  </div>
+
+  
+
+  <div class="notes-box">Bowdoin College town. 4 bookstores, 2 record stores, world-class art museum (free), James Beard semifinalist coffee bar, 4 breweries. Strongest creative/food scene after Portland.</div>
+
+  <div class="section-label">Soulplace Profile</div>
+  <div class="vibe-section">
+    <div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Creative Culture</span>
+    <span class="vibe-score">9/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:90%;background:#a855f7;opacity:0.85;"></div>
+  </div>
+  <div class="vibe-desc">Bookstores, record shops, music venues, indie cinema, arts scene</div>
+</div><div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Nature Access</span>
+    <span class="vibe-score">6/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:60%;background:#22c55e;opacity:0.65;"></div>
+  </div>
+  <div class="vibe-desc">Trails, mountains, water, skiing, state parks within 20 min</div>
+</div><div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Food & Drink</span>
+    <span class="vibe-score">9/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:90%;background:#f59e0b;opacity:0.85;"></div>
+  </div>
+  <div class="vibe-desc">Coffee shops, restaurants, farmers markets, local food culture</div>
+</div><div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Walkability</span>
+    <span class="vibe-score">8/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:80%;background:#3b82f6;opacity:0.85;"></div>
+  </div>
+  <div class="vibe-desc">Can you walk to a coffee shop, post office, grocery?</div>
+</div><div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Quiet & Privacy</span>
+    <span class="vibe-score">4/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:40%;background:#6366f1;opacity:0.65;"></div>
+  </div>
+  <div class="vibe-desc">Low density, wooded lots, no HOA culture, dark skies</div>
+</div><div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Community Fit</span>
+    <span class="vibe-score">9/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:90%;background:#ec4899;opacity:0.85;"></div>
+  </div>
+  <div class="vibe-desc">People like us — creative, progressive-leaning, dog people, not flashy</div>
+</div><div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Pet Friendly</span>
+    <span class="vibe-score">9/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:90%;background:#14b8a6;opacity:0.85;"></div>
+  </div>
+  <div class="vibe-desc">Vet clinics, dog parks, pet-friendly trails and businesses</div>
+</div><div class="vibe-row">
+  <div class="vibe-label">
+    <span class="vibe-name">Practical</span>
+    <span class="vibe-score">9/10</span>
+  </div>
+  <div class="vibe-track">
+    <div class="vibe-fill" style="width:90%;background:#8b5cf6;opacity:0.85;"></div>
+  </div>
+  <div class="vibe-desc">Groceries, medical, hardware, gas — can you live here without driving 45 min?</div>
+</div>
+  </div>
+
+  <div class="section-label">What's There</div>
+  <div class="places-list"><div class="places-group"><div class="places-group-label">Creative Culture</div><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Bookstores</span><span class="cat-count">4</span></summary><div class="place-row"><span class="place-name">Gulf of Maine Books (134 Maine St — independent since 1979)</span><span class="place-source">source: mainstreetmaine.org</span></div><div class="place-row"><span class="place-name">Twice Told Tales (200 Maine St — used books, benefits library)</span><span class="place-source">source: curtislibrary.com</span></div><div class="place-row"><span class="place-name">Book Barn Rare Things (2 Lincoln St — used books, music, video)</span><span class="place-source">source: Yelp</span></div><div class="place-row"><span class="place-name">Bookland Cafe (Cook's Corner — books + Hardcover Cafe)</span><span class="place-source">source: booklandcafe.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Record Stores</span><span class="cat-count">2</span></summary><div class="place-row"><span class="place-name">Deep Groove Records (32 Elm St — curated new + vintage vinyl)</span><span class="place-source">source: deepgroovemaine.com</span></div><div class="place-row"><span class="place-name">Bull Moose (15 Maine St — Maine chain, music/movies/games)</span><span class="place-source">source: bullmoose.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Music Venues</span><span class="cat-count">5</span></summary><div class="place-row"><span class="place-name">Maine State Music Theatre (Pickard Theater, Bowdoin — Broadway-quality)</span><span class="place-source">source: ticketsmarter.com</span></div><div class="place-row"><span class="place-name">Bowdoin College (Studzinski Recital Hall — concerts, music festival)</span><span class="place-source">source: bowdoin.edu</span></div><div class="place-row"><span class="place-name">Flight Deck Brewing (11 Atlantic Ave — live music, food trucks)</span><span class="place-source">source: flightdeckbrewing.com</span></div><div class="place-row"><span class="place-name">Moderation Brewing (103 Maine St — community events)</span><span class="place-source">source: moderationbrewery.com</span></div><div class="place-row"><span class="place-name">Eveningstar Cinema (149 Maine St — also hosts events)</span><span class="place-source">source: eveningstarcinema.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Art Galleries</span><span class="cat-count">4</span></summary><div class="place-row"><span class="place-name">Bowdoin College Museum of Art (245 Maine St — free, world-class)</span><span class="place-source">source: bowdoin.edu</span></div><div class="place-row"><span class="place-name">Bayview Gallery (58 Maine St — American impressionists/realists)</span><span class="place-source">source: bayviewgallery.com</span></div><div class="place-row"><span class="place-name">Icon Contemporary Art (19 Mason St — premier abstract in ME)</span><span class="place-source">source: Yelp</span></div><div class="place-row"><span class="place-name">Spindleworks (7 Lincoln St — nonprofit arts center for adults w/ disabilities)</span><span class="place-source">source: independenceassociation.org</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Independent Cinemas</span><span class="cat-count">1</span></summary><div class="place-row"><span class="place-name">Eveningstar Cinema (149 Maine St — indie since 1979, beer/wine, retro nights)</span><span class="place-source">source: eveningstarcinema.com</span></div></details></div><div class="places-group"><div class="places-group-label">Nature Access</div><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Outdoor Outfitters</span><span class="cat-count">2</span></summary><div class="place-row"><span class="place-name">Woods + Waters Gear Exchange (12 Pleasant St — consignment outdoor gear)</span><span class="place-source">source: wwgearexchange.com</span></div><div class="place-row"><span class="place-name">Gorham Bike & Ski (88 Union St — bikes, ski, surf, rentals)</span><span class="place-source">source: gorhambike.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Kayak / Canoe Rentals</span><span class="cat-count">2</span></summary><div class="place-row"><span class="place-name">Seaspray Kayaking (209 Pleasant St — kayak/SUP/canoe, delivers to location)</span><span class="place-source">source: seaspraykayaking.com</span></div><div class="place-row"><span class="place-name">H2Outfitters (Orr's Island — sea kayak/SUP, seasonal)</span><span class="place-source">source: h2outfitters.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Ski Areas</span><span class="cat-count">2</span></summary><div class="place-row"><span class="place-name">Lost Valley (Auburn, ~19 mi — family, night skiing, brewpub)</span><span class="place-source">source: lostvalleyski.com</span></div><div class="place-row"><span class="place-name">Pleasant Mountain (Bridgton, ~39 mi — ME's oldest)</span><span class="place-source">source: pleasantmountain.com</span></div></details></div><div class="places-group"><div class="places-group-label">Food & Drink</div><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Coffee Shops</span><span class="cat-count">7</span></summary><div class="place-row"><span class="place-name">The Abbey (Maine St — coffee + cocktail bar, 2025 James Beard semifinalist)</span><span class="place-source">source: theabbeymaine.com</span></div><div class="place-row"><span class="place-name">Bohemian Coffee House & Deli (30-year local institution)</span><span class="place-source">source: bohemiancoffeehouse.com</span></div><div class="place-row"><span class="place-name">Reverie Coffee House (117 Maine St — opened 2024, Time & Tide roasters)</span><span class="place-source">source: reveriecoffeehouses.com</span></div><div class="place-row"><span class="place-name">Dog Bar Jim (90 Union St — specialty coffee, breakfast burritos)</span><span class="place-source">source: dogbarjim.com</span></div><div class="place-row"><span class="place-name">Tern Coffee & Tea (141A Maine St — opened 2025, global roasts)</span><span class="place-source">source: terncoffee.com</span></div><div class="place-row"><span class="place-name">Ritual Bakehouse & Patisserie (111 Maine St)</span><span class="place-source">source: ritualbakehouse.com</span></div><div class="place-row"><span class="place-name">Frosty's Donuts (54 Maine St — longtime local)</span><span class="place-source">source: frostysdonuts.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Restaurants</span><span class="cat-count">13</span></summary><div class="place-row"><span class="place-name">555 North (10 Water St — fine dining seafood, Federal Hotel)</span><span class="place-source">source: 555-north.com</span></div><div class="place-row"><span class="place-name">Ram & Bull (123 Maine St — comfort tavern, opened Apr 2025)</span><span class="place-source">source: theramandbull.com</span></div><div class="place-row"><span class="place-name">Pomelia (16 Station Ave — Sicilian, opened Jan 2025)</span><span class="place-source">source: pomelia.restaurant</span></div><div class="place-row"><span class="place-name">Maine Street Bistro (148 Maine St — French, raw bar)</span><span class="place-source">source: mainestreetbistro.com</span></div><div class="place-row"><span class="place-name">The Great Impasta (11 Pleasant St — Italian staple)</span><span class="place-source">source: thegreatimpasta.net</span></div><div class="place-row"><span class="place-name">Richard's (115 Maine St — German-American)</span><span class="place-source">source: richardsgermanamericancuisine.com</span></div><div class="place-row"><span class="place-name">Bangkok Garden (14 Maine St — Thai/Pan-Asian)</span><span class="place-source">source: bangkokgardenmaine.com</span></div><div class="place-row"><span class="place-name">Sweet Angel (136 Pleasant St — Thai, highly rated)</span><span class="place-source">source: sweetangelmaine.com</span></div><div class="place-row"><span class="place-name">Flight Deck Brewing (11 Atlantic Ave — wood-fired pizza)</span><span class="place-source">source: flightdeckbrewing.com</span></div><div class="place-row"><span class="place-name">Brickyard Hollow Brewing (149 Maine St — craft beer + pizza)</span><span class="place-source">source: brickyardhollow.com</span></div><div class="place-row"><span class="place-name">Cameron's Lobster House (18 Bath Rd)</span><span class="place-source">source: cameronslobsterhouse.com</span></div><div class="place-row"><span class="place-name">Taco the Town (205 Maine St)</span><span class="place-source">source: mainstreetmaine.org</span></div><div class="place-row"><span class="place-name">Ohana Poke (147 Bath Rd — Hawaiian poke bowls)</span><span class="place-source">source: ohanapokeme.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Farmers Markets</span><span class="cat-count">2</span></summary><div class="place-row"><span class="place-name">Brunswick Farmers Market (Town Mall — Tue & Fri 8am-1pm, May-Nov)</span><span class="place-source">source: brunswickfarmersmarket.com</span></div><div class="place-row"><span class="place-name">Brunswick Winter Market (14 Maine St — indoor)</span><span class="place-source">source: brunswickwintermarket.net</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Breweries / Taprooms</span><span class="cat-count">4</span></summary><div class="place-row"><span class="place-name">Moderation Brewing (103 Maine St — local ingredients, beer garden)</span><span class="place-source">source: moderationbrewery.com</span></div><div class="place-row"><span class="place-name">Flight Deck Brewing (11 Atlantic Ave — Best Tasting Room in ME)</span><span class="place-source">source: flightdeckbrewing.com</span></div><div class="place-row"><span class="place-name">Brickyard Hollow Brewing (149 Maine St — craft beer + pizza)</span><span class="place-source">source: brickyardhollow.com</span></div><div class="place-row"><span class="place-name">Black Pug Brewing (30 Bath Rd)</span><span class="place-source">source: blackpugbeer.com</span></div></details></div><div class="places-group"><div class="places-group-label">Community Fit</div><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Libraries</span><span class="cat-count">1</span></summary><div class="place-row"><span class="place-name">Curtis Memorial Library (23 Pleasant St — serves 25,000 pop)</span><span class="place-source">source: curtislibrary.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Yoga Studios</span><span class="cat-count">2</span></summary><div class="place-row"><span class="place-name">Sundara Yoga (54 Cumberland St — aerial, vinyasa, yin, prenatal)</span><span class="place-source">source: sundarayogame.com</span></div><div class="place-row"><span class="place-name">Forever Wild Yoga & Wellness (aerial, outdoor retreats)</span><span class="place-source">source: foreverwild.yoga</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Coworking Spaces</span><span class="cat-count">2</span></summary><div class="place-row"><span class="place-name">Electric Cottage Collective (82 Pleasant St — creative coworking + arts/wellness)</span><span class="place-source">source: electriccottagecollective.com</span></div><div class="place-row"><span class="place-name">TechPlace (15 Venture Ave — Maine's tech incubator at Brunswick Landing)</span><span class="place-source">source: brunswicklanding.us</span></div></details></div><div class="places-group"><div class="places-group-label">Pet Friendly</div><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Vet Clinics</span><span class="cat-count">2</span></summary><div class="place-row"><span class="place-name">Bath-Brunswick Veterinary Associates (257 Bath Rd — 30+ years, boarding too)</span><span class="place-source">source: bathbrunswickvet.com</span></div><div class="place-row"><span class="place-name">Blackbird Animal Health (Fear Free certified, founded 2021)</span><span class="place-source">source: blackbirdanimalhealth.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Pet Groomers</span><span class="cat-count">2</span></summary><div class="place-row"><span class="place-name">D'tails Dog Grooming & Cats Too (33 Bath Rd)</span><span class="place-source">source: Facebook</span></div><div class="place-row"><span class="place-name">Blue Dog Daycare (grooming alongside daycare)</span><span class="place-source">source: thebluedogdaycare.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Pet Boarding / Kennels</span><span class="cat-count">3</span></summary><div class="place-row"><span class="place-name">Bath-Brunswick Veterinary Associates (257 Bath Rd — one of ME's largest)</span><span class="place-source">source: bathbrunswickvet.com</span></div><div class="place-row"><span class="place-name">Blue Dog Daycare (daycare + boarding)</span><span class="place-source">source: thebluedogdaycare.com</span></div><div class="place-row"><span class="place-name">Canine Acres (13 acres, year-round)</span><span class="place-source">source: canineacresmaine.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Pet Supply Stores</span><span class="cat-count">2</span></summary><div class="place-row"><span class="place-name">The Animal House (90 Maine St — local indie)</span><span class="place-source">source: theanimalhouse.net</span></div><div class="place-row"><span class="place-name">Brooks Feed & Farm Supply (86 Union St — family-owned)</span><span class="place-source">source: brooksfeed.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Animal Shelters</span><span class="cat-count">1</span></summary><div class="place-row"><span class="place-name">Midcoast Humane (5 Industrial Pkwy — ~3,500 animals/yr)</span><span class="place-source">source: midcoasthumane.org</span></div></details></div><div class="places-group"><div class="places-group-label">Practical</div><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Grocery Stores</span><span class="cat-count">3</span></summary><div class="place-row"><span class="place-name">Morning Glory Natural Foods (Maine St — indie, 38+ years, cheese, wine)</span><span class="place-source">source: moglonf.com</span></div><div class="place-row"><span class="place-name">Hannaford (35 Elm St — full grocery + pharmacy)</span><span class="place-source">source: hannaford.com</span></div><div class="place-row"><span class="place-name">Shaw's (147 Bath Rd)</span><span class="place-source">source: shaws.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Hardware Stores</span><span class="cat-count">1</span></summary><div class="place-row"><span class="place-name">Brunswick True Value (family-owned)</span><span class="place-source">source: brunswick.shoptruevalue.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Farm & Feed Supply</span><span class="cat-count">2</span></summary><div class="place-row"><span class="place-name">Brooks Feed & Farm Supply (86 Union St — family-owned, hay, livestock)</span><span class="place-source">source: brooksfeed.com</span></div><div class="place-row"><span class="place-name">Tractor Supply Co. (24 Farley Rd)</span><span class="place-source">source: tractorsupply.com</span></div></details><details class="cat-block"><summary class="cat-header cat-present"><span class="cat-name">Urgent Care / Medical</span><span class="cat-count">2</span></summary><div class="place-row"><span class="place-name">ConvenientMD (193 Bath Rd — 7 days, 8am-8pm)</span><span class="place-source">source: convenientmd.com</span></div><div class="place-row"><span class="place-name">MaineHealth Walk-In Care (22 Station Ave — daily 8am-7pm, X-ray)</span><span class="place-source">source: mainehealth.org</span></div></details></div></div>
+
+  <div class="market-section">
+  <div class="section-label">Market — Cumberland County</div>
+  <div class="unavailable">Market data not yet loaded. Run update_market_data.py to populate.</div>
+</div>
+
+</div>
+
+<footer>
+  <div>Soulplace Seeker &nbsp;&middot;&nbsp; House Hunt Hero</div>
+</footer>
+
+</body>
+</html>

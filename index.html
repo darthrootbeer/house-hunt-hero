@@ -66,7 +66,7 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
     <div class="header-inner">
       <div>
         <div class="header-title">Soulplace Seeker</div>
-        <div class="header-subtitle">Where should we live? Comparing 11 towns across 8 vibe dimensions.</div>
+        <div class="header-subtitle">Where should we live? Comparing 15 towns across 8 vibe dimensions.</div>
       </div>
       <div class="header-meta">
         <a href="market_report/" class="header-link">Oxford County Market Report &rarr;</a>
@@ -231,6 +231,62 @@ footer { background: var(--surface); border-top: 1px solid var(--border); paddin
   <div class="card-stats">65 places verified</div>
   <div class="card-pills"><span class="card-pill record">Record Store</span> <span class="card-pill book">Bookstore</span></div>
   <div class="card-notes">Smallest state capital in the US. Quintessential creative small town: Bear Pond Books, Savoy art-house cinema, vinyl listening bar, food co-op, Mad River Glen ski co-op. Walkable. Rebuilt strong after 2023 flood.</div>
+</a>
+<a href="brunswick-me/" class="town-card">
+  <div class="card-top">
+    <div>
+      <div class="card-name">Brunswick, ME</div>
+      <div class="card-meta">T4 &middot; ~2 hrs via ME Tpke &middot; Pop. 21,000</div>
+    </div>
+    <div class="card-score">7.9</div>
+  </div>
+  <div class="card-radar"><canvas id="radar_11" width="160" height="160"></canvas></div>
+  <div class="card-strengths">Top: Creative Culture, Food & Drink, Community Fit</div>
+  <div class="card-stats">71 places verified</div>
+  <div class="card-pills"><span class="card-pill record">Record Store</span> <span class="card-pill book">Bookstore</span></div>
+  <div class="card-notes">Bowdoin College town. 4 bookstores, 2 record stores, world-class art museum (free), James Beard semifinalist coffee bar, 4 breweries. Strongest creative/food scene after Portland.</div>
+</a>
+<a href="brattleboro-vt/" class="town-card">
+  <div class="card-top">
+    <div>
+      <div class="card-name">Brattleboro, VT</div>
+      <div class="card-meta">T4 &middot; ~3 hrs via I-91 &middot; Pop. 12,184</div>
+    </div>
+    <div class="card-score">7.8</div>
+  </div>
+  <div class="card-radar"><canvas id="radar_12" width="160" height="160"></canvas></div>
+  <div class="card-strengths">Top: Creative Culture, Food & Drink, Community Fit</div>
+  <div class="card-stats">62 places verified</div>
+  <div class="card-pills"><span class="card-pill record">Record Store</span> <span class="card-pill book">Bookstore</span></div>
+  <div class="card-notes">One of the most culturally rich small towns in New England. 4 bookstores, record store (Turn It Up!), Stone Church, Latchis Art Deco cinema, 5 art galleries, museum. VT's longest-running farmers market. Milder winters.</div>
+</a>
+<a href="woodstock-vt/" class="town-card">
+  <div class="card-top">
+    <div>
+      <div class="card-name">Woodstock, VT</div>
+      <div class="card-meta">T4 &middot; ~2 hrs via I-89 &middot; Pop. 3,048</div>
+    </div>
+    <div class="card-score">7.4</div>
+  </div>
+  <div class="card-radar"><canvas id="radar_13" width="160" height="160"></canvas></div>
+  <div class="card-strengths">Top: Food & Drink, Walkability, Creative Culture</div>
+  <div class="card-stats">53 places verified</div>
+  <div class="card-pills"><span class="card-pill record">Record Store</span> <span class="card-pill book">Bookstore</span></div>
+  <div class="card-notes">Quintessential New England village. Upscale but charming. Yankee Bookshop (1935), Pentangle Arts, 3 coworking spaces, Killington nearby. No farm supply. Higher price point.</div>
+</a>
+<a href="shelburne-falls-ma/" class="town-card">
+  <div class="card-top">
+    <div>
+      <div class="card-name">Shelburne Falls / Greenfield, MA</div>
+      <div class="card-meta">T4 &middot; ~3 hrs via I-91 &middot; Pop. 18,000</div>
+    </div>
+    <div class="card-score">7.2</div>
+  </div>
+  <div class="card-radar"><canvas id="radar_14" width="160" height="160"></canvas></div>
+  <div class="card-strengths">Top: Creative Culture, Community Fit, Nature Access</div>
+  <div class="card-stats">56 places verified</div>
+  <div class="card-pills"><span class="card-pill record">Record Store</span> <span class="card-pill book">Bookstore</span></div>
+  <div class="card-notes">Bridge of Flowers village. Working artists, potters, galleries, Salmon Falls Gallery (35 yrs). Hawks & Reed music venue. 4 bookstores, 2 record stores, 4 breweries. Closest to the 'record store town' archetype.</div>
 </a>
   </div>
 </div>
@@ -529,6 +585,118 @@ new Chart(document.getElementById('radar_10'), {
     labels: ["Creative Culture", "Nature Access", "Food & Drink", "Walkability", "Quiet & Privacy", "Community Fit", "Pet Friendly", "Practical"],
     datasets: [{
       data: [9, 8, 9, 9, 5, 9, 8, 7],
+      backgroundColor: 'rgba(90,170,130,0.15)',
+      borderColor: '#5aaa82',
+      borderWidth: 1.5,
+      pointRadius: 2,
+      pointBackgroundColor: '#5aaa82'
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: false } },
+    scales: {
+      r: {
+        min: 0, max: 10,
+        ticks: { display: false, stepSize: 2 },
+        grid: { color: '#2d3748' },
+        angleLines: { color: '#2d3748' },
+        pointLabels: { color: '#8899aa', font: { size: 9, family: "'JetBrains Mono', monospace" } }
+      }
+    }
+  }
+});
+
+new Chart(document.getElementById('radar_11'), {
+  type: 'radar',
+  data: {
+    labels: ["Creative Culture", "Nature Access", "Food & Drink", "Walkability", "Quiet & Privacy", "Community Fit", "Pet Friendly", "Practical"],
+    datasets: [{
+      data: [9, 6, 9, 8, 4, 9, 9, 9],
+      backgroundColor: 'rgba(90,170,130,0.15)',
+      borderColor: '#5aaa82',
+      borderWidth: 1.5,
+      pointRadius: 2,
+      pointBackgroundColor: '#5aaa82'
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: false } },
+    scales: {
+      r: {
+        min: 0, max: 10,
+        ticks: { display: false, stepSize: 2 },
+        grid: { color: '#2d3748' },
+        angleLines: { color: '#2d3748' },
+        pointLabels: { color: '#8899aa', font: { size: 9, family: "'JetBrains Mono', monospace" } }
+      }
+    }
+  }
+});
+
+new Chart(document.getElementById('radar_12'), {
+  type: 'radar',
+  data: {
+    labels: ["Creative Culture", "Nature Access", "Food & Drink", "Walkability", "Quiet & Privacy", "Community Fit", "Pet Friendly", "Practical"],
+    datasets: [{
+      data: [10, 7, 9, 8, 5, 9, 7, 7],
+      backgroundColor: 'rgba(90,170,130,0.15)',
+      borderColor: '#5aaa82',
+      borderWidth: 1.5,
+      pointRadius: 2,
+      pointBackgroundColor: '#5aaa82'
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: false } },
+    scales: {
+      r: {
+        min: 0, max: 10,
+        ticks: { display: false, stepSize: 2 },
+        grid: { color: '#2d3748' },
+        angleLines: { color: '#2d3748' },
+        pointLabels: { color: '#8899aa', font: { size: 9, family: "'JetBrains Mono', monospace" } }
+      }
+    }
+  }
+});
+
+new Chart(document.getElementById('radar_13'), {
+  type: 'radar',
+  data: {
+    labels: ["Creative Culture", "Nature Access", "Food & Drink", "Walkability", "Quiet & Privacy", "Community Fit", "Pet Friendly", "Practical"],
+    datasets: [{
+      data: [8, 8, 9, 9, 6, 7, 6, 6],
+      backgroundColor: 'rgba(90,170,130,0.15)',
+      borderColor: '#5aaa82',
+      borderWidth: 1.5,
+      pointRadius: 2,
+      pointBackgroundColor: '#5aaa82'
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: false } },
+    scales: {
+      r: {
+        min: 0, max: 10,
+        ticks: { display: false, stepSize: 2 },
+        grid: { color: '#2d3748' },
+        angleLines: { color: '#2d3748' },
+        pointLabels: { color: '#8899aa', font: { size: 9, family: "'JetBrains Mono', monospace" } }
+      }
+    }
+  }
+});
+
+new Chart(document.getElementById('radar_14'), {
+  type: 'radar',
+  data: {
+    labels: ["Creative Culture", "Nature Access", "Food & Drink", "Walkability", "Quiet & Privacy", "Community Fit", "Pet Friendly", "Practical"],
+    datasets: [{
+      data: [9, 7, 7, 7, 6, 9, 6, 7],
       backgroundColor: 'rgba(90,170,130,0.15)',
       borderColor: '#5aaa82',
       borderWidth: 1.5,
